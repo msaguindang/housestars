@@ -16,21 +16,21 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('home');
+    return view('general.home');
 });
 
 Route::get('/agency', function () {
-    return view('agency');
+    return view('general.agency');
 });
 
 Route::get('/trades-services', function () {
-    return view('trades-services');
+    return view('general.trades-services');
 });
 
 Route::get('/customer', function () {
-    return view('customer');
+    return view('general.customer');
 });
 
 Route::get('/about', function () {
-    return view('about');
+    return view('general.about');
 });
