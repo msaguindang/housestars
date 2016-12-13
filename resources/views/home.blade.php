@@ -1,5 +1,35 @@
   @extends("layouts.main")
   @section("content")
+    <header id="header" class="animated hide sticky">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-3 branding">
+              <a href="index.html"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+            </div>
+            <div class="col-xs-7 col-xs-offset-2 navigation">
+              <div class="row top-links">
+                <div class="customer-care">
+                  <p><span class="label">Call Customer Care </span><a href="tel:0404045597" class="number">0404045597</a></p>
+                </div>
+                <div class="nav-items">
+                  <ul>
+                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row">
+                <div class="main-nav">
+                  <ul>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
+                    <li class="active"><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+    </header>
 
     <section id="top-header">
       <div class="container">
@@ -22,13 +52,13 @@
       <div class="container">
         <div class="row header">
           <div class="col-xs-4 logo">
-            <a href="index.html"><img src="assets/logo-header-home.png" alt="HouseStars Logo"></a>
+            <a href="/"><img src="assets/logo-header-home.png" alt="HouseStars Logo"></a>
           </div>
           <div class="col-xs-6 col-xs-offset-2 main-nav">
             <ul>
-              <li><span class="icon icon-customer"></span><a href="#">Customer</a></li>
-              <li><span class="icon icon-tradesman"></span><a href="#">Trades & Services</a></li>
-              <li><span class="icon icon-agency"></span><a href="#">Agency</a></li>
+              <li><span class="icon icon-customer"></span><a href="customer">Customer</a></li>
+              <li><span class="icon icon-tradesman"></span><a href="trades-services">Trades & Services</a></li>
+              <li><span class="icon icon-agency"></span><a href="agency">Agency</a></li>
             </ul>
           </div>
         </div>
@@ -61,10 +91,10 @@
       <img src="assets/banner-test.jpg" alt="Banner Description Here">
     </section>
 
-    <section id="how-it-works">
+    <section id="how-it-works" class="home">
       <div class="container">
         <div class="row section-title">
-          <h2><span class="icon icon-left-bar"></span>How Housestars.com.au Works <span class="icon icon-right-bar"></span></h2>
+          <h2 class="wide"><span class="icon icon-left-bar"></span>How Housestars.com.au Works <span class="icon icon-right-bar"></span></h2>
           <span class="separator"></span>
           <p>House Stars is a great way to sell your property. By using local trades and services to prepare your house for sale, and by hiring the best agents to represent you, you can be sure you'll get the best results, at the cheapest prices.</p>
         </div>
@@ -131,10 +161,10 @@
         </div>
       </div>
     </section>
-    <section id="how-we-help">
+    <section id="how-we-help" class="grey-area">
       <div class="container">
         <div class="row section-title">
-          <h2><span class="icon icon-left-bar"></span>How May We Help You <span class="icon icon-right-bar"></span></h2>
+          <h2 class="narrow"><span class="icon icon-left-bar"></span>How May We Help You <span class="icon icon-right-bar"></span></h2>
         </div>
         <div class="row widget">
           <div class="col-xs-4 item animated">

@@ -1,7 +1,4 @@
 
-
-
-
 (function(){
 
 var animation = {
@@ -21,13 +18,13 @@ var animation = {
         this.$modalRegister.on('click', this.hide.bind(this));
       },
       animateOnScroll: function(){
-          this.addAnimation('.stepOne', false, 'fadeInRight', 50);
-          this.addAnimation('.stepTwo', false, 'fadeInLeft', 500);
-          this.addAnimation('.stepThree', false, 'fadeInRight', 1000);
-          this.addAnimation('.stepFour', false, 'fadeInLeft', 1200);
+          this.addAnimation('.home .stepOne', false, 'fadeInRight', 50);
+          this.addAnimation('.home .stepTwo', false, 'fadeInLeft', 500);
+          this.addAnimation('.home .stepThree', false, 'fadeInRight', 1000);
+          this.addAnimation('.home .stepFour', false, 'fadeInLeft', 1200);
           this.addAnimation('#how-we-help .item', false, 'fadeIn', 2100);
           //console.log(this.$scroll.scrollTop());
-          this.stickyNav('#header', 'slideInDown', 130);
+          this.stickyNav('.sticky', 'slideInDown', 130);
       },
       animateOnClick: function(){
           this.addAnimation('#rate img', true, 'bounceIn', null);
@@ -64,9 +61,9 @@ var animation = {
 };
 
 animation.init();
-
 })()
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
+});
+

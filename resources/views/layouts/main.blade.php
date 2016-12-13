@@ -13,6 +13,7 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/housestars-main.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -21,36 +22,6 @@
     <![endif]-->
   </head>
   <body>
-    <header id="header" class="animated hide">
-        <div class="container">
-          <div class="row">
-            <div class="col-xs-3 branding">
-              <a href="index.html"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
-            </div>
-            <div class="col-xs-7 col-xs-offset-2 navigation">
-              <div class="row top-links">
-                <div class="customer-care">
-                  <p><span class="label">Call Customer Care </span><a href="tel:0404045597" class="number">0404045597</a></p>
-                </div>
-                <div class="nav-items">
-                  <ul>
-                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
-                  </ul>
-                </div>
-              </div>
-              <div class="row">
-                <div class="main-nav">
-                  <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="#" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="#">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="#">Agency</a></li>
-                    <li class="active"><span class="icon icon-home-dark"></span><a href="#">Home</a></li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-    </header>
 
 @yield("content")
 
@@ -134,6 +105,7 @@
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/custom.js"></script>
