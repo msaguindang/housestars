@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="index.html"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+              <a href="/"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -75,7 +75,7 @@
           <div class="col-xs-11 col-xs-offset-1 tooltip-items">
             <ul>
               <li class="search-local animated fadeInDown"><span class="icon icon-search-local"></span><a href=""> Search Local Trades & Services <span class="icon icon-arrow-right"></span></a></li>
-              <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings"></span><a href="">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
+              <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings"></span><a href="#" data-toggle="modal" data-target="#rateTradesman">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
               <li class="sign-up animated fadeInDown"><span class="icon icon-sign-up"></span><a href="" data-toggle="modal" data-target="#signup">Sign Me Up <span class="icon icon-arrow-right"></span></a></li>
             </ul>
           </div>

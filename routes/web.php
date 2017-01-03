@@ -34,3 +34,47 @@ Route::get('/customer', function () {
 Route::get('/about', function () {
     return view('general.about');
 });
+
+Route::get('/register/agency/step-one', function () {
+    return view('register.agency.step-one');
+});
+
+Route::get('/register/agency/step-two', function () {
+    return view('register.agency.step-two');
+});
+
+Route::get('/register/agency/step-three', function () {
+    return view('register.agency.step-three');
+});
+
+Route::get('/register/agency/step-four', function () {
+    return view('register.agency.step-four');
+});
+
+Route::get('/register/agency/complete', function () {
+    return view('register.agency.complete');
+});
+
+Route::get('/register/tradesman/step-one', function () {
+    return view('register.tradesman.step-one');
+});
+
+Route::get('/register/tradesman/step-two', function () {
+    return view('register.tradesman.step-two');
+});
+
+Route::get('/register/tradesman/step-three', function () {
+    return view('register.tradesman.step-three');
+});
+
+Route::get('/register/tradesman/complete', function () {
+    return view('register.tradesman.complete');
+});
+
+Route::get('/register/customer/step-one', function () {
+    return view('register.customer.step-one');
+});
+
+Route::get('/register/customer/complete', function () {
+    return view('register.customer.complete');
+});

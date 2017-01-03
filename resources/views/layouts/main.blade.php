@@ -7,13 +7,17 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>HouseStars -  Smarter Property Sales</title>
 
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url('favicon.png')}}">
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/housestars-main.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/dropdowns-enhancement.css')}}" rel="stylesheet">
+    <link href="{{asset('css/animate.css')}}" rel="stylesheet">
+    <link href="{{asset('css/bootstrap-toggle.min.css')}}" rel="stylesheet">
+    <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/housestars-main.css')}}" rel="stylesheet">
+    <link href="{{asset('css/housestars-icon.css')}}" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -30,7 +34,7 @@
       <div class="container main-footer">
         <div class="row widget">
           <div class="col-xs-3 company-identity">
-              <img src="assets/logo-footer.png" alt="HouseStars" class="logo">
+              <img src="{{asset('assets/logo-footer.png')}}" alt="HouseStars" class="logo">
               <p class="label">Office Address</p>
               <p>100th Floor and Ground Floor, Commerce </br> Somewhere Avenue corner Somewhere Avenue, </br>Somewhere Disterict, Sydney</br>New South Wales, Australia</p>
               <p>Tel No: (000) 888-8888  |   Fax No: ((000) 888-8888 </p>
@@ -107,8 +111,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/custom.js"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/dropdowns-enhancement.js')}}"></script>
+    <script src="{{asset('js/custom.js')}}"></script>
 
     @yield("scripts")
   </body>

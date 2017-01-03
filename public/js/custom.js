@@ -61,9 +61,31 @@ var animation = {
 };
 
 animation.init();
+
 })()
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 });
+
+$("#property-type .selected a").click(function() {
+    $("#property-type .options ul").toggle();
+});
+
+//SELECT OPTIONS AND HIDE OPTION AFTER SELECTION
+$("#property-type .options ul li a").click(function() {
+    var text = $(this).html();
+    $("#property-type .selected a span").html(text);
+    $("#property-type .options ul").hide();
+}); 
+
+
+//HIDE OPTIONS IF CLICKED ANYWHERE ELSE ON PAGE
+$(document).bind('click', function(e) {
+    var $clicked = $(e.target);
+    if (! $clicked.parents().hasClass("drop-down"))
+        $("#property-type .options ul").hide();
+});
+
+
 

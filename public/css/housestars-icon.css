@@ -1,0 +1,378 @@
+/* ICON STYLING*/
+
+.icon{
+	background: url('../assets/icons-spritesheet.png');
+	float: left;
+}
+
+.icn{
+    background: url('../assets/check-icons-sprite.png');
+    float: right;
+}
+
+.icon-agency{
+	width: 30px;
+	height: 30px;
+	background-position-x: 0;
+    background-position-y: 0;
+}
+
+.icon-tradesman{
+	width: 30px;
+	height: 30px;
+	background-position-x: -30px;
+    background-position-y: 0;
+}
+
+.icon-customer{
+	width: 30px;
+	height: 30px;
+	background-position-x: -60px;
+    background-position-y: 0;
+}
+
+.icon-agency-dark{
+    width: 30px;
+    height: 30px;
+    background-position-x: -92px;
+    background-position-y: 0;
+}
+
+.icon-tradesman-dark{
+    width: 30px;
+    height: 30px;
+    background-position-x: -122px;
+    background-position-y: 0;
+}
+
+.icon-customer-dark {
+    width: 30px;
+    height: 30px;
+    background-position-x: -152px;
+    background-position-y: 0;
+}
+
+.icon-home-dark {
+    width: 30px;
+    height: 30px;
+    background-position-x: -182px;
+    background-position-y: 0;
+}
+
+
+.icon-search-local {
+    width: 80px;
+    height: 97px;
+    background-position-x: 590px;
+    background-position-y: 237px;
+}
+
+.icon-calculate-savings {
+    width: 80px;
+    height: 97px;
+    background-position-x: 478px;
+    background-position-y: 237px;
+}
+
+.icon-sign-up {
+    width: 80px;
+    height: 97px;
+    background-position-x: 368px;
+    background-position-y: 237px;
+}
+
+.icon-arrow-right {
+    width: 15px;
+    height: 15px;
+    float: right;
+    background-position-x: -217px;
+    background-position-y: 301px;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+.icon-left-bar {
+    width: 116px;
+    height: 20px;
+    background-position-x: 0;
+    background-position-y: -125px;
+    margin-top: 6px;
+}
+
+.icon-right-bar {
+    width: 116px;
+    height: 20px;
+    background-position-x: -118px;
+    background-position-y: -125px;
+    float: right;
+    margin-top: 6px;
+}
+
+.icon-play-video {
+    width: 26px;
+    height: 26px;
+    background-position-x: -2px;
+    background-position-y: -93px;
+    margin-right: 10px;
+}
+
+.icon-fb {
+    width: 26px;
+    height: 26px;
+    background-position-y: -92px;
+    background-position-x: -33px;
+    margin-right: 15px;
+}
+
+.icon-tw {
+    width: 26px;
+    height: 26px;
+    background-position-y: -92px;
+    background-position-x: -92px;
+    margin-right: 15px;
+}
+
+.icon-ig {
+    width: 26px;
+    height: 26px;
+    background-position-y: -92px;
+    background-position-x: -63px;
+    margin-right: 15px;
+}
+
+.icon-fb-white {
+    width: 26px;
+    height: 26px;
+    background-position-y: -92px;
+    background-position-x: -120px;
+    padding: 3px 0 0 40px;
+    margin-left: 68px;
+}
+
+.icon-g-white {
+    width: 26px;
+    height: 26px;
+    background-position-y: -92px;
+    background-position-x: -150px;
+    padding: 3px 0 0 40px;
+    margin-left: 60px;
+}
+
+.icon-price {
+    width: 30px;
+    height: 30px;
+    background-position-y: -183px;
+    background-position-x: -31px;
+    margin-right: 15px;
+}
+
+.icon-available-0 {
+    width: 66px;
+    height: 17px;
+    background-position-y: -51px; 
+}
+
+.icon-available-1 {
+    width: 66px;
+    height: 17px;
+    background-position-y: -34px; 
+}
+
+.icon-available-2 {
+    width: 66px;
+    height: 17px;
+    background-position-y: -17px; 
+}
+
+.icon-available-3 {
+    width: 66px;
+    height: 17px;
+    background-position-y: 0px; 
+}
+
+.icon-helpful{
+    width: 15px;
+    height: 15px;
+    background-position-x: -98px;
+    background-position-y: -67px;
+    margin-right: 10px;
+}
+
+.icon-star{
+    width: 15px;
+    height: 15px;
+    background-position-x: -241px;
+    background-position-y: -8px;
+    margin: 5px 1px;
+}
+
+.icon-left{
+    width: 25px;
+    height: 33px;
+    background-position-y: -223px;
+    background-position-x: 0px;
+}
+
+.icon-right{
+    width: 25px;
+    height: 33px;
+    background-position-x: -31px;
+    background-position-y: -222px;
+}
+
+.icon-people {
+    width: 133px;
+    height: 133px;
+    background-position-x: -300px;
+    background-position-y: -9px;
+    margin-top: 35px;
+}
+
+.icon-sell-more {
+    width: 133px;
+    height: 133px;
+    background-position-x: -602px;
+    background-position-y: -9px;
+    margin-top: 35px;
+}
+
+
+.icon-value {
+    width: 133px;
+    height: 133px;
+    background-position-x: -451px;
+    background-position-y: -9px;
+    margin-top: 35px;
+}
+
+.icon-big-discount {
+    width: 133px;
+    height: 133px;
+    background-position-x: -752px;
+    background-position-y: -9px;
+    margin-top: 35px;
+}
+
+.icon-left-bar-white {
+    width: 116px;
+    height: 20px;
+    background-position-x: 0;
+    background-position-y: -156px;
+    margin-top: 6px;
+}
+
+.icon-right-bar-white {
+    width: 116px;
+    height: 20px;
+    background-position-x: -118px;
+    background-position-y: -156px;
+    float: right;
+    margin-top: 6px;
+}
+
+.icon-calculate {
+    width: 24px;
+    height: 24px;
+    margin-right: 20px;
+    background-position-y: -183px;
+    background-position-x: -153px;
+}
+
+.icon-additional-info-completed {
+    width: 53px;
+    height: 54px;
+    background-position-x: -292px;
+    background-position-y: -271px;
+    margin-bottom: 7px;
+}
+
+.icon-additional-info {
+    width: 53px;
+    height: 54px;
+    background-position-x: -292px;
+    background-position-y: -327px;
+    margin-bottom: 7px;
+}
+
+.icon-add-agents {
+    width: 53px;
+    height: 54px;
+    background-position-x: -346px;
+    background-position-y: -327px;
+    margin-bottom: 7px;
+}
+
+.icon-add-agents-completed {
+    width: 53px;
+    height: 54px;
+    background-position-x: -346px;
+    background-position-y: -271px;
+    margin-bottom: 7px;
+}
+
+.icon-payment {
+    width: 53px;
+    height: 54px;
+    background-position-x: -401px;
+    background-position-y: -327px;
+    margin-bottom: 7px;
+}
+
+.icon-review {
+    width: 53px;
+    height: 54px;
+    background-position-x: -457px;
+    background-position-y: -327px;
+    margin-bottom: 7px;
+}
+
+.icon-payment-completed {
+    width: 53px;
+    height: 54px;
+    background-position-x: -401px;
+    background-position-y: -271px;
+    margin-bottom: 7px;
+}
+
+.icon-review-completed {
+    width: 53px;
+    height: 54px;
+    background-position-x: -457px;
+    background-position-y: -271px;
+    margin-bottom: 7px;
+}
+
+.icon-completed {
+    width: 53px;
+    height: 54px;
+    background-position-x: -512px;
+    background-position-y: -271px;
+    margin-bottom: 7px;
+}
+
+.icon-total {
+    width: 30px;
+    height: 24px;
+    background-position-x: -31px;
+    background-position-y: -183px;
+}
+
+.icon-close {
+    width: 15px;
+    height: 15px;
+    float: left;
+    background-position-x: -240px;
+    background-position-y: 301px;
+    margin-right: 44px;
+    margin-top: 3px;
+}
+
+.icon-summary {
+    width: 15px;
+    height: 15px;
+    float: left;
+    background-position-x: -263px;
+    background-position-y: 301px;
+    margin-right: 9px;
+    margin-top: 3px;
+}

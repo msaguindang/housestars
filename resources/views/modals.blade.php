@@ -68,3 +68,252 @@
         </div>
       </div>
     </div>
+
+     <!-- RATE INFO -->
+    <div class="modal fade" id="rateInfo" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Rate a Trade or Service</h4>
+            <p class="sub-heading">Enter the details of the business you require.</p>
+            <form>
+              <input type="text" name="" placeholder="Business Name">
+              <input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>
+              <button class="btn hs-primary">Rate Tradesman Now</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- RATE A TRADESMAN -->
+    <div class="modal fade" id="rateTradesman" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document" style="margin-top: 3%;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Rate a Trade or Service</h4>
+            <div class="col-xs-8  col-xs-offset-2 tradesman-info">
+              <div class="col-xs-4 tradesman-profile">
+                <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+              </div>
+              <div class="col-xs-8 tradesman-name">
+                <h4>John Joe Smith</h4>
+              </div>
+            </div>
+            <p class="bordered-desc">Your Honest answers really help other customers</p>
+
+            <form>
+              <div class="rating-stars">
+                <p class="rating-label">Communication</p>
+                <div class="stars">
+                  <input type="radio" name="group-1" id="group-1-0" value="5" /><label for="group-1-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="group-1" id="group-1-1" value="4" /><label for="group-1-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="group-1" id="group-1-2" value="3" /><label for="group-1-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="group-1" id="group-1-3" value="2" /><label for="group-1-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="group-1" id="group-1-4"  value="1" /><label for="group-1-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                </div>
+              </div>
+              <div class="rating-stars">
+                <p class="rating-label">Work Quality</p>
+                <div class="stars">
+                  <input type="radio" name="group-2" id="group-2-0" value="5" /><label for="group-2-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="group-2" id="group-2-1" value="4" /><label for="group-2-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="group-2" id="group-2-2" value="3" /><label for="group-2-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="group-2" id="group-2-3" value="2" /><label for="group-2-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="group-2" id="group-2-4"  value="1" /><label for="group-2-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                </div>
+              </div>
+              <div class="rating-stars">
+                <p class="rating-label">Price</p>
+                <div class="stars">
+                  <input type="radio" name="group-3" id="group-3-0" value="5" /><label for="group-3-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="group-3" id="group-3-1" value="4" /><label for="group-3-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="group-3" id="group-3-2" value="3" /><label for="group-3-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="group-3" id="group-3-3" value="2" /><label for="group-3-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="group-3" id="group-3-4"  value="1" /><label for="group-3-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                </div>
+              </div>
+              <div class="rating-stars">
+                <p class="rating-label">Punctuality</p>
+                <div class="stars">
+                  <input type="radio" name="group-4" id="group-4-0" value="5" /><label for="group-4-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="group-4" id="group-4-1" value="4" /><label for="group-4-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="group-4" id="group-4-2" value="3" /><label for="group-4-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="group-4" id="group-4-3" value="2" /><label for="group-4-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="group-4" id="group-4-4"  value="1" /><label for="group-4-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                </div>
+              </div>
+              <div class="rating-stars no-border">
+                <p class="rating-label">Attitude</p>
+                <div class="stars">
+                  <input type="radio" name="group-5" id="group-5-0" value="5" /><label for="group-5-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="group-5" id="group-5-1" value="4" /><label for="group-5-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="group-5" id="group-5-2" value="3" /><label for="group-5-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="group-5" id="group-5-3" value="2" /><label for="group-5-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="group-5" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                </div>
+              </div>
+              </br></br></br>
+              <input type="text" name="" placeholder="Enter Review Title">
+              <textarea placeholder="Write your review.." class="no-top"></textarea>
+              <div class="review-tips">
+                <p class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tips for writing a great review </br> </br> <b>DO</b> </br> - Describe your overall experience</br> - Tell us if you would recommended the business to others</br>-Talk about the strengths and weaknesses of the experience </br></br> <b>DON'T</b></br>-Lie. Be as honest as possible</br>-Use bad language or personal insults</br>-Be racist, sexist or vulgar" data-html="true">Tips for writing a good review</p>
+               </br></br>
+              </div>
+              <button class="btn hs-primary">Submit Reviews</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- NO TRADESMAN LISTED-->
+    <div class="modal fade" id="noTradesman" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>There are currently no Carpenters</br>Listed in your area</h4>
+            </br><p class="sub-heading">If you know a carpenter that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+            <form>
+              <input type="text" name="" placeholder="Trade or Service name"></br>
+              <button class="btn hs-primary">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT CATEGORY-->
+    <div class="modal fade" id="submitCategory" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Submit Category Listing</h4>
+            </br><p class="sub-heading">Please enter the desired category and press “Submit”. If the category is aligned with our Philosophy, we will create a new category. Thank you.</p>
+            <form>
+              <input type="text" name="" placeholder="Trade or Service"></br>
+              <button class="btn hs-primary">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thank You Note / Savings Calculator-->
+    <div class="modal fade" id="thankYou" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Thank You!</h4>
+            </br><p class="sub-heading">An email is now being sent to your inbox with your estimated savings and explanation.</p>
+            </br><p class="sub-heading">Please see our customer FAQ for more information regarding the savings estimation calculator and how this estimates are calculated</p>
+            <button class="btn hs-primary">Got it</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NO AGENT LISTED-->
+    <div class="modal fade" id="noAgent" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>There are no agents currently</br>listed in your suburb</h4>
+            </br><p class="sub-heading">If you know a great Agent that can benefit from this site, please enter their name below and click Submit. We will be in contact with them. Your closest 3 agents are: The site selects; the closest agents by geographical distance; and presents them.</p>
+            <form>
+              <input type="text" name="" placeholder="Agent Name"></br>
+              <button class="btn hs-primary">SUBMIT</button>
+            </form>
+             <p class="heading"><span class="hLine left"></span>RELATED AGENTS <span class="hLine right"></span></p>
+             <div class="agents">
+              <div class="col-xs-4">
+                <a href="#">
+                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                  </div>
+                  </br>
+                  <p class="agent-name">John Joe Smith</p>
+                  <div class="stars">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-xs-4">
+                <a href="#">
+                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                  </div>
+                  </br>
+                  <p class="agent-name">John Joe Smith</p>
+                  <div class="stars">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-xs-4">
+                <a href="#">
+                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                  </div>
+                  </br>
+                  <p class="agent-name">John Joe Smith</p>
+                  <div class="stars">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                  </div>
+                </a>
+              </div>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RATE AGENT -->
+    <div class="modal fade" id="rateAgent" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document" style="margin-top: 3%;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Rate An Agent</h4>
+
+            <form>
+              <textarea placeholder="Type your comments here.."></textarea>
+
+              <button class="btn hs-primary">Submit Reviews</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

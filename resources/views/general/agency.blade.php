@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="index.html"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+              <a href="/"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -13,6 +13,7 @@
                 </div>
                 <div class="nav-items">
                   <ul>
+                    <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li>
                     <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                   </ul>
                 </div>
@@ -34,7 +35,7 @@
     <section id="featured-video">
     	<div class="container">
     		<div class="row">
-    			<iframe width="100%" height="530" src="https://www.youtube.com/embed/psc3dEE5i4U" frameborder="0" allowfullscreen></iframe>
+    			<iframe width="100%" height="530" src="https://www.youtube.com/embed/2nRhVpc9F3I" frameborder="0" allowfullscreen></iframe>
     		</div>
     	</div>
     </section>
