@@ -78,3 +78,7 @@ Route::get('/register/customer/step-one', function () {
 Route::get('/register/customer/complete', function () {
     return view('register.customer.complete');
 });
+
+Route::get('/dashboard/agency/profile', function () {
+    return view('dashboard.agency.profile');
+});

@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+              <a href="/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
