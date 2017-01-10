@@ -82,3 +82,15 @@ Route::get('/register/customer/complete', function () {
 Route::get('/dashboard/agency/profile', function () {
     return view('dashboard.agency.profile');
 });
+
+Route::get('/dashboard/agency/profile/edit', function () {
+    return view('dashboard.agency.edit');
+});
+
+Route::get('/dashboard/tradesman/profile', function () {
+    return view('dashboard.tradesman.profile');
+});
+
+Route::get('/dashboard/tradesman/profile/edit', function () {
+    return view('dashboard.tradesman.edit');
+});

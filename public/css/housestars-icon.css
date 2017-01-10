@@ -376,3 +376,51 @@
     margin-right: 9px;
     margin-top: 3px;
 }
+
+.icon-image {
+    width: 15px;
+    height: 12px;
+    background-position-x: -68px;
+    background-position-y: -69px;
+    margin: 1px 5px 0 0;
+}
+
+.icon-save{
+    width: 15px;
+    height: 15px;
+    float: left;
+    background-position-x: -158px;
+    background-position-y: 331px;
+    margin-right: 9px;
+    margin-top: 3px;
+}
+
+
+.icon-summary-dark {
+    width: 15px;
+    height: 15px;
+    float: left;
+    background-position-x: -100px;
+    background-position-y: 362px;
+    margin-right: 9px;
+    margin-top: 3px;
+}
+
+.icon-arrow-right-dark {
+    width: 15px;
+    height: 15px;
+    float: right;
+    background-position-x: -272px;
+    background-position-y: 332px;
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+.tradesman .gallery-item {
+    max-height: 177px;
+    min-height: 177px;
+}
+
+.tradesman .carousel-inner {
+    min-height: 190px;
+}
