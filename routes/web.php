@@ -94,3 +94,19 @@ Route::get('/dashboard/tradesman/profile', function () {
 Route::get('/dashboard/tradesman/profile/edit', function () {
     return view('dashboard.tradesman.edit');
 });
+
+Route::get('/dashboard/customer/profile', function () {
+    return view('dashboard.customer.profile');
+});
+
+Route::get('/search-category', function () {
+    return view('general.search-category');
+});
+
+Route::get('/category-listings', function () {
+    return view('general.category-listings');
+});
+
+Route::get('/tradesman-listings', function () {
+    return view('general.tradesman-listings');
+});

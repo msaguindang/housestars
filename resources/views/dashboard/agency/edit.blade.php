@@ -143,6 +143,7 @@
               <button class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-save" style="margin-top: 6px;"></span>SAVE CHANGES <span class="icon icon-arrow-right"></span></button>
             </div>
           </div>
+          <div class="spacing"></div>
         </div>
       </div>
     </section>

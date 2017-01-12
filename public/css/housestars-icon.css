@@ -416,11 +416,67 @@
     margin-top: 2px;
 }
 
-.tradesman .gallery-item {
-    max-height: 177px;
-    min-height: 177px;
+.icon-search {
+    background-position-y: -67px;
+    background-position-x: -9px;
+    width: 15px;
+    height: 15px;
+    margin: 6px 10px 0 ;
 }
 
-.tradesman .carousel-inner {
-    min-height: 190px;
+.icon-arrow-left {
+    width: 9px;
+    height: 15px;
+    background-position-x: -190px;
+    background-position-y: 301px;
+    margin: 5px 6px 0 0;
+}
+
+.icon-arrow-right-blue {
+    width: 15px;
+    height: 15px;
+    float: right;
+    background-position-x: -272px;
+    background-position-y: 270px;
+    margin-left: 10px;
+    margin-top: 9px;
+}
+
+.icon-hammer {
+    width: 30px;
+    height: 30px;
+    background-position-y: -180px;
+    margin-right: 10px;
+}
+
+.icon-trade {
+    width: 30px;
+    height: 30px;
+    background-position-y: -180px;
+    background-position-x: -32px;
+    margin-right: 10px;
+}
+
+.icon-wrench {
+    height: 30px;
+    background-position-y: -180px;
+    background-position-x: -60px;
+    margin-right: 10px;
+    width: 30px;
+}
+
+.icon-brush {
+    height: 30px;
+    background-position-y: -180px;
+    background-position-x: -90px;
+    margin-right: 10px;
+    width: 30px;
+}
+
+.icon-clipper {
+    height: 30px;
+    background-position-y: -180px;
+    background-position-x: -120px;
+    margin-right: 10px;
+    width: 30px;
 }
