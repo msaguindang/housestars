@@ -99,6 +99,10 @@ Route::get('/dashboard/customer/profile', function () {
     return view('dashboard.customer.profile');
 });
 
+Route::get('/dashboard/customer/profile/edit', function () {
+    return view('dashboard.customer.edit');
+});
+
 Route::get('/search-category', function () {
     return view('general.search-category');
 });
@@ -109,4 +113,12 @@ Route::get('/category-listings', function () {
 
 Route::get('/tradesman-listings', function () {
     return view('general.tradesman-listings');
+});
+
+Route::get('/agency-listings', function () {
+    return view('general.agency-listings');
+});
+
+Route::get('/savings-calculator', function () {
+    return view('general.savings-calculator');
 });

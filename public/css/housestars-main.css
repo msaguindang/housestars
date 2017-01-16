@@ -112,6 +112,7 @@ input:placeholder-shown, input:focus, textarea:placeholder-shown, textarea:focus
     letter-spacing: 2px;
     line-height: 25px;
     border-radius: 2px;
+    color: #fff;
 }
 
 .hs-default {
@@ -2347,7 +2348,7 @@ a.selected li {
 .processing-form .row {
     background: #fff;
     border: 1px solid #e3e3e3;
-    padding: 10px 20px;
+    padding: 25px 20px;
     margin-bottom: 35px;
 }
 
@@ -2454,4 +2455,100 @@ a.selected li {
 
 .processing-form .entry ul {
     border-bottom: 3px solid #e3e3e3;
+}
+
+.processing-form .btn-add {
+    margin: 0px 0 20px;
+    padding: 7px 17px;
+}
+
+.processing-form .total-label {
+    background: #eae9e8;
+    padding: 20px;
+    border: 1px solid #d4d4d4;
+}
+
+.processing-form .total-label span {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #374b56;
+}
+
+.processing-form .total-label .total-amount {
+    float: right;
+    font-size: 18px !important;
+    color: #0f70b7 !important;
+}
+
+.processing-form .spending {
+    font-size: 12px;
+    font-weight: 400;
+    float: right;
+    margin: 5px 0;
+}
+
+.processing-form .spending-amount {
+    color: red;
+}
+
+.processing-form .total {
+    float: left;
+    width: 100%;
+}
+
+.processing-form .entry li:last-child {
+    border: none;
+}
+
+.processing-form .btn-write {
+    margin: 20px 0 0;
+    padding: 7px 17px;
+}
+
+.processing-form .row.submit {
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+.ratings .small {
+    color: #595b63;
+}
+
+.processing-form .submit button{
+    float: right;
+    margin: 0;
+    line-height: 30px;
+}
+
+.processing-form .submit span{
+    float: right;
+    margin: 13px;
+    font-size: 12px;
+}
+
+.processing-form .submit button.disabled {
+    background: #cd0a00;
+    opacity: 1;
+    border: none;
+}
+
+.processing-form .submit .icon{
+    margin: 8px 0px 0 10px;
+}
+
+span.to {
+    float: left;
+    width: 10%;
+    text-align: center;
+    line-height: 50px;
+}
+
+input.range-field {
+    float: left;
+    width: 42%;
+}
+
+#tradesman-results .hs-primary.small {
+    width: 85%;
 }

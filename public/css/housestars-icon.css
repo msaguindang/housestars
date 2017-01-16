@@ -480,3 +480,21 @@
     margin-right: 10px;
     width: 30px;
 }
+
+.icon-add {
+    width: 12px;
+    height: 15px;
+    float: left;
+    background-position-x: -190px;
+    background-position-y: 331px;
+    margin-right: 9px;
+}
+
+.icon-write {
+    width: 15px;
+    height: 15px;
+    float: left;
+    background-position-x: -220px;
+    background-position-y: 331px;
+    margin: 6px 9px 0 0;
+}

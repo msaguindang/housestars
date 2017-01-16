@@ -162,8 +162,8 @@
                     </div>
                     <div class="value">
                       <div class="action">
-                        <input type="checkbox" id="c1" name="cc" />
-                        <label for="c1"><span></span></label>
+                        <input type="checkbox" id="c4" name="cc" />
+                        <label for="c4"><span></span></label>
                       </div>
                       <div class="stars">
                         <span class="icon icon-star"></span>
@@ -180,8 +180,8 @@
                     </div>
                     <div class="value">
                       <div class="action">
-                        <input type="checkbox" id="c2" name="cc" />
-                        <label for="c2"><span></span></label>
+                        <input type="checkbox" id="c5" name="cc" />
+                        <label for="c5"><span></span></label>
                       </div>
                       <div class="picture">
                         <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
@@ -194,8 +194,8 @@
                     </div>
                     <div class="value">
                       <div class="action">
-                        <input type="checkbox" id="c3" name="cc" />
-                        <label for="c3"><span></span></label>
+                        <input type="checkbox" id="c6" name="cc" />
+                        <label for="c6"><span></span></label>
                       </div>
                       <div class="amount">
                         <h4>$3,000</h4>
@@ -204,7 +204,147 @@
                   </li>
                 </ul>
               </div>
+              <button class="btn hs-primary btn-add"><span class="icon icon-add" style="margin-top: 6px;"></span>Add Another</span></button>
+              <div class="total">
+                <div class="total-label">
+                  <span>Total Spending</span>
+                  <span class="total-amount">$12,000</span>
+                </div>
+              </div>
+              <p class="spending">Spending above estimate <span class="spending-amount">$9,000</span></p>
             </div>
+
+            <div class="row">
+              <div class="entry">
+                <ul style="border: none;">
+                  <li>
+                    <div class="label">
+                      <label>Amount property was sold for</label>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="c7" name="cc" />
+                        <label for="c7"><span></span></label>
+                      </div>
+                      <div class="amount">
+                        <h4>$3,000</h4>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="label">
+                      <label>Commission % as per sale contract</label>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="c8" name="cc" />
+                        <label for="c8"><span></span></label>
+                      </div>
+                      <div class="amount">
+                        <h4>$3,000</h4>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="label">
+                      <label>Total Commission Charge</label>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="c9" name="cc" />
+                        <label for="c9"><span></span></label>
+                      </div>
+                      <div class="amount">
+                        <h4>$3,000</h4>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="total">
+                <div class="total-label">
+                  <span>Total Spending</span>
+                  <span class="total-amount">$12,000</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12 section-title">
+                <h4>AGENTS</h4>
+              </div>
+              <div class="entry">
+                <ul style="border: none">
+                  <li>
+                    <div class="label">
+                      <h4>LJ Hooker Bryan Bay</h4>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="c10" name="cc" />
+                        <label for="c10"><span></span></label>
+                      </div>
+                      <div class="stars">
+                        <span class="icon icon-star"></span>
+                        <span class="icon icon-star"></span>
+                        <span class="icon icon-star"></span>
+                        <span class="icon icon-star"></span>
+                        <span class="icon icon-star"></span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="label">
+                      <label>Picture of receipt</label>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="c11" name="cc" />
+                        <label for="c11"><span></span></label>
+                      </div>
+                      <div class="picture">
+                        <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="label">
+                      <button class="btn hs-primary btn-write"><span class="icon icon-write"></span>RATE AND REVIEW</span></button>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="12" name="cc" />
+                        <label for="c12"><span></span></label>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row" style="padding: 10px 20px;a">
+              <div class="entry" style="margin: 0">
+                <ul style="border: none">
+                  <li>
+                    <div class="label">
+                      <label>Like us on Facebook</label>
+                    </div>
+                    <div class="value">
+                      <div class="action">
+                        <input type="checkbox" id="c13" name="cc" />
+                        <label for="c13"><span></span></label>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="row submit">
+              <button class="btn hs-primary disabled"></span>SUBMIT <span class="icon icon-arrow-right"></span></button>
+              <span>Cannot submit until all criteria above met.</span>
+            </div>
+
           </div>
           <div class="col-xs-3 sidebar">
             <div class="advertisement">
