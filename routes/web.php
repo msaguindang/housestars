@@ -122,3 +122,17 @@ Route::get('/agency-listings', function () {
 Route::get('/savings-calculator', function () {
     return view('general.savings-calculator');
 });
+
+
+Route::post('/register', 'RegistrationController@postRegister');
+
+Route::post('/login', 'LoginController@postLogin');
+
+Route::post('/logout', 'LoginController@logout');
+
+Route::post('/add-info', 'RegistrationController@postUserMeta');
+
+
+
+
+
