@@ -21,7 +21,17 @@
               <div class="row">
                 <div class="main-nav">
                   <ul>
+
+                    @if(Sentinel::check())
+                    <li>
+                      <form action="/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                    </li>
+                    @else
                     <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
+                    @endif
                     <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
                     <li class="active"><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
