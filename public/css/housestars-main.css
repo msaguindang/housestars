@@ -2552,29 +2552,3 @@ input.range-field {
 #tradesman-results .hs-primary.small {
     width: 85%;
 }
-
-#error{
-    width: 30%;
-    min-height: 83px;
-    border-radius: 0px;
-    margin: 9px auto;
-    position: fixed;
-    z-index: 10000;
-    right: 15px;
-    top: 75px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 300;
-    border: #000;
-}
-
-#error #close {
-    position: fixed;
-    right: 10px;
-    top: 1px;
-    font-size: 18px;
-    background: transparent;
-    border: transparent;
-    padding: 0;
-}

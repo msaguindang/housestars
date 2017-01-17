@@ -88,9 +88,4 @@ $(document).bind('click', function(e) {
 });
 
 
-$("#close").click(function() {
-    $('#error').addClass('hide');
-}); 
-
-
 

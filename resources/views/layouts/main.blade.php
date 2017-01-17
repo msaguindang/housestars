@@ -105,19 +105,6 @@
         </div>
       </div>
     </footer>
-
-  @if (count($errors) > 0)
-    <div id="error" class="alert alert-danger animated slideInRight">
-      <b>Unsuccessful!</b>
-      <button aria-hidden="true" id="close">×</button>
-      <ul>
-        @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-        @endforeach
-      </ul>
-    </div>
-  @endif
-
 @include("modals")
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
