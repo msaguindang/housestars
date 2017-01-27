@@ -1,6 +1,8 @@
 
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -15,17 +17,33 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    
+                     @if(Sentinel::check())
+                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @else
+                    	<li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
               <div class="row">
                 <div class="main-nav">
                   <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
+                  	@if(Sentinel::check())
+                  	<li><span class="icon icon-logout-dark"></span>
+                  		<form action="/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                  	</li>
+                  	<li><span class="icon icon-tradesman-dark"></span><a href="">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  	@else
+                  	<li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
                     <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
                     <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  	@endif
                   </ul>
                 </div>
               </div>
@@ -51,34 +69,30 @@
 		</div>
 	</div>
 </section>
-
 <section id="sign-up-form">
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
 				<h2>Tradesman Registration Form</h2>
+				<form action="/add-info" method="POST">
+					@if(session('error'))
+					<div class="alert alert-danger">
+						{{session('error')}}
+					</div>
+					@endif
+					{{csrf_field() }}
 				<div class="col-xs-8">
 					<div class="col-xs-6 no-padding-left">
 						<label>Business Name</label>
 						<input type="text" name="business-name">
 						<label>Suburbs Working In  <span>(Enter the desired postcode and select suburbs)</span></label>
-						<div class="btn-group">
-				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-				            <ul class="dropdown-menu">
-				              <li>
-				                <input type="radio" id="a1" name="suburbs" value="1" checked="">
-				                <label for="a1">Option1</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a2" name="suburbs" value="2">
-				                <label for="a2">Option2</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a3" name="suburbs" value="3">
-				                <label for="a3">Option3</label>
-				              </li>
-				            </ul>
-				        </div>
+						<select id="select-state" name="positions[]" multiple  class="demo-default">
+							@foreach ($suburbs as $suburb)
+								@if($suburb->availability != '3')
+							    <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->id}} {{ $suburb->name }}</option>
+							    @endif
+							@endforeach
+						</select>
 						<label>Trading Name</label>
 						<input type="text" name="trading-name">
 					</div>
@@ -101,34 +115,208 @@
 			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
 			            <ul class="dropdown-menu">
 			              <li>
-			                <input type="radio" id="b1" name="trade" value="1" checked="">
-			                <label for="b1">Option1</label>
+			                <input type="radio" id="t1" name="trade" value="Architectural Glass and Metal Technician">
+			                <label for="t1">Architectural Glass and Metal Technician</label>
 			              </li>
 			              <li>
-			                <input type="radio" id="b2" name="trade" value="2">
-			                <label for="b2">Option2</label>
+			                <input type="radio" id="t2" name="trade" value="Brick and Stone Mason">
+			                <label for="t2">Brick and Stone Mason</label>
 			              </li>
 			              <li>
-			                <input type="radio" id="b3" name="trade" value="3">
-			                <label for="b3">Option3</label>
+			                <input type="radio" id="t3" name="trade" value="Cement (Concrete) Finisher">
+			                <label for="t3">Cement (Concrete) Finisher</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t4" name="trade" value="Cement Mason">
+			                <label for="t4">Cement Mason</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t5" name="trade" value="Concrete Pump Operator">
+			                <label for="t5">Concrete Pump Operator</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t6" name="trade" value="Construction Boilermaker">
+			                <label for="t6">Construction Boilermaker</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t7" name="trade" value="Construction Craft Worker">
+			                <label for="t7">Construction Craft Worker</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t8" name="trade" value="Construction Millwright">
+			                <label for="t8">Construction Millwright</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t9" name="trade" value="Drywall, Acoustic and Lathing Applicator">
+			                <label for="t9">Drywall, Acoustic and Lathing Applicator</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t10" name="trade" value="Drywall Finisher and Plasterer">
+			                <label for="t10">Drywall Finisher and Plasterer</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t11" name="trade" value="Electrician - Construction and Maintenance">
+			                <label for="t11">Electrician - Construction and Maintenance</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t12" name="trade" value="Electrician - Domestic and Rural">
+			                <label for="t12">Electrician - Domestic and Rural</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t13" name="trade" value="Exterior Insulated Finish Systems Mechanic">
+			                <label for="t13">Exterior Insulated Finish Systems Mechanic</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t14" name="trade" value="Floor Covering Installer">
+			                <label for="t14">Floor Covering Installer</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t15" name="trade" value="General Carpenter">
+			                <label for="t15">General Carpenter</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t16" name="trade" value="Hazardous Materials Worker">
+			                <label for="t16">Hazardous Materials Worker</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t17" name="trade" value="Heat and Frost Insulator">
+			                <label for="t17">Heat and Frost Insulator</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t18" name="trade" value="Heavy Equipment Operator - Dozer">
+			                <label for="t18">Heavy Equipment Operator - Dozer</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t19" name="trade" value="Heavy Equipment Operator - Excavator">
+			                <label for="t19">Heavy Equipment Operator - Excavator</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t20" name="trade" value="Heavy Equipment Operator - Tractor Loader Backhoe">
+			                <label for="t20">Heavy Equipment Operator - Tractor Loader Backhoe</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t21" name="trade" value="Hoisting Engineer - Mobile Crane Operator 1">
+			                <label for="t21">Hoisting Engineer - Mobile Crane Operator 1</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t22" name="trade" value="Hoisting Engineer - Mobile Crane Operator 2">
+			                <label for="t22">Hoisting Engineer - Mobile Crane Operator 2</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t23" name="trade" value="Hoisting Engineer - Tower Crane Operator">
+			                <label for="t23">Hoisting Engineer - Tower Crane Operator</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t24" name="trade" value="Ironworker - Generalist">
+			                <label for="t24">Ironworker - Generalist</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t25" name="trade" value="Ironworker - Structural and Ornamental">
+			                <label for="t25">Ironworker - Structural and Ornamental</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t26" name="trade" value="Native Residential Construction Worker">
+			                <label for="t26">Native Residential Construction Worker</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t27" name="trade" value="Painter and Decorator - Commercial and Residential">
+			                <label for="t27">Painter and Decorator - Commercial and Residential</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t28" name="trade" value="Painter and Decorator - Industrial">
+			                <label for="t28">Painter and Decorator - Industrial</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t29" name="trade" value="Plumber">
+			                <label for="t29">Plumber</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t30" name="trade" value="Powerline Technician">
+			                <label for="t30">Powerline Technician</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t31" name="trade" value="Precast Concrete Erector">
+			                <label for="t31">Precast Concrete Erector</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t32" name="trade" value="Precast Concrete Finisher"
+			                <label for="t32">Precast Concrete Finisher</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t33" name="trade" value="Refractory Mason">
+			                <label for="t33">Refractory Mason</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t34" name="trade" value="Refrigeration and Air Conditioning Systems Mechanic">
+			                <label for="t34">Refrigeration and Air Conditioning Systems Mechanic</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t35" name="trade" value="Reinforcing Rodworker" checked="">
+			                <label for="t35">Reinforcing Rodworker</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t36" name="trade" value="Residential Air Conditioning Systems Mechanic ">
+			                <label for="t36">Residential Air Conditioning Systems Mechanic </label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t37" name="trade" value="Residential (Low Rise) Sheet Metal Installer">
+			                <label for="t37">Residential (Low Rise) Sheet Metal Installer</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t38" name="trade" value="Restoration Mason">
+			                <label for="t38">Restoration Mason</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t39" name="trade" value="Roofer">
+			                <label for="t39">Roofer</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t39" name="trade" value="Sheet Metal Worker" >
+			                <label for="t39">Sheet Metal Worker</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t40" name="trade" value="Sprinkler and Fire Protection Installer">
+			                <label for="t40">Sprinkler and Fire Protection Installer</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t41" name="trade" value="Steamfitter">
+			                <label for="t41">Steamfitter</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="t42" name="trade" value="Terrazzo, Tile and Marble Setter">
+			                <label for="t42">Terrazzo, Tile and Marble Setter</label>
 			              </li>
 			            </ul>
 			        </div>
 					<label>Promotion Code</label>
 					<input type="text" name="promotion-code">
 				
-					<button class="btn hs-primary" style="margin-top: 150px;">SUBMIT <span class="icon icon-arrow-right"></span></button>
+					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">
-						<input type="checkbox" id="inlineCheckbox1" value="option1"> I accept the <a href="#">Terms and Condition</a>
+						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>
 					</div>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
 </section>
-
  @endsection
 
  @section('scripts')
      <script src="js/autocomplete.js"></script>
+     <script type="text/javascript">
+     	var checker = document.getElementById('terms');
+     	var btn = document.getElementById('submit');
+
+     	checker.onchange = function(){
+     		btn.disabled = !this.checked;
+     	}
+
+     	$(function() {
+     	$('#select-state').selectize({
+					maxItems: 3
+				});
+     	});
+     </script>
 @stop

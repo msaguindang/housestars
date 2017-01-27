@@ -1,5 +1,7 @@
- @extends("layouts.main")
+
+@extends("layouts.main")
 @section("content")
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -14,17 +16,33 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    
+                     @if(Sentinel::check())
+                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @else
+                    	<li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
               <div class="row">
                 <div class="main-nav">
                   <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
+                  	@if(Sentinel::check())
+                  	<li><span class="icon icon-logout-dark"></span>
+                  		<form action="/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                  	</li>
+                  	<li><span class="icon icon-tradesman-dark"></span><a href="">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  	@else
+                  	<li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
                     <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
                     <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  	@endif
                   </ul>
                 </div>
               </div>
@@ -54,38 +72,57 @@
 <section id="sign-up-form">
 	<div class="container">
 		<div class="row">
+			<form action="/charge" method="POST">
+				{{csrf_field() }}
 			<div class="col-xs-12 form-box" style="padding: 40px">
 				<h2>Tradesman Package</h2>
 				<p>Please Review your details below. If you are happy that all of your details are correct, please click "Subscribe Now"</p>
 				<div class="package-review row">
-					<div class="col-xs-4">
-						<div class="preview-label">
+					<div class="col-xs-6">
+						<div class="preview-label" style="width: 25%">
 							<p>Business Name:</p>
 							<p>Trading Name:</p>
-							<p>Phone Number:</p>
-							<p>Email Address:</p>
 							<p>Trade or Service:</p>
+							<p>Charge Rate:</p>
+							<p>Email Address:</p>
 						</div>
 						<div class="preview-value">
-							<p>LJ Realty Byron Bay</p>
-							<p>LJ Realty</p>
-							<p>000-0000-0000</p>
-							<p>username@domainname.com</p>
-							<p>Handyman</p>
+							@foreach($userinfo as $info)
+
+								@if($info->meta_name == 'business-name')
+									<p>{{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'trading-name')
+									<p>{{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'charge-rate')
+									<p>{{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'trade')
+									<p>{{$info->meta_value}}</p>
+								@endif
+
+							@endforeach
+
+							<p>{{$email}}</p>
 						</div>
 					</div>
 
 					<div class="col-xs-5">
 						<div class="preview-total">
-							<span class="icon icon-total"></span> <p> Total charges = <b>$550 for a 12 month subscription</b></p>
+							<span class="icon icon-total"></span>
+							@if($price == '550') 
+							<p> Total charges = <b>${{$price}} for a 12 month subscription</b></p>
+							@else
+							<p> Total charges = <b>${{$price}} for a 1 month subscription</b></p>
+							@endif
 						</div>
-						<p>Subscription will expired on <span class="blue">October 10, 2017</span></p>
+						<input type="hidden" name="plan" value="tradesman-{{$price}}">
+						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
 				</div>
 				
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
 				<button class="btn hs-default close-btn"><span class="icon icon-close"></span> CANCEL</button>
 			</div>
+		</form>
 		</div>
 	</div>
 </section>

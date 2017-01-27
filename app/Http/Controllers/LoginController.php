@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Sentinel;
 use Response;
+use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 
 class LoginController extends Controller
 {
@@ -17,8 +18,8 @@ class LoginController extends Controller
         ]);
         
         try{
-            Sentinel::authenticate($request->all());
-            if(Sentinel::check()){
+           if( Sentinel::authenticate($request->all()))
+           {
                 switch (Sentinel::getUser()->roles()->first()->slug){
                     case 'agency':
                         return \Ajax::redirect('/dashboard/agency/profile');
@@ -30,13 +31,18 @@ class LoginController extends Controller
                         return \Ajax::redirect('/dashboard/customer/profile');
                         break;
                 }
-            }
 
-        }catch(\Exception $e){
-                
-                $error['message'] = array("Your credentials don't match, please try!");
-                            
+            }else{
+                $error['message'] = array("Sorry, our system doesn't recognize your credentials");
                 return Response::json($error, 422); 
+           }
+            
+
+        }catch(ThrottlingException $e){
+                
+                $error['message'] = array('You are denied access for suspicious activity! Login again after '.$e->getDelay().' seconds');
+                return Response::json($error, 422); 
+                
         
         }
     	
@@ -45,6 +51,7 @@ class LoginController extends Controller
     }
 
     public function logout(){
+        Sentinel::removeCheckpoint('throttle');
     	Sentinel::logout();
 
     	return redirect('/');

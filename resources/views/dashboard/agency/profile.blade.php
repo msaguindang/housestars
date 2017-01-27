@@ -55,7 +55,7 @@
             <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($dp)}})">
+            <div class="profile-img" style="background: url({{url($dp)}}) 100%">
             </div>
             <div class="profile-info">
               @foreach ($meta as $info)

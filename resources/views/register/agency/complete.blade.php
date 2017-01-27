@@ -1,5 +1,7 @@
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -60,7 +62,6 @@
 		</div>
 	</div>
 </section>
-
  @endsection
 
  @section('scripts')

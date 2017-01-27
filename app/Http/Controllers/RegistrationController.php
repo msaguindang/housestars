@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Sentinel;
 use App\User;
 use App\UserMeta;
@@ -18,6 +19,7 @@ class RegistrationController extends Controller
 
     public function postRegister(Request $request)
     {
+
     	$validation = $this->validate($request, [
             'name' => 'required|max:30',
 	        'email' => 'required|unique:users|max:30',
@@ -25,7 +27,6 @@ class RegistrationController extends Controller
 	        'password_confirmation' => 'required|min:6'
 	    ]);
 
-    	
             $user = Sentinel::registerAndActivate($request->all());
 
             Sentinel::login($user);
@@ -46,6 +47,7 @@ class RegistrationController extends Controller
                 return \Ajax::redirect('/register/customer/step-one');
                 break;
             }
+
     }
 
     public function postUserMeta(Request $request)
@@ -54,10 +56,11 @@ class RegistrationController extends Controller
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
 
-    		$meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type');
+    		
     	   
 
     		if($role == 'agency'){
+                $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type');
 
     			foreach ($meta_name as $meta) {
 
@@ -88,7 +91,32 @@ class RegistrationController extends Controller
     			}
 
 		      	return redirect('/register/agency/step-two');
-    		}
+    		} else if($role == 'tradesman'){
+                $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate');
+                foreach ($meta_name as $meta) {
+                    if($request->input($meta) != null || $request->input($meta) != '')
+                    {
+                        $value = $request->input($meta);
+
+                        if($meta == 'positions' && $request->input($meta) != null){
+                            $suburbs = $request->input($meta);
+                            $value = '';
+                            foreach ($suburbs as $suburb) {
+                                $value .= substr($suburb, 2) . ',';
+
+                            }
+                        }
+
+                        UserMeta::updateOrCreate(
+                            ['user_id' => $user_id, 'meta_name' => $meta],
+                            ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
+                        );
+                    }
+                }
+
+                return redirect('/register/tradesman/step-two');
+                
+            }
     	
     	} else {
     		return redirect('/');
@@ -162,29 +190,42 @@ class RegistrationController extends Controller
         if(session()->exists('completed')){
             return redirect('/');
         } else {
+            Sentinel::removeCheckpoint('throttle');
             $suburbs = Suburbs::all();
             return View::make('register/agency/step-one')->with('suburbs', $suburbs);
         }
     }
 
+    public function Tradesman()
+    {
+           
+            Sentinel::removeCheckpoint('throttle');
+            $suburbs = Suburbs::all();
+            return View::make('register/tradesman/step-one')->with('suburbs', $suburbs);
+    
+    }
+
     public function payment()
     {
-        if(session()->exists('completed')){
-            return redirect('/');
-        } else {
             $suburbs = Suburbs::all();
-            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
-        }
+            $role = Sentinel::getUser()->roles()->first()->slug;
+
+            if($role == 'agency'){
+                return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+            } else {
+                return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
+            }
+            
     }
 
      public function review()
     {   
         $user_id = Sentinel::getUser()->id;
+        $role = Sentinel::getUser()->roles()->first()->slug;
         $user_email = Sentinel::getUser()->email;
         $userinfo = UserMeta::where('user_id', $user_id)->get();
         $positions = array();
         $expiry = date('F d, Y', strtotime('+1 year'));
-        
 
         //get agency positions
         foreach ($userinfo as $info) {
@@ -204,9 +245,27 @@ class RegistrationController extends Controller
             $price =  5000;
          }
 
-        if(session()->exists('completed')){
-            return redirect('/');
+        if($role == 'tradesman'){
+            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+            $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+            $data['plan'] = $customer_info->metadata->selected;
+
+            
+            if($data['plan'] == 'yearly'){
+                $price =  550;
+                $expiry = date('F d, Y', strtotime('+1 year'));
+             } else {
+                $price =  50;
+                $expiry = date('F d, Y', strtotime('+1 month'));
+             }
+
+             return View::make('register/tradesman/step-three')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         } else {
+
+             $price =  count($positions) * 2000;
+             if($price == 6000){
+                $price =  5000;
+             }
             return View::make('register/agency/step-four')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         }
     }
@@ -215,6 +274,10 @@ class RegistrationController extends Controller
     {
 
         if(Sentinel::check()){
+
+            $user_id = Sentinel::getUser()->id;
+            $user_email = Sentinel::getUser()->email;
+            $role = Sentinel::getUser()->roles()->first()->name;
 
                 try{
                     \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
@@ -230,13 +293,18 @@ class RegistrationController extends Controller
                             )
                         );
 
-                    $user_id = Sentinel::getUser()->id;
-                    $user_email = Sentinel::getUser()->email;
+                    
+                    $description = $role.' Customer';
+                    $subscription = array();
+                    if($role == 'Tradesman'){
+                        $subscription['selected'] = $request->input('subscription');
+                    }
 
                     $customer = \Stripe\Customer::create(array(
-                        'description' => 'agency customer',
+                        'description' => $description,
                         'email' => $user_email,
-                        'source' => $token
+                        'source' => $token,
+                        'metadata' =>  $subscription
                     ));
 
                     User::where('id', $user_id)->update(['customer_id' => $customer->id]);
@@ -249,7 +317,12 @@ class RegistrationController extends Controller
                     return redirect()->back()->with('error', $err);
                 }
             
-            return redirect('/register/agency/step-four');
+            if($role == 'Tradesman'){
+                return redirect('/register/tradesman/step-three');
+            } else {
+                return redirect('/register/agency/step-four');
+            }
+            
 
         } else {
             return redirect('/');
@@ -263,6 +336,7 @@ class RegistrationController extends Controller
         if(Sentinel::check()){
 
             try {
+            $role = Sentinel::getUser()->roles()->first()->name;
 
             \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
 
@@ -273,7 +347,11 @@ class RegistrationController extends Controller
 
             $request->session()->put('completed', 'yes');
 
-            return redirect('/register/agency/complete');
+            if($role == 'Tradesman'){
+                return redirect('/register/tradesman/complete');
+            } else {
+                return redirect('/register/agency/complete');
+            }
 
             } catch (\Stripe\Error\Card $e){
 

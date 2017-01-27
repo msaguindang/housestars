@@ -12,6 +12,7 @@
 */
 
 Route::get('/', function () {
+    Sentinel::disableCheckpoints();
     return view('home');
 });
 
@@ -54,21 +55,15 @@ Route::get('/register/agency/complete', function () {
     return view('register.agency.complete');
 })->middleware('agency');
 
-Route::get('/register/tradesman/step-one', function () {
-    return view('register.tradesman.step-one');
-});
+Route::get('/register/tradesman/step-one', 'RegistrationController@Tradesman')->middleware('tradesman');
 
-Route::get('/register/tradesman/step-two', function () {
-    return view('register.tradesman.step-two');
-});
+Route::get('/register/tradesman/step-two', 'RegistrationController@Payment')->middleware('tradesman');
 
-Route::get('/register/tradesman/step-three', function () {
-    return view('register.tradesman.step-three');
-});
+Route::get('/register/tradesman/step-three', 'RegistrationController@Review')->middleware('tradesman');
 
 Route::get('/register/tradesman/complete', function () {
     return view('register.tradesman.complete');
-});
+})->middleware('tradesman');
 
 Route::get('/register/customer/step-one', function () {
     return view('register.customer.step-one');

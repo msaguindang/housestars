@@ -1,5 +1,6 @@
 @extends("layouts.main")
 @section("content")
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">

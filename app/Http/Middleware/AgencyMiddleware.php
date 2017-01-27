@@ -17,7 +17,6 @@ class AgencyMiddleware
      */
     public function handle($request, Closure $next)
     {
-
         if(Sentinel::check()){
 
             switch (Sentinel::getUser()->roles()->first()->slug){

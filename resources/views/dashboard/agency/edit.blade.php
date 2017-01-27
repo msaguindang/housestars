@@ -61,7 +61,7 @@
             </div>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($data['profile-photo'])}})">
+            <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo"/>
             </div>

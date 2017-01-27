@@ -1,5 +1,8 @@
+
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -14,17 +17,33 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    
+                     @if(Sentinel::check())
+                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @else
+                      <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
               <div class="row">
                 <div class="main-nav">
                   <ul>
+                    @if(Sentinel::check())
+                    <li><span class="icon icon-logout-dark"></span>
+                      <form action="/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                    </li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    @else
                     <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
                     <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
                     <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
@@ -39,7 +58,7 @@
 				<h2>Congratulations!</h2>
 				<p>Welcome to House Stars. You are now on your way to boosting your business. </br> You can then start customizing your profile to suit your taste, and win more work.</p>
 				<p>Click the button below to view your profile.</p>
-				<button class="btn hs-primary"><span class="icon icon-summary"></span> GO TO MY PROFILE</button>
+				<a href="/dashboard/tradesman/profile" class="btn hs-primary"><span class="icon icon-summary"></span> GO TO MY PROFILE</a>
 			</div>
 		</div>
 	</div>
