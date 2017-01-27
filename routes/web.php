@@ -35,25 +35,24 @@ Route::get('/about', function () {
     return view('general.about');
 });
 
-Route::get('/register/agency/step-one', function () {
-    return view('register.agency.step-one');
-});
+Route::get('/register/agency/step-one', 'RegistrationController@Agency')->middleware('agency');
 
 Route::get('/register/agency/step-two', function () {
-    return view('register.agency.step-two');
-});
+    
+    if(session()->exists('completed')){
+        return redirect('/');
+    } else {
+        return view('register.agency.step-two');
+    }
+})->middleware('agency');
 
-Route::get('/register/agency/step-three', function () {
-    return view('register.agency.step-three');
-});
+Route::get('/register/agency/step-three', 'RegistrationController@Payment')->middleware('agency');
 
-Route::get('/register/agency/step-four', function () {
-    return view('register.agency.step-four');
-});
+Route::get('/register/agency/step-four', 'RegistrationController@Review')->middleware('agency');
 
 Route::get('/register/agency/complete', function () {
     return view('register.agency.complete');
-});
+})->middleware('agency');
 
 Route::get('/register/tradesman/step-one', function () {
     return view('register.tradesman.step-one');
@@ -79,13 +78,10 @@ Route::get('/register/customer/complete', function () {
     return view('register.customer.complete');
 });
 
-Route::get('/dashboard/agency/profile', function () {
-    return view('dashboard.agency.profile');
-});
+Route::get('/dashboard/agency/profile', 'AgencyController@dashboard')->middleware('agency');
 
-Route::get('/dashboard/agency/profile/edit', function () {
-    return view('dashboard.agency.edit');
-});
+Route::get('/dashboard/agency/edit', 'AgencyController@edit')->middleware('agency');
+Route::get('/dashboard/agency/settings', 'AgencyController@settings')->middleware('agency');
 
 Route::get('/dashboard/tradesman/profile', function () {
     return view('dashboard.tradesman.profile');
@@ -131,6 +127,22 @@ Route::post('/login', 'LoginController@postLogin');
 Route::post('/logout', 'LoginController@logout');
 
 Route::post('/add-info', 'RegistrationController@postUserMeta');
+
+Route::post('/add-agents', 'RegistrationController@postAddAgents');
+
+Route::post('/add-payment', 'RegistrationController@postPayment');
+
+Route::post('/charge', 'RegistrationController@postCharge');
+
+Route::post('/update-profile', 'AgencyController@updateProfile');
+
+Route::post('/update-settings', 'AgencyController@updateSettings');
+
+Route::post('/update-payment', 'AgencyController@updatePayment');
+
+Route::post('/delete-agent', 'AgencyController@deleteAgent');
+
+Route::post('/update-agents', 'AgencyController@updateAgent');
 
 
 

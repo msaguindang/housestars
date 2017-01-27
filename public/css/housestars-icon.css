@@ -498,3 +498,17 @@
     background-position-y: 331px;
     margin: 6px 9px 0 0;
 }
+
+.icon-logout-dark {
+    width: 30px;
+    height: 30px;
+    background-position-x: -119px;
+    background-position-y: -28px;
+}
+
+.icon-logout {
+    width: 30px;
+    height: 30px;
+    background-position-x: -145px;
+    background-position-y: -28px;
+}

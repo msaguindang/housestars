@@ -3,45 +3,49 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Sentinel;
+use App\User;
 use App\UserMeta;
+use App\Agents;
+use App\Suburbs;
+use View;
 
 class RegistrationController extends Controller
-{
+{   
+
     public function postRegister(Request $request)
     {
-    	$this->validate($request, [
+    	$validation = $this->validate($request, [
+            'name' => 'required|max:30',
 	        'email' => 'required|unique:users|max:30',
 	        'password' => 'required|min:6|confirmed',
 	        'password_confirmation' => 'required|min:6'
 	    ]);
+
     	
-    	$user = Sentinel::registerAndActivate($request->all());
+            $user = Sentinel::registerAndActivate($request->all());
 
-    	Sentinel::login($user);
+            Sentinel::login($user);
 
-	    $account = $request->input('account');
-	    	
-	    $role = Sentinel::findRoleBySlug($account);
-	    $role->users()->attach($user);
+            $account = $request->input('account');
+                
+            $role = Sentinel::findRoleBySlug($account);
+            $role->users()->attach($user);
 
-	    	
-	    if($account == 'agency')
-	    {
-	    	return redirect('/register/agency/step-one');
-
-	    } else if($account == 'tradesman'){
-	    	
-	    	return redirect('/register/tradesman/step-one');
-
-	    } else if($account == 'customer'){
-	    	return redirect('/register/customer/step-one');
-	    }
-
-	    return redirect('/?error=503');
-
+            switch ($account){
+                case 'agency':
+                return \Ajax::redirect('/register/agency/step-one');
+                break;
+                case 'tradesman':
+                return \Ajax::redirect('/register/tradesman/step-one');
+                break;
+                case 'customer':
+                return \Ajax::redirect('/register/customer/step-one');
+                break;
+            }
     }
 
     public function postUserMeta(Request $request)
@@ -50,19 +54,40 @@ class RegistrationController extends Controller
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
 
-    		$meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'position', 'base-commission', 'marketing-budget', 'sales-type');
-    	
+    		$meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type');
+    	   
 
     		if($role == 'agency'){
 
     			foreach ($meta_name as $meta) {
-    				UserMeta::updateOrCreate(
-    					['user_id' => $user_id, 'meta_name' => $meta],
-    					['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $request->input($meta)]
-    				);
+
+                    if($request->input($meta) != null || $request->input($meta) != '')
+                    {
+                        $value = $request->input($meta);
+
+                        if($meta == 'positions' && $request->input($meta) != null){
+                            $suburbs = $request->input($meta);
+                            $value = '';
+                            foreach ($suburbs as $suburb) {
+                                $value .= substr($suburb, 2) . ',';
+
+                                // Update suburb availability
+                                $suburb = Suburbs::find(substr($suburb, 2));
+                                $available = $suburb->availability +  1;
+                                $suburb->availability = $available;
+                                $suburb->save();
+
+                            }
+                        }
+
+                        UserMeta::updateOrCreate(
+                            ['user_id' => $user_id, 'meta_name' => $meta],
+                            ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
+                        );
+                    }
     			}
 
-				return redirect('/register/agency/step-two');
+		      	return redirect('/register/agency/step-two');
     		}
     	
     	} else {
@@ -70,4 +95,198 @@ class RegistrationController extends Controller
     	}
 
     } 
+
+    public function postAddAgents(Request $request)
+    {
+        if(Sentinel::check()){
+
+            $user_id = Sentinel::getUser()->id;
+            $role = Sentinel::getUser()->roles()->first()->slug;
+            $agents = $request->input('add-agents');
+
+            if($agents != null){
+                
+                foreach ($agents as $agent) {
+                    try{
+
+                        if($agent['name'] != '' && $agent['email'] != '' && $agent['password'] != ''){
+
+                            $credentials =  [
+                                'email'    => $agent['email'],
+                                'name'    => $agent['name'],
+                                'password'    => $agent['password'],
+                            ];
+                       
+                            $user = Sentinel::registerAndActivate($credentials);
+                            $role = Sentinel::findRoleBySlug('agent');
+                            $role->users()->attach($user);
+                            $email = [
+                                'email' => $agent['email']
+                            ];
+                            $agent_id = Sentinel::findByCredentials($email);
+
+                            if(isset($agent['active'])){
+                                Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id, 'active' => 1]);
+                            } else {
+                                Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
+                            }
+
+                            
+                            
+                            //return redirect('/register/agency/step-three');
+                        } else {
+                            return redirect('/register/agency/step-three');
+                        }
+                        
+                    }
+                    catch (\Exception $e){
+                        $error = $agent['email'].' already in use, please use another email address.';
+                        return redirect()->back()->with('error', $error);
+                    }
+                    
+                }
+
+                return redirect('/register/agency/step-three');
+
+            } else {
+                return redirect('/register/agency/step-three');
+            }
+
+        } else {
+            return redirect('/');
+        }
+    }
+
+    public function Agency()
+    {
+        if(session()->exists('completed')){
+            return redirect('/');
+        } else {
+            $suburbs = Suburbs::all();
+            return View::make('register/agency/step-one')->with('suburbs', $suburbs);
+        }
+    }
+
+    public function payment()
+    {
+        if(session()->exists('completed')){
+            return redirect('/');
+        } else {
+            $suburbs = Suburbs::all();
+            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+        }
+    }
+
+     public function review()
+    {   
+        $user_id = Sentinel::getUser()->id;
+        $user_email = Sentinel::getUser()->email;
+        $userinfo = UserMeta::where('user_id', $user_id)->get();
+        $positions = array();
+        $expiry = date('F d, Y', strtotime('+1 year'));
+        
+
+        //get agency positions
+        foreach ($userinfo as $info) {
+           if($info->meta_name == 'positions'){
+                $pos = explode(",", $info->meta_value);
+           }
+        }
+         foreach ($pos as $position) {
+            if(!empty($position)){
+                array_push($positions, substr($position, 4));
+            }
+         }
+
+         $price =  count($positions) * 2000;
+
+         if($price == 6000){
+            $price =  5000;
+         }
+
+        if(session()->exists('completed')){
+            return redirect('/');
+        } else {
+            return View::make('register/agency/step-four')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
+        }
+    }
+
+    public function postPayment(Request $request)
+    {
+
+        if(Sentinel::check()){
+
+                try{
+                    \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
+                    $token = \Stripe\Token::create(
+                        array(
+                            'card'=> array(
+                            'name' => $request->input('full-name'),
+                            'number' => $request->input('number'),
+                            'exp_month' => $request->input('exp_month'),
+                            'exp_year' => $request->input('exp_year'),
+                            'cvc' => $request->input('cvc')
+                                )
+                            )
+                        );
+
+                    $user_id = Sentinel::getUser()->id;
+                    $user_email = Sentinel::getUser()->email;
+
+                    $customer = \Stripe\Customer::create(array(
+                        'description' => 'agency customer',
+                        'email' => $user_email,
+                        'source' => $token
+                    ));
+
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id]);
+                } catch (\Stripe\Error\Card $e){
+                    
+                    $body = $e->getJsonBody();
+                    $err  = ''.$body['error']['message'].'';
+                    
+                    //dd($err);
+                    return redirect()->back()->with('error', $err);
+                }
+            
+            return redirect('/register/agency/step-four');
+
+        } else {
+            return redirect('/');
+        }
+
+       
+    }
+
+    public function postCharge(Request $request)
+    {
+        if(Sentinel::check()){
+
+            try {
+
+            \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
+
+            \Stripe\Subscription::create(array(
+              "customer" => Sentinel::getUser()->customer_id,
+              "plan" => $request->input('plan')
+            ));
+
+            $request->session()->put('completed', 'yes');
+
+            return redirect('/register/agency/complete');
+
+            } catch (\Stripe\Error\Card $e){
+
+                $body = $e->getJsonBody();
+                $err  = ''.$body['error']['message'].'';
+                    
+                return redirect()->back()->with('error', $err);
+
+            }
+
+
+        } else {
+            return redirect('/');
+        }
+    }
 }

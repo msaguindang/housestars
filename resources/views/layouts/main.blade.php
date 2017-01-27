@@ -14,9 +14,14 @@
     <link href="{{asset('css/dropdowns-enhancement.css')}}" rel="stylesheet">
     <link href="{{asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('css/bootstrap-toggle.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/selectize.css')}}" rel="stylesheet">
     <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/housestars-main.css')}}" rel="stylesheet">
     <link href="{{asset('css/housestars-icon.css')}}" rel="stylesheet">
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="{{asset('js/standalone/selectize.js')}}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -106,27 +111,34 @@
       </div>
     </footer>
 
-  @if (count($errors) > 0)
-    <div id="error" class="alert alert-danger animated slideInRight">
-      <b>Unsuccessful!</b>
-      <button aria-hidden="true" id="close">×</button>
-      <ul>
-        @foreach ($errors->all() as $error)
-          <li>{{ $error }}</li>
-        @endforeach
-      </ul>
-    </div>
-  @endif
-
 @include("modals")
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/dropdowns-enhancement.js')}}"></script>
     <script src="{{asset('js/custom.js')}}"></script>
+    <script src="{{asset('js/laravel.ajax.js')}}"></script>
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    
+    <script>
+    
+    
+    $('#signup-form').click(function() {
+        laravel.errors.errorBagContainer = $('#errors-signup');
+    });
+
+    $('#login-form').click(function() {
+        laravel.errors.errorBagContainer = $('#error');
+    });
+
+    $('#login1-form').click(function() {
+        laravel.errors.errorBagContainer = $('#error');
+    });
+
+    laravel.errors.showErrorsBag = true;
+    laravel.errors.showErrorsInFormGroup = false;
+    </script>
 
     @yield("scripts")
   </body>

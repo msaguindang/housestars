@@ -10,10 +10,12 @@
           <div class="modal-body">
             <h4>Login to your account</h4>
             <p class="sub-heading">Access your account and let’s start working</p>
-            <form action="login" method="POST">
+            <form action="login" method="POST" class="ajax">
               {{csrf_field() }}
-              <input type="text" name="email" placeholder="Email" required>
-              <input type="password" name="password" placeholder="Password" class="no-top" required>
+              <div id="error"></div>
+              <div id="login-error"></div>
+              <input type="text" name="email" placeholder="Email">
+              <input type="password" name="password" placeholder="Password" class="no-top">
               <button class="btn hs-primary">Login Now</button>
             </form>
             <a href="#">Forgot your login credentials?</a>
@@ -33,8 +35,9 @@
           <div class="modal-body">
             <h4>REGISTER NOW</h4>
             <p class="sub-heading">Already a member? Please login <a href="" data-toggle="modal" data-target="#login" id="open">here</a></p>
-            <form action="/register" method="POST">
+            <form class="ajax" action="/register" method="POST">
               {{csrf_field() }}
+              <div id="errors-signup"></div>
               <input type="text" name="name" placeholder="Full Name">
               <input type="text" name="email" placeholder="Your Email Address" class="no-top"> </br></br>
               <input type="password" name="password" placeholder="Create Password">

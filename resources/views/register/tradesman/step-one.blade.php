@@ -46,7 +46,7 @@
 		</div>
 		<div class="row label">
 			<span class="completed" style="margin-left: 115px;">Additional Information</span>
-			<span style="margin-left: 355px;">Payment Method</span>
+			<span style="margin-left: 297px;">Payment Method</span>
 			<span style="margin-left: 330px;">Review Preferences</span>
 		</div>
 	</div>
@@ -60,7 +60,7 @@
 				<div class="col-xs-8">
 					<div class="col-xs-6 no-padding-left">
 						<label>Business Name</label>
-						<input type="text" name="">
+						<input type="text" name="business-name">
 						<label>Suburbs Working In  <span>(Enter the desired postcode and select suburbs)</span></label>
 						<div class="btn-group">
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
@@ -80,20 +80,20 @@
 				            </ul>
 				        </div>
 						<label>Trading Name</label>
-						<input type="text" name="">
+						<input type="text" name="trading-name">
 					</div>
 					<div class="col-xs-6 no-padding-right">
 						<label>Website</label>
-						<input type="text" name="">
+						<input type="text" name="website">
 						<label>ABN</label>
-						<input type="text" name="">
+						<input type="text" name="abn">
 						<label>Normal Charge Rate</label>
-						<input type="text" name="">
+						<input type="text" name="charge-rate">
 
 						
 					</div>
 					<label>Write Business Description</label>
-					<textarea placeholder="" class="no-top"></textarea>
+					<textarea placeholder="" class="summary"></textarea>
 				</div>
 				<div class="col-xs-4">
 					<label>Trade or Service <span>(1 only)</span></label>
@@ -115,7 +115,7 @@
 			            </ul>
 			        </div>
 					<label>Promotion Code</label>
-					<input type="text" name="">
+					<input type="text" name="promotion-code">
 				
 					<button class="btn hs-primary" style="margin-top: 150px;">SUBMIT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">

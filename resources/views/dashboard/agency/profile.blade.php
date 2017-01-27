@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-    <header id="header" class="animated">
+<header id="header" class="animated">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -13,28 +13,34 @@
                 </div>
                 <div class="nav-items">
                   <ul>
-                    <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
+                    
+                     @if(Sentinel::check())
+                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @else
+                      <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
               <div class="row">
                 <div class="main-nav">
                   <ul>
-
                     @if(Sentinel::check())
-                    <li>
+                    <li><span class="icon icon-logout-dark"></span>
                       <form action="/logout" method="POST" id="logout-form">
                         {{csrf_field() }}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    @endif
                     <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li class="active"><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
@@ -42,18 +48,23 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin">
+    <section id="cover-container" class="header-margin" style="background: url({{url($cp)}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{asset('assets/thumb-profile.jpg')}})">
+            <div class="profile-img" style="background: url({{url($dp)}})">
             </div>
             <div class="profile-info">
-              <h1>RJ Realty Agency</h1>
-              <p>Location: East Bunbury, Australia</p>
+              @foreach ($meta as $info)
+                @if($info->meta_name == 'agency-name')
+                  <h1>{{$info->meta_value}}</h1>
+                @elseif ($info->meta_name == 'business-address')
+                  <p>Location: {{$info->meta_value}}</p>
+                @endif
+              @endforeach
             </div>
           </div>
         </div>
@@ -71,19 +82,23 @@
                 <span class="status-p">Available</span>
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
+                  @for ($i = 0; $i < 3; $i++)
+                      <span class="icon icon-star"></span>
+                  @endfor
                 </div>
               </div>
             </div>
             <div class="description">
-              <p>Summary here, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>
+              @foreach ($meta as $info)
+                @if($info->meta_name == 'summary')
+                  <p>{{$info->meta_value}}</p>
+                @endif
+              @endforeach
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <button class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></button>
-            <button class="btn hs-primary"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></button>
+            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            <a href="settings" class="btn hs-primary"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a>
             <div class="col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>
@@ -105,12 +120,9 @@
                 <div class="gallery-carousel">
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
-                        <!-- Carousel Buttons Next/Prev -->
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                   <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>      
-                        <!-- Carousel Slides / Quotes -->
                           <div class="carousel-inner">
-                          <!-- Gallery 1 -->
                             <div class="item active">
                                 <div class="row">
                                   <div class="col-xs-4">
@@ -156,7 +168,6 @@
                                   </div>
                                 </div>
                             </div>
-                            <!-- Gallery 2 -->
                             <div class="item">
                                <div class="row">
                                   <div class="col-xs-4">
@@ -202,7 +213,6 @@
                                   </div>
                                 </div>
                             </div>
-                            <!-- Gallery 3 -->
                             <div class="item">
                                <div class="row">
                                   <div class="col-xs-4">

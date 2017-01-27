@@ -16,12 +16,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
                     
                      @if(Sentinel::check())
-                    <li>
-                      <form action="/logout" method="POST" id="logout-form">
-                        {{csrf_field() }}
-                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
-                      </form>
-                    </li>
+                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
                     	<li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -31,10 +26,21 @@
               <div class="row">
                 <div class="main-nav">
                   <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
+                  	@if(Sentinel::check())
+                  	<li><span class="icon icon-logout-dark"></span>
+                  		<form action="/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                  	</li>
+                  	<li><span class="icon icon-tradesman-dark"></span><a href="">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  	@else
+                  	<li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
                     <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
                     <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                  	@endif
                   </ul>
                 </div>
               </div>
@@ -87,25 +93,16 @@
 					<label>Phone</label>
 					<input type="text" name="phone">
 					<label>ABN</label>
-					<input type="text" name="abn">
+					<input type="text" name="abn" required>
 					<label>Positions <span>(Enter the postcode of the suburd required)</span></label>
-					<div class="btn-group">
-			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-			            <ul class="dropdown-menu">
-			              <li>
-			                <input type="checkbox" id="a1" name="position" value="1" checked="">
-			                <label for="a1">Option1</label>
-			              </li>
-			              <li>
-			                <input type="checkbox" id="a2" name="position" value="2">
-			                <label for="a2">Option2</label>
-			              </li>
-			              <li>
-			                <input type="checkbox" id="a3" name="position" value="3">
-			                <label for="a3">Option3</label>
-			              </li>
-			            </ul>
-			        </div>
+					<select id="select-state" name="positions[]" multiple  class="demo-default">
+					@foreach ($suburbs as $suburb)
+						@if($suburb->availability != '3')
+					    <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }}</option>
+					    @endif
+					@endforeach
+
+					</select>
 				</div>
 				<div class="col-xs-4">
 					<label>Base Commission Charge</label>
@@ -117,20 +114,28 @@
 			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
 			            <ul class="dropdown-menu">
 			              <li>
-			                <input type="radio" id="b1" name="sales-type" value="1" checked="">
-			                <label for="b1">Option1</label>
+			                <input type="radio" id="b1" name="sales-type" value="Auction" checked="">
+			                <label for="b1">Auction</label>
 			              </li>
 			              <li>
-			                <input type="radio" id="b2" name="sales-type" value="2">
-			                <label for="b2">Option2</label>
+			                <input type="radio" id="b2" name="sales-type" value="Private Treaty">
+			                <label for="b2">Private Treaty</label>
 			              </li>
 			              <li>
-			                <input type="radio" id="b3" name="sales-type" value="3">
-			                <label for="b3">Option3</label>
+			                <input type="radio" id="b3" name="sales-type" value="Off Market">
+			                <label for="b3">Off Market</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="b4" name="sales-type" value="Distressed Sale">
+			                <label for="b4">Distressed Sale</label>
+			              </li>
+			              <li>
+			                <input type="radio" id="b5" name="sales-type" value="Other">
+			                <label for="b5">Other</label>
 			              </li>
 			            </ul>
 			        </div>
-					<button class="btn hs-primary" id="submit" disabled>SUBMIT <span class="icon icon-arrow-right"></span></button>
+					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">
 						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>
 					</div>
@@ -144,7 +149,6 @@
  @endsection
 
  @section('scripts')
-     <script src="js/autocomplete.js"></script>
      <script type="text/javascript">
      	var checker = document.getElementById('terms');
      	var btn = document.getElementById('submit');
@@ -152,5 +156,12 @@
      	checker.onchange = function(){
      		btn.disabled = !this.checked;
      	}
+
+		
+$(function() {
+     	$('#select-state').selectize({
+					maxItems: 3
+				});
+     	});
 	</script>
 @stop
