@@ -48,18 +48,18 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin">
+    <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
+            <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{asset('assets/thumb-profile.jpg')}})">
+            <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
             </div>
             <div class="profile-info">
-              <h1>John Joe Smith</h1>
-              <p>Location: East Bunbury, Australia</p>
+                  <h1>{{$data['business-name']}}</h1>
+                  <p>Website: {{$data['website']}}</p>
             </div>
           </div>
         </div>
@@ -71,29 +71,24 @@
         <div class="row">
           <div class="col-xs-9">
             <div class="statistics">
-              <h2 class="trade">Plumber</h2>
+              <h2 class="trade">{{$data['trade']}}</h2>
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
+                  @for ($i = 0; $i < 3; $i++)
+                      <span class="icon icon-star"></span>
+                  @endfor
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">957 Reviews</span>
               </div>
             </div>
             <div class="description">
-              <p>Summary here, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>
-            </div>
-            <div class="description" style="margin-top: 20px;">
-              <p>Summary here, Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est.</p>
+                <p>{{$data['summary']}}</p>
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <button class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></button>
-            <button class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></button>
+            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            <a href="settings" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a>
             <button class="btn hs-primary white" style="margin-bottom: 0;"><span class="icon icon-summary-dark" style="margin-top: 6px;"></span>ORDER BUSINESSCARD <span class="icon icon-arrow-right-dark"></span></button>
             <button class="btn hs-primary white"><span class="icon icon-summary-dark" style="margin-top: 6px;"></span>CONTACT US <span class="icon icon-arrow-right-dark"></span></button>
             <div class="col-xs-8 no-padding-left">
@@ -113,7 +108,7 @@
           <div class="col-xs-9">
             <div class="row gallery">
                 <h2 class="section-title">Gallery</h2>
-                <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
+                
                 <div class="gallery-carousel ">
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
@@ -123,107 +118,45 @@
                         <!-- Carousel Slides / Quotes -->
                           <div class="carousel-inner">
                           <!-- Gallery 1 -->
-                            <div class="item active">
-                                <div class="row">
+                            
+                              @if(isset($data['gallery']))
+                                @php($x = 0)
+                                @php($y = 2)
+                                @php($items = count($data['gallery']) - 1)
+
+                                @foreach($data['gallery'] as $item)
+                                  @if ($x == 0 )
+                                    <div class="item active">
+                                      <div class="row">
+                                  @endif  
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
+                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
                                     </div>
                                   </div>
 
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
+                                  @if ($x == $items)
                                     </div>
                                   </div>
 
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
+                                  @elseif($x == $y)
+                                     </div>
                                   </div>
-                                </div>
-                            </div>
-                            <!-- Gallery 2 -->
-                            <div class="item">
-                               <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <div class="item">
+                                      <div class="row">
+                                  @php($y = $y + 3)
+                                  @endif
 
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
-                                  </div>
-                                  
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            <!-- Gallery 3 -->
-                            <div class="item">
-                               <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
-                                  </div>
+                                  @php($x++)
 
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
-                                  </div>
-                                  
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
+                                @endforeach
+                              @endif
+       
+
+
+                               
+
+
 
                             
                         </div>

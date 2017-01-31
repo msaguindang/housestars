@@ -1819,8 +1819,10 @@ input:checked + .slider:before {
 
 #cover-container {
     background: url(../assets/img-coverphoto.jpg) center top no-repeat;
-    background-size: 100% !important;
+    background-size: cover !important;
     height: 272px;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
 }
 
 .cover-img {
@@ -1839,7 +1841,7 @@ input:checked + .slider:before {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.52);
     width: 177px;
     height: 177px;
-    background-size: 100% !important;
+    background-size: cover !important;
     
 }
 
@@ -1925,6 +1927,7 @@ input:checked + .slider:before {
     height: 177px;
     background: url(../assets/img-gallery-1.jpg);
     border-radius: 5px;
+    background-size: cover !important;
 }
 
 .gallery-label {
@@ -2092,6 +2095,9 @@ input:checked + .slider:before {
     padding: 0;
     border: 0;
     border-radius: 0px;
+    position: absolute;
+    right: 7px;
+    top: 13px;
 }
 
 .hs-upload-icon:hover, .hs-upload-icon:focus, .hs-upload-icon:active{
@@ -2111,6 +2117,8 @@ input:checked + .slider:before {
     border: 1px solid #d3d3d3;
     margin: 35px 15px;
     padding-bottom: 25px;
+    position: relative;
+    top: -165px;
 }
 
 .upload-gallery img {
@@ -2725,4 +2733,50 @@ input#profileupload {
         transform: rotateY(-360deg); 
     
     } 
+}
+
+/* GALLERY UPLOAD */
+
+.gallery-uploader{
+    height: 150px;
+}
+
+#previews td {
+    padding: 10px;
+}
+
+.upload-gallery .gallery {
+    max-height: 171px;
+    overflow: auto;
+}
+
+.upload-gallery .gallery .item{
+    width: 33.33%;
+    float: left;
+    padding: 10px;
+    height: 100px;
+    overflow: hidden;
+}
+
+.upload-gallery .gallery .item #close {
+    position: relative;
+    float: right;
+    top: 11px;
+    display: none;
+    height: 0;
+    color: #000;
+}
+
+.upload-gallery .gallery .item:hover #close{
+    display: block;
+}
+
+.tradesman .gallery-item {
+    max-height: 177px;
+    min-height: 177px;
+}
+
+.tradesman .carousel-inner {
+    height: 200px !important;
+    min-height: 100px;
 }

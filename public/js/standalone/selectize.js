@@ -1423,7 +1423,7 @@
 					return '<div class="optgroup-header">' + escape(data[field_optgroup]) + '</div>';
 				},
 				'option': function(data, escape) {
-					return '<div class="option">' + escape(data[field_label]) + '<span class="icn icon-available-'+ escape(data[value].substring(0, 1))+'"></span></div>';
+					return '<div class="option">'+ escape(data[value].substring(2, 6))+' ' + escape(data[field_label]) + '<span class="icn icon-available-'+ escape(data[value].substring(0, 1))+'"></span></div>';
 				},
 				'item': function(data, escape) {
 					return '<div class="item">' + escape(data[field_label]) + '</div>';
