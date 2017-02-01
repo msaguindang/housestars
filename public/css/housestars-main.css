@@ -2063,13 +2063,14 @@ input:checked + .slider:before {
 .upload-media {
     position: relative;
     overflow: hidden;
-    border: 1px solid #d3d3d3;
+    border: 1px dashed #d3d3d3;
     color: grey;
     font-weight: 400;
-    height: 58px;
+    height: 170px;
     font-size: 14px;
     padding: 15px;
     background: #fff;
+    max-height: 170px;
 }
 
 .upload-media input[type="file"] {
@@ -2121,11 +2122,6 @@ input:checked + .slider:before {
     top: -165px;
 }
 
-.upload-gallery img {
-    height: 50px;
-    float: left;
-    margin: 5px;
-}
 
 .btn-holder .hs-primary {
     width: 100%;
@@ -2737,10 +2733,6 @@ input#profileupload {
 
 /* GALLERY UPLOAD */
 
-.gallery-uploader{
-    height: 150px;
-}
-
 #previews td {
     padding: 10px;
 }
@@ -2751,25 +2743,31 @@ input#profileupload {
 }
 
 .upload-gallery .gallery .item{
-    width: 33.33%;
+    width: 25%;
     float: left;
-    padding: 10px;
-    height: 100px;
+    padding: 10px 5px;
+    height: 70px;
     overflow: hidden;
 }
 
-.upload-gallery .gallery .item #close {
+.upload-gallery .gallery .item a {
     position: relative;
+    top: 0;
     float: right;
-    top: 11px;
-    display: none;
     height: 0;
-    color: #000;
+}
+
+.upload-gallery .gallery .item #close {
+    display: none;
+    color: #f6f7f8;
+    background: #337ab7;
+    padding: 2px;
 }
 
 .upload-gallery .gallery .item:hover #close{
     display: block;
 }
+
 
 .tradesman .gallery-item {
     max-height: 177px;
@@ -2779,4 +2777,78 @@ input#profileupload {
 .tradesman .carousel-inner {
     height: 200px !important;
     min-height: 100px;
+}
+
+.dropzone .dz-preview {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0px;
+    min-height: auto;
+    width: 70px;
+    height: 70px;
+}
+
+.dropzone{
+    border: none;
+    padding: 0;
+}
+
+.dropzone .dz-preview .dz-image {
+    border-radius: 0;
+    overflow: hidden;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    display: block;
+    z-index: 10;
+    margin: 3px;
+    padding-right: 5px;
+}
+
+.dz-details {
+    display: none;
+}
+
+.dropzone .dz-preview .dz-image img {
+    width: 100%;
+}
+
+span.subs-label {
+    color: #848b91;
+}
+
+span.subs-value {
+    text-transform: uppercase;
+    color: #0f70b7;
+    font-size: 12px;
+    padding: 5px;
+}
+
+.subscription-details {
+    padding: 20px;
+    border: 2px dashed #e0e0e0;
+    margin: 20px 0px;
+    background: #fbfbfb;
+}
+
+.subscription-payment {
+    width: 100%;
+    margin: 0;
+    border-top: 2px solid #e0e0e0;
+}
+
+.no-data {
+    text-align: center;
+    padding: 65px;
+    color: #888;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.no-data a {
+    padding: 6px;
+    background: #1972b5;
+    font-size: 10px;
 }

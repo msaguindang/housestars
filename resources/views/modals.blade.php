@@ -322,3 +322,51 @@
         </div>
       </div>
     </div>
+
+    <!-- ORDER BUSINESS CARD -->
+    <div class="modal fade" id="orderBC" tabindex="-1" role="dialog" aria-labelledby="order-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>ORDER YOUR BUSINESS CARD</h4>
+            <p class="sub-heading">Enter the details you want to appear on your business card.</p>
+            <form action="login" method="POST" class="ajax">
+              {{csrf_field() }}
+              <div id="error"></div>
+              <input type="text" name="name" placeholder="Your Full Name">
+              <input type="text" name="address" placeholder="Your Full Address" class="no-top">
+              <input type="text" name="contact" placeholder="Your Contact Number" class="no-top">
+              <input type="text" name="email" placeholder="Your Email Address" class="no-top">
+              <input type="text" name="website" placeholder="Your Website" class="no-top">
+              <button class="btn hs-primary">Order Now</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACT US FORM-->
+    <div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="order-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Contact Us</h4>
+            <p class="sub-heading">How can we help you?.</p>
+            <form action="login" method="POST" class="ajax">
+              {{csrf_field() }}
+              <div id="error"></div>
+              <input type="text" name="subject" placeholder="Subject">
+              <textarea name="address" placeholder="Your Message Here" class="no-top"></textarea>
+              
+              <button class="btn hs-primary">Order Now</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>

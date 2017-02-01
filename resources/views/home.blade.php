@@ -33,7 +33,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="dashboard/agency/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="/profile">Profile</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
@@ -88,7 +88,7 @@
                     <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                   </form>
                 </li>
-                <li><span class="icon icon-tradesman"></span><a href="dashboard/agency/profile">Profile</a></li>
+                <li><span class="icon icon-tradesman"></span><a href="/profile">Profile</a></li>
               @else
                 <li><span class="icon icon-customer"></span><a href="/customer" >Customer</a></li>
                 <li><span class="icon icon-tradesman"></span><a href="/trades-services">Trades & Services</a></li>

@@ -91,7 +91,7 @@
 
             <div class="col-xs-3">
               <label>ABN</label>
-              <input type="text" name="abn" value="{{$data['charge-rate']}}">
+              <input type="text" name="abn" value="{{$data['abn']}}">
             </div>
             <div class="col-xs-4 dash-field">
               <label>Trading As</label>
@@ -308,45 +308,31 @@
                 <div class="col-xs-7">
                   <label>Gallery Photos</label>
                   <div class="gallery">
-                    <table id="previewTable">
-                      <thead id="columns"></thead>
-                      <tbody id="previews">
-                      </tbody>
-                  </table>
                   
                   @if(isset($data['gallery']))
                     @foreach ($data['gallery'] as $item)
-                      <form id="deleteItem-{{$item['id']}}" class="ajax" action="/delete-item" method="POST">
-                        {{csrf_field() }}
-                        <input type="hidden" name="item-id" value="{{$item['id']}}">
-                        <div class="item"><a href="#" onclick="document.getElementById('deleteItem-{{$item['id']}}').submit()"><i class="fa fa-times" aria-hidden="true" id="close"></a></i><img src="{{url($item['name'])}}" alt="" style="width: 100%; height: auto;"></div>
-                      </form>
+                      <div class="item"><a href="#" data-item-id="{{$item['id']}}" data-token="{{ csrf_token() }}"><i class="fa fa-times" aria-hidden="true" id="close"></a></i><img src="{{url($item['url'])}}" alt="" style="width: 100%; height: auto;"></div>
                     @endforeach
                   @endif
                   </div>
-                  
-                  <!-- <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-                  <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-                  <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-                  <img src="{{asset('assets/img-gallery-1.jpg')}}" alt=""> -->
 
                 </div>
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
                   <div class="upload-media">
-                    <span> Click to Add Images</span>
-                  <form action="/upload" method="POST" enctype="multipart/form-data">
+                  <form  action="/upload" method="POST" enctype="multipart/form-data" class="dropzone">
                     {{csrf_field() }}
-                    <input type="file" name="gallery[]" id="chooseFiles" multiple>
-                    <button class="btn hs-upload-icon"></button>
+                    
                   </form>
                   </div>
+                 
                   
                 </div>
               </div>
             </div>  
         </div>
       </div>
+
 
 @endsection
  @section('scripts')
@@ -358,6 +344,22 @@
         });
       });
 
+      $(".item a").click(function(){
+        var token = $(this).data('token');
+        var id = $(this).data('item-id');
+
+        $.ajax({
+          url: '/delete-item',
+          data: {'_token': token, 'item-id': id},
+          type: 'POST',
+          success: function(result){
+            $('.item a[data-item-id=' + id + ']').parent().addClass('hidden');
+          }
+        });
+      });
+      
+      
      </script>
+
      <script src="{{asset('js/image-preview.js')}}"></script>
 @stop

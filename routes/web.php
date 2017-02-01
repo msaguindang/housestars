@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/profile', 'MainController@dashboard');
+
 Route::get('/', function () {
     Sentinel::disableCheckpoints();
     return view('home');
@@ -81,6 +83,8 @@ Route::get('/dashboard/agency/settings', 'AgencyController@settings')->middlewar
 Route::get('/dashboard/tradesman/profile', 'TradesmanController@dashboard')->middleware('tradesman');
 
 Route::get('/dashboard/tradesman/edit', 'TradesmanController@edit')->middleware('tradesman');
+
+Route::get('/dashboard/tradesman/settings', 'TradesmanController@settings')->middleware('tradesman');
 
 Route::get('/dashboard/customer/profile', function () {
     return view('dashboard.customer.profile');

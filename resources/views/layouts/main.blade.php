@@ -15,6 +15,8 @@
     <link href="{{asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{asset('css/bootstrap-toggle.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/selectize.css')}}" rel="stylesheet">
+    <link href="{{asset('css/basic.css')}}" rel="stylesheet">
+    <link href="{{asset('css/dropzone.css')}}" rel="stylesheet">
     <link href="{{asset('font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/housestars-main.css')}}" rel="stylesheet">
     <link href="{{asset('css/housestars-icon.css')}}" rel="stylesheet">
@@ -121,24 +123,23 @@
     <script src="{{asset('js/custom.js')}}"></script>
     <script src="{{asset('js/laravel.ajax.js')}}"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script src="{{asset('js/dropzone.js')}}"></script>
     
     <script>
-    
-    
-    $('#signup-form').click(function() {
-        laravel.errors.errorBagContainer = $('#errors-signup');
-    });
+      $('#signup-form').click(function() {
+          laravel.errors.errorBagContainer = $('#errors-signup');
+      });
 
-    $('#login-form').click(function() {
-        laravel.errors.errorBagContainer = $('#error');
-    });
+      $('#login-form').click(function() {
+          laravel.errors.errorBagContainer = $('#error');
+      });
 
-    $('#login1-form').click(function() {
-        laravel.errors.errorBagContainer = $('#error');
-    });
+      $('#login1-form').click(function() {
+          laravel.errors.errorBagContainer = $('#error');
+      });
 
-    laravel.errors.showErrorsBag = true;
-    laravel.errors.showErrorsInFormGroup = false;
+      laravel.errors.showErrorsBag = true;
+      laravel.errors.showErrorsInFormGroup = false;
     </script>
 
     @yield("scripts")

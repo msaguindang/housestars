@@ -14,6 +14,7 @@ use App\Suburbs;
 use Carbon\Carbon;
 use Hash;
 use App\Agents;
+use Response;
 
 class TradesmanController extends Controller
 {
@@ -67,7 +68,7 @@ class TradesmanController extends Controller
 
 
     		} else if($key->meta_name == 'gallery'){
-    			$data[$key->meta_name][$y] = array('id'=>$key->id, 'name'=> $key->meta_value);
+    			$data[$key->meta_name][$y] = array('id'=>$key->id, 'url'=> $key->meta_value);
     			$y = $y + 1;
 
     		} else {
@@ -87,22 +88,24 @@ class TradesmanController extends Controller
     }
 
     public function upload(Request $request){
-    	if ($request->hasFile('gallery') ) {
-            $user_id = Sentinel::getUser()->id;
-            $files = $request->file('gallery');
-	            
-	        foreach ($files as $file) {
-	                
-	            $localpath = 'user/user-'.$user_id.'/uploads';
-	            $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
-				$path = $file->move(public_path($localpath), $filename);
-				$url = $localpath.'/'.$filename;
-					
-				UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
-	        }
 
-	        return redirect()->back();
+        if ($request->hasFile('file') ) {
+            $user_id = Sentinel::getUser()->id;
+            $file = $request->file('file');
+            $data = array();
+	        $localpath = 'user/user-'.$user_id.'/uploads';
+	        $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
+			$path = $file->move(public_path($localpath), $filename);
+			$url = $localpath.'/'.$filename;
+					
+			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
+            array_push($data, $url);
+	
+
+	        return Response::json('success', 200);
         }
+
+        return Response::json('error', 400);
     }
 
     public function updateProfile(Request $request)
@@ -160,6 +163,36 @@ class TradesmanController extends Controller
     	} else {
     		return redirect('/');
     	}
+    }
+
+     public function settings()
+    {
+
+        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+        $data = array();
+        
+
+        foreach ($meta as $key) {
+            $data[$key->meta_name] = $key->meta_value;
+        }
+
+        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+
+        $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+
+        //dd($customer_info);
+
+        $data['credit-card'] = $customer_info->sources->data[0]->last4;
+        $data['expiry-month'] = $customer_info->sources->data[0]->exp_month;
+        $data['expiry-year'] = $customer_info->sources->data[0]->exp_year;
+        $data['name'] = Sentinel::getUser()->name;
+        $data['email'] = Sentinel::getUser()->email;
+        $data['password'] = Sentinel::getUser()->password;
+        $data['plan'] = $customer_info->subscriptions->data[0]->items->data[0]->plan->name;
+        $data['subscription-status'] = $customer_info->subscriptions->data[0]->status;
+        $data['subscription-expiry'] = date('F d, Y', $customer_info->subscriptions->data[0]->current_period_end);
+
+        return View::make('dashboard/tradesman/settings')->with('data', $data);
     }
 
 }
