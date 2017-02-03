@@ -10,9 +10,11 @@ use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Sentinel;
 use App\User;
 use App\UserMeta;
+use App\Property;
 use App\Agents;
 use App\Suburbs;
 use View;
+use Response;
 
 class RegistrationController extends Controller
 {   
@@ -124,6 +126,41 @@ class RegistrationController extends Controller
 
     } 
 
+    public function addProperty(Request $request)
+    {   
+        $user_id = Sentinel::getUser()->id;
+        $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent');
+        $user_meta = array('address', 'phone', 'username');
+        $property_code = md5(uniqid(rand(), true));
+        
+        foreach ($property_meta as $meta) {
+            if($request->input($meta) != null || $request->input($meta) != '')
+            {
+                $value = $request->input($meta);
+                
+                Property::updateOrCreate(
+                        ['user_id' => $user_id, 'meta_name' => $meta, 'property_code' => $property_code],
+                        ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value, 'property_code' => $property_code]
+                    );
+            }
+        }
+
+        foreach ($user_meta as $meta) {
+            if($request->input($meta) != null || $request->input($meta) != '')
+            {
+                $value = $request->input($meta);
+                
+                UserMeta::updateOrCreate(
+                        ['user_id' => $user_id, 'meta_name' => $meta],
+                        ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
+                    );
+            }
+        }
+
+        return redirect('/register/customer/complete');
+
+    }  
+
     public function postAddAgents(Request $request)
     {
         if(Sentinel::check()){
@@ -187,22 +224,57 @@ class RegistrationController extends Controller
 
     public function Agency()
     {
-        if(session()->exists('completed')){
-            return redirect('/');
-        } else {
-            Sentinel::removeCheckpoint('throttle');
-            $suburbs = Suburbs::all();
-            return View::make('register/agency/step-one')->with('suburbs', $suburbs);
-        }
+        
+        $suburbs = Suburbs::all();
+        return View::make('register/agency/step-one')->with('suburbs', $suburbs);
     }
 
     public function Tradesman()
     {
            
-            Sentinel::removeCheckpoint('throttle');
-            $suburbs = Suburbs::all();
-            return View::make('register/tradesman/step-one')->with('suburbs', $suburbs);
+        $suburbs = Suburbs::all();
+        return View::make('register/tradesman/step-one')->with('suburbs', $suburbs);
     
+    }
+
+    public function Customer()
+    {
+           
+        $suburbs = Suburbs::all();
+        
+        $customer_info['name'] = Sentinel::getUser()->name;
+        $customer_info['email'] = Sentinel::getUser()->email;
+        $customer_info['password'] = Sentinel::getUser()->password;
+
+        return View::make('register/customer/step-one')->with('suburbs', $suburbs)->with('user', $customer_info);
+    
+    }
+
+    public function listAgency(Request $request){
+        $agencies = DB::table('users')
+                        ->join('role_users', function ($join) {
+                            $join->on('users.id', '=', 'role_users.user_id')
+                                 ->where('role_users.role_id', '=', 2);
+                        })
+                        ->get();
+
+         $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$request->input('suburb').'%')->get();
+
+        $data = array();
+
+        foreach ($agencies as $agency) {
+           foreach ($suburbs as $suburb) {
+                if($suburb->user_id == $agency->id){
+                    array_push($data, $agency);
+                }
+           }
+        }
+        
+        if(empty($data )){
+            return Response::json('error', 422); 
+        } else {
+            return Response::json($data , 200); 
+        }
     }
 
     public function payment()
@@ -227,23 +299,24 @@ class RegistrationController extends Controller
         $positions = array();
         $expiry = date('F d, Y', strtotime('+1 year'));
 
-        //get agency positions
-        foreach ($userinfo as $info) {
-           if($info->meta_name == 'positions'){
-                $pos = explode(",", $info->meta_value);
-           }
-        }
-         foreach ($pos as $position) {
-            if(!empty($position)){
-                array_push($positions, substr($position, 4));
+        if($role != 'customer'){
+            foreach ($userinfo as $info) {
+               if($info->meta_name == 'positions'){
+                    $pos = explode(",", $info->meta_value);
+               }
             }
-         }
+             foreach ($pos as $position) {
+                if(!empty($position)){
+                    array_push($positions, substr($position, 4));
+                }
+             }
 
-         $price =  count($positions) * 2000;
+             $price =  count($positions) * 2000;
 
-         if($price == 6000){
-            $price =  5000;
-         }
+             if($price == 6000){
+                $price =  5000;
+             }
+        }       
 
         if($role == 'tradesman'){
             \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
@@ -260,13 +333,15 @@ class RegistrationController extends Controller
              }
 
              return View::make('register/tradesman/step-three')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
-        } else {
+        } else if($role == 'agency'){
 
              $price =  count($positions) * 2000;
              if($price == 6000){
                 $price =  5000;
              }
             return View::make('register/agency/step-four')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
+        } else {
+            return View::make('register/customer/complete')->with('name', Sentinel::getUser()->name);
         }
     }
 

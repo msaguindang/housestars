@@ -53,10 +53,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box complete">
-				<h2>Congratulations, Jack!</h2>
+				<h2>Congratulations, {{$name}}!</h2>
 				<p>You are on your way to selling your property!</p></br>
 				<p>You will shortly receive an email for your records, and if you have selected an agent, they will be in contact </br>with you soon. Please contact us if you have any questions along the way and we will be glad to help. You </br>can now view your profile page and start adding information.</p>
-				<button class="btn hs-primary" style="padding: 13px;"><span class="icon icon-summary"></span> VIEW PROCESS PAGE</button>
+				<a href="/profile" class="btn hs-primary" style="padding: 13px;"><span class="icon icon-summary"></span> VIEW PROCESS PAGE</a>
 			</div>
 		</div>
 	</div>

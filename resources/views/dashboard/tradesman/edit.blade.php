@@ -352,6 +352,8 @@
           url: '/delete-item',
           data: {'_token': token, 'item-id': id},
           type: 'POST',
+          contentType: false,
+          processData: false,
           success: function(result){
             $('.item a[data-item-id=' + id + ']').parent().addClass('hidden');
           }

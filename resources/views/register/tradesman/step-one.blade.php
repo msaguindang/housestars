@@ -304,7 +304,6 @@
  @endsection
 
  @section('scripts')
-     <script src="js/autocomplete.js"></script>
      <script type="text/javascript">
      	var checker = document.getElementById('terms');
      	var btn = document.getElementById('submit');

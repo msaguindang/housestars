@@ -357,7 +357,7 @@
           </div>
           <div class="modal-body">
             <h4>Contact Us</h4>
-            <p class="sub-heading">How can we help you?.</p>
+            <p class="sub-heading">How can we help you?</p>
             <form action="login" method="POST" class="ajax">
               {{csrf_field() }}
               <div id="error"></div>
@@ -366,6 +366,47 @@
               
               <button class="btn hs-primary">Order Now</button>
             </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD TRADES / PROCESSING PAGE-->
+    <div class="modal fade" id="processTrades" tabindex="-1" role="dialog" aria-labelledby="order-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            @php($x = 0)
+            @if(isset($data['tradesmen']))
+            <h4>ADD TRANSACTION</h4>
+            <form id="transaction" enctype="multipart/form-data">
+              {{csrf_field() }}
+            <p class="sub-heading">Process a transaction with a Tradesman.</p>
+              <div id="error"></div>
+              <select id="trades" name="trades"  class="demo-default plain">
+                <option value="">Select Tradesman</option>
+                @foreach ($data['tradesmen'] as $tradesman)
+                  <option value="{{ $tradesman['id'] }}"> {{ $tradesman['trading-name'] }} </option>
+                  @php($x++)
+                @endforeach
+              </select>
+              <input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
+              <input type="hidden" name="property-code" value="{{$data['property'][0]['property-code']}}" id="code">
+              <div class="upload-button no-top">
+                <span class="label">Click to add Receipt</span>
+                <input type="file" name="receipt" id="receipt">
+              </div>
+              
+                    
+                <button class="btn hs-primary" id="transaction">Order Now</button>
+              </form>   
+            @else 
+            <h4>NO LISTED TRADESMAN</h4>
+            <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
+            @endif
           </div>
         </div>
       </div>

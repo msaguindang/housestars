@@ -67,13 +67,9 @@ Route::get('/register/tradesman/complete', function () {
     return view('register.tradesman.complete');
 })->middleware('tradesman');
 
-Route::get('/register/customer/step-one', function () {
-    return view('register.customer.step-one');
-});
+Route::get('/register/customer/step-one', 'RegistrationController@Customer')->middleware('customer');
 
-Route::get('/register/customer/complete', function () {
-    return view('register.customer.complete');
-});
+Route::get('/register/customer/complete', 'RegistrationController@Review')->middleware('customer');
 
 Route::get('/dashboard/agency/profile', 'AgencyController@dashboard')->middleware('agency');
 
@@ -86,9 +82,7 @@ Route::get('/dashboard/tradesman/edit', 'TradesmanController@edit')->middleware(
 
 Route::get('/dashboard/tradesman/settings', 'TradesmanController@settings')->middleware('tradesman');
 
-Route::get('/dashboard/customer/profile', function () {
-    return view('dashboard.customer.profile');
-});
+Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
 
 Route::get('/dashboard/customer/edit', function () {
     return view('dashboard.customer.edit');
@@ -144,6 +138,14 @@ Route::post('upload', 'TradesmanController@upload');
 Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
 
 Route::post('/delete-item', 'TradesmanController@deleteItem');
+
+Route::post('/agency-list', 'RegistrationController@listAgency');
+
+Route::post('/add-property', 'RegistrationController@addProperty');
+
+Route::post('/process-trades', 'CustomerController@spending');
+
+Route::post('/upload-receipt', 'CustomerController@uploadReceipt');
 
 
 
