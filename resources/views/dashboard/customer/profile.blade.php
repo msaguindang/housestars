@@ -135,27 +135,41 @@
                 <h4>Trades and Services</h4>
               </div>
               
-
+              @if(isset($data['transactions']))
               <div class="transactions">
-                @if(isset($data['transactions']))
-
                   @foreach($data['transactions'] as $transaction)
                     <div class="entry">
                       <ul>
                         <li>
-                          <div class="label"><h4>{{$transaction['name']}}</h4></div>
+                          <div class="label"><h4>{{$transaction['name']}}</h4> <button class="remove-transaction" data-token="{{ csrf_token()}}" data-id="{{$transaction['id']}}">REMOVE TRANSACTION</button></div>
                           <div class="value">
                             <div class="action">
+                              @foreach($data['reviews'] as $review)
+                              @if($review['id'] == $transaction['tid'])
+                                <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled checked/>
+                                @break                            
+                              @endif
                               <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled/>
+                              @endforeach
                               <label for="r{{$transaction['id']}}"><span></span></label>
                             </div>
-                            <div class="stars">
-                              <span class="icon icon-star"></span>
-                              <span class="icon icon-star"></span>
-                              <span class="icon icon-star"></span>
-                              <span class="icon icon-star"></span>
-                              <span class="icon icon-star"></span>
-                            </div>
+                            @php ($x = 0)
+                            @foreach($data['reviews'] as $review)
+                                @if($review['id'] == $transaction['tid'])
+                                <div class="stars">
+                                  @for($i = 0; $i < $review['rate']; $i++)
+                                    <span class="icon icon-star"></span>
+                                  @endfor
+                              </div>
+                                @php ($x = 1)
+                               @break
+                              @endif
+                            @endforeach
+
+                            @if($x == 0)
+                              <button class="add-review" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
+                            @endif
+                               
                           </div>
                         </li>
                         <li>
@@ -168,11 +182,11 @@
                                 <input type="checkbox" id="p{{$transaction['id']}}" name="cc"  disabled/><label for="p{{$transaction['id']}}"><span></span></label>
                               @endif
                             </div>
-                            <div class="picture" id="picture{{$transaction['tid']}}">
+                            <div class="picture" id="picture{{$transaction['id']}}">
                               @if($transaction['receipt'])
                                 <img src="{{url($transaction['receipt'])}}" alt="">
                               @else
-                              <form id="uploadReceipt" enctype="multipart/form-data">
+                              <form id="uploadReceipt" enctype="multipart/form-data" data-id="{{$transaction['id']}}">
                                 {{csrf_field() }}
                                 <input type="file" name="receipt" id="tradesReceipt">
                                 <input type="hidden" name="id" value="{{$transaction['id']}}">
@@ -189,23 +203,20 @@
                             <div class="action">
                               <input type="checkbox" id="a{{$transaction['id']}}" name="cc" checked disabled/><label for="a{{$transaction['id']}}"><span></span></label>
                             </div>
-                            <div class="amount"><h4>${{number_format($transaction['amount_spent'])}}</h4></div>
+                            <div class="amount" id="{{$transaction['id']}}" data-token="{{ csrf_token()}}"><h4>$<span contenteditable="true">{{$transaction['amount_spent']}}</span></h4></div>
                           </div>
                         </li>
                       </ul>
                     </div>
                   @endforeach
-                  
-                  <button class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Add Another</span></button>
-                @else
-                  <button class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Add Transactions</span></button>
-                @endif
               </div>
+                <button class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Transaction</span></button>
+               @endif
               
-              <div class="total">
+              <div class="total" id="transactionsTotal">
                 <div class="total-label">
                   <span>Total Spending</span>
-                  <span class="total-amount" data-total="{{$data['spending']['total']}}">${{number_format($data['spending']['total'])}}</span>
+                  <span class="total-amount" data-total="{{$data['spending']['total']}}">${{$data['spending']['total']}}</span>
                 </div>
               </div>
               <p class="spending">Spending above estimate <span class="spending-amount">$9,000</span></p>
@@ -270,6 +281,7 @@
               <div class="col-xs-12 section-title">
                 <h4>AGENTS</h4>
               </div>
+              @if(isset($data['property'][0]['agent']))
               <div class="entry">
                 <ul style="border: none">
                   <li>
@@ -317,6 +329,10 @@
                   </li>
                 </ul>
               </div>
+              @else
+              <button class="btn hs-primary btn-add" data-toggle="modal" data-target="#addAgent"><span class="icon icon-add" style="margin-top: 6px;"></span>Agent</span></button>
+              @endif
+              
             </div>
 
             <div class="row" style="padding: 10px 20px;a">
@@ -356,71 +372,12 @@
 @endsection
 
  @section('scripts')
+  <script src="{{asset('js/processing.js')}}"></script>
   <script type="text/javascript">
-    $('#receipt').on("change", function(){ 
-      var filename = $('#receipt')[0].files[0];
-      $('.upload-button span.label').addClass('hidden');
-      $( ".upload-button" ).append( '<span class="label">' + filename.name + '</span>' );
-    });
-
-    
 
     $(function() {
       $('#trades').selectize();
     });
 
-    $('#tradesReceipt').on("change", function(){ 
-      var url = window.location.origin;
-      $('.ur-text').addClass('hidden');
-      $( ".upload-receipt" ).append( '<span class="ur-text"><img src="'+ url +'/assets/uploading.svg" alt="">Upload</span>' );
-      $( ".upload-receipt" ).css({ 'padding': "6.5px 8px" });
-       var formData =  new FormData($('#uploadReceipt')[0]);
-
-      $.ajax({
-          url: '/upload-receipt',
-          data: formData,
-          type: 'POST',
-          cache:false,
-          contentType: false,
-          processData: false,
-          success: function(data){
-            var url = window.location.origin;
-            var id = '#picture'+ data['tid'];
-            $( ".upload-receipt" ).addClass( 'hidden' );
-            $(id).append('<img src="'+ url +'/'+data['url']+'">');
-          }
-      });
-    });
-
-    $('#transaction').on('submit',function(e){
-      var formData =  new FormData(this);
-      var trades_id =  $('#trades').val();
-
-      e.preventDefault();
-      
-       $.ajax({
-          url: '/process-trades',
-          data: formData,
-          type: 'POST',
-          cache:false,
-          contentType: false,
-          processData: false,
-          success: function(data){
-            var url = window.location.origin;
-            var total = parseInt($('.total-amount').data('total'));
-            $("#transaction").trigger("reset");
-            $('#processTrades').modal('hide');
-            $('.upload-button span.label').addClass('hidden');
-            $('#transactions .total-amount').addClass('hidden');
-            $('#transactions .total-label').append('<span class="total-amount" data-total="'+ total+'">$'+ total +'</span>');
-            $( ".upload-button" ).append( '<span class="label">Click to add Receipt</span>' );
-            if(data['url']){
-
-            }
-            $('.transactions').append('<div class="entry"><ul><li><div class="label"><h4>'+ data['tradesman'] +'</h4></div><div class="value"><div class="action"><input type="checkbox" id="r'+trades_id+'" name="cc" /><label for="r'+trades_id+'"><span></span></label></div><div class="stars"><span class="icon icon-star"></span><span class="icon icon-star"></span><span class="icon icon-star"></span><span class="icon icon-star"></span><span class="icon icon-star"></span></div></div></li><li><div class="label"><label>Picture of receipt</label></div><div class="value"><div class="action"><input type="checkbox" id="p'+trades_id+'" name="cc" /><label for="p'+trades_id+'"><span></span></label></div><div class="picture"><img src="'+ url + '/' + data['receipt']+'" alt=""></div></div></li><li><div class="label"><label>Amount Spent</label></div><div class="value"><div class="action"><input type="checkbox" id="a'+trades_id+'" name="cc" /><label for="a'+trades_id+'"><span></span></label></div><div class="amount"><h4>$'+ data['amount']+'</h4></div></div></li></ul></div>');
-
-          }
-      });
-    });
   </script>
 @stop

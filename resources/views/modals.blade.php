@@ -105,68 +105,70 @@
             <h4>Rate a Trade or Service</h4>
             <div class="col-xs-8  col-xs-offset-2 tradesman-info">
               <div class="col-xs-4 tradesman-profile">
-                <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                <img src="assets/thumb-profile.jpg" alt="Tradesman Name" id="tradesmanPic">
               </div>
               <div class="col-xs-8 tradesman-name">
-                <h4>John Joe Smith</h4>
+                <h4 id="tradesmanName">John Joe Smith</h4>
               </div>
             </div>
             <p class="bordered-desc">Your Honest answers really help other customers</p>
 
-            <form>
+            <form id="reviewForm" enctype="multipart/form-data">
+              {{csrf_field() }}
+              <input type="hidden" name="tradesman_id" id="tradesmanID">
               <div class="rating-stars">
                 <p class="rating-label">Communication</p>
                 <div class="stars">
-                  <input type="radio" name="group-1" id="group-1-0" value="5" /><label for="group-1-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
-                  <input type="radio" name="group-1" id="group-1-1" value="4" /><label for="group-1-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
-                  <input type="radio" name="group-1" id="group-1-2" value="3" /><label for="group-1-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
-                  <input type="radio" name="group-1" id="group-1-3" value="2" /><label for="group-1-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
-                  <input type="radio" name="group-1" id="group-1-4"  value="1" /><label for="group-1-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                  <input type="radio" name="communication" id="group-1-0" value="5" /><label for="group-1-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="communication" id="group-1-1" value="4" /><label for="group-1-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="communication" id="group-1-2" value="3" /><label for="group-1-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="communication" id="group-1-3" value="2" /><label for="group-1-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="communication" id="group-1-4"  value="1" /><label for="group-1-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
                 </div>
               </div>
               <div class="rating-stars">
                 <p class="rating-label">Work Quality</p>
                 <div class="stars">
-                  <input type="radio" name="group-2" id="group-2-0" value="5" /><label for="group-2-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
-                  <input type="radio" name="group-2" id="group-2-1" value="4" /><label for="group-2-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
-                  <input type="radio" name="group-2" id="group-2-2" value="3" /><label for="group-2-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
-                  <input type="radio" name="group-2" id="group-2-3" value="2" /><label for="group-2-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
-                  <input type="radio" name="group-2" id="group-2-4"  value="1" /><label for="group-2-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                  <input type="radio" name="work-quality" id="group-2-0" value="5" /><label for="group-2-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="work-quality" id="group-2-1" value="4" /><label for="group-2-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="work-quality" id="group-2-2" value="3" /><label for="group-2-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="work-quality" id="group-2-3" value="2" /><label for="group-2-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="work-quality" id="group-2-4"  value="1" /><label for="group-2-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
                 </div>
               </div>
               <div class="rating-stars">
                 <p class="rating-label">Price</p>
                 <div class="stars">
-                  <input type="radio" name="group-3" id="group-3-0" value="5" /><label for="group-3-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
-                  <input type="radio" name="group-3" id="group-3-1" value="4" /><label for="group-3-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
-                  <input type="radio" name="group-3" id="group-3-2" value="3" /><label for="group-3-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
-                  <input type="radio" name="group-3" id="group-3-3" value="2" /><label for="group-3-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
-                  <input type="radio" name="group-3" id="group-3-4"  value="1" /><label for="group-3-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                  <input type="radio" name="price" id="group-3-0" value="5" /><label for="group-3-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="price" id="group-3-1" value="4" /><label for="group-3-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="price" id="group-3-2" value="3" /><label for="group-3-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="price" id="group-3-3" value="2" /><label for="group-3-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="price" id="group-3-4"  value="1" /><label for="group-3-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
                 </div>
               </div>
               <div class="rating-stars">
                 <p class="rating-label">Punctuality</p>
                 <div class="stars">
-                  <input type="radio" name="group-4" id="group-4-0" value="5" /><label for="group-4-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
-                  <input type="radio" name="group-4" id="group-4-1" value="4" /><label for="group-4-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
-                  <input type="radio" name="group-4" id="group-4-2" value="3" /><label for="group-4-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
-                  <input type="radio" name="group-4" id="group-4-3" value="2" /><label for="group-4-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
-                  <input type="radio" name="group-4" id="group-4-4"  value="1" /><label for="group-4-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                  <input type="radio" name="punctuality" id="group-4-0" value="5" /><label for="group-4-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="punctuality" id="group-4-1" value="4" /><label for="group-4-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="punctuality" id="group-4-2" value="3" /><label for="group-4-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="punctuality" id="group-4-3" value="2" /><label for="group-4-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="punctuality" id="group-4-4"  value="1" /><label for="group-4-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
                 </div>
               </div>
               <div class="rating-stars no-border">
                 <p class="rating-label">Attitude</p>
                 <div class="stars">
-                  <input type="radio" name="group-5" id="group-5-0" value="5" /><label for="group-5-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
-                  <input type="radio" name="group-5" id="group-5-1" value="4" /><label for="group-5-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
-                  <input type="radio" name="group-5" id="group-5-2" value="3" /><label for="group-5-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
-                  <input type="radio" name="group-5" id="group-5-3" value="2" /><label for="group-5-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
-                  <input type="radio" name="group-5" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+                  <input type="radio" name="attitude" id="group-5-0" value="5" /><label for="group-5-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+                  <input type="radio" name="attitude" id="group-5-1" value="4" /><label for="group-5-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+                  <input type="radio" name="attitude" id="group-5-2" value="3" /><label for="group-5-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+                  <input type="radio" name="attitude" id="group-5-3" value="2" /><label for="group-5-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+                  <input type="radio" name="attitude" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
                 </div>
               </div>
               </br></br></br>
-              <input type="text" name="" placeholder="Enter Review Title">
-              <textarea placeholder="Write your review.." class="no-top"></textarea>
+              <input type="text" name="review-title" placeholder="Enter Review Title">
+              <textarea placeholder="Write your review.." name="review-text" class="no-top"></textarea>
               <div class="review-tips">
                 <p class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tips for writing a great review </br> </br> <b>DO</b> </br> - Describe your overall experience</br> - Tell us if you would recommended the business to others</br>-Talk about the strengths and weaknesses of the experience </br></br> <b>DON'T</b></br>-Lie. Be as honest as possible</br>-Use bad language or personal insults</br>-Be racist, sexist or vulgar" data-html="true">Tips for writing a good review</p>
                </br></br>
@@ -382,9 +384,9 @@
             @php($x = 0)
             @if(isset($data['tradesmen']))
             <h4>ADD TRANSACTION</h4>
+            <p class="sub-heading">Process a transaction with a Tradesman.</p>
             <form id="transaction" enctype="multipart/form-data">
               {{csrf_field() }}
-            <p class="sub-heading">Process a transaction with a Tradesman.</p>
               <div id="error"></div>
               <select id="trades" name="trades"  class="demo-default plain">
                 <option value="">Select Tradesman</option>
@@ -407,6 +409,91 @@
             <h4>NO LISTED TRADESMAN</h4>
             <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
             @endif
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- NO AGENT LISTED-->
+    <div class="modal fade" id="addAgent" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>SELECT YOUR AGENT</h4>
+            </br><p class="sub-heading">Select a suburb your property is located and we will find you an agency listed on your selected suburb.</p>
+            <form>
+              <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Select a Suburb... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+                    <ul class="dropdown-menu">
+                    @php($x = 0)
+                    @if(isset($data['suburbs']))
+                      @foreach ($data['suburbs'] as $suburb)
+                        <li>
+                          <label for="b{{$x}}">{{ $suburb['name'] }}</label>
+                          <input type="radio" id="b{{$x}}" name="suburb" value="{{ $suburb['name'] }}">
+                        </li>
+                        @php($x++)
+                      @endforeach
+                    @endif
+                    
+                    </ul>
+                </div>
+              <button class="btn hs-primary">SUBMIT</button>
+            </form>
+             <p class="heading"><span class="hLine left"></span>RELATED AGENTS <span class="hLine right"></span></p>
+             <div class="agents">
+              <div class="col-xs-4">
+                <a href="#">
+                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                  </div>
+                  </br>
+                  <p class="agent-name">John Joe Smith</p>
+                  <div class="stars">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-xs-4">
+                <a href="#">
+                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                  </div>
+                  </br>
+                  <p class="agent-name">John Joe Smith</p>
+                  <div class="stars">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                  </div>
+                </a>
+              </div>
+              <div class="col-xs-4">
+                <a href="#">
+                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+                  </div>
+                  </br>
+                  <p class="agent-name">John Joe Smith</p>
+                  <div class="stars">
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                    <span class="icon icon-star"></span>
+                  </div>
+                </a>
+              </div>
+             </div>
           </div>
         </div>
       </div>

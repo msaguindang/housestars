@@ -42,11 +42,7 @@ Route::get('/register/agency/step-one', 'RegistrationController@Agency')->middle
 
 Route::get('/register/agency/step-two', function () {
     
-    if(session()->exists('completed')){
-        return redirect('/');
-    } else {
         return view('register.agency.step-two');
-    }
 })->middleware('agency');
 
 Route::get('/register/agency/step-three', 'RegistrationController@Payment')->middleware('agency');
@@ -145,8 +141,15 @@ Route::post('/add-property', 'RegistrationController@addProperty');
 
 Route::post('/process-trades', 'CustomerController@spending');
 
+Route::post('/process-spending', 'CustomerController@updateAmount');
+
 Route::post('/upload-receipt', 'CustomerController@uploadReceipt');
 
+Route::post('/delete-transaction', 'CustomerController@delete');
+
+Route::post('/review', 'ReviewController@review');
+
+Route::post('/add-review', 'ReviewController@addReview');
 
 
 

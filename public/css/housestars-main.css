@@ -2443,6 +2443,7 @@ a.selected li {
 
 .processing-form .label h4 {
     color: #374b56;
+    float: left;
 }
 
 .processing-form .entry .picture {
@@ -2919,4 +2920,21 @@ h3.address {
 .ur-text img {
     width: 18px !important;
     margin: 0 4px 0 0 !important;
+}
+
+.remove-transaction {
+    float: left;
+    background: red;
+    padding: 4px 4px 2px;
+    font-size: 9px;
+    font-weight: 100;
+    margin: 12px 22px;
+    display: none;
+    color: #fff;
+    border: 0;
+}
+
+
+.entry:hover .label button {
+    display: block;
 }

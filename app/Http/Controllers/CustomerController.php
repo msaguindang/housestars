@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Sentinel;
 use App\UserMeta;
+use App\Suburbs;
 use App\Property;
+use App\Reviews;
 use App\Transactions;
 use View;
 use Response;
@@ -19,6 +21,8 @@ class CustomerController extends Controller
     	$user_info = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $property = Property::where('user_id', Sentinel::getUser()->id)->get();
         $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
+        $reviews = Reviews::where('reviewer_id', Sentinel::getUser()->id)->get();
+        $suburbs = Suburbs::all();
         $tradesmen = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
@@ -32,6 +36,7 @@ class CustomerController extends Controller
         $x = 0;
         $y = 0;
         $z = 0;
+        $i = 0;
 
         foreach ($tradesmen as $tradesman) {
            foreach ($user_meta as $meta) {
@@ -82,6 +87,16 @@ class CustomerController extends Controller
             $z++;
         }
 
+        $data['reviews'] = array();
+        $average = 0;
+
+        foreach ($reviews as $review ) {
+            $data['reviews'][$i]['id'] = $review->reviewee_id;
+            $data['reviews'][$i]['rate'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $i++;
+        }
+
+        $data['suburbs'] = $suburbs;
         $data['spending']['total'] = $total;
         
         //dd($data);
@@ -102,25 +117,28 @@ class CustomerController extends Controller
                 $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
                 $path = $file->move(public_path($localpath), $filename);
                 $url = $localpath.'/'.$filename;
-
-                Transactions::updateOrCreate(
-                    ['user_id' => $user_id, 'user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent')],
-                    ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'receipt' => $url]
-                );
-
-                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'receipt' => $url);
+                $id = DB::table('transactions')->insertGetId(
+                        ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'receipt' => $url, 'created_at' => Carbon::now()]
+                    );
+                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'receipt' => $url, 'id' => $id, 'tid' => $request->input('trades'));
 
             } else {
-                Transactions::updateOrCreate(
-                    ['user_id' => $user_id, 'user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent')],
-                    ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent')]
-                );
-                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'));
+                $id = DB::table('transactions')->insertGetId(
+                        ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'created_at' => Carbon::now()]
+                    );
+      
+                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'id' => $id, 'tid' => $request->input('trades'));
             }
 
-            
 
-            
+            $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
+            $total = 0;
+            foreach ($transactions as $transaction ) {
+                $total = $total + (int)$transaction->amount_spent;
+            }
+
+            $data['total'] = $total;
+
 
             return Response::json($data, 200); 
 
@@ -132,6 +150,7 @@ class CustomerController extends Controller
 
     function uploadReceipt(Request $request){
 
+
             if ($request->hasFile('receipt') ) {
                 $user_id = Sentinel::getUser()->id;
                 $file = $request->file('receipt');
@@ -142,11 +161,46 @@ class CustomerController extends Controller
 
                 DB::table('transactions')->where('id', $request->input('id'))->update(['receipt' => $url]);
                 
-                $data = array('url' => $url, 'tid' => $request->input('tid'));
+                $data = array('url' => $url, 'tid' => $request->input('tid'), 'id' => $request->input('id'));
 
                 return Response::json($data, 200); 
 
             }
         
     }
+
+    function updateAmount(Request $request){
+
+        DB::table('transactions')->where('id', $request->input('id'))->update(['amount_spent' => $request->input('content')]);
+        
+        $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
+        $total = 0;
+        foreach ($transactions as $transaction ) {
+            $total = $total + (int)$transaction->amount_spent;
+        }
+
+        $data['total'] = $total;
+
+        return Response::json($data, 200); 
+
+    }   
+
+    function delete(Request $request){
+
+        $tradesman_id = DB::table('transactions')->where('id', '=', $request->input('id'))->get();
+        $tid = $tradesman_id[0]->tradesman_id;
+        DB::table('transactions')->where('id', '=', $request->input('id'))->delete();
+        DB::table('reviews')->where('reviewee_id', '=', $tid)->delete();
+
+        $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
+        $total = 0;
+        foreach ($transactions as $transaction ) {
+            $total = $total + (int)$transaction->amount_spent;
+        }
+
+        $data['total'] = $total;
+
+        return Response::json($data, 200); 
+
+    }  
 }
