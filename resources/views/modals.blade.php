@@ -388,13 +388,19 @@
             <form id="transaction" enctype="multipart/form-data">
               {{csrf_field() }}
               <div id="error"></div>
-              <select id="trades" name="trades"  class="demo-default plain">
-                <option value="">Select Tradesman</option>
-                @foreach ($data['tradesmen'] as $tradesman)
-                  <option value="{{ $tradesman['id'] }}"> {{ $tradesman['trading-name'] }} </option>
-                  @php($x++)
-                @endforeach
-              </select>
+              <div class="btn-group dropdown">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+                    <ul class="dropdown-menu">
+                    @php($x = 0)
+                    @foreach ($data['tradesmen'] as $tradesman)
+                      <li>
+                        <label for="b{{$x}}">{{ $tradesman['trading-name'] }}</label>
+                        <input type="radio" id="b{{$x}}" name="trades" value="{{ $tradesman['id'] }}">
+                      </li>
+                      @php($x++)
+                    @endforeach
+                    </ul>
+                </div>
               <input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
               <input type="hidden" name="property-code" value="{{$data['property'][0]['property-code']}}" id="code">
               <div class="upload-button no-top">
@@ -423,76 +429,45 @@
           </div>
           <div class="modal-body">
             <h4>SELECT YOUR AGENT</h4>
-            </br><p class="sub-heading">Select a suburb your property is located and we will find you an agency listed on your selected suburb.</p>
-            <form>
-              <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Select a Suburb... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                    <ul class="dropdown-menu">
-                    @php($x = 0)
-                    @if(isset($data['suburbs']))
-                      @foreach ($data['suburbs'] as $suburb)
-                        <li>
-                          <label for="b{{$x}}">{{ $suburb['name'] }}</label>
-                          <input type="radio" id="b{{$x}}" name="suburb" value="{{ $suburb['name'] }}">
-                        </li>
-                        @php($x++)
-                      @endforeach
-                    @endif
-                    
-                    </ul>
-                </div>
-              <button class="btn hs-primary">SUBMIT</button>
-            </form>
-             <p class="heading"><span class="hLine left"></span>RELATED AGENTS <span class="hLine right"></span></p>
+            </br><p class="sub-heading">Select an agency near your property location.</p>
              <div class="agents">
-              <div class="col-xs-4">
-                <a href="#">
-                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
-                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
+              
+              @php($x = 0)
+              @if(isset($data['agents']))
+                @foreach($data['agents'] as $agent)
+                  <div class="col-xs-4">
+                    <a class="selectAgent" data-id="{{$agent['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
+                      <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+                        <img src="{{url($agent['photo'])}}" alt="{{$agent['name']}}">
+                        <p class="agent-name" style="margin-top: 10px;">{{$agent['name']}}</p>
+                      </div>
+                      </br>
+                      
+                      <div class="stars">
+                        @if($agent['rating'] == 0)
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                        @else 
+                          @for($i = 0; $i < $agent['rating']; $i++)
+                              <span class="icon icon-star"></span>
+                          @endfor
+
+                          @php ($x = 5 - $agent['rating'])
+
+                          @for($i = 0; $i < $x; $i++)
+                              <span class="icon icon-star-grey"></span>
+                          @endfor
+
+                        @endif
+                      </div>
+                    </a>
                   </div>
-                  </br>
-                  <p class="agent-name">John Joe Smith</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                </a>
-              </div>
-              <div class="col-xs-4">
-                <a href="#">
-                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
-                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
-                  </div>
-                  </br>
-                  <p class="agent-name">John Joe Smith</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                </a>
-              </div>
-              <div class="col-xs-4">
-                <a href="#">
-                  <div class="col-xs-8  col-xs-offset-2 tradesman-profile">
-                    <img src="assets/thumb-profile.jpg" alt="Tradesman Name">
-                  </div>
-                  </br>
-                  <p class="agent-name">John Joe Smith</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                </a>
-              </div>
+                @endforeach
+              @endif
+              
              </div>
           </div>
         </div>

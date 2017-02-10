@@ -141,3 +141,21 @@
     });
   });
 
+  $(document).on('click', '.selectAgent' ,function(){
+    var id = $(this).data('id');
+    var token = $(this).data('token');
+    var code = $(this).data('code');
+    $.ajax({
+      url: '/get-agent-info',
+      data: {_token: token, id: id, code: code},
+      type: 'POST',
+      success: function(data){
+        var html = '<div class="entry"> <ul style="border: none"> <li> <div class="label"> <h4>' + data['name'] +'</h4> </div> <div class="value"> <div class="action"> <input type="checkbox" id="c10" name="cc" /> <label for="c10"><span></span></label> </div> <div class="stars"> <span class="icon icon-star"></span> <span class="icon icon-star"></span> <span class="icon icon-star"></span> <span class="icon icon-star"></span> <span class="icon icon-star"></span> </div> </div> </li> <li> <div class="label"> <label>Picture of receipt</label> </div> <div class="value"> <div class="action"> <input type="checkbox" id="c11" name="cc" /> <label for="c11"><span></span></label> </div> <div class="picture"> <img src="" alt=""> </div> </div> </li> <li> <div class="label"> <button class="btn hs-primary btn-write"><span class="icon icon-write"></span>RATE AND REVIEW</span></button> </div> <div class="value"> <div class="action"> <input type="checkbox" id="12" name="cc" /> <label for="c12"><span></span></label> </div> </div> </li> </ul> </div>';
+        $('#agency').remove();
+        $('.agency').append(html);
+        $('#addAgent').modal('hide');
+      }
+    });
+  });
+
+

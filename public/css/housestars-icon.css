@@ -512,3 +512,11 @@
     background-position-x: -145px;
     background-position-y: -28px;
 }
+
+.icon-star-grey {
+    width: 15px;
+    height: 15px;
+    background-position-x: -274px;
+    background-position-y: -8px;
+    margin: 5px 1px;
+}

@@ -156,11 +156,26 @@
                             @php ($x = 0)
                             @foreach($data['reviews'] as $review)
                                 @if($review['id'] == $transaction['tid'])
-                                <div class="stars">
-                                  @for($i = 0; $i < $review['rate']; $i++)
-                                    <span class="icon icon-star"></span>
-                                  @endfor
-                              </div>
+                                  <div class="stars">
+                                      @if($review['rate'] == 0)
+                                        <span class="icon icon-star-grey"></span>
+                                        <span class="icon icon-star-grey"></span>
+                                        <span class="icon icon-star-grey"></span>
+                                        <span class="icon icon-star-grey"></span>
+                                        <span class="icon icon-star-grey"></span>
+                                      @else 
+                                        @for($i = 0; $i < $review['rate']; $i++)
+                                            <span class="icon icon-star"></span>
+                                        @endfor
+
+                                        @php ($x = 5 - $review['rate'])
+
+                                        @for($i = 0; $i < $x; $i++)
+                                            <span class="icon icon-star-grey"></span>
+                                        @endfor
+
+                                      @endif
+                                  </div>
                                 @php ($x = 1)
                                @break
                               @endif
@@ -281,24 +296,37 @@
               <div class="col-xs-12 section-title">
                 <h4>AGENTS</h4>
               </div>
-              @if(isset($data['property'][0]['agent']))
+              @if(isset($data['agent']))
               <div class="entry">
                 <ul style="border: none">
                   <li>
                     <div class="label">
-                      <h4>LJ Hooker Bryan Bay</h4>
+                      <h4>{{$data['agent']['name']}}</h4>
                     </div>
                     <div class="value">
                       <div class="action">
-                        <input type="checkbox" id="c10" name="cc" />
+                        <input type="checkbox" id="c10" name="cc" disabled checked/>
                         <label for="c10"><span></span></label>
                       </div>
                       <div class="stars">
-                        <span class="icon icon-star"></span>
-                        <span class="icon icon-star"></span>
-                        <span class="icon icon-star"></span>
-                        <span class="icon icon-star"></span>
-                        <span class="icon icon-star"></span>
+                        @if($data['agent']['rating'] == 0)
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                          <span class="icon icon-star-grey"></span>
+                        @else 
+                          @for($i = 0; $i < $data['agent']['rating']; $i++)
+                              <span class="icon icon-star"></span>
+                          @endfor
+
+                          @php ($x = 5 - $data['agent']['rating'])
+
+                          @for($i = 0; $i < $x; $i++)
+                              <span class="icon icon-star-grey"></span>
+                          @endfor
+
+                        @endif
                       </div>
                     </div>
                   </li>
@@ -330,7 +358,8 @@
                 </ul>
               </div>
               @else
-              <button class="btn hs-primary btn-add" data-toggle="modal" data-target="#addAgent"><span class="icon icon-add" style="margin-top: 6px;"></span>Agent</span></button>
+              <div class="agency"></div>
+              <button id="agency" class="btn hs-primary btn-add" data-toggle="modal" data-target="#addAgent"><span class="icon icon-add" style="margin-top: 6px;"></span>Agent</span></button>
               @endif
               
             </div>

@@ -258,7 +258,7 @@ class RegistrationController extends Controller
                         })
                         ->get();
 
-         $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$request->input('suburb').'%')->get();
+        $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$request->input('suburb').'%')->get();
 
         $data = array();
 

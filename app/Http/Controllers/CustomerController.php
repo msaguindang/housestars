@@ -22,7 +22,6 @@ class CustomerController extends Controller
         $property = Property::where('user_id', Sentinel::getUser()->id)->get();
         $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
         $reviews = Reviews::where('reviewer_id', Sentinel::getUser()->id)->get();
-        $suburbs = Suburbs::all();
         $tradesmen = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
@@ -63,10 +62,12 @@ class CustomerController extends Controller
         		$data['property'][$x]['property-code'] = $key->property_code;
         		$property_code = $key->property_code;
 
-        	} else if($property_code == $key->property_code){
+        	}else if($key->meta_name == 'agent'){
+                $data['agent'] = $this->find_agent_by_id($key->meta_value);
+            } else if($property_code == $key->property_code){
         		$data['property'][$x][$key->meta_name] = $key->meta_value;
         		$property_code = $key->property_code;
-        	}else {
+        	} else {
         		$x++;
         		$data['property'][$x][$key->meta_name] = $key->meta_value;	
         	}
@@ -74,6 +75,8 @@ class CustomerController extends Controller
         }
 
         $data['transactions'] = array();
+        $data['code'] = $property_code;
+        $data['agents'] = $this->find_agent_by_suburb($data['property'][0]['suburb']);
         $total = 0;
 
         foreach ($transactions as $transaction ) {
@@ -96,7 +99,6 @@ class CustomerController extends Controller
             $i++;
         }
 
-        $data['suburbs'] = $suburbs;
         $data['spending']['total'] = $total;
         
         //dd($data);
@@ -202,5 +204,100 @@ class CustomerController extends Controller
 
         return Response::json($data, 200); 
 
-    }  
+    } 
+
+    function find_agent_by_suburb($suburb){
+
+        $users = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+        $agents = array();
+
+        foreach ($users as $user) {
+            if($this->is_agent($user->user_id) == true){
+                $agent_info = DB::table('user_meta')->where('user_id', '=',$user->user_id)->get();
+                
+
+                foreach ($agent_info as $info) {
+                    if($info->meta_name == 'agency-name'){
+                        $name =  $info->meta_value;
+                    } else if($info->meta_name == 'profile-photo'){
+                        $photo = $info->meta_value;
+                    } 
+                }
+
+                $rating = $this->getRating($user->user_id);
+
+                $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating);
+
+                array_push($agents, $agent);
+            }
+        }
+        return $agents;
+    } 
+
+    function find_agent_by_id($id){
+
+        $agent_info = DB::table('user_meta')->where('user_id', '=',$id)->get();
+                
+        foreach ($agent_info as $info) {
+            if($info->meta_name == 'agency-name'){
+                $name =  $info->meta_value;
+            } else if($info->meta_name == 'profile-photo'){
+                $photo = $info->meta_value;
+            } 
+        }
+
+        $rating = $this->getRating($id);
+
+        $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating);
+
+        return $agent;
+    } 
+
+    function is_agent($id){
+        $agents = DB::table('role_users')->where('user_id', '=', $id)->get();
+        $isAgent = false;
+
+        foreach ($agents as $agent) {
+            if($agent->role_id == 2){
+                $isAgent = true;
+            }
+        }
+
+        return $isAgent;
+    }
+
+    function getRating($id){
+        $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
+        $average = 0;
+        $numRatings = count($ratings);
+
+        foreach ($ratings as $rating) {
+            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+        }
+
+        return $average;
+    }
+
+    function agentInfo(Request $request){
+        $user_id = Sentinel::getUser()->id;
+        $agent_meta = DB::table('user_meta')->where('user_id', '=', $request->input('id'))->get();
+        $data = array();
+
+        foreach ($agent_meta as $agent) {
+            if($agent->meta_name == 'agency-name'){
+                $name =  $agent->meta_value;
+            }
+
+            $data['name'] = $name;
+        }
+
+        Property::updateOrCreate(
+                        ['user_id' => $user_id, 'meta_name' => 'agent', 'property_code' => $request->input('code')],
+                        ['user_id' => $user_id, 'meta_name' => 'agent', 'meta_value' => $request->input('id'), 'property_code' => $request->input('code')]
+                    );
+
+        $data['rating'] =  $this->getRating($request->input('id'));
+
+        return Response::json($data, 200);  
+    }
 }

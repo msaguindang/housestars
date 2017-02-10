@@ -151,6 +151,8 @@ Route::post('/review', 'ReviewController@review');
 
 Route::post('/add-review', 'ReviewController@addReview');
 
+Route::post('/get-agent-info', 'CustomerController@agentInfo');
+
 
 
 

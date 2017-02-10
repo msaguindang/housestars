@@ -1243,7 +1243,7 @@ footer .social-item p{
 }
 
 .agents .col-xs-4:hover{
-    background: #e0e0e0;
+    background: #f1f1f1;
     border-radius: 3px;
 }
 
@@ -2937,4 +2937,31 @@ h3.address {
 
 .entry:hover .label button {
     display: block;
+}
+
+.modal .btn-group.dropdown {
+    width: 100%;
+}
+
+.modal .dropdown .dropdown-toggle {
+    padding: 15px;
+    color: #a9aaac;
+    text-align: left;
+    font-weight: 300;
+}
+
+.open>.dropdown-toggle.btn-default:focus, .open>.dropdown-toggle.btn-default:hover{
+    background: #fff;
+    color: #a9aaac;
+}
+
+.add-review {
+    padding: 8px 9px;
+    font-size: 9px;
+    text-align: center;
+    background: #0f70b7;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 100;
+    border: none;
 }
