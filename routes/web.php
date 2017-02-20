@@ -13,8 +13,9 @@
 
 Route::get('/profile', 'MainController@dashboard');
 
+
+
 Route::get('/', function () {
-    Sentinel::disableCheckpoints();
     return view('home');
 });
 
@@ -36,6 +37,11 @@ Route::get('/customer', function () {
 
 Route::get('/about', function () {
     return view('general.about');
+});
+
+
+Route::get('/reset-success', function () {
+    return view('general.reset-successful');
 });
 
 Route::get('/register/agency/step-one', 'RegistrationController@Agency')->middleware('agency');
@@ -104,10 +110,18 @@ Route::get('/savings-calculator', function () {
     return view('general.savings-calculator');
 });
 
+Route::get('/account-type', function () {
+    return view('general.select-role');
+});
+
 
 Route::post('/register', 'RegistrationController@postRegister');
 
 Route::post('/login', 'LoginController@postLogin');
+
+Route::get('/login/{provider}', 'LoginController@redirectToProvider');
+
+Route::get('/login/{provider}/callback', 'LoginController@handleProviderCallback');
 
 Route::post('/logout', 'LoginController@logout');
 
@@ -153,6 +167,11 @@ Route::post('/add-review', 'ReviewController@addReview');
 
 Route::post('/get-agent-info', 'CustomerController@agentInfo');
 
+Route::post('/retrieve-password', 'ForgotPasswordController@retrieve');
 
+Route::get('/reset/{email}/{resetCode}', 'ForgotPasswordController@resetPassword');
 
+Route::post('/reset/{email}/{resetCode}', 'ForgotPasswordController@reset');
+
+Route::get('/assign-role/{account}', 'LoginController@assignRole');
 

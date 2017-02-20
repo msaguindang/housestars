@@ -58,8 +58,13 @@
             <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
             </div>
             <div class="profile-info">
+                  
+                  @if(isset($data['agency-name']))
                   <h1>{{$data['business-name']}}</h1>
+                  @elseif (isset($data['website']))
                   <p>Website: {{$data['website']}}</p>
+                  @endif
+                  
             </div>
           </div>
         </div>

@@ -1,5 +1,7 @@
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -68,7 +70,12 @@
             </div>
             <div class="profile-info">
               <label>Tradesman Name</label>
-                  <input type="text" name="business-name" value="{{$data['trading-name']}}">  
+                  
+              @if(isset($data['trading-name']))
+              <input type="text" name="business-name" value="{{$data['trading-name']}}">  
+              @else
+              <input type="text" name="business-name" value="">  
+              @endif
             </div>
           </div>
         </div>
@@ -82,16 +89,31 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-4 dash-field">
               <label>Website</label>
-              <input type="text" name="website" value="{{$data['website']}}">
+              
+              @if(isset($data['website']))
+              <input type="text" name="website" value="{{$data['website']}}"> 
+              @else
+              <input type="text" name="website" value=""> 
+              @endif
             </div>
             <div class="col-xs-4 dash-field" style="padding-right: 0">
               <label>Charge Type</label>
+              
+              @if(isset($data['charge-rate']))
               <input type="text" name="charge-rate" value="{{$data['charge-rate']}}">
+              @else
+              <input type="text" name="charge-rate" value="">
+              @endif
             </div>
 
             <div class="col-xs-3">
               <label>ABN</label>
+              
+              @if(isset($data['abn']))
               <input type="text" name="abn" value="{{$data['abn']}}">
+              @else
+              <input type="text" name="abn" value="">
+              @endif
             </div>
             <div class="col-xs-4 dash-field">
               <label>Trading As</label>
@@ -278,11 +300,13 @@
               <select id="select-state" name="positions[]" multiple  class="demo-default">
                 @foreach ($suburbs as $suburb)
                   @if($suburb->availability != '3')
+                  @if(isset($data['suburbs']))
                     @foreach ($data['suburbs'] as $position)
                       @if($position['code'] == $suburb->id && $position['name'] == $suburb->name)
                       <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}" selected>{{ $suburb->name }}</option>
                       @endif
                     @endforeach
+                    @endif
                       <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }}</option> 
                     @endif
                 @endforeach
@@ -291,7 +315,12 @@
           </div>
           <div class="col-xs-3">
             <label>Write Business Description</label>
-            <textarea style="height: 230px;" name="summary">{{$data['summary']}}</textarea>
+            
+            @if(isset($data['summary']))
+              <textarea style="height: 230px;" name="summary">{{$data['summary']}}</textarea>
+              @else
+              <textarea style="height: 230px;" name="summary"></textarea>
+              @endif
             <button class="btn hs-primary full-width"><span class="icon icon-save" style="margin-top: 6px;"></span>SAVE CHANGES <span class="icon icon-arrow-right"></span></button>
           </div>
           <div class="spacing"></div>

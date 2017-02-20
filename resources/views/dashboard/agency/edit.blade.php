@@ -1,5 +1,7 @@
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
+
 <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -67,7 +69,12 @@
             </div>
             <div class="profile-info">
               <label>Agency Name</label>
-                  <input type="text" name="agency-name" value="{{$data['agency-name']}}">  
+                   
+                  @if(isset($data['agency-name']))
+              <input type="text" name="agency-name" value="{{$data['agency-name']}}"> 
+              @else
+              <input type="text" name="agency-name" value=""> 
+              @endif
             </div>
           </div>
         </div>
@@ -81,15 +88,29 @@
             <div class="col-xs-4">
               <div id="image-holder"> </div>
               <label>ABN</label>
+              @if(isset($data['abn']))
               <input type="text" name="abn" value="{{$data['abn']}}">
+              @else
+              <input type="text" name="abn" value="">
+              @endif
             </div>
             <div class="col-xs-4">
               <label>Address</label>
+              
+              @if(isset($data['business-address']))
               <input type="text" name="business-address" value="{{$data['business-address']}}">
+              @else
+              <input type="text" name="business-address" value="">
+              @endif
             </div>
             <div class="col-xs-4">
               <label>Base Commission Charge</label>
+              
+              @if(isset($data['base-commission']))
               <input type="text" name="base-commission" value="{{$data['base-commission']}}">
+              @else
+              <input type="text" name="base-commission" value="">
+              @endif
             </div>
           </div>
           <div class="col-xs-2">
@@ -98,33 +119,63 @@
           <div class="col-xs-10">
             <div class="col-xs-4">
               <label>Agency Trading Name</label>
+              
+              @if(isset($data['trading-name']))
               <input type="text" name="trading-name" value="{{$data['trading-name']}}">
+              @else
+              <input type="text" name="trading-name" value="">
+              @endif
             </div>
             <div class="col-xs-4">
               <label>Website</label>
+              
+              @if(isset($data['website']))
               <input type="text" name="website" value="{{$data['website']}}">
+              @else
+              <input type="text" name="website" value="">
+              @endif
             </div>
             <div class="col-xs-4">
               <label>Marketing Budget</label>
+              
+               @if(isset($data['marketing-budget']))
               <input type="text" name="marketing-budget" value="{{$data['marketing-budget']}}">
+              @else
+              <input type="text" name="marketing-budget" value="">
+              @endif
             </div>
           </div>
           <div class="col-xs-10 col-xs-offset-2">
             <div class="col-xs-4">
               <label>Principal Name</label>
+              
+              @if(isset($data['principal-name']))
               <input type="text" name="" value="{{$data['principal-name']}}">
+              @else
+              <input type="text" name="" value="">
+              @endif
             </div>
             <div class="col-xs-4">
               <label>Phone</label>
+              
+              @if(isset($data['phone']))
               <input type="text" name="" value="{{$data['phone']}}">
+              @else
+              <input type="text" name="" value="">
+              @endif
             </div>
             <div class="col-xs-4">
               <label>Sales Type</label>
               <div class="btn-group">
-                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">{{$data['sales-type']}} <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                    @if(isset($data['phone']))
+                    {{$data['sales-type']}}
+                    @else
+                    Select Sales Type
+                    @endif <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                   <ul class="dropdown-menu">
                     <li>
-                      <input type="radio" id="b1" name="sales-type" value="Auction" checked>
+                      <input type="radio" id="b1" name="sales-type" value="Auction">
                       <label for="b1">Auction</label>
                     </li>
                     <li>
@@ -171,7 +222,12 @@
           <div class="col-xs-10 col-xs-offset-2">
             <div class="col-xs-8">
             <label>Write Agency Summary</label>
-            <textarea style="height: 150px;" name="summary">{{$data['summary']}}</textarea>
+            
+            @if(isset($data['summary']))
+              <textarea style="height: 150px;" name="summary">{{$data['summary']}}</textarea>
+              @else
+              <textarea style="height: 150px;" name="summary"></textarea>
+              @endif
             </div>
             <div class="col-xs-4 btn-holder">
               <div class="spacing"></div>

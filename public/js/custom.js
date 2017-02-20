@@ -10,12 +10,14 @@ var animation = {
           this.$scroll =  $(window);
           this.$rate =  $('#rate');
           this.$modalRegister = $('#open');
+          this.$modalPassword = $('#openForgotPasswordModal');
           this.$active = $('.active');
       },
       bindEvents: function(){
         this.$scroll.scroll('on', this.animateOnScroll.bind(this));
         this.$rate.on('click', this.animateOnClick.bind(this));
-        this.$modalRegister.on('click', this.hide.bind(this));
+        this.$modalRegister.on('click', this.hideSignup.bind(this));
+        this.$modalPassword.on('click', this.hideLogin.bind(this));
       },
       animateOnScroll: function(){
           this.addAnimation('.home .stepOne', false, 'fadeInRight', 50);
@@ -55,8 +57,11 @@ var animation = {
               $(className).removeClass(effect).addClass('hide');
           }
       },
-      hide: function(){
+      hideSignup: function(){
           $('#signup').modal('hide');
+      },
+      hideLogin: function(){
+          $('#login').modal('hide');
       }
 };
 

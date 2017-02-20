@@ -18,8 +18,33 @@
               <input type="password" name="password" placeholder="Password" class="no-top">
               <button class="btn hs-primary">Login Now</button>
             </form>
-            <a href="#">Forgot your login credentials?</a>
+            <a href="#" data-toggle="modal" data-target="#forgotPassword" id="openForgotPasswordModal">Forgot your login password?</a>
             <p class="heading"><span class="hLine left"></span>SIGN IN USING YOUR SOCIAL ACCOUNTS <span class="hLine right"></span></p>
+            <div class="row social-buttons">
+              <div class="col-xs-6 no-padding-right"><a class="btn hs-primary facebook" href="/login/facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a></div>
+              <div class="col-xs-6 no-padding-left"><a class="btn hs-primary google" href="/login/google"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORGOT PASSWORD -->
+    <div class="modal fade" id="forgotPassword" tabindex="-1" role="dialog" aria-labelledby="login-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Forgot your password?</h4>
+            <p class="sub-heading">Fill in required field below.</p>
+            <form id="forgotPass">
+              {{csrf_field() }}
+              <div id="msg"></div>
+              <input type="text" name="email" placeholder="Email">
+              <button class="btn hs-primary">Retrieve Password</button>
+            </form>
           </div>
         </div>
       </div>
@@ -50,6 +75,10 @@
               <button class="btn hs-primary">Create an Account Now</button>
             </form>
             <p class="heading"><span class="hLine left"></span>SIGN UP USING YOUR SOCIAL ACCOUNTS <span class="hLine right"></span></p>
+            <div class="row social-buttons">
+              <div class="col-xs-6 no-padding-right"><a class="btn hs-primary facebook" href="/login/facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Signup with Facebook</a></div>
+              <div class="col-xs-6 no-padding-left"><a class="btn hs-primary google" href="/login/google"><i class="fa fa-google" aria-hidden="true"></i> Signup with Google</a></div>
+            </div>
           </div>
         </div>
       </div>

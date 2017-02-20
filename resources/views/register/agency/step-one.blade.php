@@ -49,7 +49,6 @@
             </div>
           </div>
     </header>
-<div id="loading"></div>
 <section id="progress-bar" class="header-margin">
 	<div class="container">
 		<div class="row">

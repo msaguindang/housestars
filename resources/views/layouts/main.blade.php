@@ -124,6 +124,7 @@
     <script src="{{asset('js/laravel.ajax.js')}}"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script src="{{asset('js/dropzone.js')}}"></script>
+    <script src="{{asset('js/ajax.js')}}"></script>
     
     <script>
       $('#signup-form').click(function() {
