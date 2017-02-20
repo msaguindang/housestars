@@ -83,7 +83,7 @@ class ForgotPasswordController extends Controller
     }
 
     private function sendEmail($user, $code){
-    	Mail::send('emails.forgot-password', [
+    	Mail::send(['html' => 'emails.forgot-password'], [
     			'user' => $user,
     			'code' => $code
     		], function ($message) use ($user) {
