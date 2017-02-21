@@ -98,7 +98,12 @@
           </div>
         </div>
         <div class="rate-trade-services">
-          <a href="#" id="rate" data-toggle="modal" data-target="#rating"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
+          @if(Sentinel::check())
+            <a href="#" id="rate" data-toggle="modal" data-target="#rateInfo"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
+          @else
+            <a href="#" id="rate" data-toggle="modal" data-target="#rating"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
+          @endif
+          
         </div>
         <div class="row highlight">
           <div class="col-xs-6 col-xs-offset-3 highlight-text">

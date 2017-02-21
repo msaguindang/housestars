@@ -15,6 +15,8 @@ use App\Agents;
 use App\Suburbs;
 use View;
 use Response;
+use Activation;
+use Mail;
 
 class RegistrationController extends Controller
 {   
@@ -29,26 +31,20 @@ class RegistrationController extends Controller
 	        'password_confirmation' => 'required|min:6'
 	    ]);
 
-            $user = Sentinel::registerAndActivate($request->all());
+            $user = Sentinel::register($request->all());
 
-            Sentinel::login($user);
+            User::where('email', $user->email)->update(['name' => $request->input('name')]);
+
+            $activation = Activation::create($user);
 
             $account = $request->input('account');
                 
             $role = Sentinel::findRoleBySlug($account);
             $role->users()->attach($user);
 
-            switch ($account){
-                case 'agency':
-                return \Ajax::redirect('/register/agency/step-one');
-                break;
-                case 'tradesman':
-                return \Ajax::redirect('/register/tradesman/step-one');
-                break;
-                case 'customer':
-                return \Ajax::redirect('/register/customer/step-one');
-                break;
-            }
+            $this->sendEmail($user, $activation->code, $request->input('name'), $account);
+
+           return \Ajax::redirect('/activation-sent');
 
     }
 
@@ -441,5 +437,18 @@ class RegistrationController extends Controller
         } else {
             return redirect('/');
         }
+    }
+
+    private function sendEmail($user, $code, $name, $account){
+        Mail::send(['html' => 'emails.activation'], [
+                'user' => $user,
+                'code' => $code,
+                'name' => $name,
+                'account' => $account
+            ], function ($message) use ($user) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to($user->email);
+                $message->subject('Activate your Housestars Account');
+            });
     }
 }

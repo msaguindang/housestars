@@ -175,3 +175,13 @@ Route::post('/reset/{email}/{resetCode}', 'ForgotPasswordController@reset');
 
 Route::get('/assign-role/{account}', 'LoginController@assignRole');
 
+Route::get('/activate/{email}/{activationCode}/{account}', 'ActivationController@activate');
+
+Route::get('/activation-sent', function () {
+    return view('general.activation-sent');
+});
+
+Route::get('/verify/{provider}', 'LoginController@redirectToProvider');
+
+Route::get('/verify/{provider}/callback', 'LoginController@verifyProviderCallback');
+

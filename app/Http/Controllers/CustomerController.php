@@ -248,9 +248,11 @@ class CustomerController extends Controller
 
         $rating = $this->getRating($id);
 
-        $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating);
-
-        return $agent;
+        if(isset($name) && isset($photo)){
+            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating);
+            return $agent;
+        }
+        
     } 
 
     function is_agent($id){

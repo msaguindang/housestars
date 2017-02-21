@@ -1709,7 +1709,14 @@ footer .social-item p{
 }
 
 #sign-up-form .hs-default.close-btn {
-    margin-right: 11px;
+    margin-right: 11px !important;
+    color: #fff;
+    padding: 13px 20px;
+    width: 189px;
+    text-align: left;
+    float: right;
+    margin: 48px 0 10px;
+    line-height: 18px;
 }
 
 #sign-up-form .complete .hs-primary {

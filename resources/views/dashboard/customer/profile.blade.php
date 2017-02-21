@@ -56,7 +56,7 @@
           </div>
           <div class="profile">
             <div class="profile-info">
-              <h1>{{$data['meta']['name']}}</h1>
+              <h1>{{Sentinel::getUser()->name}}</h1>
               <p>Location: {{$data['meta']['address']}}</p>
             </div>
           </div>

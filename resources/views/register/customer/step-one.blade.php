@@ -238,7 +238,7 @@
 	          	$( ".option" ).addClass('hidden');
 	          	
 	          	for (var i in data){
-	          		$( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data[i].name +'" name="agent"> <span class="checklist-label"> '+ data[i].name +' </span> ' );
+	          		$( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data[i].id +'" name="agent"> <span class="checklist-label"> '+ data[i].name +' </span> ' );
 	          	}
 
 	          	console.log(data);

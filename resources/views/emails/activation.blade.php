@@ -310,9 +310,10 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>Hi {{$user->name}},</p>
-                        <p>We received a request to reset your password for your Housestars account: {{$user->email}}. We're here to help!</p>
-                        <p>Simply click on the button to set a new password:<p/>
+                        <p>Hi {{$name}},</p>
+                        <p>Thank you for signing up for Housestars.</p>
+                        <p>You're just one step away from experiencing the benefits of Housestars.<p/>
+                        <p>Please click the 'Activate' link below to verify your email address and complete your account registration process.<p/>
                         <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>
@@ -320,7 +321,7 @@
                                 <table border="0" cellpadding="0" cellspacing="0">
                                   <tbody>
                                     <tr>
-                                      <td> <a href="{{env('APP_URL')}}/reset/{{$user->email}}/{{$code}}" target="_blank">Set a New Password</a> </td>
+                                      <td> <a href="{{env('APP_URL')}}/activate/{{$user->email}}/{{$code}}/{{$account}}" target="_blank">Activate</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -328,7 +329,6 @@
                             </tr>
                           </tbody>
                         </table>
-                        <p>If you didn't ask to change your password, don't worry! Your password is still safe and you can delete this email.</p>
                         <p>Cheers,</p>
                         <img src="https://trello-attachments.s3.amazonaws.com/58abe1cd025a65a1e39f2205/200x50/d55d597a4311edbdbc9789d1ac05744f/signature.png">
                       </td>
