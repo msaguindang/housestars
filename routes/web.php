@@ -185,3 +185,19 @@ Route::get('/verify/{provider}', 'LoginController@redirectToProvider');
 
 Route::get('/verify/{provider}/callback', 'LoginController@verifyProviderCallback');
 
+Route::group(['prefix' => 'admin'], function () {
+
+    Route::get('', 'AdminController@showLogin');
+
+    Route::get('dashboard', 'AdminController@showDashboard');
+
+    Route::get('members', 'AdminController@showMembers');
+
+    Route::get('properties', 'AdminController@showProperties');
+
+    Route::get('reviews', 'AdminController@showReviews');
+
+    Route::get('advertisements', 'AdminController@showAdvertisements');
+
+});
+
