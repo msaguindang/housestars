@@ -159,7 +159,7 @@ class TradesmanController extends Controller
     public function deleteItem(Request $request){
     	if(Sentinel::check()){    		
     		DB::table('user_meta')->where('id', '=', $request->input('item-id'))->delete();
-    		return redirect()->back();
+    		return Response::json('success', 200);
     	} else {
     		return redirect('/');
     	}

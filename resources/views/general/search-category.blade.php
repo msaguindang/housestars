@@ -52,12 +52,32 @@
     <section id="search-bar">
       <div class="container">
         <div class="row">
-          <div class="col-xs-10">
-            <input type="text" name="" placeholder="Suburb">
+          <form id="categorySearch">
+            {{csrf_field() }}
+            <div class="col-xs-10">
+              <input type="text" name="suburb" placeholder="Suburb" required id="suburb">
+            </div>
+            <div class="col-xs-2">
+              <button class="btn hs-primary full-width search"><span class="icon icon-search"></span>SEARCH</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="result">
+      <div class="container">
+        <div class="row result">
+          <div class="row section-heading">
+          <div class="col-xs-8 col-xs-offset-2 section-title">
+            <div class="message"></div>
           </div>
-          <div class="col-xs-2">
-            <button class="btn hs-primary full-width search"><span class="icon icon-search"></span>SEARCH</button>
-          </div>
+        </div>
+        <div class="row category">
+          <div id="trades"></div>
+          <div class="spacing"></div>
+        </div>
+          
         </div>
       </div>
     </section>

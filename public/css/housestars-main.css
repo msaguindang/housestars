@@ -2021,6 +2021,7 @@ input:checked + .slider:before {
 
 .ratings .rating-p {
     margin: 10px 0 20px;
+        width: 100%;
 }
 
 .ratings .date {
@@ -2192,7 +2193,6 @@ button.search {
 #search-bar {
     position: relative;
     top: -45px;
-    margin-bottom: 140px;
 }
 
 #search-bar .row {
@@ -2205,6 +2205,20 @@ button.search {
 #search-bar input[type="text"] {
     border: none;
     border-right: 1px solid #e0e0e0;
+    background: none;
+}
+
+#result {
+    min-height: 140px;
+}
+
+.result .bg-info {
+    padding: 22px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    background: #fff;
 }
 
 .category-listings .section-heading {
@@ -2251,6 +2265,7 @@ button.search {
     border: 1px solid #d3d3d3;
     background: #fff;
     padding-bottom: 20px;
+     margin: 30px 0 0;
 }
 
 #tradesman-results .profile-info {
@@ -2289,7 +2304,7 @@ button.search {
 
 #tradesman-results .ads {
     height: 125px;
-    margin: 30px 0;
+    margin: 30px 0 0;
 }
 
 .pagination-items li {
@@ -3037,4 +3052,10 @@ h3.address {
     position: absolute;
     bottom: 128px;
     width: 76% !important;
+}
+
+nav.pagination {
+    text-align: center;
+    width: 100%;
+    margin: 35px 0;
 }

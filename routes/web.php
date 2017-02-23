@@ -183,5 +183,13 @@ Route::get('/activation-sent', function () {
 
 Route::get('/verify/{provider}', 'LoginController@redirectToProvider');
 
-Route::get('/verify/{provider}/callback', 'LoginController@verifyProviderCallback');
+Route::get('/{action}/{provider}/callback', 'LoginController@verifyProviderCallback');
+
+Route::post('/search/{item}', 'SearchController@search');
+
+Route::get('/search/category/{category}', 'SearchController@listing');
+
+Route::get('/profile/{role}/{id}', 'ProfileController@profile');
+
+Route::post('/helpful', 'ProfileController@helpful');
 

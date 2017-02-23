@@ -71,8 +71,8 @@
             <div class="profile-info">
               <label>Tradesman Name</label>
                   
-              @if(isset($data['trading-name']))
-              <input type="text" name="business-name" value="{{$data['trading-name']}}">  
+              @if(isset($data['business-name']))
+              <input type="text" name="business-name" value="{{$data['business-name']}}">  
               @else
               <input type="text" name="business-name" value="">  
               @endif
@@ -118,7 +118,14 @@
             <div class="col-xs-4 dash-field">
               <label>Trading As</label>
               <div class="btn-group">
-                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="value">{{$data['trade']}}</span><span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="value">
+                    @if(isset($data['trade']))
+                    {{$data['trade']}}
+                    @else
+                    Select a Trade
+                    @endif
+
+                  </span><span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                   <ul class="dropdown-menu">
                     <li>
                       <input type="radio" id="t1" name="trade" value="Architectural Glass and Metal Technician">
@@ -257,7 +264,7 @@
                       <label for="t34">Refrigeration and Air Conditioning Systems Mechanic</label>
                     </li>
                     <li>
-                      <input type="radio" id="t35" name="trade" value="Reinforcing Rodworker" checked="">
+                      <input type="radio" id="t35" name="trade" value="Reinforcing Rodworker" >
                       <label for="t35">Reinforcing Rodworker</label>
                     </li>
                     <li>
@@ -376,13 +383,11 @@
       $(".item a").click(function(){
         var token = $(this).data('token');
         var id = $(this).data('item-id');
-
+        console.log(token);
         $.ajax({
           url: '/delete-item',
           data: {'_token': token, 'item-id': id},
           type: 'POST',
-          contentType: false,
-          processData: false,
           success: function(result){
             $('.item a[data-item-id=' + id + ']').parent().addClass('hidden');
           }

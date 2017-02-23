@@ -59,9 +59,10 @@
             </div>
             <div class="profile-info">
                   
-                  @if(isset($data['agency-name']))
+                  @if(isset($data['business-name']))
                   <h1>{{$data['business-name']}}</h1>
-                  @elseif (isset($data['website']))
+                  @endif
+                  @if (isset($data['website']))
                   <p>Website: {{$data['website']}}</p>
                   @endif
                   
@@ -76,7 +77,10 @@
         <div class="row">
           <div class="col-xs-9">
             <div class="statistics">
-              <h2 class="trade">{{$data['trade']}}</h2>
+                @if(isset($data['trade']))
+                  <h2 class="trade">{{$data['trade']}}</h2>
+                  @endif
+              
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
@@ -88,7 +92,10 @@
               </div>
             </div>
             <div class="description">
-                <p>{{$data['summary']}}</p>
+                
+                @if(isset($data['summary']))
+                  <p>{{$data['summary']}}</p>
+                  @endif
             </div>
           </div>
           <div class="col-xs-3 nav-panel">

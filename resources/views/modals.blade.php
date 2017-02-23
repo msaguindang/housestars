@@ -237,9 +237,11 @@
           </div>
           <div class="modal-body">
             <h4>Submit Category Listing</h4>
-            </br><p class="sub-heading">Please enter the desired category and press “Submit”. If the category is aligned with our Philosophy, we will create a new category. Thank you.</p>
+            </br><p class="sub-heading">Please enter the desired category and press “Submit”.</br> If the category is aligned with our Philosophy, </br>we will create a new category. Thank you.</p>
             <form>
-              <input type="text" name="" placeholder="Trade or Service"></br>
+              <input type="text" name="trade" placeholder="Trades or Service Name"></br>
+              <input type="text" name="name" placeholder="Your Name" class="no-top"></br>
+              <input type="text" name="email" placeholder="Your Email" class="no-top"></br>
               <button class="btn hs-primary">SUBMIT</button>
             </form>
           </div>

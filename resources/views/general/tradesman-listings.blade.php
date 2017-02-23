@@ -1,5 +1,7 @@
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
+
     <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -31,7 +33,7 @@
             </div>
           </div>
     </header>
-    
+    <div id="tradesmanList">
     <section id="cover-container" class="header-margin tradesman-listings">
       <div class="cover-img">
         <div class="container">
@@ -52,7 +54,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
-              <p class="center">Your search for a Carpenter in Abbotsford Suburb generated the folowing results. Thanks for using House Stars.</p>
+              <input type="text" class="search" placeholder="Enter Tradesman Name Or Business Name" style="margin: 0"/>
             </div>
           </div>
         </div>
@@ -61,179 +63,61 @@
       <section id="tradesman-results" class="dark-bg">
         <div class="container">
           <div class="row">
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
+            @if(isset($data['cat']))
+            <p class="center">Your search for a <b>{{$data['cat']}}</b> Suburb generated the folowing results. Thanks for using House Stars.</p></br>
+            @endif
+            <ul class="list">
+              @php ($x = count($data))
+              @php ($y = 0)
+              @php ($z = 4)
+              @if($x > 0)
+                @foreach($data as $tradesman)
+                  @if(count($tradesman) > 5)
+                    <li>
+                      <div class="col-xs-3">
+                        <div class="item">
+                          <div class="cover-photo">
+                            @if(isset($tradesman['profile-photo']))
+                              <div class="profile-thumb" style="background: url('{{url($tradesman['profile-photo'])}}'); background-size: cover;"></div>
+                            @else
+                             <div class="profile-thumb"></div>
+                            @endif
+                          </div>
+                          <div class="profile-info">
+                            <h3 class="name">{{$tradesman['business-name']}}</h3>
+                            <p class="location">{{$tradesman['trade']}}</p>
+                            <div class="stars">
+                              @for($i = 1; $i <= $tradesman['rating']; $i++)
+                                <span class="icon icon-star"></span>
+                              @endfor
+                              @php ($rating = 5 - $tradesman['rating'])
+                              @for($i = 1; $i <= $rating; $i++)
+                                <span class="icon icon-star-grey"></span>
+                              @endfor
+                            </div>
+                            <a href="/profile/tradesman/{{$tradesman['id']}}" class="btn hs-primary small">Visit Tradesman's Page</a>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                     @php ($y++)
+                  @endif
+                    @if($y == $z)
+                   <div class="col-xs-12">
+                    <div class="ads"></div>
                   </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-
-            <!--AD SPACE HERE -->
-            <div class="col-xs-12">
-              <div class="ads"></div>
-            </div>
-            <!-- END AD SPACE HERE -->
-
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-3">
-              <div class="item">
-                <div class="cover-photo">
-                  <div class="profile-thumb"></div>
-                </div>
-                <div class="profile-info">
-                  <h3 class="name">John Joe Smith</h3>
-                  <p class="location">29 Some Avenue, NSW, Australia</p>
-                  <div class="stars">
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                    <span class="icon icon-star"></span>
-                  </div>
-                  <a class="btn hs-primary small">Visit Tradesman's Page</a>
-                </div>
-              </div>
-            </div>
+                  @php($z = $z + 8)
+                  @endif
+              @endforeach
+              @endif
+              <!-- END AD SPACE HERE -->
+            </ul>
           </div>
           <div class="row">
-            <div class="col-xs-6 col-xs-offset-3">
-              <ul class="pagination-items">
-                <a href="#"><li>First</li></a>
-                <a href="#"><li>Previous</li></a>
-                <a href="#" class="selected"><li>1</li></a>
-                <a href="#"><li>2</li></a>
-                <a href="#"><li>3</li></a>
-                <a href="#"><li>4</li></a>
-                <a href="#"><li>5</li></a>
-                <a href="#"><li>Next</li></a>
-                <a href="#"><li>Last</li></a>
-              </ul>
+            <div class="col-xs-9">
+                <nav aria-label="Page navigation" class="pagination">
+                    <ul class="pagination"></ul>
+                </nav>
             </div>
             <div class="col-xs-3">
               <a class="btn hs-primary medium search-again"><span class="icon icon-arrow-right"></span>Search Again</a>
@@ -243,5 +127,18 @@
       </section>
     </div>
 
+  </div>
+
 
 @endsection
+
+
+@section('scripts')
+<script type="text/javascript">
+ var tradesmanList = new List('tradesmanList', {
+    valueNames: ['name'],
+    page: 9,
+    pagination: true
+  });
+</script>
+@stop
