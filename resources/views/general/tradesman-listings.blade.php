@@ -63,22 +63,27 @@
       <section id="tradesman-results" class="dark-bg">
         <div class="container">
           <div class="row">
-            @if(isset($data['cat']))
-            <p class="center">Your search for a <b>{{$data['cat']}}</b> Suburb generated the folowing results. Thanks for using House Stars.</p></br>
+            @php ($x = count($data))
+            @php ($y = 0)
+            @php ($z = 4)
+            @if(isset($data['cat']) && $x > 0)
+            <p class="center">Your search for a <b>{{$data['cat']}}</b> in <b>{{$data['suburb']}}</b> generated the folowing results. Thanks for using House Stars.</p></br>
             @endif
             <ul class="list">
-              @php ($x = count($data))
-              @php ($y = 0)
-              @php ($z = 4)
               @if($x > 0)
                 @foreach($data as $tradesman)
                   @if(count($tradesman) > 5)
                     <li>
                       <div class="col-xs-3">
                         <div class="item">
-                          <div class="cover-photo">
+                           @if(isset($tradesman['cover-photo']))
+                             <div class="cover-photo" style="background: url('{{url($tradesman['cover-photo'])}}'); background-size: cover;">
+                            @else
+                              <div class="cover-photo">
+                            @endif
+                           
                             @if(isset($tradesman['profile-photo']))
-                              <div class="profile-thumb" style="background: url('{{url($tradesman['profile-photo'])}}'); background-size: cover;"></div>
+                              <div class="profile-thumb" style="background: url('{{url($tradesman['profile-photo'])}}') no-repeat center center; background-size: cover;"></div>
                             @else
                              <div class="profile-thumb"></div>
                             @endif

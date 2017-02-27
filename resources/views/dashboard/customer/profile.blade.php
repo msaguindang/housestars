@@ -346,7 +346,7 @@
                   </li>
                   <li>
                     <div class="label">
-                      <button class="btn hs-primary btn-write"><span class="icon icon-write"></span>RATE AND REVIEW</span></button>
+                      <button class="btn hs-primary btn-write add-review" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"><span class="icon icon-write"></span>RATE AND REVIEW</span></button>
                     </div>
                     <div class="value">
                       <div class="action">

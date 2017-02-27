@@ -33,7 +33,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="/dashboard/{{$category}}/profile">Profile</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
@@ -55,15 +55,15 @@
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
+            <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) no-repeat center center">
             </div>
             <div class="profile-info">
                   
-                  @if(isset($data['business-name']))
-                  <h1>{{$data['business-name']}}</h1>
+                  @if(isset($data['agency-name']))
+                  <h1>{{$data['agency-name']}}</h1>
                   @endif
-                  @if (isset($data['website']))
-                  <p>Website: {{$data['website']}}</p>
+                  @if (isset($data['business-address']))
+                  <p>Location: {{$data['business-address']}}</p>
                   @endif
                   
             </div>
@@ -84,41 +84,34 @@
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
-                  @for ($i = 0; $i < 3; $i++)
+                  @for($i = 1; $i <= $data['rating']; $i++)
                       <span class="icon icon-star"></span>
                   @endfor
+                  @php ($rating = 5 - $data['rating'])
+                  @for($i = 1; $i <= $rating; $i++)
+                      <span class="icon icon-star-grey"></span>
+                  @endfor
                 </div>
-                <span class="rating-p" style="margin-left: 10px;">957 Reviews</span>
+                <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
               </div>
             </div>
-            <div class="description">
+            
                 
-                @if(isset($data['summary']))
-                  <p>{{$data['summary']}}</p>
-                  @endif
-            </div>
+                @if(isset($data['summary']) && $data['summary'] != '')
+                  <div class="description">
+                    <p>{{$data['summary']}}</p>
+                  </div>
+                @endif
+            
           </div>
-          <div class="col-xs-3 nav-panel">
-            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
-            <a href="settings" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a>
-            <button class="btn hs-primary white" style="margin-bottom: 0;" data-toggle="modal" data-target="#orderBC"><span class="icon icon-summary-dark" style="margin-top: 6px;" ></span>ORDER BUSINESSCARD <span class="icon icon-arrow-right-dark"></span></button>
-            <button class="btn hs-primary white" data-toggle="modal" data-target="#contact"><span class="icon icon-summary-dark" style="margin-top: 6px;"></span>CONTACT US <span class="icon icon-arrow-right-dark"></span></button>
-            <div class="col-xs-8 no-padding-left">
-              <p style="line-height: 30px;">Switch to Customer View</p>
-            </div>
-            <div class="col-xs-4">
-               <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="false"><div id="switch" class="slider round" style="float: right;"></div></label>
-            </div>
-          </div>
-          <div class="col-xs-3 profile-details" style="display: none;">
+          <div class="col-xs-3 profile-details">
            <!--  <h3>More Details</h3> -->
-            @if(isset($data['website']))
-            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+            @if(isset($data['phone']))
+            <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
-              <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
+              <p> <b> Phone </b></br><span class="detail">{{$data['phone']}}</span></p>
             </div>
             @endif
-
             @if(isset($data['email']))
             <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
@@ -139,12 +132,12 @@
               <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
             </div>
             @endif
-            <div class="col-xs-8 no-padding-left">
-              <p style="line-height: 30px;">Switch to Customer View</p>
+            @if(isset($data['website']))
+            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
             </div>
-            <div class="col-xs-4">
-               <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="true"><div id="switch" class="slider round" style="float: right;"></div></label>
-            </div>
+            @endif
             
           </div>
         </div>
@@ -155,10 +148,19 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
+           
+                                
             <div class="row gallery">
+                @if(isset($data['gallery'])) 
                 <h2 class="section-title">Gallery</h2>
+                @else
+                  <div class="spacing"></div>
+                @endif
                 
                 <div class="gallery-carousel ">
+                   @if(isset($data['gallery']))
+                                @php($x = 0)
+                                @php($y = 2)
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                         <!-- Carousel Buttons Next/Prev -->
@@ -168,10 +170,7 @@
                           <div class="carousel-inner">
                           <!-- Gallery 1 -->
                             
-                              @if(isset($data['gallery']))
-                                @php($x = 0)
-                                @php($y = 2)
-                                
+                              
                                 @php($items = count($data['gallery']) - 1)
 
                                 @foreach($data['gallery'] as $item)
@@ -199,21 +198,11 @@
 
                                   @php($x++)
 
-                                @endforeach
-                              @else
-                                <p class="no-data">No Uploaded Photos. <a href="edit">Upload Here</a></p>
-                              @endif
-       
-
-
-                               
-
-
-
-                            
+                                @endforeach   
                         </div>
                     </div>
                 </div>
+                    @endif
               </div>
             </div>
             <div class="row ratings">

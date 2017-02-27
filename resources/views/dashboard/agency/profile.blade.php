@@ -55,7 +55,7 @@
             <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($dp)}}) 100%">
+            <div class="profile-img" style="background: url({{url($dp)}}) no-repeat center center">
             </div>
             <div class="profile-info">
               @foreach ($meta as $info)
@@ -76,16 +76,21 @@
         <div class="row">
           <div class="col-xs-9">
             <div class="statistics">
-              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 50 Listings</span> <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 30 Properties Sold</span>
+              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{$data['total-listings']}} Listings</span> <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold</span>
               <div class="status">
                 <span class="status-icon"></span>
                 <span class="status-p">Available</span>
-                <span class="rating-p">Overall Ratings</span>
-                <div class="stars left">
-                  @for ($i = 0; $i < 3; $i++)
-                      <span class="icon icon-star"></span>
-                  @endfor
-                </div>
+                  <span class="rating-p">Overall Ratings</span>
+                  <div class="stars left">
+                    @for($i = 1; $i <= $data['rating']; $i++)
+                        <span class="icon icon-star"></span>
+                    @endfor
+                    @php ($rating = 5 - $data['rating'])
+                    @for($i = 1; $i <= $rating; $i++)
+                        <span class="icon icon-star-grey"></span>
+                    @endfor
+                  </div>
+                  <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
               </div>
             </div>
             <div class="description">
@@ -103,7 +108,49 @@
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>
             <div class="col-xs-4">
-              <label class="switch" style="margin: 0"><input type="checkbox"><div class="slider round" style="float: right;"></div></label>
+              <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="false"><div id="switch" class="slider round" style="float: right;"></div></label>
+            </div>
+          </div>
+
+          <div class="col-xs-3 profile-details" style="display: none">
+           <!--  <h3>More Details</h3> -->
+            @if(isset($data['phone']))
+            <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Phone </b></br><span class="detail">{{$data['phone']}}</span></p>
+            </div>
+            @endif
+            @if(isset($data['email']))
+            <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
+            </div>
+            @endif
+
+            @if(isset($data['abn']))
+            <div class="col-xs-2 icon"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p><b> ABN </b></br><span class="detail">{{$data['abn']}}</span></p>
+            </div>
+            @endif
+
+            @if(isset($data['charge-rate']))
+            <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+            </div>
+            @endif
+            @if(isset($data['website']))
+            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
+            </div>
+            @endif
+            <div class="col-xs-8 no-padding-left">
+              <p style="line-height: 30px;">Switch to Customer View</p>
+            </div>
+            <div class="col-xs-4">
+              <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="false"><div id="switch" class="slider round" style="float: right;"></div></label>
             </div>
           </div>
         </div>
@@ -114,7 +161,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
-            <div class="row gallery">
+<!--             <div class="row gallery">
                 <h2 class="section-title">Gallery</h2>
                 <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
                 <div class="gallery-carousel">
@@ -264,76 +311,38 @@
                     </div>
                 </div>
               </div>
-            </div>
+            </div> -->
+            <div class="spacing"></div>
+            <div class="spacing"></div>
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
-              
-              <div class="col-xs-12 review-box">
-                <b class="left">Tiffany Yee</b>
-                <span class="date right">Posted: January 2015</span>
-                <p class="left rating-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                <button class="btn btn-helpful right"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                <div class="stars left">
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                </div>
-              </div>
-              <div class="col-xs-12 review-box">
-                <b class="left">Tiffany Yee</b>
-                <span class="date right">Posted: January 2015</span>
-                <p class="left rating-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                <button class="btn btn-helpful right"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                <div class="stars left">
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                </div>
-              </div>
-              <div class="col-xs-12 review-box">
-                <b class="left">Tiffany Yee</b>
-                <span class="date right">Posted: January 2015</span>
-                <p class="left rating-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                <button class="btn btn-helpful right"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                <div class="stars left">
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                </div>
-              </div>
-              <div class="col-xs-12 review-box">
-                <b class="left">Tiffany Yee</b>
-                <span class="date right">Posted: January 2015</span>
-                <p class="left rating-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                <button class="btn btn-helpful right"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                <div class="stars left">
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                </div>
-              </div>
-              <div class="col-xs-12 review-box">
-                <b class="left">Tiffany Yee</b>
-                <span class="date right">Posted: January 2015</span>
-                <p class="left rating-p">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                <button class="btn btn-helpful right"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                <div class="stars left">
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                  <span class="icon icon-star"></span>
-                </div>
-              </div>
+              @if(isset($data['reviews']))
+                @foreach($data['reviews'] as $review)
+                  @if($review['content'] != '')
+                  <div class="col-xs-12 review-box">
+                    <!-- <b class="left"></b> -->
+                    <span class="date right">Posted: {{$review['created']}}</span>
+                    <p><b>{{$review['name']}}</b></p>
+                    <p class="left rating-p">{{$review['content']}}</p>
+                    <button class="btn btn-helpful right" id="helpful" data-id="{{$review['id']}}" data-token="{{csrf_token()}}"><span class="icon icon-helpful"></span> Helpful <span class="small" id="count-{{$review['id']}}">({{$review['helpful']}})</span></button>
+                    
+                    <div class="stars left">
+                     
+                        @for($i = 1; $i <= $review['average']; $i++)
+                            <span class="icon icon-star"></span>
+                        @endfor
+                        @php ($rating = 5 - $review['average'])
+                        @for($i = 1; $i <= $rating; $i++)
+                            <span class="icon icon-star-grey"></span>
+                        @endfor
+                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a> 
+                    </div>
+                  </div>
+                  @endif
+                @endforeach
+              @endif
+             
             </div>
           </div>
             <div class="col-xs-3 sidebar">

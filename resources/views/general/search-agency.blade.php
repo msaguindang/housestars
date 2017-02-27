@@ -63,60 +63,9 @@
       </section>
 
       <section id="agency-results" class="dark-bg">
+      </br>
         <div class="container">
           <div class="row">
-            @if(isset($data))
-              @php ($x = count($data))
-              @if(isset($data['cat']) && $x > 1)
-              <p class="center">Your search for a <b>{{$data['cat']}}</b> generated the folowing results. Thanks for using House Stars.</p></br>
-              @else
-              <p class="center">Your search for a <b>{{$data}}</b> generated no result. Please try searching for a different keyword.</p></br>             
-              @endif
-              <ul class="list">
-              @if($x > 1)
-                  @foreach($data as $agency)
-                    @if(count($agency) > 5)
-                      <li>
-                        <div class="col-xs-4">
-                          <div class="item">
-                            @if(isset($agency['cover-photo']))
-                            <div class="cover-photo"  style="background: url('{{url($agency['cover-photo'])}}'); background-size: cover;">
-                            @else
-                            <div class="cover-photo">
-                            @endif
-                              @if(isset($agency['profile-photo']))
-                                <div class="agency-info">
-                                  <div class="col-xs-2"><div class="profile-thumb" style="background: url('{{url($agency['profile-photo'])}}'); background-size: cover;"></div></div>
-                                  <div class="col-xs-10">
-                                    <h3 class="name">{{$agency['agency-name']}}</h3>
-                                    <p class="location">{{$agency['business-address']}}</p>
-                                  </div>
-                                </div>
-                              @else
-                               <div class="profile-thumb"></div>
-                              @endif
-                            </div>
-                            <div class="profile-info">
-                              @php ($summary = substr($agency['summary'], 0, 150))
-                              <p>{{$summary}} ...</p>
-                              <a href="/profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    @endif
-                @endforeach
-                @endif
-              @endif
-              <!-- END AD SPACE HERE -->
-            </ul>
-          </div>
-          <div class="row">
-            <div class="col-xs-9">
-                <nav aria-label="Page navigation" class="pagination">
-                    <ul class="pagination"></ul>
-                </nav>
-            </div>
           </div>
         </div>
       </section>

@@ -202,10 +202,10 @@ input:placeholder-shown, input:focus, textarea:placeholder-shown, textarea:focus
 input.search {
     width: 100%;
     padding: 10px 25px;
-    background: url(../assets/icons-spritesheet.png);
+    background: url(../assets/icon-search.png);
     background-repeat: no-repeat;
-    background-position-y: -53px;
-    background-position-x: 500px;
+    background-position-y: 16px;
+    background-position-x: 537px;
     box-shadow: none;
     border: 1px solid #d3d3d3;
     margin-top: 23px;
@@ -2250,7 +2250,7 @@ button.search {
     margin: 10px;
 }
 
-#tradesman-results {
+#tradesman-results, #agency-results {
     padding: 20px 0 100px;
 }
 
@@ -3058,4 +3058,85 @@ nav.pagination {
     text-align: center;
     width: 100%;
     margin: 35px 0;
+}
+
+.profile-details h3 {
+    margin: 0 0 10px!important;
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #1972b4;
+}
+
+.profile-details .icon i {
+    font-size: 19px;
+    color: #fff
+}
+
+.profile-details .icon {
+    text-align: center;
+    padding: 10px;
+    background: #1972b4;
+}
+
+.review-box a {
+    font-size: 9px;
+    color: #b3b3b3;
+    font-weight: 300;
+    font-style: italic;
+    padding: 8px;
+}
+
+.agency input.search {
+    width: 89%;
+    border: none !important;
+}
+
+.agency button {
+    margin: 0 !important;
+}
+
+#agency-results .profile-thumb {
+    width: 40px;
+    height: 40px;
+    background: url(../assets/thumb-profile.jpg) no-repeat center;
+    background-size: 100%;
+    border-radius: 100px;
+    border: none;
+    float: left;
+}
+
+#agency-results .cover-photo {
+    width: 100%;
+    height: 230px;
+    background: url(../assets/img-gallery-1.jpg) no-repeat center;
+    background-size: cover;
+}
+
+#agency-results .cover-photo h3.name {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+}
+
+#agency-results p.location {
+    color: #fff;
+    font-size: 12px;
+}
+
+#agency-results .agency-info {
+    position: relative;
+    top: 162px;
+    background: rgba(0, 0, 0, 0.45);
+    overflow: auto;
+    padding: 6px 0;
+}
+
+#agency-results .item {
+    background: #fff;
+    border: 1px solid #e4e4e4;
+}
+
+#agency-results .profile-info {
+    padding: 27px;
 }

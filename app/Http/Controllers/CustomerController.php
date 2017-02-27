@@ -101,7 +101,7 @@ class CustomerController extends Controller
 
         $data['spending']['total'] = $total;
         
-        //dd($data);
+       // dd($data);
 
         return View::make('dashboard/customer/profile')->with('data', $data);
     }
@@ -288,9 +288,8 @@ class CustomerController extends Controller
         foreach ($agent_meta as $agent) {
             if($agent->meta_name == 'agency-name'){
                 $name =  $agent->meta_value;
+                $data['name'] = $name;
             }
-
-            $data['name'] = $name;
         }
 
         Property::updateOrCreate(

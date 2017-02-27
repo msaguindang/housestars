@@ -14,6 +14,8 @@ use App\Suburbs;
 use Carbon\Carbon;
 use Hash;
 use App\Agents;
+use App\Reviews;
+use App\Property;
 
 class AgencyController extends Controller
 {
@@ -21,15 +23,24 @@ class AgencyController extends Controller
     	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $dp = 'assets/default.png';
         $cp = 'assets/default_cover_photo.jpg';
-    	foreach ($meta as $data) {
-    		if($data->meta_name == 'profile-photo'){
-    			$dp = $data->meta_value;
-    		} else if($data->meta_name == 'cover-photo'){
-    			$cp = $data->meta_value;
-    		}
+    	foreach ($meta as $key) {
+    		if($key->meta_name == 'profile-photo'){
+    			$dp = $key->meta_value;
+    		} else if($key->meta_name == 'cover-photo'){
+    			$cp = $key->meta_value;
+    		} else {
+                $data[$key->meta_name] = $key->meta_value;
+            }
     	}
 
-        return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp);
+        $data['rating'] = $this->getRating(Sentinel::getUser()->id);
+        $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
+        $data['total'] = count($data['reviews']);
+
+        $data['properties'] = $this->property_listing(Sentinel::getUser()->id);
+        $data['total-listings'] = count($data['properties']);
+       // dd($data);        
+        return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
     public function edit()
@@ -255,6 +266,74 @@ class AgencyController extends Controller
         }
     }
 
+    public function getRating($id){
+        $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
+        $average = 0;
+        $numRatings = count($ratings);
 
+        foreach ($ratings as $rating) {
+            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+        }
+
+        return $average;
+    }
+
+    public function getReviews($id){
+
+        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
+        $data = array(); $x = 0; $average = 0; 
+        foreach ($reviews as $review) {
+            $name = User::where('id', $review->reviewer_id)->get();
+            $data[$x]['name'] = $name[0]['name'];
+            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $data[$x]['communication'] = (int)$review->communication;
+            $data[$x]['work_quality'] = (int)$review->work_quality;
+            $data[$x]['price'] = (int)$review->price;
+            $data[$x]['punctuality'] = (int)$review->punctuality;
+            $data[$x]['attitude'] = (int)$review->attitude;
+            $data[$x]['title'] = $review->title;
+            $data[$x]['content'] = $review->content;
+            $data[$x]['created'] = $review->created_at->format('M d, Y');
+            $data[$x]['helpful'] = $review->helpful;
+            $data[$x]['id'] = $review->id;
+            $x++;
+        }
+
+        return $data;
+    }
+    public function helpful(Request $request){
+        $review = Reviews::where('id', '=', $request->input('id'))->get();
+        
+        $data['count'] = $review[0]['helpful'] + 1;
+
+        Reviews::where('id', '=', $request->input('id'))->update(['helpful' => $data['count']]);
+
+        return Response::json($data, 200);
+    } 
+
+    public function property_listing($id){
+        $property_meta = Property::where('meta_name', '=', 'agent')->where('meta_value', '=', $id)->get();
+        $x = 0;
+
+        foreach ($property_meta as $meta) {
+             $prop[$x]['id'] = $meta->user_id;
+             $prop[$x]['code'] = $meta->property_code;
+             $x++;
+        }
+
+        $properties = array();
+
+        foreach ($prop as $key) {
+            $property = Property::where('user_id', '=', $key['id'])->where('property_code', '=', $key['code'])->get();
+            foreach ($property as $meta) {
+                $info[$meta->meta_name] = $meta->meta_value;
+            }
+
+            array_push($properties, $info);
+        }
+
+        return $properties;
+
+    }
 
 }

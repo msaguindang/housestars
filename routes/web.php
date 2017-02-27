@@ -23,9 +23,7 @@ Route::get('/home', function () {
     return view('general.home');
 });
 
-Route::get('/agency', function () {
-    return view('general.agency');
-});
+Route::get('/agency', 'MainController@agency');
 
 Route::get('/trades-services', function () {
     return view('general.trades-services');
@@ -102,9 +100,11 @@ Route::get('/tradesman-listings', function () {
     return view('general.tradesman-listings');
 });
 
-Route::get('/agency-listings', function () {
-    return view('general.agency-listings');
+Route::get('/search-agency', function () {
+    return view('general.search-agency');
 });
+
+
 
 Route::get('/savings-calculator', function () {
     return view('general.savings-calculator');
@@ -187,11 +187,21 @@ Route::get('/{action}/{provider}/callback', 'LoginController@verifyProviderCallb
 
 Route::post('/search/{item}', 'SearchController@search');
 
-Route::get('/search/category/{category}', 'SearchController@listing');
+Route::get('/search/category/{category}/{suburb}', 'SearchController@tradesmenListing');
 
 Route::get('/profile/{role}/{id}', 'ProfileController@profile');
 
 Route::post('/helpful', 'ProfileController@helpful');
+
+Route::post('/send/{type}', 'SearchController@send');
+
+Route::get('/agency-listings', function () {
+    return view('general.agency-listings');
+});
+
+Route::post('/order-business-card', 'TradesmanController@orderBC');
+
+Route::post('/contact-us', 'TradesmanController@contact');
 
 Route::group(['prefix' => 'admin'], function () {
 

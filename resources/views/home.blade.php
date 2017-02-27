@@ -89,6 +89,7 @@
                   </form>
                 </li>
                 <li><span class="icon icon-tradesman"></span><a href="/profile">Profile</a></li>
+                <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
               @else
                 <li><span class="icon icon-customer"></span><a href="/customer" >Customer</a></li>
                 <li><span class="icon icon-tradesman"></span><a href="/trades-services">Trades & Services</a></li>

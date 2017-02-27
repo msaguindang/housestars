@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Hash;
 use App\Agents;
 use Response;
+use Mail;
+use App\Reviews;
 
 class TradesmanController extends Controller
 {
@@ -41,6 +43,9 @@ class TradesmanController extends Controller
     		
     	}
 
+        $data['rating'] = $this->getRating(Sentinel::getUser()->id);
+        $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
+        $data['total'] = count($data['reviews']);
 
     	return View::make('dashboard/tradesman/profile')->with('data', $data);
     }
@@ -194,5 +199,92 @@ class TradesmanController extends Controller
 
         return View::make('dashboard/tradesman/settings')->with('data', $data);
     }
+
+    public function orderBC(Request $request){
+
+        $this->sendOrder($request);
+
+        return Response::json('success', 200);
+    }
+
+     public function contact(Request $request){
+
+        $this->sendInquiry($request);
+
+        return Response::json('success', 200);
+    }
+
+    private function sendOrder($data){
+        Mail::send(['html' => 'emails.order-bc'], [
+                'name' => $data->input('name'),
+                'address' => $data->input('address'),
+                'contact' => $data->input('contact'),
+                'email' => $data->input('email'),
+                'website' => $data->input('website')
+            ], function ($message) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('nikko@kudosable.com', 'Housestars');
+                $message->subject('Order Business Card');
+            });
+    }
+
+     private function sendInquiry($data){
+        $subject = $data->input('subject');
+        Mail::send(['html' => 'emails.contact-us'], [
+                'subject' => $data->input('subject'),
+                'content' => $data->input('message'),
+                'name' => $data->input('name'),
+                'email' => $data->input('email')
+            ], function ($message) use ($subject) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('nikko@kudosable.com', 'Housestars');
+                $message->subject('Client Inquiry: ' . $subject);
+            });
+    }
+
+    public function getRating($id){
+        $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
+        $average = 0;
+        $numRatings = count($ratings);
+
+        foreach ($ratings as $rating) {
+            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+        }
+
+        return $average;
+    }
+
+    public function getReviews($id){
+
+        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
+        $data = array(); $x = 0; $average = 0; 
+        foreach ($reviews as $review) {
+            $name = User::where('id', $review->reviewer_id)->get();
+            $data[$x]['name'] = $name[0]['name'];
+            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $data[$x]['communication'] = (int)$review->communication;
+            $data[$x]['work_quality'] = (int)$review->work_quality;
+            $data[$x]['price'] = (int)$review->price;
+            $data[$x]['punctuality'] = (int)$review->punctuality;
+            $data[$x]['attitude'] = (int)$review->attitude;
+            $data[$x]['title'] = $review->title;
+            $data[$x]['content'] = $review->content;
+            $data[$x]['created'] = $review->created_at->format('M d, Y');
+            $data[$x]['helpful'] = $review->helpful;
+            $data[$x]['id'] = $review->id;
+            $x++;
+        }
+
+        return $data;
+    }
+    public function helpful(Request $request){
+        $review = Reviews::where('id', '=', $request->input('id'))->get();
+        
+        $data['count'] = $review[0]['helpful'] + 1;
+
+        Reviews::where('id', '=', $request->input('id'))->update(['helpful' => $data['count']]);
+
+        return Response::json($data, 200);
+    } 
 
 }

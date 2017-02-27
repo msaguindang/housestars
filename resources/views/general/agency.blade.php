@@ -13,18 +13,35 @@
                 </div>
                 <div class="nav-items">
                   <ul>
-                    <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li>
-                    <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                    <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
+                    
+                     @if(Sentinel::check())
+                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @else
+                      <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
+                      <li><a href="#" data-toggle="modal" data-target="#signup">Signup</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
               <div class="row">
                 <div class="main-nav">
                   <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
-                    <li class="active"><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
+                    @if(Sentinel::check())
+                    <li><span class="icon icon-logout-dark"></span>
+                      <form action="/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                    </li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    @else
+                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    @endif
                   </ul>
                 </div>
               </div>
@@ -99,8 +116,11 @@
 			      	<span class="separator"></span>
 			    </div>
 			    <div class="col-xs-6 col-xs-offset-3">
-			    	<p>Please enter the postcode of the suburb desired.</p>
-			    	<input type="text" name="suburb" placeholder="Enter Postcode" class="search" id="postcode">
+			    	<select id="select-state" name="positions[]" multiple  class="demo-default">
+            @foreach ($data['suburbs'] as $suburb)
+                <option value="{{ $suburb->availability }},{{ $suburb->name }}">{{ $suburb->name }}</option>
+            @endforeach
+          </select>
 			    </div>
     		</div>
     	</div>
@@ -113,124 +133,134 @@
              <h2 class="wide"><span class="icon icon-left-bar"></span>Testimonials from our agents<span class="icon icon-right-bar"></span></h2>
              <span class="separator"></span>
              <p>Our agents love our personalized service and attention to detail. Above all else, we listen to our agents to make sure we are doing everything we can to follow through on our promise of making them number 1. </p>
+             @if(isset($data['comments']))
+              @if(Sentinel::check())
+                <a class="btn btn-primary" data-toggle="modal" data-target="#agencyRate">Add Review</a>
+              @else
+                <a class="btn btn-primary" data-toggle="modal" data-target="#login">Login to Add Review</a>
+              @endif
+             @else
+              @if(Sentinel::check())
+                <a class="btn btn-primary" data-toggle="modal" data-target="#agencyRate">Be the first one to review us!</a>
+              @else
+                <a class="btn btn-primary" data-toggle="modal" data-target="#login">Be the first one to review us!</a>
+              @endif
+             @endif
           </div>
+          @if(isset($data['comments']))
           <div class="testimonials-carousel">
             <div class="col-md-12" data-wow-delay="0.2s">
                 <div class="carousel slide" data-ride="carousel" id="quote-carousel">
-                  <!-- Carousel Slides / Quotes -->
                     <div class="carousel-inner text-center">
-                    <!-- Testimonials 1 -->
-                      <div class="item active">
-                          <div class="row">
-                            <div class="col-xs-1 col-xs-offset-1 thumb">
-                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
-                            </div>
-                            <div class="col-xs-4 bubble-left">
-                              <b class="left">Tiffany Yee</b>
-                              <span class="date right">Posted: January 2015</span>
-                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                              <div class="stars left">
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                              </div>
-                            </div>
-                            <div class="col-xs-1 thumb">
-                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
-                            </div>
-                             <div class="col-xs-4 bubble-left">
-                              <b class="left">Jane Uy</b>
-                              <span class="date right">Posted: March 2015</span>
-                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
-                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(156)</span></button>
-                              <div class="stars left">
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                      <!-- Testimonials 2 -->
-                      <div class="item">
-                          <div class="row">
-                            <div class="col-xs-1 col-xs-offset-1 thumb">
-                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
-                            </div>
-                            <div class="col-xs-4 bubble-left">
-                              <b class="left">Tiffany Yee</b>
-                              <span class="date right">Posted: January 2015</span>
-                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                              <div class="stars left">
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                              </div>
-                            </div>
-                            <div class="col-xs-1 thumb">
-                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
-                            </div>
-                             <div class="col-xs-4 bubble-left">
-                              <b class="left">Jane Uy</b>
-                              <span class="date right">Posted: March 2015</span>
-                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
-                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(156)</span></button>
-                              <div class="stars left">
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                              </div>
-                            </div>
-                          </div>
-                      </div>
-                      <!-- Testimonials 3 -->
-                      <div class="item">
-                          <div class="row">
-                            <div class="col-xs-1 col-xs-offset-1 thumb">
-                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
-                            </div>
-                            <div class="col-xs-4 bubble-left">
-                              <b class="left">Tiffany Yee</b>
-                              <span class="date right">Posted: January 2015</span>
-                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. !</p>
-                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(200)</span></button>
-                              <div class="stars left">
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                              </div>
-                            </div>
-                            <div class="col-xs-1 thumb">
-                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
-                            </div>
-                             <div class="col-xs-4 bubble-left">
-                              <b class="left">Jane Uy</b>
-                              <span class="date right">Posted: March 2015</span>
-                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
-                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(156)</span></button>
-                              <div class="stars left">
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                                <span class="icon icon-star"></span>
-                              </div>
-                            </div>
-                          </div>
-                      </div>          
+                      @php ($x = count($data['comments']))
+                      @php ($y = 0)
+                      @php ($counter = 2)
 
-                            <!-- Carousel Buttons Next/Prev -->
+                      @foreach($data['comments'] as $comment)
+                        @if($y == 0 && $y != $counter)
+                          <div class="item active">
+                            <div class="row">
+                              <div class="col-xs-1 col-xs-offset-1 thumb">
+                                <img src="{{url($comment['img'])}}" alt="Name Here">
+                              </div>
+                              <div class="col-xs-4 bubble-left">
+                                <b class="left">{{$comment['name']}}</b>
+                                <span class="date right">Posted: January 2015</span>
+                                <p class="left">{{$comment['content']}}</p>
+                                <!-- <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful ({{$comment['helpful']}})</button> -->
+                                <div class="stars left">
+                                  @for($i = 1; $i <= $comment['average']; $i++)
+                                    <span class="icon icon-star"></span>
+                                  @endfor
+                                  @php ($rating = 5 - $comment['average'])
+                                  @for($i = 1; $i <= $rating; $i++)
+                                    <span class="icon icon-star-grey"></span>
+                                  @endfor
+                                </div>
+                              </div>
+                          @php ($y++)
+                        @elseif($y == $counter)
+                              </div>
+                          </div>
+                          <div class="item">
+                              <div class="row">
+                                <div class="col-xs-1 col-xs-offset-1 thumb">
+                                  <img src="{{url($comment['img'])}}" alt="Name Here">
+                                </div>
+                                <div class="col-xs-4 bubble-left">
+                                  <b class="left">{{$comment['name']}}</b>
+                                  <span class="date right">Posted: January 2015</span>
+                                  <p class="left">{{$comment['content']}}</p>
+                                  <!-- <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful ({{$comment['helpful']}})</button> -->
+                                  <div class="stars left">
+                                    @for($i = 1; $i <= $comment['average']; $i++)
+                                      <span class="icon icon-star"></span>
+                                    @endfor
+                                    @php ($rating = 5 - $comment['average'])
+                                    @for($i = 1; $i <= $rating; $i++)
+                                      <span class="icon icon-star-grey"></span>
+                                    @endfor
+                                  </div>
+                                </div>
+                          @php ($y++)
+                          @php ($counter = $counter + 2)
+                        @else
+                            <div class="col-xs-1 thumb">
+                              <img src="{{url($comment['img'])}}" alt="Name Here">
+                            </div>
+                            <div class="col-xs-4 bubble-left">
+                              <b class="left">{{$comment['name']}}</b>
+                              <span class="date right">Posted: January 2015</span>
+                              <p class="left">{{$comment['content']}}</p>
+                              <!-- <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful ({{$comment['helpful']}})</button> -->
+                              <div class="stars left">
+                                  @for($i = 1; $i <= $comment['average']; $i++)
+                                    <span class="icon icon-star"></span>
+                                  @endfor
+                                  @php ($rating = 5 - $comment['average'])
+                                  @for($i = 1; $i <= $rating; $i++)
+                                    <span class="icon icon-star-grey"></span>
+                                  @endfor
+                              </div>
+                            </div>
+                            @php ($y++)
+                        @endif
+
+                        @if($y == $x)
+                          </div>
+                        </div>
+                        @endif
+                          
+                      @endforeach
+
+                      <!-- <div class="item active">
+                          <div class="row">
+                            <div class="col-xs-1 col-xs-offset-1 thumb">
+                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
+                            </div>
+                            
+                            <div class="col-xs-1 thumb">
+                              <img src="assets/testimonial-thumb.jpg" alt="Name Here">
+                            </div>
+                            <div class="col-xs-4 bubble-left">
+                              <b class="left">Jane Uy</b>
+                              <span class="date right">Posted: March 2015</span>
+                              <p class="left">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit!</p>
+                              <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful <span class="small">(156)</span></button>
+                              <div class="stars left">
+                                <span class="icon icon-star"></span>
+                                <span class="icon icon-star"></span>
+                                <span class="icon icon-star"></span>
+                              </div>
+                            </div>
+                          </div>
+                      </div>     -->     
                             <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><span class="icon icon-left"></span></a>
                             <a data-slide="next" href="#quote-carousel" class="right carousel-control"><span class="icon icon-right"></span></i></a>
                         </div>
                     </div>
           </div>
+          @endif
         </div>
       </div>
     </section>
@@ -251,6 +281,12 @@
 @endsection
 
 
-@section('scripts')
-     <script src="js/autocomplete.js"></script>
+ @section('scripts')
+     <script type="text/javascript">
+      $(function() {
+        $('#select-state').selectize({
+            maxItems: 1
+          });
+      });
+  </script>
 @stop

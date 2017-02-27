@@ -46,4 +46,11 @@ return [
         'redirect' => 'http://localhost/login/google/callback',
     ],
 
+    'ses' => [
+        'key' => 'AKIAISJHMTUHCEXPM4WA',
+        'secret' => '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',
+        'region' => 'us-west-2',
+    ],
+
+
 ];

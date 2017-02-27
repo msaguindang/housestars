@@ -75,7 +75,7 @@
     <section id="user-info">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-9">
             <div class="statistics">
                 @if(isset($data['trade']))
                   <h2 class="trade">{{$data['trade']}}</h2>
@@ -102,6 +102,36 @@
                     <p>{{$data['summary']}}</p>
                   </div>
                 @endif
+            
+          </div>
+          <div class="col-xs-3 profile-details">
+           <!--  <h3>More Details</h3> -->
+            @if(isset($data['website']))
+            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
+            </div>
+            @endif
+            @if(isset($data['email']))
+            <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
+            </div>
+            @endif
+
+            @if(isset($data['abn']))
+            <div class="col-xs-2 icon"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p><b> ABN </b></br><span class="detail">{{$data['abn']}}</span></p>
+            </div>
+            @endif
+
+            @if(isset($data['charge-rate']))
+            <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+            </div>
+            @endif
             
           </div>
         </div>
@@ -183,13 +213,15 @@
                     <button class="btn btn-helpful right" id="helpful" data-id="{{$review['id']}}" data-token="{{csrf_token()}}"><span class="icon icon-helpful"></span> Helpful <span class="small" id="count-{{$review['id']}}">({{$review['helpful']}})</span></button>
                     
                     <div class="stars left">
-                      @for($i = 1; $i <= $review['average']; $i++)
-                          <span class="icon icon-star"></span>
-                      @endfor
-                      @php ($rating = 5 - $review['average'])
-                      @for($i = 1; $i <= $rating; $i++)
-                          <span class="icon icon-star-grey"></span>
-                      @endfor
+                     
+                        @for($i = 1; $i <= $review['average']; $i++)
+                            <span class="icon icon-star"></span>
+                        @endfor
+                        @php ($rating = 5 - $review['average'])
+                        @for($i = 1; $i <= $rating; $i++)
+                            <span class="icon icon-star-grey"></span>
+                        @endfor
+                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a> 
                     </div>
                   </div>
                   @endif
