@@ -6,10 +6,13 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*",
+        "laravel/framework": "5.4.*",
+         "laravelcollective/html": "^5.3.0",
         "cartalyst/sentinel": "2.0.*",
         "cartalyst/stripe": "~2.0",
-        "stripe/stripe-php": "^4.4"
+        "stripe/stripe-php": "^4.4",
+        "laravel/socialite": "^3.0",
+        "aws/aws-sdk-php": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
