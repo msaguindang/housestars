@@ -49,7 +49,7 @@
             </div>
           </div>
     </header>
- <form action="update-profile" method="POST" enctype="multipart/form-data">
+ <form action="{{env('APP_URL')}}/update-profile" method="POST" enctype="multipart/form-data">
     <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
      
         {{csrf_field() }}
