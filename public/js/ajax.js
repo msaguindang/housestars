@@ -150,14 +150,16 @@ $(document).on('submit', '#reviewForm' ,function(e){
       
       var stat = $('input[name=switch]').val();
 
-      if(stat == 'false'){
+      if(stat == '0'){
         $('.nav-panel').css('display', 'none');
         $('.profile-details').css('display', 'block');
-        $('input[name=switch]').val('true')
+        $('input[name=switch]').val('1')
+        $('input[name=switch]').attr('checked', true);
       } else {
         $('.nav-panel').css('display', 'block');
         $('.profile-details').css('display', 'none');
-        $('input[name=switch]').val('false')
+        $('input[name=switch]').val('0')
+        $('input[name=switch]').attr('checked', false);
       }
       
 
