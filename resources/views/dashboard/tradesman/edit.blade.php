@@ -49,7 +49,7 @@
             </div>
           </div>
     </header>
- <form action="tradesman/update-profile" method="POST" enctype="multipart/form-data">
+ <form action="{{env('APP_URL')}}/tradesman/update-profile" method="POST" enctype="multipart/form-data">
   {{csrf_field() }}
     <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
      

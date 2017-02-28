@@ -68,7 +68,7 @@
               <div class="spacing"></div>
               <div class="col-xs-6">
                 <h2 class="section-title">Account Settings</h2>
-              <form action="update-settings" method="POST" enctype="multipart/form-data">
+              <form action="{{env('APP_URL')}}/update-settings" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 <label>Full Name</label>
                 <input type="text" name="name" value="{{$data['name']}}" required>
