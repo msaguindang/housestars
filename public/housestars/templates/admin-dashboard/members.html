@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-12">
+        <h4 class="title">Members</h4>
+        <div class="card">
+            <div class="content table-responsive table-full-width">
+                <table class="table table-hover table-striped">
+                    <thead>
+
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Subscription Type</th>
+                    <th>Subs Start</th>
+                    <th>Subs End</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="user in _users">
+
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role_name }}</td>
+                        <td>{{ user.subscription_type }}</td>
+                        <td>{{ user.sub_start }}</td>
+                        <td>{{ user.sub_end }}</td>
+
+                        <td>
+                            <a href="" ng-click="editUser(user, $index)" class="edit">
+                                <i class="pe-7s-note"></i>
+                            </a>
+                            <a href="" ng-click="disableUser(user, $index)" class="disable">
+                                <i class="pe-7s-check"></i>
+                            </a>
+                            <a href="" ng-click="extendSubscriptionUser(user, $index)" class="extend-subscription">
+                                <i class="pe-7s-clock"></i>
+                            </a>
+                            <a href="" ng-click="deleteUser(user, $index)" class="delete">
+                                <i class="pe-7s-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
