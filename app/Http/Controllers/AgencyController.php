@@ -14,24 +14,26 @@ use App\Suburbs;
 use Carbon\Carbon;
 use Hash;
 use App\Agents;
+
 use App\Reviews;
 use App\Property;
+use Response;
 
 class AgencyController extends Controller
 {
     public function dashboard(){
-    	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $dp = 'assets/default.png';
         $cp = 'assets/default_cover_photo.jpg';
-    	foreach ($meta as $key) {
-    		if($key->meta_name == 'profile-photo'){
-    			$dp = $key->meta_value;
-    		} else if($key->meta_name == 'cover-photo'){
-    			$cp = $key->meta_value;
-    		} else {
+        foreach ($meta as $key) {
+            if($key->meta_name == 'profile-photo'){
+                $dp = $key->meta_value;
+            } else if($key->meta_name == 'cover-photo'){
+                $cp = $key->meta_value;
+            } else {
                 $data[$key->meta_name] = $key->meta_value;
             }
-    	}
+        }
 
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
         $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
@@ -39,62 +41,62 @@ class AgencyController extends Controller
 
         $data['properties'] = $this->property_listing(Sentinel::getUser()->id);
         $data['total-listings'] = count($data['properties']);
-       // dd($data);        
+        // dd($data);
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
     public function edit()
     {
 
-    	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-    	$data = array();
+        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+        $data = array();
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
 
-    	foreach ($meta as $key) {
-    		$data[$key->meta_name] = $key->meta_value;
-    	}
+        foreach ($meta as $key) {
+            $data[$key->meta_name] = $key->meta_value;
+        }
 
 
-    	return View::make('dashboard/agency/edit')->with('data', $data);
+        return View::make('dashboard/agency/edit')->with('data', $data);
     }
 
     public function updateProfile(Request $request)
     {
 
-    	//dd($request->all());
-    	if(Sentinel::check()){
-    		$user_id = Sentinel::getUser()->id;
+        //dd($request->all());
+        if(Sentinel::check()){
+            $user_id = Sentinel::getUser()->id;
 
-    		$meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
+            $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
 
-    		foreach ($meta_name as $meta) {
-                
-                    
+            foreach ($meta_name as $meta) {
+
+
                 if ($request->hasFile($meta)) {
-                	$localpath = 'user/user-'.$user_id.'/uploads';
-                	$filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
-					$path = $request->file($meta)->move(public_path($localpath), $filename);
-					$value = $localpath.'/'.$filename;
-				} else {
-					$value = $request->input($meta);
-				}
+                    $localpath = 'user/user-'.$user_id.'/uploads';
+                    $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
+                    $path = $request->file($meta)->move(public_path($localpath), $filename);
+                    $value = $localpath.'/'.$filename;
+                } else {
+                    $value = $request->input($meta);
+                }
 
-				if($value !== null){
-					UserMeta::updateOrCreate(
-                    ['user_id' => $user_id, 'meta_name' => $meta],
-                    ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
-                );
-				}
-                
-    		}
+                if($value !== null){
+                    UserMeta::updateOrCreate(
+                        ['user_id' => $user_id, 'meta_name' => $meta],
+                        ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
+                    );
+                }
 
-		    return redirect(env('APP_URL').'/dashboard/agency/profile');
-    	
-    	} else {
-    		return redirect('');
-    	}
+            }
+
+            return redirect(env('APP_URL').'/dashboard/agency/profile');
+
+        } else {
+            return redirect('');
+        }
     }
 
     public function settings()
@@ -102,13 +104,13 @@ class AgencyController extends Controller
 
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $agents = DB::table('users')
-                    ->join('agents', function ($join) {
-                        $join->on('users.id', '=', 'agents.agent_id')
-                             ->where('agents.agency_id', '=', Sentinel::getUser()->id);
-                    })
-                    ->get();
+            ->join('agents', function ($join) {
+                $join->on('users.id', '=', 'agents.agent_id')
+                    ->where('agents.agency_id', '=', Sentinel::getUser()->id);
+            })
+            ->get();
         $data = array();
-        
+
 
         foreach ($meta as $key) {
             $data[$key->meta_name] = $key->meta_value;
@@ -143,7 +145,7 @@ class AgencyController extends Controller
                 User::updateOrCreate(
                     ['id' => $id],
                     ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name'), 'password' => $password]);
-            } 
+            }
 
             return redirect()->back();
 
@@ -163,15 +165,15 @@ class AgencyController extends Controller
 
             try{
                 $token = \Stripe\Token::create(
-                        array(
-                            'card'=> array(
+                    array(
+                        'card'=> array(
                             'number' => $request->input('credit-card'),
                             'exp_month' => $request->input('exp_month'),
                             'exp_year' => $request->input('exp_year'),
                             'cvc' => $request->input('cvc')
-                                )
-                            )
-                        );
+                        )
+                    )
+                );
                 $customer = \Stripe\Customer::retrieve($customer_id);
                 $customer->source = $token; // obtained with Stripe.js
                 $customer->save();
@@ -180,11 +182,11 @@ class AgencyController extends Controller
 
                 $body = $e->getJsonBody();
                 $err  = ''.$body['error']['message'].'';
-                    
+
                 return redirect()->back()->with('error', $err);
 
             }
-            
+
 
         } else {
             return redirect(env('APP_URL'));
@@ -194,25 +196,25 @@ class AgencyController extends Controller
 
     public function deleteAgent(Request $request)
     {
-         if(Sentinel::check()){
+        if(Sentinel::check()){
             $id = $request->input('agent-id');
             User::where('id', '=', $id )->delete();
             Agents::where('agent_id', '=', $id )->delete();
-             return redirect()->back();
-         } else {
+            return redirect()->back();
+        } else {
             return redirect(env('APP_URL'));
-         }
+        }
     }
 
     public function updateAgent(Request $request)
     {
         if(Sentinel::check()){
 
-          $agents = $request->input('add-agents');
+            $agents = $request->input('add-agents');
             foreach ($agents as $agent) {
                 if($agent['name'] != '' && $agent['email'] != ''){
                     if(isset($agent['id'])){
-                        
+
                         if($agent['password'] == ''){
                             User::updateOrCreate(
                                 ['id' => $agent['id']],
@@ -222,7 +224,7 @@ class AgencyController extends Controller
                             User::updateOrCreate(
                                 ['id' => $agent['id']],
                                 ['id' => $agent['id'], 'email' => $agent['email'], 'name' => $agent['name'], 'password' => $password]);
-                        } 
+                        }
 
                         if(isset($agent['active'])){
                             Agents::updateOrCreate(
@@ -239,27 +241,27 @@ class AgencyController extends Controller
                             'name'    => $agent['name'],
                             'password'    => $agent['password'],
                         ];
-                               
+
                         $user = Sentinel::registerAndActivate($credentials);
                         $role = Sentinel::findRoleBySlug('agent');
                         $role->users()->attach($user);
                         $email = [
                             'email' => $agent['email']
                         ];
-                            
+
                         $user_id = Sentinel::getUser()->id;
                         $agent_id = Sentinel::findByCredentials($email);
 
                         if(isset($agent['active'])){
-                                Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id, 'active' => 1]);
+                            Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id, 'active' => 1]);
                         } else {
-                                Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
+                            Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
                         }
                     }
                 }
-            } 
+            }
 
-          return redirect()->back();
+            return redirect()->back();
 
         } else {
             return redirect(env('APP_URL'));
@@ -281,7 +283,7 @@ class AgencyController extends Controller
     public function getReviews($id){
 
         $reviews = Reviews::where('reviewee_id', '=', $id)->get();
-        $data = array(); $x = 0; $average = 0; 
+        $data = array(); $x = 0; $average = 0;
         foreach ($reviews as $review) {
             $name = User::where('id', $review->reviewer_id)->get();
             $data[$x]['name'] = $name[0]['name'];
@@ -303,22 +305,22 @@ class AgencyController extends Controller
     }
     public function helpful(Request $request){
         $review = Reviews::where('id', '=', $request->input('id'))->get();
-        
+
         $data['count'] = $review[0]['helpful'] + 1;
 
         Reviews::where('id', '=', $request->input('id'))->update(['helpful' => $data['count']]);
 
         return Response::json($data, 200);
-    } 
+    }
 
     public function property_listing($id){
         $property_meta = Property::where('meta_name', '=', 'agent')->where('meta_value', '=', $id)->get();
         $x = 0;
 
         foreach ($property_meta as $meta) {
-             $prop[$x]['id'] = $meta->user_id;
-             $prop[$x]['code'] = $meta->property_code;
-             $x++;
+            $prop[$x]['id'] = $meta->user_id;
+            $prop[$x]['code'] = $meta->property_code;
+            $x++;
         }
 
         $properties = array();
@@ -333,9 +335,49 @@ class AgencyController extends Controller
                 array_push($properties, $info);
             }
         }
-        
+
 
         return $properties;
+
+    }
+
+    public function getAgency(Request $request)
+    {
+        //if(Sentinel::check()){
+
+        $userId = $request->input('agent');
+
+        $userMeta = UserMeta::where('user_id', $userId);
+
+        $neededMetas = $userMeta->whereIn('meta_name', [
+            'agency-name',
+            'principal-name',
+            'business-address',
+            'website',
+            'phone',
+            'abn',
+            'positions'
+        ])
+            ->get()
+            ->toArray();
+
+        $agentProperties = [];
+
+        foreach ($neededMetas as $meta) {
+            $agentProperties[$meta['meta_name']] = $meta['meta_value'];
+        }
+
+        $response = [
+            'id' => $userId,
+            'metas' => $agentProperties
+        ];
+
+        return Response::json($response, 200);
+
+        /*} else {
+            $error['message'] = array('You are not authorized.');
+            return Response::json($error, 422);
+        }*/
 
     }
 

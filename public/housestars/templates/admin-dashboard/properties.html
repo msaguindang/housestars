@@ -1,0 +1,242 @@
+<div class="row" xmlns="http://www.w3.org/1999/html">
+    <div class="col-md-12">
+        <h4 class="title">Property Listing</h4>
+        <div class="card">
+            <div class="content table-responsive table-full-width">
+                <table class="table table-hover table-striped">
+                    <thead>
+
+                    <th>Vendor Name</th>
+                    <th>Type</th>
+                    <th>No. of Rooms</th>
+                    <th>Location</th>
+                    <th>Currently Leased?</th>
+                    <th>Property Value</th>
+                    <th>Agent</th>
+                    <th>Action</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="property in _properties">
+
+                        <td>{{ property['vendor-name'] }}</td> <!-- vendor-name -->
+                        <td>{{ property['property-type'] }}</td> <!-- property-type -->
+                        <td>{{ property['number-rooms'] }}</td> <!-- number-rooms -->
+                        <td>{{ property['suburb'] }} {{ property['state'] }} {{ property['post-code'] }}</td>
+                        <!-- suburb, state post-code -->
+                        <td>{{ property['leased'] }}</td> <!-- leased -->
+                        <td>{{ property['value-to'] }}</td> <!-- value-to -->
+                        <td>
+                            <a class="show-agent-modal" href="" ng-click="showAgency(property)">
+                                {{ property['agent-name'] }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="" ng-click="editProperty(property, $index)" class="edit-property">
+                                <i class="pe-7s-note"></i>
+                            </a>
+                            <a href="" ng-click="deleteProperty(property, $index)" class="delete-property">
+                                <i class="pe-7s-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script type="text/ng-template" id="agency-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{ metas['agency-name'] }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Principal Name</label>
+            </div>
+            <div class="col-xs-8">
+                <p class="principal-name-text">{{ metas['principal-name'] }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Business Address</label>
+            </div>
+            <div class="col-xs-8">
+                <p class="business-address-text">{{ metas['business-address'] }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Website</label>
+            </div>
+            <div class="col-xs-8">
+                <p class="website-text">{{ metas['website'] }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Phone</label>
+            </div>
+            <div class="col-xs-8">
+                <p class="phone-text">{{ metas['phone'] }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>ABN</label>
+            </div>
+            <div class="col-xs-8">
+                <p class="abn-text">{{ metas['abn'] }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Positions</label>
+            </div>
+            <div class="col-xs-8">
+                <p class="positions-text">{{ metas['positions'] }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+    </div>
+
+</script>
+
+
+<!-- EDIT PROPERTY MODAL -->
+<script type="text/ng-template" id="edit-property-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Edit Property</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Vendor Name</label>
+            </div>
+            <div class="col-xs-8">
+                <select name="vendor" class="form-control" ng-options="user.id as user.name for user in users" ng-model="user_id">
+                    <option value="">Select Vendor</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Property Type</label>
+            </div>
+            <div class="col-xs-8">
+                <select name="property_type" class="form-control" ng-model="metas['property-type'].value">
+                    <option value="">Select Property Type</option>
+                    <option value="Condominium">Condominium</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Number of Rooms</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="number_of_rooms" type="text" class="form-control number-input" ng-model="metas['number-rooms'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Post Code</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="post_code" type="text" class="form-control number-input" ng-model="metas['post-code'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Suburb</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="suburb" type="text" class="form-control" ng-model="metas['suburb'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>State</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="state" type="text" class="form-control" ng-model="metas['state'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Leased</label>
+            </div>
+            <div class="col-xs-8">
+                <label class="radio-inline"><input type="radio" value="yes" name="leased" ng-model="metas['leased'].value">Yes</label>
+                <label class="radio-inline"><input type="radio" value="no" name="leased" ng-model="metas['leased'].value">No</label>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Value From</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="value_from" type="text" class="form-control number-input" ng-model="metas['value-from'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Value To</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="value_to" type="text" class="form-control number-input" ng-model="metas['value-to'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>More Details</label>
+            </div>
+            <div class="col-xs-8">
+                <input name="more_details" type="text" class="form-control" ng-model="metas['more-details'].value">
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Agent</label>
+            </div>
+            <div class="col-xs-8">
+                <select string-to-number name="agent" class="form-control" ng-options="user.id as user.name for user in users" ng-model="metas['agent'].value">
+                    <option value="">Select Agent</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="saveProperty()">Save changes</button>
+    </div>
+
+</script>

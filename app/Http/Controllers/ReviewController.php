@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reviews;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -50,4 +51,15 @@ class ReviewController extends Controller
     	
     	return Response::json($data, 200); 
     }
+
+	function getAllReviews()
+	{
+		$reviews = Reviews::all();
+
+		$response = [
+			'reviews' => $reviews
+		];
+
+		return Response::json($response, 200);
+	}
 }

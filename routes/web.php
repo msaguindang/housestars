@@ -205,9 +205,9 @@ Route::post('/contact-us', 'TradesmanController@contact');
 
 Route::group(['prefix' => 'admin'], function () {
 
-    Route::get('', 'AdminController@showLogin');
+    Route::get('', 'AdminController@showDashboard');
 
-    Route::get('dashboard', 'AdminController@showDashboard');
+    /*Route::get('dashboard', 'AdminController@showDashboard');
 
     Route::get('members', 'AdminController@showMembers');
 
@@ -215,7 +215,39 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::get('reviews', 'AdminController@showReviews');
 
-    Route::get('advertisements', 'AdminController@showAdvertisements');
+    Route::get('advertisements', 'AdminController@showAdvertisements');*/
+
+    Route::get('login', 'AdminController@showLogin');
+
+    Route::get('logout', 'AdminController@logout');
+
+    Route::group(['prefix' => 'agency'], function(){
+
+        Route::get('get', 'AgencyController@getAgency');
+
+    });
+
+    Route::group(['prefix' => 'property'], function(){
+
+        Route::get('', 'PropertyController@getAllProperties');
+        Route::get('get', 'PropertyController@getProperty');
+        Route::post('delete', 'PropertyController@deleteProperty');
+        Route::post('update', 'PropertyController@updateProperty');
+
+    });
+
+    Route::group(['prefix' => 'user'], function(){
+
+        Route::get('', 'UserController@getAllUsers');
+        Route::post('delete', 'UserController@deleteUser');
+
+    });
+
+    Route::group(['prefix' => 'review'], function(){
+
+        Route::get('', 'ReviewController@getAllReviews');
+
+    });
 
 });
 
