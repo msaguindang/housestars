@@ -56,7 +56,7 @@
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
 				<h2>Vendors Registration Form</h2>
-				<form action="add-property" method="POST">
+				<form action="{{env('APP_URL')}}/add-property" method="POST">
 					@if(session('error'))
 					<div class="alert alert-danger">
 						{{session('error')}}

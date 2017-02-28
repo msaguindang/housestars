@@ -75,7 +75,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box">
-				<form action="add-info" method="POST">
+				<form action="{{env('APP_URL')}}/add-info" method="POST">
 					{{csrf_field() }}
 				<h2>Agency Registration Form</h2>
 				<div class="col-xs-4">

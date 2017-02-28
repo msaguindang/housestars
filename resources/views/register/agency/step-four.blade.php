@@ -72,7 +72,7 @@
 </section>
 
 <section id="sign-up-form">
-	<form action="charge" method="POST">
+	<form action="{{env('APP_URL')}}/charge" method="POST">
 		{{csrf_field() }}
 	<div class="container">
 		<div class="row">

@@ -72,7 +72,7 @@
 <section id="sign-up-form">
 	<div class="container">
 		<div class="row">
-			<form action="charge" method="POST">
+			<form action="{{env('APP_URL')}}/charge" method="POST">
 				{{csrf_field() }}
 			<div class="col-xs-12 form-box" style="padding: 40px">
 				<h2>Tradesman Package</h2>

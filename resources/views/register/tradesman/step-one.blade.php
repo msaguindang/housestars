@@ -74,7 +74,7 @@
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
 				<h2>Tradesman Registration Form</h2>
-				<form action="add-info" method="POST">
+				<form action="{{env('APP_URL')}}/add-info" method="POST">
 					@if(session('error'))
 					<div class="alert alert-danger">
 						{{session('error')}}

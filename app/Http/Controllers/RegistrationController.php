@@ -89,6 +89,7 @@ class RegistrationController extends Controller
     			}
 
 		      	return redirect('register/agency/step-two');
+                
     		} else if($role == 'tradesman'){
                 $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate');
                 foreach ($meta_name as $meta) {

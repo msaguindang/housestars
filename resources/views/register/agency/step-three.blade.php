@@ -76,7 +76,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box no-padding payment">
-				<form action="add-payment" method="POST">
+				<form action="{{env('APP_URL')}}/add-payment" method="POST">
 
 					{{csrf_field() }}
 				<div class="col-xs-6 padding-40">
