@@ -103,7 +103,7 @@
                             @endif
                               @if(isset($agency['profile-photo']))
                                 <div class="agency-info">
-                                  <div class="col-xs-2"><div class="profile-thumb" style="background: url('{{{{env('APP_URL')/$agency['profile-photo']}}'); background-size: cover;"></div></div>
+                                  <div class="col-xs-2"><div class="profile-thumb" style="background: url('{{env('APP_URL')}}/{{$agency['profile-photo']}}'); background-size: cover;"></div></div>
                                   <div class="col-xs-10">
                                     <h3 class="name">{{$agency['agency-name']}}</h3>
                                     <p class="location">{{$agency['business-address']}}</p>
