@@ -73,10 +73,10 @@ class AgencyController extends Controller
                 
                     
                 if ($request->hasFile($meta)) {
-                	$localpath = 'user/user-'.$user_id.'/uploads';
+                	$localpath = 'user/user-'.$user_id.'uploads';
                 	$filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
 					$path = $request->file($meta)->move(public_path($localpath), $filename);
-					$value = $localpath.'/'.$filename;
+					$value = $localpath.''.$filename;
 				} else {
 					$value = $request->input($meta);
 				}
@@ -90,10 +90,10 @@ class AgencyController extends Controller
                 
     		}
 
-		    return redirect('/dashboard/agency/profile');
+		    return redirect('dashboard/agency/profile');
     	
     	} else {
-    		return redirect('/');
+    		return redirect('');
     	}
     }
 
@@ -148,7 +148,7 @@ class AgencyController extends Controller
             return redirect()->back();
 
         } else {
-            return redirect('/');
+            return redirect('');
         }
 
     }
@@ -187,7 +187,7 @@ class AgencyController extends Controller
             
 
         } else {
-            return redirect('/');
+            return redirect('');
         }
 
     }
@@ -200,7 +200,7 @@ class AgencyController extends Controller
             Agents::where('agent_id', '=', $id )->delete();
              return redirect()->back();
          } else {
-            return redirect('/');
+            return redirect('');
          }
     }
 
@@ -262,7 +262,7 @@ class AgencyController extends Controller
           return redirect()->back();
 
         } else {
-            return redirect('/');
+            return redirect('');
         }
     }
 

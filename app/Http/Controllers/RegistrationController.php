@@ -44,7 +44,7 @@ class RegistrationController extends Controller
 
             $this->sendEmail($user, $activation->code, $request->input('name'), $account);
 
-           return \Ajax::redirect('/activation-sent');
+           return \Ajax::redirect('activation-sent');
 
     }
 
@@ -88,7 +88,7 @@ class RegistrationController extends Controller
                     }
     			}
 
-		      	return redirect('/register/agency/step-two');
+		      	return redirect('register/agency/step-two');
     		} else if($role == 'tradesman'){
                 $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate');
                 foreach ($meta_name as $meta) {
@@ -112,7 +112,7 @@ class RegistrationController extends Controller
                     }
                 }
 
-                return redirect('/register/tradesman/step-two');
+                return redirect('register/tradesman/step-two');
                 
             }
     	
@@ -153,7 +153,7 @@ class RegistrationController extends Controller
             }
         }
 
-        return redirect('/register/customer/complete');
+        return redirect('register/customer/complete');
 
     }  
 
@@ -194,9 +194,9 @@ class RegistrationController extends Controller
 
                             
                             
-                            //return redirect('/register/agency/step-three');
+                            //return redirect('register/agency/step-three');
                         } else {
-                            return redirect('/register/agency/step-three');
+                            return redirect('register/agency/step-three');
                         }
                         
                     }
@@ -207,10 +207,10 @@ class RegistrationController extends Controller
                     
                 }
 
-                return redirect('/register/agency/step-three');
+                return redirect('register/agency/step-three');
 
             } else {
-                return redirect('/register/agency/step-three');
+                return redirect('register/agency/step-three');
             }
 
         } else {
@@ -389,9 +389,9 @@ class RegistrationController extends Controller
                 }
             
             if($role == 'Tradesman'){
-                return redirect('/register/tradesman/step-three');
+                return redirect('register/tradesman/step-three');
             } else {
-                return redirect('/register/agency/step-four');
+                return redirect('register/agency/step-four');
             }
             
 
@@ -419,9 +419,9 @@ class RegistrationController extends Controller
             $request->session()->put('completed', 'yes');
 
             if($role == 'Tradesman'){
-                return redirect('/register/tradesman/complete');
+                return redirect('register/tradesman/complete');
             } else {
-                return redirect('/register/agency/complete');
+                return redirect('register/agency/complete');
             }
 
             } catch (\Stripe\Error\Card $e){

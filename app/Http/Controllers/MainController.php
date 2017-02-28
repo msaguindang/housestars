@@ -16,13 +16,13 @@ class MainController extends Controller
 
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
-                    return redirect('/dashboard/agency/profile');
+                    return redirect('dashboard/agency/profile');
                     break;
                 case 'tradesman':
-                    return redirect('/dashboard/tradesman/profile');
+                    return redirect('dashboard/tradesman/profile');
                     break;
                 case 'customer':
-                    return redirect('/dashboard/customer/profile');
+                    return redirect('dashboard/customer/profile');
                     break;
                 default: 
                     return redirect(URL::previous());

@@ -72,7 +72,7 @@ class ForgotPasswordController extends Controller
         if($reminder = Reminder::exists($sentinelUser)){
             if($code == $reminder->code){
                 Reminder::complete($sentinelUser, $code, $request->password);
-                return redirect('/reset-success');
+                return redirect('reset-success');
             } else {
                 return redirect('/'); 
             }

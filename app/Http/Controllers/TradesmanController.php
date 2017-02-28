@@ -154,7 +154,7 @@ class TradesmanController extends Controller
                 
     		}
 
-		    return redirect('/dashboard/tradesman/profile');
+		    return redirect('dashboard/tradesman/profile');
     	
     	} else {
     		return redirect('/');

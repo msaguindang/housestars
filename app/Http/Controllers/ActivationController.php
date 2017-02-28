@@ -20,18 +20,18 @@ class ActivationController extends Controller
 
     		 switch ($account){
                 case 'agency':
-                return redirect('/register/agency/step-one');
+                return redirect('register/agency/step-one');
                 break;
                 case 'tradesman':
-                return redirect('/register/tradesman/step-one');
+                return redirect('register/tradesman/step-one');
                 break;
                 case 'customer':
-                return redirect('/register/customer/step-one');
+                return redirect('register/customer/step-one');
                 break;
             }
     		
     	} else {
-    		return redirect('/');
+    		return redirect('');
     	}
     }
 }
