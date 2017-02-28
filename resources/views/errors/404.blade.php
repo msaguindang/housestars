@@ -18,7 +18,7 @@
     padding: 11px;
     width: 28%;
     margin: 0 auto;
-">Go back to <a href="/">housestars.com.au</a></p>
+">Go back to <a href="{{env('APP_URL')}}/">housestars.com.au</a></p>
         </div>
       </div>
     </div>

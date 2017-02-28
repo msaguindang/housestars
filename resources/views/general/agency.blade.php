@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href=""><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href="{{env('APP_URL')}}/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -16,7 +16,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
                     
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#signup">Signup</a></li>
@@ -26,21 +26,21 @@
               </div>
               <div class="row">
                 <div class="main-nav">
-                  <ul>
+                 <ul>
                     @if(Sentinel::check())
-                    <li><span class="icon icon-logout-dark"></span>
-                      <form action="logout" method="POST" id="logout-form">
-                        {{csrf_field() }}
-                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
-                      </form>
-                    </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                      <li><span class="icon icon-logout-dark"></span>
+                        <form action="{{env('APP_URL')}}/logout" method="POST" id="logout-form">
+                          {{csrf_field() }}
+                          <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                        </form>
+                      </li>
+                      <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
+                      <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
+                      <li class="active"><span class="icon icon-agency-dark"></span><a href="{{env('APP_URL')}}/agency">Agency</a></li>
                     @else
-                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                      <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
+                      <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
+                      <li class="active"><span class="icon icon-agency-dark"></span><a href="{{env('APP_URL')}}/agency">Agency</a></li>
                     @endif
                   </ul>
                 </div>
