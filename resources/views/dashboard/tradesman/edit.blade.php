@@ -356,7 +356,7 @@
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
                   <div class="upload-media">
-                  <form  action="upload" method="POST" enctype="multipart/form-data" class="dropzone">
+                  <form  action="{{env('APP_URL')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
                     {{csrf_field() }}
                     
                   </form>
