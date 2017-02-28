@@ -114,9 +114,8 @@
                               @endif
                             </div>
                             <div class="profile-info">
-                             
                               <p>{{$agency['summary']}} ...</p>
-                              <a href="profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
+                              <a href="{{env('APP_URL')}}/profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
                             </div>
                           </div>
                         </div>

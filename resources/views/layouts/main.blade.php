@@ -36,8 +36,6 @@
   <body>
 
 @yield("content")
-{{env('APP_URL')}}
-
     <footer>
       <div class="container main-footer">
         <div class="row widget">
