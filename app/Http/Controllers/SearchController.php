@@ -139,7 +139,7 @@ class SearchController extends Controller
                 foreach ($agencyData as $value) {
                    $data[$x][$value->meta_name] = $value->meta_value;
                 }
-                $data[$x]['rating'] = $this->getRating($id);
+                // $data[$x]['rating'] = $this->getRating($id);
                 $data[$x]['id'] = $value->user_id;
                 $x++;
            }
