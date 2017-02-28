@@ -78,7 +78,7 @@
 			<div class="col-xs-12 form-box" style="padding: 40px">
 				<h2>Add Agents</h2>
 				<p>By adding your staff, they can update your profile page with pictures, stats and comments. If they leave your company, just mark them inactive.</p>
-				<form class="{{env('APP_URL')}}/repeater agents" action="add-agents" method="POST">
+				<form class="repeater agents" action="{{env('APP_URL')}}/add-agents" method="POST">
 					{{csrf_field() }}
 
 					@if(session('error'))
