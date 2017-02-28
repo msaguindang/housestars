@@ -73,7 +73,7 @@ class AgencyController extends Controller
                 
                     
                 if ($request->hasFile($meta)) {
-                	$localpath = 'user/user-'.$user_id.'uploads';
+                	$localpath = 'user/user-'.$user_id.'/uploads';
                 	$filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
 					$path = $request->file($meta)->move(public_path($localpath), $filename);
 					$value = $localpath.'/'.$filename;
