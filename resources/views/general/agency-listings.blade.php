@@ -69,7 +69,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
-                <form action="search/agency" method="POST">
+                <form action="{{env('APP_URL')}}/search/agency" method="POST">
                   {{csrf_field()}}
                   <input type="text" class="search" name="term" placeholder="Enter Agency Name or Suburb" style="margin: 0">
                   <button class="btn btn-primary">Search</button>

@@ -56,7 +56,7 @@
 				<h2>Congratulations!</h2>
 				<p>Welcome to House Stars. You are now on your way to selling more property. </br> You can then start customizing your profile to suit your taste, and win more listings.</p>
 				<p>Click the button below to view your profile.</p>
-				<a class="btn hs-primary" href="dashboard/agency/profile"><span class="icon icon-summary"></span> GO TO MY PROFILE</a>
+				<a class="btn hs-primary" href="{{env('APP_URL')}}/dashboard/agency/profile"><span class="icon icon-summary"></span> GO TO MY PROFILE</a>
 			</div>
 		</div>
 	</div>
