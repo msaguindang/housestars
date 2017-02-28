@@ -49,6 +49,23 @@ housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) 
         }
     };
 
+    $scope.extendSubscriptionUser = function (user, index) {
+
+        if(user.sub_end == ""){
+            return false;
+        }
+
+        http.extendUserSubscription(user).then(function(response){
+            console.log('extend user subscription: ', response);
+
+            if(response.data.new_end_subscription != ""){
+                $scope._users[index].sub_end = response.data.new_end_subscription;
+            }
+
+        });
+
+    };
+
 
     // initialize
     $scope.getAllUsers();
@@ -261,5 +278,17 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     // initialize
     $scope.getAllReviews();
+
+}]);
+
+housestars.controller('CategoriesCtrl', ['$scope', function ($scope) {
+
+    console.log('categoriesCtrl');
+
+}]);
+
+housestars.controller('SuburbsCtrl', ['$scope', function ($scope) {
+
+    console.log('suburbsCtrl');
 
 }]);

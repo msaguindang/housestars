@@ -96,6 +96,7 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
 
             var self = this;
             //cfpLoadingBar.start();
+            $('#loading').show();
             return $q(function (resolve, reject) {
                 data._token = self._token;
                 jQuery.ajax({
@@ -127,6 +128,7 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                             status: 200,
                             statusText: "OK"
                         });
+                        $('#loading').fadeOut('slow');
                         //cfpLoadingBar.complete();
                         //$anchorScroll();
                     },
@@ -149,6 +151,7 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                         /*self._token = data._token;
                         delete data['_token'];*/
                         reject(data);
+                        $('#loading').fadeOut('slow');
                         //cfpLoadingBar.complete();
                         //$anchorScroll();
                     }
@@ -268,6 +271,22 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
             var self = this;
             return $q(function(resolve, reject) {
                 self.post('admin/user/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        extendUserSubscription: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/user/subscription/extend', data).then(function(response) {
 
                     resolve({
                         data:response.data,

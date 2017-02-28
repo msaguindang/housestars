@@ -31,7 +31,7 @@
                             <a href="" ng-click="disableUser(user, $index)" class="disable">
                                 <i class="pe-7s-check"></i>
                             </a>
-                            <a href="" ng-click="extendSubscriptionUser(user, $index)" class="extend-subscription">
+                            <a ng-disabled="user.subscription_type == 'None'" href="" ng-click="extendSubscriptionUser(user, $index)" class="extend-subscription">
                                 <i class="pe-7s-clock"></i>
                             </a>
                             <a href="" ng-click="deleteUser(user, $index)" class="delete">

@@ -48,6 +48,62 @@
         input.number-input {
             width: 50%;
         }
+
+        #loading {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(192, 192, 192, 0.5);
+
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .loading-screen {
+            width: 100px;
+            height: 100px;
+            margin: 350px auto;
+            background-image: url('../assets/loading.png');
+        }
+
+        #loader {
+            width: 30px;
+            margin: 0 auto;
+            display: block;
+            position: relative;
+            top: 27px;
+        }
+
+        #loader {
+            -webkit-animation-name: spinner;
+            -webkit-animation-timing-function: linear;
+            -webkit-animation-iteration-count: infinite;
+            -webkit-animation-duration: 2s;
+            animation-name: spinner;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-duration: 2s;
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            -ms-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        /* WebKit and Opera browsers */
+        @-webkit-keyframes spinner {
+            from {
+                -webkit-transform: rotateY(0deg);
+            }
+            to {
+                -webkit-transform: rotateY(-360deg);
+            }
+        }
+
+        /* all other browsers */
     </style>
 
 
@@ -69,12 +125,12 @@
             </div>
 
             <ul class="nav">
-                <li>
+                {{--<li>
                     <a href="#/dashboard"> <!-- #/dashboard -->
                         <i class="pe-7s-graph"></i>
                         <p>Dashboard</p>
                     </a>
-                </li>
+                </li>--}}
                 <li>
                     <a href="#/members "> <!-- #/members -->
                         <i class="pe-7s-user"></i>
@@ -94,11 +150,23 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#/categories"> <!-- #/reviews -->
+                        <i class="pe-7s-way"></i>
+                        <p>Categories</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#/suburbs"> <!-- #/reviews -->
+                        <i class="pe-7s-map-2"></i>
+                        <p>Suburbs</p>
+                    </a>
+                </li>
+                {{--<li>
                     <a href="#/advertisements"> <!-- #/advertisements -->
                         <i class="pe-7s-rocket"></i>
                         <p>Advertisements</p>
                     </a>
-                </li>
+                </li>--}}
             </ul>
         </div>
     </div>
@@ -159,6 +227,11 @@
 
 @yield('modals')
 
+<div id="loading" style="display:none;">
+    <div class="loading-screen">
+        <img id="loader" src="{{asset('assets/loader.png')}}"/>
+    </div>
+</div>
 
 </body>
 
@@ -188,6 +261,12 @@
 
     var $baseUrl = '{{ url('/') }}';
     $_token = '{{ csrf_token() }}';
+
+    /*$(window).load(function () {
+        $("#loading").fadeOut("slow");
+    });
+
+    $("#loading").fadeOut("slow");*/
 
 </script>
 

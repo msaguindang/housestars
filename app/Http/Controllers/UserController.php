@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Stripe\Customer;
 use Stripe\Stripe;
+use Stripe\Subscription;
 use View;
 use Sentinel;
 use Hash;
@@ -92,6 +94,53 @@ class UserController extends Controller
         }
 
 
+    }
+
+    public function extendUserSubscription()
+    {
+        $user = $this->payload->all();
+
+        $customerId = $user['customer_id'];
+
+        $newFormattedEndSubscription = "";
+
+        try{
+            Stripe::setApiKey($this->stripeKey);
+            $customer = Customer::retrieve($customerId);
+
+            if($customer){
+                $subscriptions = $customer->subscriptions->data;
+                if(count($subscriptions)>0){
+
+                    $subscriptionId = $subscriptions[0]->id;
+                    $endSubscription = $subscriptions[0]->current_period_end;
+                    $newFormattedEndSubscription = Carbon::createFromTimestamp($endSubscription)->addMonth();
+                    $newEndSubscription = $newFormattedEndSubscription->timestamp;
+
+                    $currentSubscription = Subscription::retrieve($subscriptionId);
+
+                    if($currentSubscription){
+                        $currentSubscription->trial_end = $newEndSubscription;
+                        $currentSubscription->prorate = false;
+                        $currentSubscription->save();
+                    }
+
+                }
+            }
+
+            $response = [
+                'type' => 'success',
+                'msg' => "User's subscription successfully extended by 1 month.",
+                'new_end_subscription' => $newFormattedEndSubscription->format('F d, Y')
+            ];
+
+            return Response::json($response, 200);
+        }catch(Exception $e){
+            $response['error'] = [
+                'message' => $e->getMessage()
+            ];
+            return Response::json($response, 404);
+        }
     }
 
 }
