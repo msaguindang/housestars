@@ -97,7 +97,7 @@
                         <div class="col-xs-4">
                           <div class="item">
                             @if(isset($agency['cover-photo']))
-                            <div class="cover-photo"  style="background: url('{{env('APP_URL')/$agency['cover-photo']}}'); background-size: cover;">
+                            <div class="cover-photo"  style="background: url('{{env('APP_URL')}}/{{$agency['cover-photo']}}'); background-size: cover;">
                             @else
                             <div class="cover-photo">
                             @endif
@@ -114,7 +114,7 @@
                               @endif
                             </div>
                             <div class="profile-info">
-                              @php ($summary = substr($agency['summary'], 0, 150))
+                              
                               <p>{{$summary}} ...</p>
                               <a href="profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
                             </div>
