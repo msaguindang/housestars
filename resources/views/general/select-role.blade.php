@@ -58,7 +58,7 @@
           <h3>Agency</h3>
           <p>Need more listings? could you do with a great funnel for attracting new interest to your company? Fancy yourself as being number 1 in your suburb? hit the video below to see what the benefits are for you.</p>
 
-          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="assign-role/agency/">Select Agency</a>
+          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="{{env('APP_URL')}}/assign-role/agency/">Select Agency</a>
         </div>
       </div>
       <div class="col-xs-4">
@@ -66,7 +66,7 @@
           <h3>Tradesman</h3>
           <p>House Stars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
 
-          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="assign-role/tradesman/">Select Tradesman</a>
+          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="{{env('APP_URL')}}/assign-role/tradesman/">Select Tradesman</a>
         </div>
       </div>
       <div class="col-xs-4">
@@ -74,7 +74,7 @@
           <h3>Customer/Vendor</h3>
           <p>There’s no better way to sell your property than with House Stars. The best team with the best results at the best prices.</p>
 
-          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="assign-role/customer/">Select Customer</a>
+          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="{{env('APP_URL')}}/assign-role/customer/">Select Customer</a>
         </div>
       </div>
       </div>
