@@ -48,14 +48,14 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin" style="background: url({{url($cp)}})">
+    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$cp}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($dp)}}) no-repeat center center">
+            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$dp}}) no-repeat center center">
             </div>
             <div class="profile-info">
               @foreach ($meta as $info)

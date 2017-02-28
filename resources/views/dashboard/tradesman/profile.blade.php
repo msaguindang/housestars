@@ -48,14 +48,14 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
+    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
+            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) 100%">
             </div>
             <div class="profile-info">
                   
@@ -181,7 +181,7 @@
                                   @endif  
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                      <div class="gallery-image" style="background: url({{env('APP_URL')}}/{{$item}})"></div>
                                     </div>
                                   </div>
 

@@ -199,7 +199,7 @@
                             </div>
                             <div class="picture" id="picture{{$transaction['id']}}">
                               @if($transaction['receipt'])
-                                <img src="{{url($transaction['receipt'])}}" alt="">
+                                <img src="{{env('APP_URL')/$transaction['receipt']}}" alt="">
                               @else
                               <form id="uploadReceipt" enctype="multipart/form-data" data-id="{{$transaction['id']}}">
                                 {{csrf_field() }}

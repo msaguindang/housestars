@@ -50,7 +50,7 @@
           </div>
     </header>
  <form action="{{env('APP_URL')}}/update-profile" method="POST" enctype="multipart/form-data">
-    <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
+    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
      
         {{csrf_field() }}
       <div class="cover-img">
@@ -63,7 +63,7 @@
             </div>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
+            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo">
             </div>
