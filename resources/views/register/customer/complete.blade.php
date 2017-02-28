@@ -5,7 +5,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href=""><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -22,9 +22,9 @@
               <div class="row">
                 <div class="main-nav">
                   <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                   </ul>
                 </div>
@@ -56,7 +56,7 @@
 				<h2>Congratulations, {{$name}}!</h2>
 				<p>You are on your way to selling your property!</p></br>
 				<p>You will shortly receive an email for your records, and if you have selected an agent, they will be in contact </br>with you soon. Please contact us if you have any questions along the way and we will be glad to help. You </br>can now view your profile page and start adding information.</p>
-				<a href="#" class="btn hs-primary" style="padding: 13px; margin-right: 14px;"><span class="icon icon-summary"></span> DOWNLOAD CONTRACT</a><a href="/profile" class="btn hs-primary" style="padding: 13px;"><span class="icon icon-summary"></span> VIEW PROCESSING PAGE</a>
+				<a href="#" class="btn hs-primary" style="padding: 13px; margin-right: 14px;"><span class="icon icon-summary"></span> DOWNLOAD CONTRACT</a><a href="profile" class="btn hs-primary" style="padding: 13px;"><span class="icon icon-summary"></span> VIEW PROCESSING PAGE</a>
 			</div>
 		</div>
 	</div>

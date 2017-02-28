@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href=""><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -28,17 +28,17 @@
                   <ul>
                     @if(Sentinel::check())
                     <li><span class="icon icon-logout-dark"></span>
-                      <form action="/logout" method="POST" id="logout-form">
+                      <form action="logout" method="POST" id="logout-form">
                         {{csrf_field() }}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
                     <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="">Home</a></li>
                     @else
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @endif
                   </ul>
@@ -68,7 +68,7 @@
               <div class="spacing"></div>
               <h2 class="section-title">Account Settings</h2>
               <div class="col-xs-6">
-              <form action="/update-settings" method="POST" enctype="multipart/form-data">
+              <form action="update-settings" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 <label>Full Name</label>
                 <input type="text" name="name" value="{{$data['name']}}">
@@ -80,7 +80,7 @@
               </form>
               </div>
               <div class="col-xs-6">
-                <form action="/update-payment" method="POST" enctype="multipart/form-data">
+                <form action="update-payment" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 @if(session('error'))
                   <div class="alert alert-danger">
@@ -110,7 +110,7 @@
             <div class="row no-padding agent-settings">
               <div class="spacing"></div>
               <h2 class="section-title">List Agents</h2>
-              <form class="repeater agents" action="/update-agents" method="POST">
+              <form class="repeater agents" action="update-agents" method="POST">
                 {{csrf_field() }}
 
                  @if(session('errors'))
@@ -130,9 +130,9 @@
                   </thead>
                   <tbody data-repeater-list="add-agents">
                       <tr data-repeater-item>
-                          <td style="width: 30%"><input type="text" name="name" value=""/></td>
-                          <td style="width: 30%"><input type="text" name="email" value=""/></td>
-                          <td style="width: 30%"><input type="password" name="password" placeholder=""/></td>
+                          <td style="width: 30%"><input type="text" name="name" value=""></td>
+                          <td style="width: 30%"><input type="text" name="email" value=""></td>
+                          <td style="width: 30%"><input type="password" name="password" placeholder=""></td>
                           <td style="width: 5%"><label class="switch" style="width: 70px">
                               <input type="checkbox" name="active">
                             <div class="slider round"></div></label></td>
@@ -142,10 +142,10 @@
                         </tr>
                       @foreach($agents as $agent)
                         <tr data-repeater-item>
-                            <input type="hidden" name="id" value="{{$agent->agent_id}}"/>
-                          <td style="width: 30%"><input type="text" name="name" value="{{$agent->name}}"/></td>
-                          <td style="width: 30%"><input type="text" name="email" value="{{$agent->email}}"/></td>
-                          <td style="width: 30%"><input type="password" name="password" placeholder="********"/></td>
+                            <input type="hidden" name="id" value="{{$agent->agent_id}}">
+                          <td style="width: 30%"><input type="text" name="name" value="{{$agent->name}}"></td>
+                          <td style="width: 30%"><input type="text" name="email" value="{{$agent->email}}"></td>
+                          <td style="width: 30%"><input type="password" name="password" placeholder="********"></td>
                           <td style="width: 5%"><label class="switch" style="width: 70px">
                             @if($agent->active == '1')
                               <input type="checkbox" name="active" checked>
@@ -170,7 +170,7 @@
                 <div class="col-xs-3"><button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE AGENT LIST<span class="icon icon-arrow-right"></span></button></div>
             </form>
             @foreach($agents as $agent)
-               <form action="/delete-agent" method="POST" id="delete-agent-{{$agent->agent_id}}"> {{csrf_field() }}<input type="hidden" name="agent-id" value="{{$agent->agent_id}}"></form>
+               <form action="delete-agent" method="POST" id="delete-agent-{{$agent->agent_id}}"> {{csrf_field() }}<input type="hidden" name="agent-id" value="{{$agent->agent_id}}"></form>
             @endforeach
             </div>
           </div>

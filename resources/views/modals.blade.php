@@ -21,8 +21,8 @@
             <a href="#" data-toggle="modal" data-target="#forgotPassword" id="openForgotPasswordModal">Forgot your login password?</a>
             <p class="heading"><span class="hLine left"></span>SIGN IN USING YOUR SOCIAL ACCOUNTS <span class="hLine right"></span></p>
             <div class="row social-buttons">
-              <div class="col-xs-6 no-padding-right"><a class="btn hs-primary facebook" href="/login/facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a></div>
-              <div class="col-xs-6 no-padding-left"><a class="btn hs-primary google" href="/login/google"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a></div>
+              <div class="col-xs-6 no-padding-right"><a class="btn hs-primary facebook" href="login/facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a></div>
+              <div class="col-xs-6 no-padding-left"><a class="btn hs-primary google" href="login/google"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a></div>
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
           <div class="modal-body">
             <h4>REGISTER NOW</h4>
             <p class="sub-heading">Already a member? Please login <a href="" data-toggle="modal" data-target="#login" id="open">here</a></p>
-            <form class="ajax" action="/register" method="POST">
+            <form class="ajax" action="register" method="POST">
               {{csrf_field() }}
               <div id="errors-signup"></div>
               <input type="text" name="name" placeholder="Full Name">
@@ -76,8 +76,8 @@
             </form>
             <p class="heading"><span class="hLine left"></span>SIGN UP USING YOUR SOCIAL ACCOUNTS <span class="hLine right"></span></p>
             <div class="row social-buttons">
-              <div class="col-xs-6 no-padding-right"><a class="btn hs-primary facebook" href="/login/facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Signup with Facebook</a></div>
-              <div class="col-xs-6 no-padding-left"><a class="btn hs-primary google" href="/login/google"><i class="fa fa-google" aria-hidden="true"></i> Signup with Google</a></div>
+              <div class="col-xs-6 no-padding-right"><a class="btn hs-primary facebook" href="login/facebook"><i class="fa fa-facebook" aria-hidden="true"></i> Signup with Facebook</a></div>
+              <div class="col-xs-6 no-padding-left"><a class="btn hs-primary google" href="login/google"><i class="fa fa-google" aria-hidden="true"></i> Signup with Google</a></div>
             </div>
           </div>
         </div>
@@ -95,9 +95,9 @@
             <h4>Rate a Trade or Service</h4>
             <p class="sub-heading">Verify that you are a real customer by signing in below</p>
             <div class="info-bar" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
-              <a class="btn social-button hs-facebook" href="/login/facebook"><span class="icon icon-fb-white">Sign in Using Facebook </span> </a>
+              <a class="btn social-button hs-facebook" href="login/facebook"><span class="icon icon-fb-white">Sign in Using Facebook </span> </a>
               </br><p>OR</p>
-              <a class="btn social-button hs-google-plus" href="/login/facebook"><span class="icon icon-g-white">Sign in Using GOOGLE PLUS</span> </a>
+              <a class="btn social-button hs-google-plus" href="login/facebook"><span class="icon icon-g-white">Sign in Using GOOGLE PLUS</span> </a>
           </div>
         </div>
       </div>

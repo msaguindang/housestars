@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href=""><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -28,16 +28,16 @@
                   <ul>
                     @if(Sentinel::check())
                     <li><span class="icon icon-logout-dark"></span>
-                      <form action="/logout" method="POST" id="logout-form">
+                      <form action="logout" method="POST" id="logout-form">
                         {{csrf_field() }}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="">Home</a></li>
                     @else
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @endif
                   </ul>
@@ -56,7 +56,7 @@
           <h3>Agency</h3>
           <p>Need more listings? could you do with a great funnel for attracting new interest to your company? Fancy yourself as being number 1 in your suburb? hit the video below to see what the benefits are for you.</p>
 
-          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="/assign-role/agency/">Select Agency</a>
+          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="assign-role/agency/">Select Agency</a>
         </div>
       </div>
       <div class="col-xs-4">
@@ -64,7 +64,7 @@
           <h3>Tradesman</h3>
           <p>House Stars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
 
-          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="/assign-role/tradesman/">Select Tradesman</a>
+          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="assign-role/tradesman/">Select Tradesman</a>
         </div>
       </div>
       <div class="col-xs-4">
@@ -72,7 +72,7 @@
           <h3>Customer/Vendor</h3>
           <p>There’s no better way to sell your property than with House Stars. The best team with the best results at the best prices.</p>
 
-          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="/assign-role/customer/">Select Customer</a>
+          <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="assign-role/customer/">Select Customer</a>
         </div>
       </div>
       </div>

@@ -6,7 +6,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href=""><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -30,17 +30,17 @@
                   <ul>
                     @if(Sentinel::check())
                     <li><span class="icon icon-logout-dark"></span>
-                      <form action="/logout" method="POST" id="logout-form">
+                      <form action="logout" method="POST" id="logout-form">
                         {{csrf_field() }}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
                     <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="">Home</a></li>
                     @else
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @endif
                   </ul>
@@ -49,7 +49,7 @@
             </div>
           </div>
     </header>
- <form action="/update-profile" method="POST" enctype="multipart/form-data">
+ <form action="update-profile" method="POST" enctype="multipart/form-data">
     <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
      
         {{csrf_field() }}
@@ -58,14 +58,14 @@
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
             <div class="upload">
-              <input id="CoverUpload" type="file" name="cover-photo"/>
+              <input id="CoverUpload" type="file" name="cover-photo">
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
           </div>
           <div class="profile">
             <div class="profile-img" style="background: url({{url($data['profile-photo'])}}) 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
-              <input id="profileupload" type="file" name="profile-photo"/>
+              <input id="profileupload" type="file" name="profile-photo">
             </div>
             <div class="profile-info">
               <label>Agency Name</label>

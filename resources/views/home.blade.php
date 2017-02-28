@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+              <a href=""><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -28,17 +28,17 @@
                   <ul>
                     @if(Sentinel::check())
                     <li><span class="icon icon-logout-dark"></span>
-                      <form action="/logout" method="POST" id="logout-form">
+                      <form action="logout" method="POST" id="logout-form">
                         {{csrf_field() }}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="/profile">Profile</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="profile">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="">Home</a></li>
                     @else
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                     @endif
                   </ul>
@@ -77,23 +77,23 @@
       <div class="container">
         <div class="row header">
           <div class="col-xs-4 logo">
-            <a href="/"><img src="assets/logo-header-home.png" alt="HouseStars Logo"></a>
+            <a href=""><img src="assets/logo-header-home.png" alt="HouseStars Logo"></a>
           </div>
           <div class="col-xs-6 col-xs-offset-2 main-nav">
             <ul>
               @if(Sentinel::check())
                 <li><span class="icon icon-logout"></span>
-                  <form action="/logout" method="POST" id="logout-form">
+                  <form action="logout" method="POST" id="logout-form">
                     {{csrf_field() }}
                     <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                   </form>
                 </li>
-                <li><span class="icon icon-tradesman"></span><a href="/profile">Profile</a></li>
-                <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                <li><span class="icon icon-tradesman"></span><a href="profile">Profile</a></li>
+                <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
               @else
-                <li><span class="icon icon-customer"></span><a href="/customer" >Customer</a></li>
-                <li><span class="icon icon-tradesman"></span><a href="/trades-services">Trades & Services</a></li>
-                <li><span class="icon icon-agency"></span><a href="/agency">Agency</a></li>
+                <li><span class="icon icon-customer"></span><a href="customer" >Customer</a></li>
+                <li><span class="icon icon-tradesman"></span><a href="trades-services">Trades & Services</a></li>
+                <li><span class="icon icon-agency"></span><a href="agency">Agency</a></li>
               @endif
                   </ul>
           </div>
@@ -115,7 +115,7 @@
         <div class="row tooltip-nav">
           <div class="col-xs-11 col-xs-offset-1 tooltip-items">
             <ul>
-              <li class="search-local animated fadeInDown"><span class="icon icon-search-local"></span><a href="/search-category"> Search Local Trades & Services <span class="icon icon-arrow-right"></span></a></li>
+              <li class="search-local animated fadeInDown"><span class="icon icon-search-local"></span><a href="search-category"> Search Local Trades & Services <span class="icon icon-arrow-right"></span></a></li>
               <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings"></span><a href="#" data-toggle="modal" data-target="#rateTradesman">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
                 @if(!Sentinel::check())
                  <li class="sign-up animated fadeInDown"><span class="icon icon-sign-up"></span><a href="" data-toggle="modal" data-target="#signup" id="signup-form">Sign Me Up <span class="icon icon-arrow-right"></span></a></li>

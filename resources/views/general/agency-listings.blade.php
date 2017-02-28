@@ -4,7 +4,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href=""><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -21,9 +21,9 @@
               <div class="row">
                 <div class="main-nav">
                   <ul>
-                    <li><span class="icon icon-customer-dark"></span><a href="/customer" >Customer</a></li>
-                    <li class="active"><span class="icon icon-tradesman-dark"></span><a href="/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="/agency">Agency</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="customer" >Customer</a></li>
+                    <li class="active"><span class="icon icon-tradesman-dark"></span><a href="trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="agency">Agency</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="/">Home</a></li>
                   </ul>
                 </div>
@@ -52,9 +52,9 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
-                <form action="/search/agency" method="POST">
+                <form action="search/agency" method="POST">
                   {{csrf_field()}}
-                  <input type="text" class="search" name="term" placeholder="Enter Agency Name or Suburb" style="margin: 0"/>
+                  <input type="text" class="search" name="term" placeholder="Enter Agency Name or Suburb" style="margin: 0">
                   <button class="btn btn-primary">Search</button>
                 </form>
             </div>
@@ -99,7 +99,7 @@
                             <div class="profile-info">
                               @php ($summary = substr($agency['summary'], 0, 150))
                               <p>{{$summary}} ...</p>
-                              <a href="/profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
+                              <a href="profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
                             </div>
                           </div>
                         </div>

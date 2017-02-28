@@ -21,7 +21,7 @@
       var formData =  new FormData($(this).parent()[0]);
 
       $.ajax({
-          url: '/upload-receipt',
+          url: 'upload-receipt',
           data: formData,
           type: 'POST',
           cache:false,
@@ -44,7 +44,7 @@
       e.preventDefault();
       
        $.ajax({
-          url: '/process-trades',
+          url: 'process-trades',
           data: formData,
           type: 'POST',
           cache:false,
@@ -77,7 +77,7 @@
   $(document).on('blur','span[contenteditable=true]', function(){
       console.log($(this).parent().parent().attr('id'));
      $.ajax({
-        url: '/process-spending',
+        url: 'process-spending',
         data: {_token: $(this).parent().parent().data('token'), content: $(this).text(), id: $(this).parent().parent().attr('id')},
         type: 'POST',
         success: function(data){
@@ -92,7 +92,7 @@
     $(this).parent().parent().parent().parent().remove();
 
     $.ajax({
-      url: '/delete-transaction',
+      url: 'delete-transaction',
       data: {_token: $(this).data('token'), id: $(this).data('id')},
       type: 'POST',
       success: function(data){
@@ -109,7 +109,7 @@
     var id = $(this).data('id');
 
     $.ajax({
-      url: '/review',
+      url: 'review',
       data: {_token: $(this).data('token'), id: $(this).data('id')},
       type: 'POST',
       success: function(data){
@@ -130,7 +130,7 @@
       var data = $(this).serialize();
 
       $.ajax({
-      url: '/add-review',
+      url: 'add-review',
       data: data,
       type: 'POST',
       processData: false,
@@ -146,7 +146,7 @@
     var token = $(this).data('token');
     var code = $(this).data('code');
     $.ajax({
-      url: '/get-agent-info',
+      url: 'get-agent-info',
       data: {_token: token, id: id, code: code},
       type: 'POST',
       success: function(data){
