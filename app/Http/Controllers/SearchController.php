@@ -137,7 +137,12 @@ class SearchController extends Controller
            if(count($activeUser) > 0){
                 $agencyData = UserMeta::where('user_id', '=', $id)->get();
                 foreach ($agencyData as $value) {
-                   $data[$x][$value->meta_name] = $value->meta_value;
+                if($value->meta_name == 'summary'){
+                    $data[$x][$value->meta_name] = substr($value->meta_value, 0, 150);
+                } else {
+                    $data[$x][$value->meta_name] = $value->meta_value;
+                }
+                   
                 }
                 // $data[$x]['rating'] = $this->getRating($id);
                 $data[$x]['id'] = $value->user_id;

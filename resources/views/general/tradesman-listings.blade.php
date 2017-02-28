@@ -118,7 +118,7 @@
                                 <span class="icon icon-star-grey"></span>
                               @endfor
                             </div>
-                            <a href="profile/tradesman/{{$tradesman['id']}}" class="btn hs-primary small">Visit Tradesman's Page</a>
+                            <a href="{{env('APP_URL')}}/profile/tradesman/{{$tradesman['id']}}" class="btn hs-primary small">Visit Tradesman's Page</a>
                           </div>
                         </div>
                       </div>
