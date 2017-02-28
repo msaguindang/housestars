@@ -25,13 +25,13 @@ class LoginController extends Controller
            {
                 switch (Sentinel::getUser()->roles()->first()->slug){
                     case 'agency':
-                        return \Ajax::redirect('dashboard/agency/profile');
+                        return \Ajax::redirect(env('APP_URL').'/dashboard/agency/profile');
                         break;
                     case 'tradesman':
-                        return \Ajax::redirect('dashboard/tradesman/profile');;
+                        return \Ajax::redirect(env('APP_URL').'/dashboard/tradesman/profile');;
                         break;
                     case 'customer':
-                        return \Ajax::redirect('dashboard/customer/profile');
+                        return \Ajax::redirect(env('APP_URL').'/dashboard/customer/profile');
                         break;
                 }
 
@@ -57,7 +57,7 @@ class LoginController extends Controller
         Sentinel::removeCheckpoint('throttle');
     	Sentinel::logout();
 
-    	return redirect('/');
+    	return redirect(env('APP_URL'));
     }
 
     public function redirectToProvider($provider){
@@ -98,7 +98,7 @@ class LoginController extends Controller
             
             Sentinel::login($user);
 
-            return redirect('account-type');
+            return redirect(env('APP_URL').'/account-type');
         } 
 
     }
@@ -111,13 +111,13 @@ class LoginController extends Controller
 
             switch ($account){
                 case 'agency':
-                return \Ajax::redirect('register/agency/step-one');
+                return \Ajax::redirect(env('APP_URL').'/register/agency/step-one');
                 break;
                 case 'tradesman':
-                return \Ajax::redirect('register/tradesman/step-one');
+                return \Ajax::redirect(env('APP_URL').'/register/tradesman/step-one');
                 break;
                 case 'customer':
-                return \Ajax::redirect('register/customer/step-one');
+                return \Ajax::redirect(env('APP_URL').'/register/customer/step-one');
                 break;
             }
     }

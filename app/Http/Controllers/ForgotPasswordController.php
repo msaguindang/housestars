@@ -49,9 +49,9 @@ class ForgotPasswordController extends Controller
             if($code == $reminder->code)
                 return view('general.reset-password');
             else
-                return redirect('/');
+                return redirect(env('APP_URL'));
         } else {
-            return redirect('/');
+            return redirect(env('APP_URL'));
         }
 
     }
@@ -74,11 +74,11 @@ class ForgotPasswordController extends Controller
                 Reminder::complete($sentinelUser, $code, $request->password);
                 return redirect('reset-success');
             } else {
-                return redirect('/'); 
+                return redirect(env('APP_URL')); 
             }
                 
         } else {
-            return redirect('/');
+            return redirect(env('APP_URL'));
         }
     }
 

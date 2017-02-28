@@ -154,10 +154,10 @@ class TradesmanController extends Controller
                 
     		}
 
-		    return redirect('dashboard/tradesman/profile');
+		    return redirect(env('APP_URL').'/dashboard/tradesman/profile');
     	
     	} else {
-    		return redirect('/');
+    		return redirect(env('APP_URL'));
     	}
     }
 
@@ -166,7 +166,7 @@ class TradesmanController extends Controller
     		DB::table('user_meta')->where('id', '=', $request->input('item-id'))->delete();
     		return Response::json('success', 200);
     	} else {
-    		return redirect('/');
+    		return redirect(env('APP_URL'));
     	}
     }
 

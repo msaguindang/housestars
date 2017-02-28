@@ -16,13 +16,13 @@ class MainController extends Controller
 
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
-                    return redirect('dashboard/agency/profile');
+                    return redirect(env('APP_URL').'/dashboard/agency/profile');
                     break;
                 case 'tradesman':
-                    return redirect('dashboard/tradesman/profile');
+                    return redirect(env('APP_URL').'/dashboard/tradesman/profile');
                     break;
                 case 'customer':
-                    return redirect('dashboard/customer/profile');
+                    return redirect(env('APP_URL').'/dashboard/customer/profile');
                     break;
                 default: 
                     return redirect(URL::previous());
@@ -30,7 +30,7 @@ class MainController extends Controller
             }
 
         } else { 
-            return redirect('/');
+            return redirect(env('APP_URL'));
         }
     }
 

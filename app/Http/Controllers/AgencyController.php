@@ -90,7 +90,7 @@ class AgencyController extends Controller
                 
     		}
 
-		    return redirect('dashboard/agency/profile');
+		    return redirect(env('APP_URL').'/dashboard/agency/profile');
     	
     	} else {
     		return redirect('');
@@ -148,7 +148,7 @@ class AgencyController extends Controller
             return redirect()->back();
 
         } else {
-            return redirect('');
+            return redirect(env('APP_URL'));
         }
 
     }
@@ -187,7 +187,7 @@ class AgencyController extends Controller
             
 
         } else {
-            return redirect('');
+            return redirect(env('APP_URL'));
         }
 
     }
@@ -200,7 +200,7 @@ class AgencyController extends Controller
             Agents::where('agent_id', '=', $id )->delete();
              return redirect()->back();
          } else {
-            return redirect('');
+            return redirect(env('APP_URL'));
          }
     }
 
@@ -262,7 +262,7 @@ class AgencyController extends Controller
           return redirect()->back();
 
         } else {
-            return redirect('');
+            return redirect(env('APP_URL'));
         }
     }
 
@@ -323,14 +323,17 @@ class AgencyController extends Controller
 
         $properties = array();
 
-        foreach ($prop as $key) {
-            $property = Property::where('user_id', '=', $key['id'])->where('property_code', '=', $key['code'])->get();
-            foreach ($property as $meta) {
-                $info[$meta->meta_name] = $meta->meta_value;
-            }
+        if(isset($prop)){
+            foreach ($prop as $key) {
+                $property = Property::where('user_id', '=', $key['id'])->where('property_code', '=', $key['code'])->get();
+                foreach ($property as $meta) {
+                    $info[$meta->meta_name] = $meta->meta_value;
+                }
 
-            array_push($properties, $info);
+                array_push($properties, $info);
+            }
         }
+        
 
         return $properties;
 
