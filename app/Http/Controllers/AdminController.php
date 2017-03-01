@@ -14,7 +14,7 @@ class AdminController extends Controller
 
     public function __construct()
     {
-        $this->appUrl = env('APP_URL');
+        $this->appUrl = env('APP_URL').'/';
     }
 
     public function showLogin()
@@ -31,7 +31,7 @@ class AdminController extends Controller
         Sentinel::removeCheckpoint('throttle');
         Sentinel::logout();
 
-        return redirect($this->appUrl.'/admin');
+        return redirect($this->appUrl.'admin');
     }
 
     public function showDashboard()
