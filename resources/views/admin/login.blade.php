@@ -25,7 +25,7 @@
 <body>
 <div class="container">
     <div class="wrapper">
-        <form class="form-signin" method="POST" action="{{ url('/login') }}">
+        <form class="form-signin" method="POST" action="{{ url(env('APP_URL').'/login') }}">
             {{csrf_field() }}
             <div class="form-signin-body">
                 <div class="form-group">
