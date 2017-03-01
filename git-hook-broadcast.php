@@ -70,8 +70,11 @@ if($continue){
     foreach ($output as $k => $o) {
         if($o != "" && $k != 'code')
             $log .= '<pre>' . $o . '</pre><br>';
+        if(strpos($o, 'Automatic merge failed') !== false)
+            $continue = false;
     }
-
+}
+if($continue){
     $log .= "<b>Retrieving commit logs...</b> <br>";
     $commits = execute('git log -'.$behind[1]);
     foreach ($commits as $k => $o) {
