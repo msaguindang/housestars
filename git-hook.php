@@ -75,7 +75,7 @@ $body =
     '<pre>' . $output['err'] .'</pre>' .
     $log . 'Email sent!</div>';
 
-if(mail('stuart@simpleclick.com.au, john@simpleclick.com.au', $subject, $body, $headers))
+if(mail('stuart@simpleclick.com.au, nikko@webforest.solutions, ernest@webforest.solutions, john@simpleclick.com.au', $subject, $body, $headers))
     $log .= "Email sent.</div>";
 else
     $log .= "There was an error in sending the email.</div>";
