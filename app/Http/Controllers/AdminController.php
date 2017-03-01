@@ -10,10 +10,17 @@ use Sentinel;
 
 class AdminController extends Controller
 {
+    protected $appUrl;
+
+    public function __construct()
+    {
+        $this->appUrl = env('APP_URL');
+    }
+
     public function showLogin()
     {
         if (Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.login');
@@ -24,13 +31,13 @@ class AdminController extends Controller
         Sentinel::removeCheckpoint('throttle');
         Sentinel::logout();
 
-        return redirect('/admin');
+        return redirect($this->appUrl.'/admin');
     }
 
     public function showDashboard()
     {
         if (!Sentinel::check()) {
-            return redirect('admin/login');
+            return redirect($this->appUrl.'admin/login');
         }
 
         return view('layouts.admin');
@@ -39,7 +46,7 @@ class AdminController extends Controller
     public function showMembers()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.members');
@@ -48,7 +55,7 @@ class AdminController extends Controller
     public function showProperties()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         $properties = [];
@@ -105,7 +112,7 @@ class AdminController extends Controller
     public function showReviews()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.reviews');
@@ -114,7 +121,7 @@ class AdminController extends Controller
     public function showAdvertisements()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.advertisements');
