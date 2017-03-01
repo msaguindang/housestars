@@ -184,17 +184,17 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="{{ url('/admin') }}">
+                            <a href="{{ url($appUrl.'/admin') }}">
                                 <p>Admin</p>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/') }}">
+                            <a href="{{ $appUrl }}">
                                 <p>Homepage</p>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/admin/logout') }}">
+                            <a href="{{ url($appUrl.'/admin/logout') }}">
                                 <p>Log out</p>
                             </a>
                         </li>
