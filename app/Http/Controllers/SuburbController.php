@@ -70,4 +70,43 @@ class SuburbController extends Controller
 
         return Response::json($response, 200);
     }
+
+    public function deleteSuburbAgent()
+    {
+        $userMeta = $this->payload->input('user_meta');
+        $currentSuburb = $this->payload->input('current_suburb');
+        $userMetaId = $userMeta['id'];
+
+        $userId = $userMeta['user_id'];
+        $suburbKeyCombo = $currentSuburb['id'].$currentSuburb['name'];
+
+        /*UserMeta::where('user_id', $userId)
+            ->where('meta_name','positions')
+            ->where('meta_value', 'LIKE', '%'.$suburbKeyCombo.'%')*/
+
+        $currentUserMeta = UserMeta::find($userMetaId);
+
+        $metaValue = $currentUserMeta->meta_value;
+
+        $newMetaValue = str_replace($suburbKeyCombo, '', $metaValue);
+        $metaValues = explode(',', $newMetaValue);
+
+        $newMetaValues = [];
+
+        foreach($metaValues as $value){
+            if(trim($value) != "" && $value != null){
+                $newMetaValues[] = $value;
+            }
+        }
+
+        $currentUserMeta->meta_value = implode(',',$newMetaValues);
+        $currentUserMeta->save();
+
+        $response = [
+            'user_meta' => $userMeta,
+            'current_suburb' => $currentSuburb
+        ];
+
+        return Response::json($response, 200);
+    }
 }
