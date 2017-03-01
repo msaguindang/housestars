@@ -33,7 +33,37 @@
 
             </div>
         </div>
+
+
+                <!--<uib-pagination class="pagination-sm"
+                                ng-model="currentPage"
+                                total-items="10"
+                                max-size="4"
+                                ng-change="changePage(currentPage)"
+                                items-per-page="5"
+                                rotate="false"
+                                previous-text="&lsaquo;" next-text="&rsaquo;"
+                                boundary-links="true"></uib-pagination>-->
+
+
+
     </div>
 
 
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="pull-right">
+            <ul uib-pagination
+                total-items="suburbsLength"
+                ng-model="currentPage"
+                max-size="5"
+                class="pagination-sm"
+                boundary-links="true"
+                rotate="false"
+                ng-change="changePage(currentPage)">
+            </ul>
+        </div>
+    </div>
 </div>

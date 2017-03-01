@@ -8,6 +8,7 @@ use App\Suburbs;
 use App\User;
 use App\UserMeta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Sentinel;
 use Response;
 
@@ -22,16 +23,28 @@ class SuburbController extends Controller
 
     public function getAllSuburbs()
     {
+        $pageNo = $this->payload->input('page_no');
 
-        $pageNo = 5;
+        if(!$pageNo){
+            $pageNo = 1;
+        }
 
-        $limit = 5;
-        $offset = 5;
+        $limit = $this->payload->input('limit');
 
-        $suburbs = Suburbs::all();
+        if(!$limit){
+            $limit = 10;
+        }
+
+        $offset = $limit*($pageNo-1);
+
+        $suburbsLength = DB::table('suburbs')->selectRaw('count(*) as length')->first()->length;
+
+        $suburbsSql = "SELECT * FROM suburbs LIMIT {$limit} OFFSET {$offset}";
+        $suburbs = json_decode(json_encode(DB::select($suburbsSql)),TRUE);
 
         $response = [
-            'suburbs' => $suburbs
+            'suburbs' => $suburbs,
+            'length' => $suburbsLength
         ];
 
         return Response::json($response, 200);

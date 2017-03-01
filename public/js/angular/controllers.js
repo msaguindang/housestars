@@ -288,11 +288,25 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', function ($scope, htt
     $scope.categories = [];
     $scope._categories = angular.copy($scope.categories);
 
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllCategories();
+    };
+
     $scope.getAllCategories = function () {
-        http.getAllCategories().then(function(response){
+        http.getAllCategories({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
             console.log('all categories: ', response);
             $scope.categories = response.data.categories;
             $scope._categories = angular.copy($scope.categories);
+            $scope.totalItems = response.data.length;
         });
     };
 
@@ -317,11 +331,25 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.suburbs = [];
     $scope._suburbs = angular.copy($scope.suburbs);
 
+    $scope.suburbsLength = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllSuburbs();
+    };
+
     $scope.getAllSuburbs = function () {
-        http.getAllSuburbs().then(function(response){
+        http.getAllSuburbs({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
             console.log('all suburbs: ', response);
             $scope.suburbs = response.data.suburbs;
             $scope._suburbs = angular.copy($scope.suburbs);
+            $scope.suburbsLength = response.data.length;
         });
     };
 
