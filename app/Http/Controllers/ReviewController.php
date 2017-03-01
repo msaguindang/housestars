@@ -54,7 +54,22 @@ class ReviewController extends Controller
 
 	function getAllReviews()
 	{
-		$reviews = Reviews::all();
+		$sql = "SELECT 
+				  reviews.*,
+				  (SELECT 
+					users.`name` 
+				  FROM
+					users 
+				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
+				  (SELECT 
+					users.`name` 
+				  FROM
+					users 
+				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name 
+				FROM
+				  reviews ";
+
+		$reviews = json_decode(json_encode(DB::select($sql)),TRUE);
 
 		$response = [
 			'reviews' => $reviews

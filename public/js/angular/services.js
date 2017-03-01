@@ -204,6 +204,36 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        getAllCategories: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/category', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getAllSuburbs: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/suburb', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         updateProperty: function (data) {
             var self = this;

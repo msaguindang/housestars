@@ -255,5 +255,17 @@ Route::group(['prefix' => 'admin'], function () {
 
     });
 
+    Route::group(['prefix' => 'category'], function(){
+
+        Route::get('', 'CategoryController@getAllCategories');
+
+    });
+
+    Route::group(['prefix' => 'suburb'], function(){
+
+        Route::get('', 'SuburbController@getAllSuburbs');
+
+    });
+
 });
 
