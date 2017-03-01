@@ -313,6 +313,22 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
             });
         },
 
+        getSuburbAgents: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/suburb/agent', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
         extendUserSubscription: function (data) {
             var self = this;
             return $q(function(resolve, reject) {

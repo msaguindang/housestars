@@ -324,12 +324,14 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', function ($scope, htt
 
 }]);
 
-housestars.controller('SuburbsCtrl', ['$scope', 'http', function ($scope, http) {
+housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
 
     console.log('suburbsCtrl');
 
     $scope.suburbs = [];
     $scope._suburbs = angular.copy($scope.suburbs);
+
+    $scope.currentSuburb = "";
 
     $scope.suburbsLength = 0;
     $scope.currentPage = 1;
@@ -361,8 +363,94 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', function ($scope, http) 
 
     };
 
+    $scope.showAvailabilities = function (currentSuburb) {
+        $scope.currentSuburb = currentSuburb;
+        $scope.openAvailabilityModal();
+    };
+
+    $scope.openAvailabilityModal = function () {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'suburb-availability-modal.html',
+            controller: 'SuburbAvailabilityCtrl',
+            // size: 'lg',
+            resolve: {
+                currentSuburb: function () {
+                    return $scope.currentSuburb;
+                },
+            }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
 
     // initialize
     $scope.getAllSuburbs();
+
+}]);
+
+housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$uibModalInstance', 'http', function ($scope, currentSuburb, $uibModalInstance, http) {
+
+    console.log('SuburbAvailabilityCtrl', currentSuburb);
+
+    $scope.currentSuburb = currentSuburb;
+    $scope.agents = [];
+
+    $scope.getSuburbAgents = function () {
+
+
+        http.getSuburbAgents($scope.currentSuburb).then(function(response){
+            console.log('all availabilities of - '+$scope.currentSuburb, response);
+            $scope.user_metas = response.data.user_metas;
+        });
+
+    };
+
+    $scope.getAllAgents = function () {
+        http.getAllUsers({
+            slug:'agent'
+        }).then(function(response){
+            console.log('all agents: ', response);
+            $scope.agents = response.data.users;
+        })
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+
+
+    $scope.removeAgent = function () {
+
+    };
+
+    $scope.addAgent = function () {
+
+    };
+
+    $scope.selectAgent = function () {
+
+    };
+
+
+    // initialize
+    $scope.getAllAgents();
+    $scope.getSuburbAgents();
 
 }]);

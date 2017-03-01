@@ -17,7 +17,10 @@
 
                         <td>{{ suburb.id }}</td>
                         <td>{{ suburb.name }}</td>
-                        <td>{{ suburb.availability }}</td>
+                        <td>
+                            <a href="" ng-if="suburb.availability>0" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
+                            <span ng-if="suburb.availability<=0">0</span>
+                        </td>
 
                         <td>
                             <a href="" ng-click="editSuburb(suburb, $index)" class="edit">
@@ -67,3 +70,33 @@
         </div>
     </div>
 </div>
+
+
+
+<script type="text/ng-template" id="suburb-availability-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Agents for {{ currentSuburb.name }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row form-item" ng-repeat="user_meta in user_metas">
+            <div class="col-xs-7">
+                <select class="form-control" ng-change="selectAgent()" ng-model="user_meta.user_id" ng-options="agent.id as agent.name for agent in agents">
+                    <option value="">Select Agent</option>
+                </select>
+            </div>
+            <div class="col-xs-5">
+                <a class="btn btn-danger" ng-click="removeAgent()"><i class="fa fa-minus"></i></a>
+                <a class="btn btn-primary" ng-click="addAgent()"><i class="fa fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+    </div>
+
+</script>

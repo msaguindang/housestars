@@ -27,12 +27,24 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
+        $payload = $this->payload->all();
+
+
+
         $users = User::where('users.name', '!=', null)
             ->join('role_users', 'role_users.user_id', '=','users.id')
             ->join('roles','roles.id','=','role_users.role_id')
-            ->select('users.*','roles.name as role_name')
-            ->get()
-            ->toArray();
+            ->select('users.*','roles.name as role_name');
+
+        if(isset($payload['slug'])){
+            $users = $users->where('roles.slug',$payload['slug'])
+                ->get()
+                ->toArray();
+        }else{
+            $users = $users
+                ->get()
+                ->toArray();
+        }
 
         Stripe::setApiKey($this->stripeKey);
 

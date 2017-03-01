@@ -49,4 +49,25 @@ class SuburbController extends Controller
 
         return Response::json($response, 200);
     }
+
+    public function getSuburbAgents()
+    {
+        $suburbId = $this->payload->id;
+        $suburbName = $this->payload->name;
+
+        $userMetas = UserMeta::where('user_meta.meta_name', 'positions')
+            ->join('users', 'users.id','=','user_meta.user_id')
+            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.'%')
+            ->select('user_meta.*', 'users.name')
+            ->get()
+            ->toArray();
+
+        $response = [
+            'id' => $suburbId,
+            'name' => $suburbName,
+            'user_metas' => $userMetas
+        ];
+
+        return Response::json($response, 200);
+    }
 }
