@@ -1,4 +1,13 @@
 'use strict';
+
+/*
+TODO: members pagination/edit/disable/extend popup
+TODO: properties pagination
+TODO: reviews pagination/delete/disable
+TODO: categories edit/delete/disable
+TODO: suburb delete/disable
+ */
+
 var housestars = angular.module('houseStarsControllers', []);
 
 housestars.controller('MainCtrl', ['$scope', function ($scope) {
@@ -436,15 +445,16 @@ housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$ui
 
 
 
-    $scope.removeAgent = function () {
+    $scope.removeAgent = function (user_meta, index) {
 
-    };
+        http.removeSuburbAgent({
+            user_meta: user_meta,
+            current_suburb: $scope.currentSuburb
+        }).then(function(response){
+            console.log('remove agent: ', response);
+            $scope.user_metas.splice(index,1);
 
-    $scope.addAgent = function () {
-
-    };
-
-    $scope.selectAgent = function () {
+        });
 
     };
 

@@ -264,7 +264,13 @@ Route::group(['prefix' => 'dev-backup'], function(){
         Route::group(['prefix' => 'suburb'], function () {
 
             Route::get('', 'SuburbController@getAllSuburbs');
-            Route::get('agent', 'SuburbController@getSuburbAgents');
+
+            Route::group(['prefix' => 'agent'], function () {
+
+                Route::get('', 'SuburbController@getSuburbAgents');
+                Route::post('delete', 'SuburbController@deleteSuburbAgent');
+
+            });
 
         });
 

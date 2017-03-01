@@ -345,5 +345,21 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
             });
         },
 
+        removeSuburbAgent: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/suburb/agent/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
     }
 }]);
