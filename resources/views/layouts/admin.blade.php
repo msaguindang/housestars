@@ -263,7 +263,7 @@
 
 <script type="text/javascript">
 
-    var $baseUrl = '{{ url('/') }}';
+    var $baseUrl = '{{ env('APP_URL') }}';
     $_token = '{{ csrf_token() }}';
 
     /*$(window).load(function () {
