@@ -49,6 +49,23 @@ housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) 
         }
     };
 
+    $scope.extendSubscriptionUser = function (user, index) {
+
+        if(user.sub_end == ""){
+            return false;
+        }
+
+        http.extendUserSubscription(user).then(function(response){
+            console.log('extend user subscription: ', response);
+
+            if(response.data.new_end_subscription != ""){
+                $scope._users[index].sub_end = response.data.new_end_subscription;
+            }
+
+        });
+
+    };
+
 
     // initialize
     $scope.getAllUsers();
@@ -261,5 +278,63 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     // initialize
     $scope.getAllReviews();
+
+}]);
+
+housestars.controller('CategoriesCtrl', ['$scope', 'http', function ($scope, http) {
+
+    console.log('categoriesCtrl');
+
+    $scope.categories = [];
+    $scope._categories = angular.copy($scope.categories);
+
+    $scope.getAllCategories = function () {
+        http.getAllCategories().then(function(response){
+            console.log('all categories: ', response);
+            $scope.categories = response.data.categories;
+            $scope._categories = angular.copy($scope.categories);
+        });
+    };
+
+    $scope.editCategory = function () {
+
+    };
+
+    $scope.deleteCategory = function () {
+
+    };
+
+
+    // initialize
+    $scope.getAllCategories();
+
+}]);
+
+housestars.controller('SuburbsCtrl', ['$scope', 'http', function ($scope, http) {
+
+    console.log('suburbsCtrl');
+
+    $scope.suburbs = [];
+    $scope._suburbs = angular.copy($scope.suburbs);
+
+    $scope.getAllSuburbs = function () {
+        http.getAllSuburbs().then(function(response){
+            console.log('all suburbs: ', response);
+            $scope.suburbs = response.data.suburbs;
+            $scope._suburbs = angular.copy($scope.suburbs);
+        });
+    };
+
+    $scope.editSuburb = function () {
+
+    };
+
+    $scope.deleteSuburb = function () {
+
+    };
+
+
+    // initialize
+    $scope.getAllSuburbs();
 
 }]);

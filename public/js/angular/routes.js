@@ -21,10 +21,12 @@
                 var routes, setRoutes;
 
                 routes = [
-                    'dashboard',
+                    // 'dashboard',
                     'properties',
                     'members',
-                    'reviews'
+                    'reviews',
+                    'categories',
+                    'suburbs'
                 ];
 
                 setRoutes = function (route) {
@@ -52,7 +54,7 @@
                 });
 
                 $routeProvider
-                    .when('/', {redirectTo: '/dashboard'})
+                    .when('/', {redirectTo: '/members'})
                     .when('/404', {templateUrl: $baseUrl + '/housestars/templates/admin-dashboard/404.html'})
                     .otherwise({redirectTo: '/404'});
 

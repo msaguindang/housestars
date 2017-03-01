@@ -6,15 +6,36 @@
                 <table class="table table-hover table-striped">
                     <thead>
 
+                    <th>Reviewee</th>
                     <th>Reviewer</th>
-                    <th>Content</th>
+
+                    <th>Title</th>
+                    <th style="width:351px;">Content</th>
+
+                    <th>Communication</th>
+                    <th>Work Quality</th>
+                    <th>Price</th>
+                    <th>Punctuality</th>
+                    <th>Attitude</th>
+                    <th>Helpful</th>
+
                     <th>Action</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="review in _reviews">
 
+                        <td>{{ review.reviewee_name }}</td>
+                        <td>{{ review.reviewer_name }}</td>
+
                         <td>{{ review.title }}</td>
                         <td>{{ review.content }}</td>
+
+                        <td>{{ review.communication }}/5</td>
+                        <td>{{ review.work_quality }}/5</td>
+                        <td>{{ review.price }}/5</td>
+                        <td>{{ review.punctuality }}/5</td>
+                        <td>{{ review.attitude }}/5</td>
+                        <td>{{ review.helpful }}/5</td>
 
                         <td>
                             <a href="" ng-click="deleteReview(user, $index)" class="edit">

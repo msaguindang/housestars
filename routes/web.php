@@ -241,11 +241,29 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('', 'UserController@getAllUsers');
         Route::post('delete', 'UserController@deleteUser');
 
+        Route::group(['prefix' => 'subscription'], function(){
+
+            Route::post('extend', 'UserController@extendUserSubscription');
+
+        });
+
     });
 
     Route::group(['prefix' => 'review'], function(){
 
         Route::get('', 'ReviewController@getAllReviews');
+
+    });
+
+    Route::group(['prefix' => 'category'], function(){
+
+        Route::get('', 'CategoryController@getAllCategories');
+
+    });
+
+    Route::group(['prefix' => 'suburb'], function(){
+
+        Route::get('', 'SuburbController@getAllSuburbs');
 
     });
 
