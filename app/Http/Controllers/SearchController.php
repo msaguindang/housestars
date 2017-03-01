@@ -160,8 +160,10 @@ class SearchController extends Controller
         $average = 0;
         $numRatings = count($ratings);
 
-        foreach ($ratings as $rating) {
-            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+        if($numRatings > 0){
+            foreach ($ratings as $rating) {
+                $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+            }
         }
 
         return $average;
