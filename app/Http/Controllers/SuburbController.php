@@ -76,14 +76,56 @@ class SuburbController extends Controller
         $userMeta = $this->payload->input('user_meta');
         $currentSuburb = $this->payload->input('current_suburb');
         $userMetaId = $userMeta['id'];
-
-        $userId = $userMeta['user_id'];
         $suburbKeyCombo = $currentSuburb['id'].$currentSuburb['name'];
 
-        /*UserMeta::where('user_id', $userId)
-            ->where('meta_name','positions')
-            ->where('meta_value', 'LIKE', '%'.$suburbKeyCombo.'%')*/
+        $this->removeUserMetaSuburb($userMetaId, $suburbKeyCombo);
 
+        $response = [
+            'user_meta' => $userMeta,
+            'current_suburb' => $currentSuburb
+        ];
+
+        return Response::json($response, 200);
+    }
+
+    public function deleteSuburb()
+    {
+        $id = $this->payload->input('id');
+
+        try{
+
+            $userMetas = UserMeta::where('user_meta.meta_name', 'positions')
+                ->join('users', 'users.id','=','user_meta.user_id')
+                ->where('user_meta.meta_value', 'LIKE', '%'.$id.'%')
+                ->select('user_meta.*', 'users.name')
+                ->get()
+                ->toArray();
+
+            $currentSuburb = Suburbs::find($id)->toArray();
+            $suburbKeyCombo = $currentSuburb['id'].$currentSuburb['name'];
+
+            foreach($userMetas as $userMeta){
+                $userMetaId = $userMeta['id'];
+                $this->removeUserMetaSuburb($userMetaId, $suburbKeyCombo);
+            }
+
+            Suburbs::find($id)->delete();
+            $response['success'] = [
+                'message' => "Suburb successfully deleted."
+            ];
+            return Response::json($response, 200);
+        }catch(Exception $e){
+            $response['error'] = [
+                'message' => $e->getMessage()
+            ];
+            return Response::json($response, 404);
+        }
+
+
+    }
+
+    private function removeUserMetaSuburb($userMetaId, $suburbKeyCombo)
+    {
         $currentUserMeta = UserMeta::find($userMetaId);
 
         $metaValue = $currentUserMeta->meta_value;
@@ -101,12 +143,5 @@ class SuburbController extends Controller
 
         $currentUserMeta->meta_value = implode(',',$newMetaValues);
         $currentUserMeta->save();
-
-        $response = [
-            'user_meta' => $userMeta,
-            'current_suburb' => $currentSuburb
-        ];
-
-        return Response::json($response, 200);
     }
 }

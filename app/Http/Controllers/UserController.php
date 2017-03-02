@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Agents;
+use App\Property;
+use App\Reviews;
+use App\Transactions;
 use App\User;
+use App\UserMeta;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Stripe\Customer;
 use Stripe\Stripe;
 use Stripe\Subscription;
@@ -28,23 +34,40 @@ class UserController extends Controller
     public function getAllUsers()
     {
         $payload = $this->payload->all();
+        $pageNo = 1;
+        $limit = 10;
 
+        if(isset($payload['page_no'])){
+            $pageNo = $payload['page_no'];
+        }
 
-
-        $users = User::where('users.name', '!=', null)
-            ->join('role_users', 'role_users.user_id', '=','users.id')
-            ->join('roles','roles.id','=','role_users.role_id')
-            ->select('users.*','roles.name as role_name');
+        if(isset($payload['limit'])){
+            $limit = $payload['limit'];
+        }
 
         if(isset($payload['slug'])){
-            $users = $users->where('roles.slug',$payload['slug'])
-                ->get()
-                ->toArray();
+            $slugSql = " AND roles.slug = {$payload['slug']} ";
         }else{
-            $users = $users
-                ->get()
-                ->toArray();
+            $slugSql = "";
         }
+
+        $offset = $limit*($pageNo-1);
+
+        $length = DB::table('users')
+            ->selectRaw('count(*) as length')
+            ->where('name','!=',null)
+            ->first()
+            ->length;
+
+        $userSql = "SELECT users.*, roles.name as role_name 
+            FROM users 
+            INNER JOIN role_users ON role_users.user_id = users.id 
+            INNER JOIN roles ON roles.id = role_users.role_id
+            WHERE users.name IS NOT NULL
+            {$slugSql}
+            LIMIT {$limit} OFFSET {$offset}";
+
+        $users = json_decode(json_encode(DB::select($userSql)),TRUE);
 
         Stripe::setApiKey($this->stripeKey);
 
@@ -84,7 +107,8 @@ class UserController extends Controller
         }
 
         return Response::json([
-            'users' => $members
+            'users' => $members,
+            'length' => $length
         ], 200);
     }
 
@@ -93,7 +117,23 @@ class UserController extends Controller
         $id = $this->payload->input('id');
 
         try{
-            User::find($id)->delete();
+
+            $user = User::find($id);
+
+            UserMeta::where('user_id', $id)->delete();
+            Transactions::where('user_id', $id)->delete();
+            DB::table('role_users')->where('user_id', $id)->delete();
+            Reviews::where('reviewee_id', $id)->delete();
+            Reviews::where('reviewer_id', $id)->delete();
+            DB::table('reminders')->where('user_id', $id)->delete();
+            Property::where('user_id', $id)->delete();
+            DB::table('persistences')->where('user_id', $id)->delete();
+            Agents::where('agent_id', $id)->delete();
+            Agents::where('agency_id', $id)->delete();
+            DB::table('activations')->where('user_id', $id)->delete();
+
+
+            $user->delete();
             $response['success'] = [
                 'message' => "User successfully deleted."
             ];

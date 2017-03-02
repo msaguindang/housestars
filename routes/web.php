@@ -206,6 +206,7 @@ Route::group(['prefix' => 'dev-backup'], function(){
     Route::group(['prefix' => 'admin'], function () {
 
         Route::get('', 'AdminController@showDashboard');
+        Route::post('status/toggle', 'AdminController@toggleStatus');
 
         /*Route::get('dashboard', 'AdminController@showDashboard');
 
@@ -252,18 +253,21 @@ Route::group(['prefix' => 'dev-backup'], function(){
         Route::group(['prefix' => 'review'], function () {
 
             Route::get('', 'ReviewController@getAllReviews');
+            Route::post('delete', 'ReviewController@deleteReview');
 
         });
 
         Route::group(['prefix' => 'category'], function () {
 
             Route::get('', 'CategoryController@getAllCategories');
+            Route::post('delete', 'CategoryController@deleteCategory');
 
         });
 
         Route::group(['prefix' => 'suburb'], function () {
 
             Route::get('', 'SuburbController@getAllSuburbs');
+            Route::post('delete', 'SuburbController@deleteSuburb');
 
             Route::group(['prefix' => 'agent'], function () {
 

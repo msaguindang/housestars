@@ -1,11 +1,7 @@
 'use strict';
 
 /*
-TODO: members pagination/edit/disable/extend popup
-TODO: properties pagination
-TODO: reviews pagination/delete/disable
-TODO: categories edit/delete/disable
-TODO: suburb delete/disable
+
  */
 
 var housestars = angular.module('houseStarsControllers', []);
@@ -22,19 +18,27 @@ housestars.controller('DashboardCtrl', ['$scope', function ($scope) {
 
 }]);
 
-housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) {
+housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
 
     console.log('membersCtrl');
 
     $scope.users = [];
     $scope._users = angular.copy($scope.users);
 
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
     $scope.getAllUsers = function (){
 
-        http.getAllUsers().then(function(response){
+        http.getAllUsers({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
             console.log('all users: ', response);
             $scope.users = response.data.users;
             $scope._users = angular.copy($scope.users);
+            $scope.totalItems = response.data.length;
         });
     };
 
@@ -58,20 +62,64 @@ housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) 
         }
     };
 
-    $scope.extendSubscriptionUser = function (user, index) {
+    $scope.openExtensionModal = function (user, index){
 
         if(user.sub_end == ""){
             return false;
         }
 
-        http.extendUserSubscription(user).then(function(response){
-            console.log('extend user subscription: ', response);
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'extend-member-subscription-modal.html',
+            controller: 'ExtendMemberSubscriptionModalCtrl',
+            // size: 'lg',
+            resolve: {
+                userData: function () {
+                    return user;
+                },
+            }
+        });
 
-            if(response.data.new_end_subscription != ""){
-                $scope._users[index].sub_end = response.data.new_end_subscription;
+        modalInstance.result.then(function (response) {
+
+            switch(response.status){
+                case 'success':
+                    $scope.updateEndSubscription(response, index);
+                    break;
             }
 
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+
         });
+
+    };
+
+    $scope.updateEndSubscription = function(response, index){
+
+        if(response.data.new_end_subscription != ""){
+            $scope._users[index].sub_end = response.data.new_end_subscription;
+        }
+
+    };
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllUsers();
+    };
+
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'users'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._users[index].status = response.data.status;
+        })
 
     };
 
@@ -81,19 +129,61 @@ housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) 
 
 }]);
 
+housestars.controller('ExtendMemberSubscriptionModalCtrl', ['$scope', 'userData', '$uibModalInstance', 'http', function ($scope, userData, $uibModalInstance, http) {
+
+    console.log('ExtendMemberSubscriptionModalCtrl');
+
+    $scope.userData = userData;
+
+    $scope.extendSubscriptionUser = function () {
+
+        http.extendUserSubscription($scope.userData).then(function(response){
+            console.log('extend user subscription: ', response);
+
+            $scope.close({
+                status: 'success',
+                data: response.data
+            });
+
+        });
+
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+}]);
+
 housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
 
     console.log('propertiesCtrl');
 
     $scope.properties = [];
+    $scope._properties = angular.copy($scope.properties);
+
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
 
     $scope.getAllProperties = function () {
 
-        http.getAllProperties().then(function(response){
+        http.getAllProperties({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
 
             console.log('properties', response);
             $scope.properties = response.data.properties;
             $scope._properties = angular.copy($scope.properties);
+            $scope.totalItems = response.data.length;
 
         });
 
@@ -196,6 +286,13 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
         $scope.getAllProperties();
     };
 
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllProperties();
+    };
+
+
     // initialize
     $scope.getAllProperties();
 
@@ -276,14 +373,55 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.reviews = [];
     $scope._reviews = angular.copy($scope.reviews);
 
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllReviews();
+    };
+
     $scope.getAllReviews = function () {
-        http.getAllReviews().then(function(response){
+        http.getAllReviews({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
             console.log('reviews: ', response);
             $scope.reviews = response.data.reviews;
             $scope._reviews = angular.copy($scope.reviews);
+            $scope.totalItems = response.data.length;
         });
     };
 
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'reviews'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._reviews[index].status = response.data.status;
+        })
+
+    };
+
+    $scope.deleteReview = function (review, index) {
+
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        if(confirmation){
+            http.deleteReview({
+                id:review.id
+            }).then(function(response){
+                console.log('review deleted: ', response);
+                $scope._reviews.splice(index,1);
+            });
+        }
+
+    };
 
     // initialize
     $scope.getAllReviews();
@@ -319,11 +457,30 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', function ($scope, htt
         });
     };
 
-    $scope.editCategory = function () {
+    $scope.deleteCategory = function (category, index) {
 
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        if(confirmation){
+            http.deleteCategory({
+                id:category.id
+            }).then(function(response){
+                console.log('category deleted: ', response);
+                $scope._categories.splice(index,1);
+            });
+        }
     };
 
-    $scope.deleteCategory = function () {
+    $scope.toggleStatus = function (category, index) {
+
+        http.toggleStatus({
+            value: category.id,
+            status: category.status,
+            table: 'categories'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._categories[index].status = response.data.status;
+        })
 
     };
 
@@ -364,12 +521,18 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
         });
     };
 
-    $scope.editSuburb = function () {
+    $scope.deleteSuburb = function (suburb, index) {
 
-    };
+        var confirmation = confirm("Are you sure you want to delete?");
 
-    $scope.deleteSuburb = function () {
-
+        if(confirmation){
+            http.deleteSuburb({
+                id:suburb.id
+            }).then(function(response){
+                console.log('suburb deleted: ', response);
+                $scope._suburbs.splice(index,1);
+            });
+        }
     };
 
     $scope.showAvailabilities = function (currentSuburb) {
@@ -397,6 +560,19 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
             console.log('Modal dismissed at: ' + new Date());
 
         });
+
+    };
+
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'suburbs'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._suburbs[index].status = response.data.status;
+        })
 
     };
 

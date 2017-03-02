@@ -50,5 +50,26 @@ class CategoryController extends Controller
         return Response::json($response, 200);
     }
 
+    public function deleteCategory()
+    {
+        $id = $this->payload->input('id');
+
+        try{
+
+            Category::find($id)->delete();
+            $response['success'] = [
+                'message' => "Category successfully deleted."
+            ];
+            return Response::json($response, 200);
+        }catch(Exception $e){
+            $response['error'] = [
+                'message' => $e->getMessage()
+            ];
+            return Response::json($response, 404);
+        }
+
+
+    }
+
 
 }
