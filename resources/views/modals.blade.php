@@ -222,7 +222,7 @@
 
             <form id="reviewForm" enctype="multipart/form-data">
               {{csrf_field() }}
-              <input type="hidden" name="tradesman_id" value="1">
+              <input type="hidden" name="tradesman_id" id="agency_id" value="1">
               <div class="rating-stars">
                 <p class="rating-label">Communication</p>
                 <div class="stars">
@@ -447,6 +447,21 @@
       </div>
     </div>
 
+    <!-- Thank You Note / Tradesman Submission-->
+    <div class="modal fade" id="processSuccess" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>We will process your property submission.</h4>
+            </br><p class="sub-heading">You have successfully completed your process page. Please wait up to 10 working days for confirmation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- NO AGENT LISTED-->
     <div class="modal fade" id="noAgent" tabindex="-1" role="dialog" aria-labelledby="signup-area">
       <div class="modal-dialog" role="document">
@@ -598,6 +613,7 @@
           <div class="modal-body">
             @php($x = 0)
             @if(isset($data['tradesmen']))
+            @if(count($data['tradesmen']) > 0)
             <h4>ADD TRANSACTION</h4>
             <p class="sub-heading">Process a transaction with a Tradesman.</p>
             <form id="transaction" enctype="multipart/form-data">
@@ -617,7 +633,9 @@
                     </ul>
                 </div>
               <input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
-              <input type="hidden" name="property-code" value="{{$data['property'][0]['property-code']}}" id="code">
+              @if(isset($a))
+                <input type="hidden" name="property-code" value="{{$data['property'][$a]['property-code']}}" id="code">
+              @endif
               <div class="upload-button no-top">
                 <span class="label">Click to add Receipt</span>
                 <input type="file" name="receipt" id="receipt">
@@ -629,6 +647,7 @@
             @else 
             <h4>NO LISTED TRADESMAN</h4>
             <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
+            @endif
             @endif
           </div>
         </div>
@@ -688,3 +707,27 @@
         </div>
       </div>
     </div>
+
+    @if(isset($data['property']))
+      @foreach($data['property'] as $property)
+        @if(isset($property['property-type']))
+          <!-- Preview Contract-->
+          <div class="modal fade" id="{{$property['property-code']}}" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                  <div class="img-preview">
+                    @if(isset($property['contract']))
+                      <img src="{{env('APP_URL')}}/{{$property['contract']}}" alt="">
+                    @endif
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>    
+        @endif
+      @endforeach
+    @endif

@@ -85,9 +85,11 @@ Route::group(['prefix' => 'dev-backup'], function(){
 
     Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
 
-    Route::get('/dashboard/customer/edit', function () {
-        return view('dashboard.customer.edit');
-    });
+    Route::get('/dashboard/customer/edit', 'CustomerController@edit')->middleware('customer');
+
+    Route::get('/dashboard/customer/add', 'CustomerController@property')->middleware('customer');
+
+    Route::post('/dashboard/customer/add-property', 'CustomerController@addProperty')->middleware('customer');
 
     Route::get('/search-category', function () {
         return view('general.search-category');
@@ -161,7 +163,16 @@ Route::group(['prefix' => 'dev-backup'], function(){
 
     Route::post('/delete-transaction', 'CustomerController@delete');
 
+    Route::post('/upload-contract', 'CustomerController@uploadContract');
+
+    Route::post('/confirm', 'CustomerController@confirm');
+
+    Route::post('/process-form', 'CustomerController@processForm');
+
+    Route::post('/delete-transaction', 'CustomerController@delete');
+
     Route::post('/review', 'ReviewController@review');
+
 
     Route::post('/add-review', 'ReviewController@addReview');
 
@@ -203,23 +214,14 @@ Route::group(['prefix' => 'dev-backup'], function(){
 
     Route::post('/contact-us', 'TradesmanController@contact');
 
-    Route::group(['prefix' => 'admin'], function () {
+
+    Route::get('admin/login', 'AdminController@showLogin');
+    Route::post('admin/login', 'AdminController@postLogin');
+
+    Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('', 'AdminController@showDashboard');
         Route::post('status/toggle', 'AdminController@toggleStatus');
-
-        /*Route::get('dashboard', 'AdminController@showDashboard');
-
-        Route::get('members', 'AdminController@showMembers');
-
-        Route::get('properties', 'AdminController@showProperties');
-
-        Route::get('reviews', 'AdminController@showReviews');
-
-        Route::get('advertisements', 'AdminController@showAdvertisements');*/
-
-        Route::get('login', 'AdminController@showLogin');
-        Route::post('login', 'AdminController@postLogin');
 
         Route::get('logout', 'AdminController@logout');
 
@@ -235,6 +237,8 @@ Route::group(['prefix' => 'dev-backup'], function(){
             Route::get('get', 'PropertyController@getProperty');
             Route::post('delete', 'PropertyController@deleteProperty');
             Route::post('update', 'PropertyController@updateProperty');
+
+            Route::post('property-process/update', 'PropertyController@updatePropertyProcessStatus');
 
         });
 

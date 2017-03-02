@@ -9,11 +9,12 @@ use Sentinel;
 use App\UserMeta;
 use App\Suburbs;
 use App\Property;
+use App\User;
 use App\Reviews;
 use App\Transactions;
 use View;
 use Response;
-
+use Mail;
 
 class CustomerController extends Controller
 {
@@ -51,6 +52,8 @@ class CustomerController extends Controller
         	$data['meta'][$key->meta_name] = $key->meta_value;
         }
 
+        
+
         $data['meta']['name'] = Sentinel::getUser()->name;
         $data['meta']['email'] = Sentinel::getUser()->email;
 
@@ -67,27 +70,53 @@ class CustomerController extends Controller
             } else if($property_code == $key->property_code){
         		$data['property'][$x][$key->meta_name] = $key->meta_value;
         		$property_code = $key->property_code;
-        	} else {
-        		$x++;
+        	} else if($property_code != $key->property_code){
+                $property_code = $key->property_code;
+                $x++;
+                $data['property'][$x][$key->meta_name] = $key->meta_value;
+                $data['property'][$x]['property-code'] = $key->property_code;
+            } else {
         		$data['property'][$x][$key->meta_name] = $key->meta_value;	
         	}
         	
         }
 
+        $data['property']['user_id'] = Sentinel::getUser()->id;
+
         $data['transactions'] = array();
         $data['code'] = $property_code;
-        $data['agents'] = $this->find_agent_by_suburb($data['property'][0]['suburb']);
-        $total = 0;
+        $lastIndex = count($data['property']) - 2;
 
+        if(count($data['property']) > 1){
+            $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
+        }
+
+        $total = 0;
+        $li = 0;
         foreach ($transactions as $transaction ) {
             $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'business-name')->get();
-            $data['transactions'][$z]['name'] = $business_name[0]['meta_value'];
+            if(count($business_name) > 0){
+                $data['transactions'][$z]['name'] = $business_name[0]['meta_value'];
+            }
             $data['transactions'][$z]['id'] = $transaction->id;
             $data['transactions'][$z]['tid'] = $transaction->tradesman_id;
             $data['transactions'][$z]['amount_spent'] = $transaction->amount_spent;
             $data['transactions'][$z]['receipt'] = $transaction->receipt;
-            $total = $total + (int)$transaction->amount_spent;
+
+            if(isset($data['transactions'][$li]['code'])){
+                if($data['transactions'][$li]['code'] == $transaction->property_code){
+                    $total = $total + (int)$transaction->amount_spent;
+                } else {
+                    $total = 0 + (int)$transaction->amount_spent;  
+                }
+            } else {
+                $total = $total + (int)$transaction->amount_spent;   
+            }
+
+            $data['transactions'][$z]['code'] = $transaction->property_code;
+
             $z++;
+            $li = $z - 1;
         }
 
         $data['reviews'] = array();
@@ -99,12 +128,51 @@ class CustomerController extends Controller
             $i++;
         }
 
-        $data['spending']['total'] = $total;
-        
-       // dd($data);
+        $data['recent'] = $lastIndex;
 
-        return View::make('dashboard/customer/profile')->with('data', $data);
+
+
+        $data['spending']['total'] = $total;
+       
+        if(isset($data['agent']) && count($data['property']) > 1){
+            $agency_commission = ((float)str_replace("%","",$data['agent']['rate']) / 100) * (float)$data['property'][$lastIndex]['value-to'];
+            $customer_commission = ((float)str_replace("%","",$data['property'][$lastIndex]['commission']) / 100) * $agency_commission;
+            $data['commission']['total'] =  $customer_commission;
+            //$data['commission']['total'] = (int)$data['property'][0]['value-to'] * $agency_commission ; 
+        } else {
+            $data['commission']['total'] = 'N/A';
+        }
+
+       // Check of the last property added was proccessed 
+    
+        if (isset($data['property'][$lastIndex]['process'])){
+            return View::make('dashboard/customer/profile')->with('data', $data);
+        } 
+  
+        return View::make('dashboard/customer/process')->with('data', $data);
     }
+
+    public function edit()
+    {
+
+        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+        $user = User::where('id', Sentinel::getUser()->id)->get();
+        $data = array();
+        $data['profile-photo'] = 'assets/default.png';
+        $data['cover-photo'] = 'assets/default_cover_photo.jpg';
+
+        foreach ($meta as $key) {
+            $data[$key->meta_name] = $key->meta_value;
+        }
+
+        foreach ($user as $key) {
+            $data['email'] = $key->email;
+            $data['name'] = $key->name;
+        }
+
+        return View::make('dashboard/customer/edit')->with('data', $data);
+    }
+
 
     function spending(Request $request){
     	
@@ -120,23 +188,39 @@ class CustomerController extends Controller
                 $path = $file->move(public_path($localpath), $filename);
                 $url = $localpath.'/'.$filename;
                 $id = DB::table('transactions')->insertGetId(
-                        ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'receipt' => $url, 'created_at' => Carbon::now()]
+                        ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'property_code' => $request->input('property-code'), 'receipt' => $url, 'created_at' => Carbon::now()]
                     );
-                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'receipt' => $url, 'id' => $id, 'tid' => $request->input('trades'));
+                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'property_code' => $request->input('property-code'), 'receipt' => $url, 'id' => $id, 'tid' => $request->input('trades'));
 
             } else {
                 $id = DB::table('transactions')->insertGetId(
-                        ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'created_at' => Carbon::now()]
+                        ['user_id' => $user_id, 'tradesman_id' => $request->input('trades'), 'amount_spent' => $request->input('amount-spent'), 'property_code' => $request->input('property-code'), 'created_at' => Carbon::now()]
                     );
       
-                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'id' => $id, 'tid' => $request->input('trades'));
+                $data = array('tradesman' => $tradesman[0]['meta_value'], 'amount' => $request->input('amount-spent'), 'property_code' => $request->input('property-code'), 'id' => $id, 'tid' => $request->input('trades'));
             }
 
 
             $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
+            
             $total = 0;
+            $z = 0; $li = 0;
             foreach ($transactions as $transaction ) {
-                $total = $total + (int)$transaction->amount_spent;
+                
+                if(isset($data['transactions'][$li]['code'])){
+                    if($data['transactions'][$li]['code'] == $transaction->property_code){
+                        $total = $total + (int)$transaction->amount_spent;
+                    } else {
+                        $total = 0 + (int)$transaction->amount_spent;  
+                    }
+                } else {
+                    $total = $total + (int)$transaction->amount_spent;   
+                }
+
+                $data['transactions'][$z]['code'] = $transaction->property_code;
+
+                $z++;
+                $li = $z - 1;
             }
 
             $data['total'] = $total;
@@ -171,15 +255,145 @@ class CustomerController extends Controller
         
     }
 
+    function uploadContract(Request $request){
+
+            if ($request->hasFile('contract') ) {
+                $user_id = Sentinel::getUser()->id;
+                $file = $request->file('contract');
+                $localpath = 'user/user-'.$user_id.'/uploads';
+                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
+                $path = $file->move(public_path($localpath), $filename);
+                $url = $localpath.'/'.$filename;
+
+                $property = new Property;
+
+                $property->user_id = $user_id;
+                $property->meta_name = 'contract';
+                $property->meta_value = $url;
+                $property->property_code = $request->input('property_code');
+
+                $property->save();
+                
+                return Response::json('success', 200); 
+
+            }
+        
+    }
+
+    function confirm(Request $request){
+        $user_id = Sentinel::getUser()->id;
+        $code = $request->input('code');
+        $meta = $request->input('meta');
+        $exist =  Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->get();
+
+        if(count($exist) == 0){
+            $property = new Property;
+            $property->user_id = $user_id;
+            $property->meta_name = $meta;
+            $property->meta_value = 'yes';
+            $property->property_code = $code;
+            $property->save();
+        } else {
+            Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->update(['meta_value' => $request->input('checked')]);
+        }
+
+        return Response::json('success', 200); 
+        
+    }
+
+    function processForm(Request $request){
+        $user_id = Sentinel::getUser()->id;
+        $code = $request->input('property_code');
+        $meta = array('process', 'discount');
+        
+        foreach ($meta as $key) {
+            $exist =  Property::where('property_code', '=', $code)->where('meta_name','=', $key)->get();
+
+            if(count($exist) == 0){
+                $property = new Property;
+                $property->user_id = $user_id;
+                $property->meta_name = $key;
+                if($key == 'process'){
+                    $property->meta_value = 'Pending';
+                }else{
+                    $property->meta_value = $request->input('commission');
+                }
+                $property->property_code = $code;
+                $property->save();
+            }
+        }
+
+        $property = Property::where('property_code', '=', $code)->get();
+        $user = array('name' => Sentinel::getUser()->name, 'email' => Sentinel::getUser()->email);
+        $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
+
+
+        foreach ($property as $key) {
+            $data['property'][$key->meta_name] = $key->meta_value;  
+        }
+
+        $z = 0;
+        $total = 0;
+        $li = 0;
+
+        foreach ($transactions as $transaction ) {
+            if($transaction->property_code == $code){
+                $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'business-name')->get();
+                if(count($business_name) > 0){
+                    $data['property']['transactions'][$z]['name'] = $business_name[0]['meta_value'];
+                }
+                $data['property']['transactions'][$z]['amount_spent'] = $transaction->amount_spent;
+                $data['property']['transactions'][$z]['date'] = date_format($transaction->created_at, 'd/m/y');
+
+                 if(isset($data['property']['transactions'][$li]['code'])){
+                    if($data['property']['transactions'][$li]['code'] == $transaction->property_code){
+                        $total = $total + (int)$transaction->amount_spent;
+                    } else {
+                        $total = 0 + (int)$transaction->amount_spent;  
+                    }
+                } else {
+                    $total = $total + (int)$transaction->amount_spent;   
+                }
+
+                $data['property']['transactions'][$z]['code'] = $transaction->property_code;
+
+                $z++;
+                $li = $z - 1;
+            }
+        }
+
+         $data['property']['total'] =  $total;
+
+
+        $this->sendEmail($user, $data['property']);
+
+        return Response::json('success', 200); 
+    }   
+
     function updateAmount(Request $request){
 
         DB::table('transactions')->where('id', $request->input('id'))->update(['amount_spent' => $request->input('content')]);
         
         $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
         $total = 0;
-        foreach ($transactions as $transaction ) {
-            $total = $total + (int)$transaction->amount_spent;
-        }
+        $z = 0; $li = 0;
+            foreach ($transactions as $transaction ) {
+                
+                if(isset($data['transactions'][$li]['code'])){
+                    if($data['transactions'][$li]['code'] == $transaction->property_code){
+                        $total = $total + (int)$transaction->amount_spent;
+                    } else {
+                        $total = 0 + (int)$transaction->amount_spent;  
+                    }
+                } else {
+                    $total = $total + (int)$transaction->amount_spent;   
+                }
+
+                $data['transactions'][$z]['code'] = $transaction->property_code;
+
+                $z++;
+                $li = $z - 1;
+            }
 
         $data['total'] = $total;
 
@@ -243,13 +457,15 @@ class CustomerController extends Controller
                 $name =  $info->meta_value;
             } else if($info->meta_name == 'profile-photo'){
                 $photo = $info->meta_value;
-            } 
+            } else if($info->meta_name == 'base-commission'){
+                $rate = $info->meta_value;
+            }
         }
 
         $rating = $this->getRating($id);
 
         if(isset($name) && isset($photo)){
-            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating);
+            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'rate' => $rate);
             return $agent;
         }
         
@@ -301,4 +517,46 @@ class CustomerController extends Controller
 
         return Response::json($data, 200);  
     }
+
+    private function sendEmail($user, $data){
+        $name = $user['name'];
+        $email = $user['email'];
+        $subject = $data['suburb']. ', '.$data['state'];
+
+        Mail::send(['html' => 'emails.process-property'], [
+                'user' => $user,
+                'data' => $data
+            ], function ($message) use ($name, $email, $subject) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('nikko@kudosable.com');
+                $message->subject('Processing property in '. $subject);
+        });
+    }
+
+    function property(){
+        $suburbs = Suburbs::all();
+        return view('dashboard.customer.add-property')->with('suburbs', $suburbs);
+    }
+
+    public function addProperty(Request $request)
+    {   
+        $user_id = Sentinel::getUser()->id;
+        $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
+        $property_code = md5(uniqid(rand(), true));
+        
+        foreach ($property_meta as $meta) {
+            if($request->input($meta) != null || $request->input($meta) != '')
+            {
+                $value = $request->input($meta);
+                
+                Property::updateOrCreate(
+                        ['user_id' => $user_id, 'meta_name' => $meta, 'property_code' => $property_code],
+                        ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value, 'property_code' => $property_code]
+                    );
+            }
+        }
+
+        return redirect(env('APP_URL').'/dashboard/customer/profile');
+
+    }  
 }

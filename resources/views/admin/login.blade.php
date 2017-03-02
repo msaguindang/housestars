@@ -60,6 +60,10 @@
             color: #23527c;
         }
 
+        p.errors{
+            text-align:center;
+        }
+
         /* Extra Small Devices, Phones */
         @media only screen and (max-width: 480px) {
 

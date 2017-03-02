@@ -13,6 +13,7 @@
                     <th>Currently Leased?</th>
                     <th>Property Value</th>
                     <th>Agent</th>
+                    <th>Process Status</th>
                     <th>Action</th>
                     </thead>
                     <tbody>
@@ -30,6 +31,7 @@
                                 {{ property['agent-name'] }}
                             </a>
                         </td>
+                        <td><a class="btn btn-sm" ng-click="updateProcessStatus(property, $index)" ng-class="{ 'btn-success':(property['process']=='Completed') }">{{ (property['process']==null||property['process']=='')?'N/A':property['process'] }}</a></td>
                         <td class="btn-actions">
                             <a href="" ng-click="editProperty(property, $index)" class="edit-property">
                                 <i class="pe-7s-note"></i>

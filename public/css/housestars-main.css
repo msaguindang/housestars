@@ -3140,3 +3140,13 @@ nav.pagination {
 #agency-results .profile-info {
     padding: 27px;
 }
+
+#commission {
+    float: right;
+}
+
+.btn-xs {
+    padding: 3px 7px !important;
+    font-size: 9px !important;
+    margin: 0 !important;
+}

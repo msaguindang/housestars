@@ -126,7 +126,7 @@ class RegistrationController extends Controller
     public function addProperty(Request $request)
     {   
         $user_id = Sentinel::getUser()->id;
-        $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent');
+        $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $user_meta = array('address', 'phone', 'username');
         $property_code = md5(uniqid(rand(), true));
         
