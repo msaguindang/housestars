@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => 'dev-backup'], function(){
+Route::group(['prefix' => ''], function(){
 
     Route::get('/profile', 'MainController@dashboard');
 

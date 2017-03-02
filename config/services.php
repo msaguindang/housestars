@@ -37,13 +37,13 @@ return [
     'facebook' => [
         'client_id' => '1889078964644540',
         'client_secret' => '94569d661404d0c28372e6d423e63a03',
-        'redirect' => 'http://localhost/login/facebook/callback',
+        'redirect' => 'http://dev.housestars.com.au/login/facebook/callback',
     ],
 
     'google' => [
         'client_id' => '469144857452-kq3vdeq6g21vpnaks3vcp1jmlkun2gqk.apps.googleusercontent.com',
         'client_secret' => '3gwuGjqlEnEOeXgUqPCduCLY',
-        'redirect' => 'http://localhost/login/google/callback',
+        'redirect' => 'http://dev.housestars.com.au/login/google/callback',
     ],
 
     'ses' => [

@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /dev-backup/
+#    RewriteBase /dev-backup/
 
     RewriteCond %{THE_REQUEST} ^GET\ /public/ [NC]
     RewriteRule ^public/(.*)$ $1 [L,R=301,NE]
