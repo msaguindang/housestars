@@ -63,7 +63,8 @@ class PropertyController extends Controller
             }
 
             $singleRow['vendor-name'] = $vendorName;
-            $singleRow['property-code'] = $propertyCode;
+            $singleRow['vendor-user-id'] = $propertyMeta['user_id'];
+            $singleRow['property-code'] = $propertyMeta['property_code'];
             $singleRow['agent-name'] = '';
             $agentUserMeta = null;
 
@@ -181,6 +182,34 @@ class PropertyController extends Controller
             'user_id' => $userId,
             'metas' => $metas
         ], 200);
+    }
+
+    public function updatePropertyProcessStatus()
+    {
+        $property = $this->payload->all();
+
+        $userId = $property['vendor-user-id'];
+        $processStatus = $property['process'];
+        $propertyCode = $property['property-code'];
+
+        switch($processStatus){
+            case 'Pending':
+                $newProcessStatus = 'Completed';
+                Property::where('user_id', $userId)
+                    ->where('meta_name', 'process')
+                    ->where('property_code', $propertyCode)
+                    ->update([
+                        'meta_value' => $newProcessStatus
+                    ]);
+                break;
+        }
+
+        $response = [
+            'process' => $newProcessStatus
+        ];
+
+        return Response::json($response, 200);
+
     }
 
 }

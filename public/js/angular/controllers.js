@@ -286,6 +286,19 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
         $scope.getAllProperties();
     };
 
+    $scope.updateProcessStatus = function (property, index) {
+
+        switch(property.process){
+            case 'Pending':
+                http.updatePropertyProcessStatus(property).then(function(response){
+                    console.log('property process status updated: ', response);
+                    $scope._properties[index].process = response.data.process;
+                });
+                break;
+        }
+
+    };
+
     $scope.changePage = function(newPage){
         console.log('new page: ', newPage);
         $scope.currentPage = newPage;
