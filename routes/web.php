@@ -219,6 +219,7 @@ Route::group(['prefix' => 'dev-backup'], function(){
         Route::get('advertisements', 'AdminController@showAdvertisements');*/
 
         Route::get('login', 'AdminController@showLogin');
+        Route::post('login', 'AdminController@postLogin');
 
         Route::get('logout', 'AdminController@logout');
 
