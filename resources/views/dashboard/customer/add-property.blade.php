@@ -72,7 +72,7 @@
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
 				<h2>Vendors Registration Form</h2>
-				<form action="{{env('APP_URL')}}/add-property" method="POST">
+				<form action="{{env('APP_URL')}}/dashboard/customer/add-property" method="POST">
 					@if(session('error'))
 					<div class="alert alert-danger">
 						{{session('error')}}
@@ -185,35 +185,12 @@
 
 					</div>					
 				</div>
-				<span class="label-header">Personal Details</span>
-
-				<div class="col-xs-12">
-					<div class="col-xs-4 no-padding-left">
-						<label>Name</label>
-						<input type="text" name="name" disabled value="{{$user['name']}}" class="disabled">
-						<label>Email Address</label>
-						<input type="text" name="email" disabled value="{{$user['email']}}" class="disabled">
-					</div>
-					<div class="col-xs-4">
-						<label>Address</label>
-						<input type="text" name="address">
-						<label>Username</label>
-						<input type="text" name="username">
-					</div>
-
-					<div class="col-xs-4 no-padding-right">
-						<label>Phone Number</label>
-						<input type="text" name="phone">
-						<label>Password</label>
-						<input type="password" name="password" disabled value="******" class="disabled">
-					</div>					
-				</div>
 
 				<span class="label-header">Agent Selection</span>
 
 				<div class="col-xs-12" id="agencyList"></div>
 				<div class="col-xs-3 col-xs-offset-9">
-					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
+					<button class="btn hs-primary" id="submit" disabled>ADD PROPERTY <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">
 						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>
 					</div>

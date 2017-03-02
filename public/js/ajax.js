@@ -2,7 +2,7 @@ $( "#signup-form" ).submit(function( e ) {
 
     $.ajax({
       type: 'post',
-      url: 'register',
+      url: '/register',
       data: $(this).serialize(),
       dataType: 'json',
       error: function(response){
@@ -21,7 +21,7 @@ $( "#signup-form" ).submit(function( e ) {
       $('#forgotPassword #msg').append('<span>Please wait, we are validating your request...</span>');
        $('#forgotPass .btn').attr("disabled",true);
       $.ajax({
-      url: 'retrieve-password',
+      url: '/retrieve-password',
       data: data,
       type: 'POST',
       processData: false,
@@ -53,7 +53,7 @@ $( "#signup-form" ).submit(function( e ) {
       $('#trades').empty();
       //
       $.ajax({
-        url: 'search/category',
+        url: '/search/category',
         data: data,
         type: 'POST',
         success: function(data){
@@ -84,7 +84,7 @@ $( "#signup-form" ).submit(function( e ) {
       var countClass = '#count-' + $(this).data('id');
       $(this).attr("disabled", true);
       $.ajax({
-        url: 'helpful',
+        url: '/helpful',
         data: {_token: $(this).data('token'), id: $(this).data('id')},
         type: 'POST',
         success: function(data){
@@ -101,7 +101,7 @@ $( "#signup-form" ).submit(function( e ) {
       var data = $(this).serialize();
 
       $.ajax({
-        url: 'send/tradesman',
+        url: '/send/tradesman',
         data: data,
         type: 'POST',
         success: function(data){
@@ -118,7 +118,7 @@ $( "#signup-form" ).submit(function( e ) {
       var data = $(this).serialize();
 
       $.ajax({
-        url: 'send/category',
+        url: '/send/category',
         data: data,
         type: 'POST',
         success: function(data){
@@ -170,7 +170,7 @@ $(document).on('submit', '#orderBusinessCard' ,function(e){
       var data = $(this).serialize();
 
       $.ajax({
-        url: 'order-business-card',
+        url: '/order-business-card',
         data: data,
         type: 'POST',
         processData: false,
@@ -186,7 +186,7 @@ $(document).on('submit', '#contactUS' ,function(e){
       var data = $(this).serialize();
 
       $.ajax({
-        url: 'contact-us',
+        url: '/contact-us',
         data: data,
         type: 'POST',
         processData: false,
