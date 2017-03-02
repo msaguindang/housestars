@@ -9,9 +9,9 @@ switch (preg_replace("/:.*$/", "", strtolower($_SERVER['HTTP_HOST']))) {
         define ('BRANCH', 'dev');
         break;
     default:
-        if(strstr($_SERVER['REQUEST_URI'], '/dev')) {
+        if(array_shift((explode(".",$_SERVER['HTTP_HOST']))) === "dev") {
             define ('BRANCH', 'dev');
-        } else if(strstr($_SERVER['REQUEST_URI'], '/staging')) {
+        } else if(array_shift((explode(".",$_SERVER['HTTP_HOST']))) === "staging") {
             define ('BRANCH', 'staging');
         } else {
             define ('BRANCH', 'master');
