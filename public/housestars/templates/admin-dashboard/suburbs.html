@@ -17,14 +17,18 @@
 
                         <td>{{ suburb.id }}</td>
                         <td>{{ suburb.name }}</td>
-                        <td>{{ suburb.availability }}</td>
-
                         <td>
-                            <a href="" ng-click="editSuburb(suburb, $index)" class="edit">
+                            <a href="" ng-if="suburb.availability>0" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
+                            <span ng-if="suburb.availability<=0">0</span>
+                        </td>
+
+                        <td class="btn-actions">
+                            <a href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
                                 <i class="pe-7s-trash"></i>
                             </a>
-                            <a href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
-                                <i class="pe-7s-check"></i>
+                            <a href="" ng-click="toggleStatus(suburb, $index)" class="disable">
+                                <i ng-if="suburb.status == 1" class="pe-7s-check"></i>
+                                <i ng-if="suburb.status == 0" class="pe-7s-close-circle"></i>
                             </a>
                         </td>
                     </tr>
@@ -33,7 +37,63 @@
 
             </div>
         </div>
+
     </div>
 
 
 </div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="pull-right">
+            <ul uib-pagination
+                total-items="suburbsLength"
+                ng-model="currentPage"
+                max-size="5"
+                class="pagination-sm"
+                boundary-links="true"
+                rotate="false"
+                ng-change="changePage(currentPage)">
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="suburb-availability-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Agents for {{ currentSuburb.name }}</h4>
+    </div>
+    <div class="modal-body">
+
+        <table class="table table-hover table-striped">
+            <thead>
+            <th>Name</th>
+            <th>Action</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user_meta in user_metas">
+
+                <td>{{ user_meta.name }}</td>
+
+                <td>
+                    <a href="" ng-click="removeAgent(user_meta, $index)" class="delete">
+                        <i class="pe-7s-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+    </div>
+
+</script>

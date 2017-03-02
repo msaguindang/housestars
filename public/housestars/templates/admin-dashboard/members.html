@@ -24,14 +24,15 @@
                         <td>{{ user.sub_start }}</td>
                         <td>{{ user.sub_end }}</td>
 
-                        <td>
-                            <a href="" ng-click="editUser(user, $index)" class="edit">
+                        <td class="btn-actions">
+                            <!--<a href="" ng-click="editUser(user, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
+                            </a>-->
+                            <a href="" ng-click="toggleStatus(user, $index)" class="disable">
+                                <i ng-if="user.status == 1" class="pe-7s-check"></i>
+                                <i ng-if="user.status == 0" class="pe-7s-close-circle"></i>
                             </a>
-                            <a href="" ng-click="disableUser(user, $index)" class="disable">
-                                <i class="pe-7s-check"></i>
-                            </a>
-                            <a ng-disabled="user.subscription_type == 'None'" href="" ng-click="extendSubscriptionUser(user, $index)" class="extend-subscription">
+                            <a ng-disabled="user.subscription_type == 'None'" href="" ng-click="openExtensionModal(user, $index)" class="extend-subscription">
                                 <i class="pe-7s-clock"></i>
                             </a>
                             <a href="" ng-click="deleteUser(user, $index)" class="delete">
@@ -48,3 +49,47 @@
 
 
 </div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="pull-right">
+            <ul uib-pagination
+                total-items="totalItems"
+                ng-model="currentPage"
+                max-size="5"
+                class="pagination-sm"
+                boundary-links="true"
+                rotate="false"
+                items-per-page="limit"
+                ng-change="changePage(currentPage)">
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/ng-template" id="extend-member-subscription-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Extend Subscription for {{ userData.name }}</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="row form-item">
+            <div class="col-xs-3"><input type="number" class="form-control input-number"></div>
+            <div class="col-xs-9"><label>Months</label></div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="extendSubscriptionUser()">Save changes</button>
+    </div>
+
+</script>

@@ -312,11 +312,104 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        deleteSuburb: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/suburb/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        deleteCategory: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/category/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        deleteReview: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/review/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        toggleStatus: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/status/toggle', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        getSuburbAgents: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/suburb/agent', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         extendUserSubscription: function (data) {
             var self = this;
             return $q(function(resolve, reject) {
                 self.post('admin/user/subscription/extend', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        removeSuburbAgent: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/suburb/agent/delete', data).then(function(response) {
 
                     resolve({
                         data:response.data,

@@ -34,7 +34,7 @@ class LoginController extends Controller
                         return \Ajax::redirect(env('APP_URL').'/dashboard/customer/profile');
                         break;
                     case 'admin':
-                        return \Ajax::redirect('/admin');
+                        return \Ajax::redirect(env('APP_URL').'/admin');
                         break;
                 }
 

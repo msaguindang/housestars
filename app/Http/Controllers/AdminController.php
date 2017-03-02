@@ -3,20 +3,83 @@
 namespace App\Http\Controllers;
 
 use App\Property;
-use App\User;
 use App\UserMeta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Validator;
 use Sentinel;
+use Response;
 
 class AdminController extends Controller
 {
+    protected $appUrl;
+    protected $payload;
+
+    public function __construct(Request $request)
+    {
+        $this->appUrl = env('APP_URL').'/';
+        $this->payload = $request;
+    }
+
     public function showLogin()
     {
         if (Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.login');
+    }
+
+    public function postLogin()
+    {
+
+        $request = $this->payload;
+
+        $validation = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        try{
+            if( Sentinel::authenticate($request->all()))
+            {
+
+                $role = Sentinel::getUser()->roles()->first()->slug;
+
+                if($role == "admin"){
+                    return \Ajax::redirect(env('APP_URL').'/admin');
+                }else{
+                    
+                    Sentinel::removeCheckpoint('throttle');
+                    Sentinel::logout();
+
+                    $validation->getMessageBag()->add('login_error', "Please login as an admin role");
+                    // redirect back with inputs and validator instance
+                    return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
+                }
+
+
+
+            }else{
+
+                $validation->getMessageBag()->add('login_error', "Sorry, our system doesn't recognize your credentials");
+                // redirect back with inputs and validator instance
+                return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
+
+
+            }
+
+
+        }catch(ThrottlingException $e){
+
+            $validation->getMessageBag()->add('login_error', 'You are denied access for suspicious activity! Login again after '.$e->getDelay().' seconds');
+            // redirect back with inputs and validator instance
+            return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
+
+        }
+
+
+
     }
 
     public function logout()
@@ -24,13 +87,13 @@ class AdminController extends Controller
         Sentinel::removeCheckpoint('throttle');
         Sentinel::logout();
 
-        return redirect('/admin');
+        return redirect($this->appUrl.'admin');
     }
 
     public function showDashboard()
     {
         if (!Sentinel::check()) {
-            return redirect('admin/login');
+            return redirect($this->appUrl.'admin/login');
         }
 
         return view('layouts.admin');
@@ -39,7 +102,7 @@ class AdminController extends Controller
     public function showMembers()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.members');
@@ -48,7 +111,7 @@ class AdminController extends Controller
     public function showProperties()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         $properties = [];
@@ -105,7 +168,7 @@ class AdminController extends Controller
     public function showReviews()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.reviews');
@@ -114,9 +177,42 @@ class AdminController extends Controller
     public function showAdvertisements()
     {
         if (!Sentinel::check()) {
-            return redirect('admin');
+            return redirect($this->appUrl.'admin');
         }
 
         return view('admin.advertisements');
+    }
+
+    public function toggleStatus()
+    {
+        $payload = $this->payload->all();
+
+        $newStatus = 1;
+
+        $column = 'id';
+
+        if(isset($payload['column'])){
+            $column = $payload['column'];
+        }
+
+        $table = $payload['table'];
+        $value = $payload['value'];
+        $status = $payload['status'];
+
+        if($status){
+            $newStatus = 0;
+        }
+
+        $tableInstance = DB::table($table)
+            ->where($column,$value)
+            ->update([
+            'status' => $newStatus
+        ]);
+
+        return Response::json([
+            'status' => $newStatus
+        ], 200);
+
+
     }
 }

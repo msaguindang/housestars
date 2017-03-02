@@ -1,3 +1,7 @@
+<?php
+    $appUrl = env('APP_URL').'/';
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,13 +16,13 @@
 
 
     <!-- Bootstrap core CSS     -->
-    <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ $appUrl.'css/bootstrap.min.css' }}" rel="stylesheet">
 
     <!-- Animation library for notifications   -->
-    <link href="{{asset('css/animate.css')}}" rel="stylesheet">
+    <link href="{{ $appUrl.'css/animate.css' }}" rel="stylesheet">
 
     <!--  Light Bootstrap Table core CSS    -->
-    <link href="{{asset('css/light-bootstrap.css')}}" rel="stylesheet">
+    <link href="{{ $appUrl.'css/light-bootstrap.css' }}" rel="stylesheet">
 
 
     <!--  CSS for Demo Purpose, don't include it in your project     -->
@@ -28,11 +32,16 @@
 <!--     Fonts and icons     -->
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-    <link href="{{asset('css/pe-icon-7-stroke.css')}}" rel="stylesheet">
+    <link href="{{ $appUrl.'css/pe-icon-7-stroke.css' }}" rel="stylesheet">
 
 
     <style>
         /* temporary styles */
+
+        .btn-actions a i{
+            font-size:22px;
+        }
+
         .form-item {
             margin-bottom: 10px;
         }
@@ -120,7 +129,7 @@
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="#" class="simple-text">
-                    <img src="{{asset('assets/logo.png')}}">
+                    <img src="{{ $appUrl.'assets/logo.png' }}">
                 </a>
             </div>
 
@@ -180,17 +189,17 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="{{ url('/admin') }}">
+                            <a href="{{ url($appUrl.'admin') }}">
                                 <p>Admin</p>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/') }}">
+                            <a href="{{ $appUrl }}">
                                 <p>Homepage</p>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url('/admin/logout') }}">
+                            <a href="{{ url($appUrl.'admin/logout') }}">
                                 <p>Log out</p>
                             </a>
                         </li>
@@ -229,37 +238,37 @@
 
 <div id="loading" style="display:none;">
     <div class="loading-screen">
-        <img id="loader" src="{{asset('assets/loader.png')}}"/>
+        <img id="loader" src="{{ $appUrl.'assets/loader.png' }}"/>
     </div>
 </div>
 
 </body>
 
 <!--   Core JS Files   -->
-<script src="{{asset('js/jquery-1.10.2.js')}}" type="text/javascript"></script>
-<script src="{{asset('js/bootstrap.min.js')}}" type="text/javascript"></script>
+<script src="{{ $appUrl.'js/jquery-1.10.2.js' }}" type="text/javascript"></script>
+<script src="{{ $appUrl.'js/bootstrap.min.js' }}" type="text/javascript"></script>
 
 <!--  Checkbox, Radio & Switch Plugins -->
-<script src="{{asset('js/bootstrap-checkbox-radio-switch.js')}}"></script>
+<script src="{{ $appUrl.'js/bootstrap-checkbox-radio-switch.js' }}"></script>
 
 <!--  Charts Plugin -->
-<script src="{{asset('js/chartist.min.js')}}"></script>
+<script src="{{ $appUrl.'js/chartist.min.js' }}"></script>
 
 <!--  Notifications Plugin    -->
-<script src="{{asset('js/bootstrap-notify.js')}}"></script>
+<script src="{{ $appUrl.'js/bootstrap-notify.js' }}"></script>
 
 <!--  Google Maps Plugin    -->
 {{--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>--}}
 
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-<script src="{{asset('js/light-bootstrap-dashboard.js')}}"></script>
+<script src="{{ $appUrl.'js/light-bootstrap-dashboard.js' }}"></script>
 
 <!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
 {{--<script src="assets/js/demo.js"></script>--}}
 
 <script type="text/javascript">
 
-    var $baseUrl = '{{ url('/') }}';
+    var $baseUrl = '{{ env('APP_URL') }}';
     $_token = '{{ csrf_token() }}';
 
     /*$(window).load(function () {
@@ -272,21 +281,21 @@
 
 {{--<script type="text/javascript" src="{{asset('js/modules/main.js')}}"></script>--}}
 
-<script type="text/javascript" src="{{ asset('housestars/bower_components/angular/angular.min.js') }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'housestars/bower_components/angular/angular.min.js' }}"></script>
 <script type="text/javascript"
-        src="{{ asset('housestars/bower_components/angular-route/angular-route.min.js') }}"></script>
+        src="{{ $appUrl.'housestars/bower_components/angular-route/angular-route.min.js' }}"></script>
 <script type="text/javascript"
-        src="{{ asset('housestars/bower_components/angular-bootstrap/ui-bootstrap.min.js') }}"></script>
+        src="{{ $appUrl.'housestars/bower_components/angular-bootstrap/ui-bootstrap.min.js' }}"></script>
 <script type="text/javascript"
-        src="{{ asset('housestars/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
+        src="{{ $appUrl.'housestars/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' }}"></script>
 
-<script type="text/javascript" src="{{ asset('js/angular/app.js') }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'js/angular/app.js' }}"></script>
 
-<script type="text/javascript" src="{{ asset('js/angular/routes.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/angular/controllers.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/angular/services.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/angular/directives.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/angular/filters.js') }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'js/angular/routes.js' }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'js/angular/controllers.js' }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'js/angular/services.js' }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'js/angular/directives.js' }}"></script>
+<script type="text/javascript" src="{{ $appUrl.'js/angular/filters.js' }}"></script>
 
 @yield('scripts')
 

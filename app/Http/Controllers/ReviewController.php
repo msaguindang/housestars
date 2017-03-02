@@ -15,7 +15,17 @@ use Response;
 
 class ReviewController extends Controller
 {
-    function review(Request $request){
+
+	protected $payload;
+
+	public function __construct(Request $request)
+	{
+		$this->payload = $request;
+	}
+
+	public function review(){
+
+		$request = $this->payload;
 
     	//dd($request->all());
     	$user_id = Sentinel::getUser()->id;
@@ -39,7 +49,9 @@ class ReviewController extends Controller
 		 return Response::json($data, 200); 
     }
 
-    function addReview(Request $request){
+    public function addReview(){
+
+		$request = $this->payload;
 
     	$user_id = Sentinel::getUser()->id;
 
@@ -52,8 +64,28 @@ class ReviewController extends Controller
     	return Response::json($data, 200); 
     }
 
-	function getAllReviews()
+	public function getAllReviews()
 	{
+
+		$payload = $this->payload->all();
+		$pageNo = 1;
+		$limit = 10;
+
+		if(isset($payload['page_no'])){
+			$pageNo = $payload['page_no'];
+		}
+
+		if(isset($payload['limit'])){
+			$limit = $payload['limit'];
+		}
+
+		$offset = $limit*($pageNo-1);
+
+		$length = DB::table('reviews')
+			->selectRaw('count(*) as length')
+			->first()
+			->length;
+
 		$sql = "SELECT 
 				  reviews.*,
 				  (SELECT 
@@ -67,14 +99,38 @@ class ReviewController extends Controller
 					users 
 				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name 
 				FROM
-				  reviews ";
+				  reviews 
+				LIMIT {$limit}
+				OFFSET {$offset}";
 
 		$reviews = json_decode(json_encode(DB::select($sql)),TRUE);
 
 		$response = [
-			'reviews' => $reviews
+			'reviews' => $reviews,
+			'length' => $length
 		];
 
 		return Response::json($response, 200);
+	}
+
+	public function deleteReview()
+	{
+		$id = $this->payload->input('id');
+
+		try{
+
+			Reviews::find($id)->delete();
+			$response['success'] = [
+				'message' => "Review successfully deleted."
+			];
+			return Response::json($response, 200);
+		}catch(Exception $e){
+			$response['error'] = [
+				'message' => $e->getMessage()
+			];
+			return Response::json($response, 404);
+		}
+
+
 	}
 }

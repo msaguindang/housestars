@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Property;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use View;
 use Sentinel;
 use App\UserMeta;
@@ -22,12 +23,28 @@ class PropertyController extends Controller
 
     public function getAllProperties()
     {
+
+        $payload = $this->payload->all();
+        $pageNo = 1;
+        $limit = 10;
+
+        if(isset($payload['page_no'])){
+            $pageNo = $payload['page_no'];
+        }
+
+        if(isset($payload['limit'])){
+            $limit = $payload['limit'];
+        }
+
+        $offset = $limit*($pageNo-1);
+
         $properties = [];
 
-        $propertyCodes = Property::where('user_id', '!=', null)
-            ->groupBy('property_code')
-            ->pluck('property_code')
-            ->toArray();
+        $lengthSql = "SELECT COUNT(*) AS length FROM (SELECT count(*) FROM property_meta GROUP BY property_code) AS property_query";
+        $length = DB::select($lengthSql)[0]->length;
+
+        $propertyCodesSql = "SELECT property_code FROM property_meta WHERE user_id IS NOT NULL GROUP BY property_code LIMIT {$limit} OFFSET {$offset}";
+        $propertyCodes = json_decode(json_encode(DB::select($propertyCodesSql)), TRUE);
 
         foreach ($propertyCodes as $propertyCode) {
 
@@ -65,7 +82,8 @@ class PropertyController extends Controller
         }
 
         $response = [
-            'properties' => $properties
+            'properties' => $properties,
+            'length' => $length
         ];
 
         return Response::json($response, 200);
