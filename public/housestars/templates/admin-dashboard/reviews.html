@@ -37,12 +37,13 @@
                         <td>{{ review.attitude }}/5</td>
                         <td>{{ review.helpful }}/5</td>
 
-                        <td>
-                            <a href="" ng-click="deleteReview(user, $index)" class="edit">
+                        <td class="btn-actions">
+                            <a href="" ng-click="deleteReview(review, $index)" class="delete">
                                 <i class="pe-7s-trash"></i>
                             </a>
-                            <a href="" ng-click="disableReview(user, $index)" class="delete">
-                                <i class="pe-7s-check"></i>
+                            <a href="" ng-click="toggleStatus(review, $index)" class="disable">
+                                <i ng-if="review.status == 1" class="pe-7s-check"></i>
+                                <i ng-if="review.status == 0" class="pe-7s-close-circle"></i>
                             </a>
                         </td>
                     </tr>

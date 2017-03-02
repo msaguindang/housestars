@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Property;
-use App\User;
 use App\UserMeta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Sentinel;
+use Response;
 
 class AdminController extends Controller
 {
     protected $appUrl;
+    protected $payload;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->appUrl = env('APP_URL').'/';
+        $this->payload = $request;
     }
 
     public function showLogin()
@@ -125,5 +128,38 @@ class AdminController extends Controller
         }
 
         return view('admin.advertisements');
+    }
+
+    public function toggleStatus()
+    {
+        $payload = $this->payload->all();
+
+        $newStatus = 1;
+
+        $column = 'id';
+
+        if(isset($payload['column'])){
+            $column = $payload['column'];
+        }
+
+        $table = $payload['table'];
+        $value = $payload['value'];
+        $status = $payload['status'];
+
+        if($status){
+            $newStatus = 0;
+        }
+
+        $tableInstance = DB::table($table)
+            ->where($column,$value)
+            ->update([
+            'status' => $newStatus
+        ]);
+
+        return Response::json([
+            'status' => $newStatus
+        ], 200);
+
+
     }
 }

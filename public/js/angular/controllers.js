@@ -1,10 +1,7 @@
 'use strict';
 
 /*
-TODO: members edit/disable
-TODO: reviews pagination/delete/disable
-TODO: categories edit/delete/disable
-TODO: suburb delete/disable
+
  */
 
 var housestars = angular.module('houseStarsControllers', []);
@@ -111,6 +108,19 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
         console.log('new page: ', newPage);
         $scope.currentPage = newPage;
         $scope.getAllUsers();
+    };
+
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'users'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._users[index].status = response.data.status;
+        })
+
     };
 
 
@@ -385,6 +395,33 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         });
     };
 
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'reviews'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._reviews[index].status = response.data.status;
+        })
+
+    };
+
+    $scope.deleteReview = function (review, index) {
+
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        if(confirmation){
+            http.deleteReview({
+                id:review.id
+            }).then(function(response){
+                console.log('review deleted: ', response);
+                $scope._reviews.splice(index,1);
+            });
+        }
+
+    };
 
     // initialize
     $scope.getAllReviews();
@@ -420,11 +457,30 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', function ($scope, htt
         });
     };
 
-    $scope.editCategory = function () {
+    $scope.deleteCategory = function (category, index) {
 
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        if(confirmation){
+            http.deleteCategory({
+                id:category.id
+            }).then(function(response){
+                console.log('category deleted: ', response);
+                $scope._categories.splice(index,1);
+            });
+        }
     };
 
-    $scope.deleteCategory = function () {
+    $scope.toggleStatus = function (category, index) {
+
+        http.toggleStatus({
+            value: category.id,
+            status: category.status,
+            table: 'categories'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._categories[index].status = response.data.status;
+        })
 
     };
 
@@ -465,12 +521,18 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
         });
     };
 
-    $scope.editSuburb = function () {
+    $scope.deleteSuburb = function (suburb, index) {
 
-    };
+        var confirmation = confirm("Are you sure you want to delete?");
 
-    $scope.deleteSuburb = function () {
-
+        if(confirmation){
+            http.deleteSuburb({
+                id:suburb.id
+            }).then(function(response){
+                console.log('suburb deleted: ', response);
+                $scope._suburbs.splice(index,1);
+            });
+        }
     };
 
     $scope.showAvailabilities = function (currentSuburb) {
@@ -498,6 +560,19 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
             console.log('Modal dismissed at: ' + new Date());
 
         });
+
+    };
+
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'suburbs'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._suburbs[index].status = response.data.status;
+        })
 
     };
 

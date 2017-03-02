@@ -22,12 +22,13 @@
                             <span ng-if="suburb.availability<=0">0</span>
                         </td>
 
-                        <td>
-                            <a href="" ng-click="editSuburb(suburb, $index)" class="edit">
+                        <td class="btn-actions">
+                            <a href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
                                 <i class="pe-7s-trash"></i>
                             </a>
-                            <a href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
-                                <i class="pe-7s-check"></i>
+                            <a href="" ng-click="toggleStatus(suburb, $index)" class="disable">
+                                <i ng-if="suburb.status == 1" class="pe-7s-check"></i>
+                                <i ng-if="suburb.status == 0" class="pe-7s-close-circle"></i>
                             </a>
                         </td>
                     </tr>

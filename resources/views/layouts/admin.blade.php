@@ -37,6 +37,11 @@
 
     <style>
         /* temporary styles */
+
+        .btn-actions a i{
+            font-size:22px;
+        }
+
         .form-item {
             margin-bottom: 10px;
         }

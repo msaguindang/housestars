@@ -112,4 +112,25 @@ class ReviewController extends Controller
 
 		return Response::json($response, 200);
 	}
+
+	public function deleteReview()
+	{
+		$id = $this->payload->input('id');
+
+		try{
+
+			Reviews::find($id)->delete();
+			$response['success'] = [
+				'message' => "Review successfully deleted."
+			];
+			return Response::json($response, 200);
+		}catch(Exception $e){
+			$response['error'] = [
+				'message' => $e->getMessage()
+			];
+			return Response::json($response, 404);
+		}
+
+
+	}
 }

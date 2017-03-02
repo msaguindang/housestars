@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Agents;
+use App\Property;
+use App\Reviews;
+use App\Transactions;
 use App\User;
+use App\UserMeta;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -112,7 +117,23 @@ class UserController extends Controller
         $id = $this->payload->input('id');
 
         try{
-            User::find($id)->delete();
+
+            $user = User::find($id);
+
+            UserMeta::where('user_id', $id)->delete();
+            Transactions::where('user_id', $id)->delete();
+            DB::table('role_users')->where('user_id', $id)->delete();
+            Reviews::where('reviewee_id', $id)->delete();
+            Reviews::where('reviewer_id', $id)->delete();
+            DB::table('reminders')->where('user_id', $id)->delete();
+            Property::where('user_id', $id)->delete();
+            DB::table('persistences')->where('user_id', $id)->delete();
+            Agents::where('agent_id', $id)->delete();
+            Agents::where('agency_id', $id)->delete();
+            DB::table('activations')->where('user_id', $id)->delete();
+
+
+            $user->delete();
             $response['success'] = [
                 'message' => "User successfully deleted."
             ];

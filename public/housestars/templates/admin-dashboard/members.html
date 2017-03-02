@@ -24,12 +24,13 @@
                         <td>{{ user.sub_start }}</td>
                         <td>{{ user.sub_end }}</td>
 
-                        <td>
-                            <a href="" ng-click="editUser(user, $index)" class="edit">
+                        <td class="btn-actions">
+                            <!--<a href="" ng-click="editUser(user, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
-                            </a>
-                            <a href="" ng-click="disableUser(user, $index)" class="disable">
-                                <i class="pe-7s-check"></i>
+                            </a>-->
+                            <a href="" ng-click="toggleStatus(user, $index)" class="disable">
+                                <i ng-if="user.status == 1" class="pe-7s-check"></i>
+                                <i ng-if="user.status == 0" class="pe-7s-close-circle"></i>
                             </a>
                             <a ng-disabled="user.subscription_type == 'None'" href="" ng-click="openExtensionModal(user, $index)" class="extend-subscription">
                                 <i class="pe-7s-clock"></i>
