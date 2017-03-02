@@ -6,6 +6,7 @@ use App\Property;
 use App\UserMeta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Validator;
 use Sentinel;
 use Response;
 
@@ -27,6 +28,58 @@ class AdminController extends Controller
         }
 
         return view('admin.login');
+    }
+
+    public function postLogin()
+    {
+
+        $request = $this->payload;
+
+        $validation = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+
+        try{
+            if( Sentinel::authenticate($request->all()))
+            {
+
+                $role = Sentinel::getUser()->roles()->first()->slug;
+
+                if($role == "admin"){
+                    return \Ajax::redirect(env('APP_URL').'/admin');
+                }else{
+                    
+                    Sentinel::removeCheckpoint('throttle');
+                    Sentinel::logout();
+
+                    $validation->getMessageBag()->add('login_error', "Please login as an admin role");
+                    // redirect back with inputs and validator instance
+                    return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
+                }
+
+
+
+            }else{
+
+                $validation->getMessageBag()->add('login_error', "Sorry, our system doesn't recognize your credentials");
+                // redirect back with inputs and validator instance
+                return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
+
+
+            }
+
+
+        }catch(ThrottlingException $e){
+
+            $validation->getMessageBag()->add('login_error', 'You are denied access for suspicious activity! Login again after '.$e->getDelay().' seconds');
+            // redirect back with inputs and validator instance
+            return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
+
+        }
+
+
+
     }
 
     public function logout()
