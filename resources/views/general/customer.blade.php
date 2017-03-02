@@ -130,12 +130,12 @@
                   <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                   <ul class="dropdown-menu">
                     <li>
-                      <input type="radio" id="all" name="all" value="all" checked="">
+                      <input type="radio" id="all" name="all" value="all">
                       <label for="all">Any Property type</label>
                     </li>
                     <li>
                       <input type="radio" id="condo" name="condominium" value="Condominium">
-                      <label for="condo">Condominium/label>
+                      <label for="condo">Condominium</label>
                     </li>
                     <li>
                       <input type="radio" id="commercial" name="commercial" value="Commercial">
@@ -172,7 +172,7 @@
                   <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                   <ul class="dropdown-menu">
                     <li>
-                      <input type="radio" id="any" name="any" value="any" checked="">
+                      <input type="radio" id="any" name="any" value="any">
                       <label for="any">Any Price</label>
                     </li>
                     <li>
@@ -231,7 +231,3 @@
     </section>
 
 @endsection
-
-@section('scripts')
-     <script src="js/autocomplete.js"></script>
-@stop

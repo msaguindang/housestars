@@ -528,7 +528,7 @@ class CustomerController extends Controller
                 'data' => $data
             ], function ($message) use ($name, $email, $subject) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('nikko@kudosable.com');
+                $message->to('info@housestars.com.au');
                 $message->subject('Processing property in '. $subject);
         });
     }
