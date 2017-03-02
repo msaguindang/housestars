@@ -1,8 +1,7 @@
 'use strict';
 
 /*
-TODO: members pagination/edit/disable/extend popup
-TODO: properties pagination
+TODO: members edit/disable
 TODO: reviews pagination/delete/disable
 TODO: categories edit/delete/disable
 TODO: suburb delete/disable
@@ -22,19 +21,27 @@ housestars.controller('DashboardCtrl', ['$scope', function ($scope) {
 
 }]);
 
-housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) {
+housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
 
     console.log('membersCtrl');
 
     $scope.users = [];
     $scope._users = angular.copy($scope.users);
 
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
     $scope.getAllUsers = function (){
 
-        http.getAllUsers().then(function(response){
+        http.getAllUsers({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
             console.log('all users: ', response);
             $scope.users = response.data.users;
             $scope._users = angular.copy($scope.users);
+            $scope.totalItems = response.data.length;
         });
     };
 
@@ -58,21 +65,52 @@ housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) 
         }
     };
 
-    $scope.extendSubscriptionUser = function (user, index) {
+    $scope.openExtensionModal = function (user, index){
 
         if(user.sub_end == ""){
             return false;
         }
 
-        http.extendUserSubscription(user).then(function(response){
-            console.log('extend user subscription: ', response);
-
-            if(response.data.new_end_subscription != ""){
-                $scope._users[index].sub_end = response.data.new_end_subscription;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'extend-member-subscription-modal.html',
+            controller: 'ExtendMemberSubscriptionModalCtrl',
+            // size: 'lg',
+            resolve: {
+                userData: function () {
+                    return user;
+                },
             }
+        });
+
+        modalInstance.result.then(function (response) {
+
+            switch(response.status){
+                case 'success':
+                    $scope.updateEndSubscription(response, index);
+                    break;
+            }
+
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
 
         });
 
+    };
+
+    $scope.updateEndSubscription = function(response, index){
+
+        if(response.data.new_end_subscription != ""){
+            $scope._users[index].sub_end = response.data.new_end_subscription;
+        }
+
+    };
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllUsers();
     };
 
 
@@ -81,19 +119,61 @@ housestars.controller('MembersCtrl', ['$scope', 'http', function ($scope, http) 
 
 }]);
 
+housestars.controller('ExtendMemberSubscriptionModalCtrl', ['$scope', 'userData', '$uibModalInstance', 'http', function ($scope, userData, $uibModalInstance, http) {
+
+    console.log('ExtendMemberSubscriptionModalCtrl');
+
+    $scope.userData = userData;
+
+    $scope.extendSubscriptionUser = function () {
+
+        http.extendUserSubscription($scope.userData).then(function(response){
+            console.log('extend user subscription: ', response);
+
+            $scope.close({
+                status: 'success',
+                data: response.data
+            });
+
+        });
+
+    };
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+}]);
+
 housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
 
     console.log('propertiesCtrl');
 
     $scope.properties = [];
+    $scope._properties = angular.copy($scope.properties);
+
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
 
     $scope.getAllProperties = function () {
 
-        http.getAllProperties().then(function(response){
+        http.getAllProperties({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
 
             console.log('properties', response);
             $scope.properties = response.data.properties;
             $scope._properties = angular.copy($scope.properties);
+            $scope.totalItems = response.data.length;
 
         });
 
@@ -196,6 +276,13 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
         $scope.getAllProperties();
     };
 
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllProperties();
+    };
+
+
     // initialize
     $scope.getAllProperties();
 
@@ -276,11 +363,25 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.reviews = [];
     $scope._reviews = angular.copy($scope.reviews);
 
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllReviews();
+    };
+
     $scope.getAllReviews = function () {
-        http.getAllReviews().then(function(response){
+        http.getAllReviews({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
             console.log('reviews: ', response);
             $scope.reviews = response.data.reviews;
             $scope._reviews = angular.copy($scope.reviews);
+            $scope.totalItems = response.data.length;
         });
     };
 

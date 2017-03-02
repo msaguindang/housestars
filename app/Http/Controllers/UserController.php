@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Stripe\Customer;
 use Stripe\Stripe;
 use Stripe\Subscription;
@@ -28,23 +29,40 @@ class UserController extends Controller
     public function getAllUsers()
     {
         $payload = $this->payload->all();
+        $pageNo = 1;
+        $limit = 10;
 
+        if(isset($payload['page_no'])){
+            $pageNo = $payload['page_no'];
+        }
 
-
-        $users = User::where('users.name', '!=', null)
-            ->join('role_users', 'role_users.user_id', '=','users.id')
-            ->join('roles','roles.id','=','role_users.role_id')
-            ->select('users.*','roles.name as role_name');
+        if(isset($payload['limit'])){
+            $limit = $payload['limit'];
+        }
 
         if(isset($payload['slug'])){
-            $users = $users->where('roles.slug',$payload['slug'])
-                ->get()
-                ->toArray();
+            $slugSql = " AND roles.slug = {$payload['slug']} ";
         }else{
-            $users = $users
-                ->get()
-                ->toArray();
+            $slugSql = "";
         }
+
+        $offset = $limit*($pageNo-1);
+
+        $length = DB::table('users')
+            ->selectRaw('count(*) as length')
+            ->where('name','!=',null)
+            ->first()
+            ->length;
+
+        $userSql = "SELECT users.*, roles.name as role_name 
+            FROM users 
+            INNER JOIN role_users ON role_users.user_id = users.id 
+            INNER JOIN roles ON roles.id = role_users.role_id
+            WHERE users.name IS NOT NULL
+            {$slugSql}
+            LIMIT {$limit} OFFSET {$offset}";
+
+        $users = json_decode(json_encode(DB::select($userSql)),TRUE);
 
         Stripe::setApiKey($this->stripeKey);
 
@@ -84,7 +102,8 @@ class UserController extends Controller
         }
 
         return Response::json([
-            'users' => $members
+            'users' => $members,
+            'length' => $length
         ], 200);
     }
 
