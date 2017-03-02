@@ -84,9 +84,11 @@ Route::get('/dashboard/tradesman/settings', 'TradesmanController@settings')->mid
 
 Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
 
-Route::get('/dashboard/customer/edit', function () {
-    return view('dashboard.customer.edit');
-});
+Route::get('/dashboard/customer/edit', 'CustomerController@edit')->middleware('customer');
+
+Route::get('/dashboard/customer/add', 'CustomerController@property')->middleware('customer');
+
+Route::post('/dashboard/customer/add-property', 'CustomerController@addProperty')->middleware('customer');
 
 Route::get('/search-category', function () {
     return view('general.search-category');
@@ -158,6 +160,12 @@ Route::post('/process-trades', 'CustomerController@spending');
 Route::post('/process-spending', 'CustomerController@updateAmount');
 
 Route::post('/upload-receipt', 'CustomerController@uploadReceipt');
+
+Route::post('/upload-contract', 'CustomerController@uploadContract');
+
+Route::post('/confirm', 'CustomerController@confirm');
+
+Route::post('/process-form', 'CustomerController@processForm');
 
 Route::post('/delete-transaction', 'CustomerController@delete');
 

@@ -289,6 +289,7 @@
           <div class="content">
 
             <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
             <table class="main">
 
               <!-- START MAIN CONTENT AREA -->
@@ -309,13 +310,67 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>We received a suggestion of a category from {{$name}}.</p>
-                        <p>Here's the details:<p/>
-                        <p><b>Category Name:</b> {{$contact}}</p>
-                        <p>Details of the person who suggested the category:<p/>
-                        <p><b>Name:</b> {{$name}}</p>
-                        <p><b>Email:</b> {{$from}}</p>
-                       </td>
+                        <p>{{$user['name']}} submitted a Property to be processed.</p>
+                        <p>Here's the Property Details</p>
+                          <div style="width: 464px; border: 1px dashed #a9a9a9; margin: 20px auto; padding: 20px">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td><b>Property Renovated: </b>
+                                      <p>{{$data['suburb']}}, {{$data['state']}}</p></td>
+                                  <td><b>Commission Discount: </b>
+                                      <p>${{$data['discount']}}</p></td>
+                                </tr>
+
+                                <tr>
+                                  <td><b>Amount Sold: </b>
+                                      <p>${{$data['value-to']}}</p></td>
+                                  <td><b>Commission (%): </b>
+                                      <p>{{$data['commission']}}%</p></td>
+                                </tr>
+
+                                 <tr>
+                                  <td><b>Agency Name: </b>
+                                      <p>ABBEYWOOD, QUEENSLAND</p></td>
+                                  <td><b>Contract: </b>
+                                      <a href="{{env('APP_URL')}}/{{$data['contract']}}" style="border: 1px solid #000;padding: 5px;font-size: 9px;text-decoration: none;color: #000;margin-left: 10px;">CLICK TO VIEW</a></td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            @if(isset($data['transactions']))
+                            <div style="background: #696969;padding: 2px 10px;color: #fff;font-weight: bold;text-transform: uppercase;">Transactions</div>
+                              <div style="border-bottom: 1px solid #696969;">
+                                <table>
+                                  <thead>
+                                    <tr>
+                                      <td width="25%"><p style="margin: 10px 0;"><b>DATE</p></td>
+                                      <td width="50%"><p style="margin: 10px 0;"><b>BUSINESS NAME</td>
+                                      <td width="25%"><p style="margin: 10px 0;"><b>AMOUNT SPENT</p></td>
+                                    </tr>
+                                  </thead>
+                                </table>
+                              </div>
+                              @foreach($data['transactions'] as $transaction)
+                                <div style="border-bottom: 1px solid #696969;">
+                                  <table>
+                                    <tbody>
+                                      <tr>
+                                        <td width="25%"><p style="margin: 10px 0;">{{$transaction['date']}}</p></td>
+                                        <td width="50%"><p style="margin: 10px 0;">{{$transaction['name']}}</p></td>
+                                        <td width="25%"><p style="margin: 10px 0;">${{$transaction['amount_spent']}}</p></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              @endforeach
+                              <div style="background: #d4d4d4;padding: 2px 10px;color: #000;text-align: right;"><b>Total:</b> ${{$data['total']}}</div>
+                            @endif
+                          </div>
+
+
+                        <p>Cheers,</p>
+                        <img src="https://trello-attachments.s3.amazonaws.com/58abe1cd025a65a1e39f2205/200x50/d55d597a4311edbdbc9789d1ac05744f/signature.png">
+                      </td>
                     </tr>
                   </table>
                 </td>
