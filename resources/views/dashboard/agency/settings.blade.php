@@ -47,20 +47,8 @@
             </div>
           </div>
     </header>
- 
-    <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
-     
-        {{csrf_field() }}
-      <div class="cover-img">
-        <div class="breadcrumbs container">
-          <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Settings</span> </p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section id="edit-user-info">
+    <section id="edit-user-info" class="header-margin">
       <div class="container">
         <div class="row">
           <div class="col-xs-12">
@@ -80,7 +68,7 @@
               </form>
               </div>
               <div class="col-xs-6">
-                <form action="update-payment" method="POST" enctype="multipart/form-data">
+                <form action="{{env('APP_URL')}}/update-payment" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 @if(session('error'))
                   <div class="alert alert-danger">
@@ -110,7 +98,7 @@
             <div class="row no-padding agent-settings">
               <div class="spacing"></div>
               <h2 class="section-title">List Agents</h2>
-              <form class="repeater agents" action="update-agents" method="POST">
+              <form class="repeater agents" action="{{env('APP_URL')}}/update-agents" method="POST">
                 {{csrf_field() }}
 
                  @if(session('errors'))
@@ -170,7 +158,7 @@
                 <div class="col-xs-3"><button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE AGENT LIST<span class="icon icon-arrow-right"></span></button></div>
             </form>
             @foreach($agents as $agent)
-               <form action="delete-agent" method="POST" id="delete-agent-{{$agent->agent_id}}"> {{csrf_field() }}<input type="hidden" name="agent-id" value="{{$agent->agent_id}}"></form>
+               <form action="{{env('APP_URL')}}/delete-agent" method="POST" id="delete-agent-{{$agent->agent_id}}"> {{csrf_field() }}<input type="hidden" name="agent-id" value="{{$agent->agent_id}}"></form>
             @endforeach
             </div>
           </div>

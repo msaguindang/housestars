@@ -58,7 +58,7 @@ class RegistrationController extends Controller
     	   
 
     		if($role == 'agency'){
-                $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type');
+                $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url');
 
     			foreach ($meta_name as $meta) {
 

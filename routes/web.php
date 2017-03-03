@@ -75,7 +75,14 @@ Route::group(['prefix' => ''], function(){
     Route::get('/dashboard/agency/profile', 'AgencyController@dashboard')->middleware('agency');
 
     Route::get('/dashboard/agency/edit', 'AgencyController@edit')->middleware('agency');
+
+     Route::get('/dashboard/agent/profile', 'AgentController@dashboard')->middleware('agent');
+
+    Route::get('/dashboard/agent/edit', 'AgentController@edit')->middleware('agent');
+
     Route::get('/dashboard/agency/settings', 'AgencyController@settings')->middleware('agency');
+
+    Route::get('/dashboard/agent/settings', 'AgentController@settings')->middleware('agent');
 
     Route::get('/dashboard/tradesman/profile', 'TradesmanController@dashboard')->middleware('tradesman');
 
@@ -136,6 +143,8 @@ Route::group(['prefix' => ''], function(){
     Route::post('/charge', 'RegistrationController@postCharge');
 
     Route::post('/update-profile', 'AgencyController@updateProfile');
+
+    Route::post('/update-profile-agent', 'AgentController@updateProfile');
 
     Route::post('/update-settings', 'AgencyController@updateSettings');
 
