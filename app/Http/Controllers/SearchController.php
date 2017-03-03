@@ -88,23 +88,25 @@ class SearchController extends Controller
         //dd($suburb);
 
         //$data = array();
-
+        $x = 0;
         foreach ($tradesmen as $id) {
            $activeUser = User::where('id', '=', $id)->get();
            if(count($activeUser) > 0){
+                
                 $tradesmanData = UserMeta::where('user_id', '=', $id)->get();
                 foreach ($tradesmanData as $value) {
-                   $data[$value->user_id][$value->meta_name] = $value->meta_value;
+                   $data[$x][$value->meta_name] = $value->meta_value;
                 }
-                $data[$value->user_id]['rating'] = $this->getRating($id);
-                $data[$value->user_id]['id'] = $value->user_id;
+                $data[$x]['rating'] = $this->getRating($id);
+                $data[$x]['id'] = $value->user_id;
+                $x++;
            }
         }
 
         $data['cat'] = $category;
         $data['suburb'] = $suburb;
 
-        //dd($suburbExist);
+       // dd($data);
 
        return view('general.tradesman-listings')->with('data', $data);
     }
