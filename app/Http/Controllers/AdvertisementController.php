@@ -6,6 +6,7 @@ use App\Advertisement;
 use App\Reviews;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -32,15 +33,15 @@ class AdvertisementController extends Controller
         $pageNo = 1;
         $limit = 10;
 
-        if(isset($payload['page_no'])){
+        if (isset($payload['page_no'])) {
             $pageNo = $payload['page_no'];
         }
 
-        if(isset($payload['limit'])){
+        if (isset($payload['limit'])) {
             $limit = $payload['limit'];
         }
 
-        $offset = $limit*($pageNo-1);
+        $offset = $limit * ($pageNo - 1);
 
         $length = DB::table('advertisements')
             ->selectRaw('count(*) as length')
@@ -54,7 +55,7 @@ class AdvertisementController extends Controller
 				LIMIT {$limit}
 				OFFSET {$offset}";
 
-        $reviews = json_decode(json_encode(DB::select($sql)),TRUE);
+        $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
             'advertisements' => $reviews,
@@ -68,14 +69,20 @@ class AdvertisementController extends Controller
     {
         $id = $this->payload->input('id');
 
-        try{
+        try {
 
-            Advertisement::find($id)->delete();
+            $advertisement = Advertisement::find($id);
+
+            if (file_exists(public_path($advertisement->image_path))) {
+                unlink(public_path($advertisement->image_path));
+            }
+
+            $advertisement->delete();
             $response['success'] = [
                 'message' => "Advertisement successfully deleted."
             ];
             return Response::json($response, 200);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $response['error'] = [
                 'message' => $e->getMessage()
             ];
@@ -94,7 +101,7 @@ class AdvertisementController extends Controller
             'type' => 'required',
             'adFile' => 'mimes:jpeg,bmp,png,jpg',
             'priority' => 'required'
-        ],[
+        ], [
             'adFile.required' => 'Advertisement Image is required.',
             'adFile.mimes' => 'The file must be of type: jpeg,bmp,png,jpg'
         ]);
@@ -111,15 +118,87 @@ class AdvertisementController extends Controller
             'priority' => $payload['priority']
         ]);
 
-        if($this->payload->hasFile('adFile')){
-            $path = $this->payload->adFile->store('public/uploads/advertisements');
+        if ($this->payload->hasFile('adFile')) {
+            $filenameUponDownload = $this->payload->adFile->getClientOriginalName();
+            $extension = $this->payload->adFile->getClientOriginalExtension();
+            $filename = str_replace('.' . $extension, '', $filenameUponDownload);
+
+            $uploadPath = "/uploads/advertisements/";
+            $filename = $filename . '_' . time() . '.' . $extension;
+
+            $this->payload->adFile->move(public_path($uploadPath), $filename);
+            $path = $uploadPath . $filename;
             $advertisement->image_path = $path;
             $advertisement->save();
         }
 
         return Response::json([
             'payload' => $payload,
-            'path' => $path
+        ], 200);
+    }
+
+    public function updateAdvertisement()
+    {
+        $payload = $this->payload->all();
+
+        $validationRules = [
+            'name' => "required|unique:advertisements,name,{$payload['id']}",
+            'type' => 'required',
+            'priority' => 'required'
+        ];
+
+        if ($this->payload->hasFile('adFile')) {
+            $validationRules = $validationRules+['adFile' => 'mimes:jpeg,bmp,png,jpg'];
+        }
+
+
+        $validator = Validator::make($payload, $validationRules, [
+            'adFile.required' => 'Advertisement Image is required.',
+            'adFile.mimes' => 'The file must be of type: jpeg,bmp,png,jpg'
+        ]);
+
+        if ($validator->fails()) {
+            return Response::json([
+                'validator' => $validator->errors(),
+            ], 400);
+        }
+
+        $advertisement = Advertisement::find($payload['id']);
+
+        $advertisement->update([
+            'name' => $payload['name'],
+            'type' => $payload['type'],
+            'priority' => $payload['priority']
+        ]);
+
+        if ($this->payload->hasFile('adFile')) {
+            $filenameUponDownload = $this->payload->adFile->getClientOriginalName();
+            $extension = $this->payload->adFile->getClientOriginalExtension();
+            $filename = str_replace('.' . $extension, '', $filenameUponDownload);
+
+            $uploadPath = "/uploads/advertisements/";
+            $filename = $filename . '_' . time() . '.' . $extension;
+
+            $this->payload->adFile->move(public_path($uploadPath), $filename);
+            $path = $uploadPath . $filename;
+            $advertisement->image_path = $path;
+            $advertisement->save();
+        }
+
+        return Response::json([
+            'payload' => $payload,
+        ], 200);
+    }
+
+    public function getAdvertisement()
+    {
+        $payload = $this->payload->all();
+        $advertisementId = $payload['id'];
+
+        $advertisement = Advertisement::find($advertisementId);
+
+        return Response::json([
+            'advertisement' => $advertisement,
         ], 200);
     }
 }
