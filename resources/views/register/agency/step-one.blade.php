@@ -93,7 +93,7 @@
 					<label>Website</label>
 					<input type="text" name="website">
 					<label>Phone</label>
-					<input type="text" name="phone">
+					<input type="number" name="phone">
 					<label>ABN</label>
 					<input type="text" name="abn" required>
 					<label>Positions <span>(Enter the postcode of the suburd required)</span></label>
@@ -108,9 +108,9 @@
 				</div>
 				<div class="col-xs-4">
 					<label>Base Commission Charge</label>
-					<input type="text" name="base-commission">
+					<input type="number" name="base-commission">
 					<label>Marketing Budget</label>
-					<input type="text" name="marketing-budget">
+					<input type="number" name="marketing-budget">
 					<label>Sales Type</label>
 					<div class="btn-group">
 			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
@@ -137,6 +137,9 @@
 			              </li>
 			            </ul>
 			        </div>
+			        <label>Review URL</label>
+			        <input type="text" name="review-url">
+					
 					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">
 						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>

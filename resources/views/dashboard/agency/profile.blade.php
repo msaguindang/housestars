@@ -146,6 +146,12 @@
               <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
             </div>
             @endif
+            @if(isset($data['review-url']))
+            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p> <b> Review URL </b></br><span class="detail">{{$data['review-url']}}</span></p>
+            </div>
+            @endif
             <div class="col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>

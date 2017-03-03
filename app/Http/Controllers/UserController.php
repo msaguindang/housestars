@@ -64,7 +64,6 @@ class UserController extends Controller
             INNER JOIN role_users ON role_users.user_id = users.id 
             INNER JOIN roles ON roles.id = role_users.role_id
             WHERE users.name IS NOT NULL
-            AND roles.slug != 'admin'
             {$slugSql}
             LIMIT {$limit} OFFSET {$offset}";
 
