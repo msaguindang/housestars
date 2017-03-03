@@ -68,12 +68,14 @@
               <div class="spacing"></div>
               <div class="col-xs-6">
                 <h2 class="section-title">Account Settings</h2>
-              <form action="{{env('APP_URL')}}/update-settings" method="POST" enctype="multipart/form-data">
+              <form action="{{env('APP_URL')}}/customer/update-settings" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 <label>Full Name</label>
                 <input type="text" name="name" value="{{$data['name']}}" required>
                 <label>Email</label>
                 <input type="text" name="email" value="{{$data['email']}}" required>
+                <label>Address</label>
+                <input type="text" name="address" value="{{$data['address']}}" required>
                 <label>Password</label>
                 <input type="password" name="password" placeholder="********">
                  <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE SETTINGS <span class="icon icon-arrow-right"></span></button>

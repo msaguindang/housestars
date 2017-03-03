@@ -731,3 +731,19 @@
         @endif
       @endforeach
     @endif
+
+      <!-- Thank You Note / Tradesman Submission-->
+    <div class="modal fade" id="savingsSuccess" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Thank You!</h4>
+            </br><p class="sub-heading">An email is now being sent to your inbox with your estimated savings and explanation.</p>
+          </br><p class="sub-heading">Please see our customer FAQ for more information regarding teh savings estimation calculator and how these estimates are calculated.</p>
+          </div>
+        </div>
+      </div>
+    </div>

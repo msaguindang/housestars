@@ -130,8 +130,10 @@
                 <label>Property To be Renovated</label>
               </div>
               <div class="col-xs-8">
-                @php ($a = $data['recent'])
+                @if(isset($data['recent']))
+                  @php ($a = $data['recent'])
                 <h3 class="address">{{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
+                @endif
               </div>
             </div>
             <div class="row">
