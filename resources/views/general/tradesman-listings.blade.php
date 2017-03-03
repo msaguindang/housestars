@@ -109,7 +109,7 @@
                           <div class="profile-info">
                             <h3 class="name">{{$tradesman['business-name']}}</h3>
                             <p class="location">{{$tradesman['trade']}}</p>
-                            <div class="stars">
+                           <!--  <div class="stars">
                               @for($i = 1; $i <= $tradesman['rating']; $i++)
                                 <span class="icon icon-star"></span>
                               @endfor
@@ -117,7 +117,7 @@
                               @for($i = 1; $i <= $rating; $i++)
                                 <span class="icon icon-star-grey"></span>
                               @endfor
-                            </div>
+                            </div> -->
                             <a href="{{env('APP_URL')}}/profile/tradesman/{{$tradesman['id']}}" class="btn hs-primary small">Visit Tradesman's Page</a>
                           </div>
                         </div>
