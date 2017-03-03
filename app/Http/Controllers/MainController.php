@@ -27,6 +27,9 @@ class MainController extends Controller
                 case 'customer':
                     return redirect(env('APP_URL').'/dashboard/customer/profile');
                     break;
+                case 'agent':
+                    return redirect(env('APP_URL').'/dashboard/agent/profile');
+                    break;
                 default: 
                     return redirect(URL::previous());
                     break;
