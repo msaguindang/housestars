@@ -28,15 +28,18 @@
                             <!--<a href="" ng-click="editUser(user, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
                             </a>-->
-                            <a href="" ng-click="toggleStatus(user, $index)" class="disable">
-                                <i ng-if="user.status == 1" class="pe-7s-check"></i>
-                                <i ng-if="user.status == 0" class="pe-7s-close-circle"></i>
-                            </a>
+
                             <a ng-disabled="user.subscription_type == 'None'" href="" ng-click="openExtensionModal(user, $index)" class="extend-subscription">
-                                <i class="pe-7s-clock"></i>
+                                <i class="pe-7s-clock text-warning"></i>
                             </a>
+
+                            <a href="" ng-click="toggleStatus(user, $index)" class="disable">
+                                <i ng-if="user.status == 1" class="pe-7s-check text-success"></i>
+                                <i ng-if="user.status == 0" class="pe-7s-close-circle text-danger"></i>
+                            </a>
+
                             <a href="" ng-click="deleteUser(user, $index)" class="delete">
-                                <i class="pe-7s-trash"></i>
+                                <i class="pe-7s-trash text-danger"></i>
                             </a>
                         </td>
                     </tr>

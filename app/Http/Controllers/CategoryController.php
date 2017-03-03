@@ -71,5 +71,31 @@ class CategoryController extends Controller
 
     }
 
+    public function insertCategory()
+    {
+        $payload = $this->payload->all();
+
+        $category = Category::create($payload);
+
+        return Response::json([
+            'category' => $category
+        ], 200);
+    }
+
+    public function updateCategory()
+    {
+        $payload = $this->payload->all();
+
+        $categoryId = $payload['id'];
+
+        $category = Category::find($categoryId);
+        $category->category = $payload['category'];
+        $category->save();
+
+        return Response::json([
+            'category' => $category,
+            'payload' => $payload
+        ], 200);
+    }
 
 }

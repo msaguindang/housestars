@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <h4 class="title">Categories</h4>
         <div class="pull-right">
-            <a class="btn btn-primary btn-sm add-btn" ng-click="openAdvertisementModal()">
+            <a class="btn btn-primary btn-sm add-btn" ng-click="addCategory()">
                 <i class="pe-7s-plus"></i>
                 Add Category
             </a>
@@ -24,12 +24,17 @@
                         <td>{{ category.category }}</td>
 
                         <td class="btn-actions">
-                            <a href="" ng-click="deleteCategory(category, $index)" class="delete">
-                                <i class="pe-7s-trash"></i>
+
+                            <a href="" ng-click="editCategory(category, $index)" class="edit">
+                                <i class="pe-7s-note"></i>
                             </a>
+
                             <a href="" ng-click="toggleStatus(category, $index)" class="disable">
-                                <i ng-if="category.status == 1" class="pe-7s-check"></i>
-                                <i ng-if="category.status == 0" class="pe-7s-close-circle"></i>
+                                <i ng-if="category.status == 1" class="pe-7s-check text-success"></i>
+                                <i ng-if="category.status == 0" class="pe-7s-close-circle text-danger"></i>
+                            </a>
+                            <a href="" ng-click="deleteCategory(category, $index)" class="delete">
+                                <i class="pe-7s-trash text-danger"></i>
                             </a>
                         </td>
                     </tr>
@@ -58,3 +63,37 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<script type="text/ng-template" id="category-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{ (categoryAction=='edit')?'Edit':'Add New' }} Category</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Name</label>
+            </div>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" ng-model="categoryData.category">
+                <span class="help-block has-error {{showErrorBlock('category', 'hidden')}}">
+                    <strong>{{errors.category[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="save()">Save changes</button>
+    </div>
+
+</script>

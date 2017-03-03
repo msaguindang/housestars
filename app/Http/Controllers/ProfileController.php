@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\UserMeta;
 use App\Reviews;
 use App\User;
+use App\Advertisement;
 use Response;
 
 class ProfileController extends Controller
@@ -57,6 +58,27 @@ class ProfileController extends Controller
     	$data['rating'] = $this->getRating($id);
     	$data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
+
+        $ads = Advertisement::where('type', '=', '270x270')->get();
+        $y = 0;
+
+        foreach ($ads  as $ad) {
+            $advert[$ad->type][$y]['url'] = $ad->image_path;
+            $y++; 
+        }
+
+        if(isset($advert['270x270'])){
+            $numAds =  count($advert['270x270']) - 1;
+            $index1 = rand(0, $numAds);
+            $data['advert'][0] = $advert['270x270'][$index1];
+            $index2 = rand(0, $numAds);
+
+            if($index1 == $index2){
+                $index2 = rand(0, $numAds);
+            }
+            $data['advert'][1] = $advert['270x270'][$index2];
+
+        }
         //dd($data);
     	return $data; 
     }
@@ -87,6 +109,27 @@ class ProfileController extends Controller
         $data['rating'] = $this->getRating($id);
         $data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
+
+        $ads = Advertisement::where('type', '=', '270x270')->get();
+        $y = 0;
+
+        foreach ($ads  as $ad) {
+            $advert[$ad->type][$y]['url'] = $ad->image_path;
+            $y++; 
+        }
+
+        if(isset($advert['270x270'])){
+            $numAds =  count($advert['270x270']) - 1;
+            $index1 = rand(0, $numAds);
+            $data['advert'][0] = $advert['270x270'][$index1];
+            $index2 = rand(0, $numAds);
+
+            if($index1 == $index2){
+                $index2 = rand(0, $numAds);
+            }
+            $data['advert'][1] = $advert['270x270'][$index2];
+
+        }
         //dd($data);
         return $data; 
     }

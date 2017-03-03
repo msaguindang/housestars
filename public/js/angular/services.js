@@ -335,11 +335,41 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        saveCategory: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/category/insert', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         updateProperty: function (data) {
             var self = this;
             return $q(function(resolve, reject) {
                 self.post('admin/property/update', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        updateCategory: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/category/update', data).then(function(response) {
 
                     resolve({
                         data:response.data,
