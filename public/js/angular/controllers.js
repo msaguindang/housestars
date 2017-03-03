@@ -558,6 +558,9 @@ housestars.controller('CategoryModalCtrl', ['$scope', 'categoryData', 'categoryA
 
     console.log('CategoryModalCtrl', categoryData);
 
+    /*$scope.$on('event', function (event, data) {
+        console.log(data); // 'Data to send'
+    });*/
 
     $scope.errors = {};
     $scope.$watch('errors', function (errors) {

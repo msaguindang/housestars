@@ -2,7 +2,7 @@
 
 var housestars = angular.module('houseStarServices', []);
 
-housestars.factory('http', ['$http', '$q' , function($http, $q) {
+housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $rootScope) {
     return {
         _token: $_token,
         post: function (url, data, processData, contentType) {
@@ -46,6 +46,10 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                             global.alert.listUpdate(self.alert);
                             //}
                         }*/
+
+                        /*$rootScope.$broadcast('event', {
+                            test:'hello'
+                        });*/
 
                         //self._token = data._token;
                         //delete data['_token'];
