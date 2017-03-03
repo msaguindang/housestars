@@ -18,8 +18,7 @@
                         <td>{{ suburb.id }}</td>
                         <td>{{ suburb.name }}</td>
                         <td>
-                            <a href="" ng-if="suburb.availability>0" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
-                            <span ng-if="suburb.availability<=0">0</span>
+                            <a class="btn" ng-class="{'btn-default':(suburb.availability==0), 'btn-success':(suburb.availability>0)}" href="" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
                         </td>
 
                         <td class="btn-actions">
@@ -71,6 +70,20 @@
     </div>
     <div class="modal-body">
 
+        <div class="row form-item">
+            <div class="col-xs-12 col-sm-3">
+                <label>Availability</label>
+            </div>
+            <div class="col-xs-12 col-sm-2">
+                <select class="form-control" ng-model="currentSuburb.availability">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+        </div>
+
         <table class="table table-hover table-striped">
             <thead>
             <th>Name</th>
@@ -93,7 +106,7 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
-        <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        <button type="button" class="btn btn-primary" ng-click="saveAvailability()">Save changes</button>
     </div>
 
 </script>

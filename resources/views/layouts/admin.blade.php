@@ -119,6 +119,10 @@
         .help-block.has-error{
             color:#e74c3c;
         }
+
+        .pull-right .add-btn{
+            margin-top: -75px;
+        }
     </style>
 
 

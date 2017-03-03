@@ -1,7 +1,8 @@
 'use strict';
 
 /*
-
+    TODO: category - add/edit
+    TODO: suburb - availability edit popup
  */
 
 var housestars = angular.module('houseStarsControllers', []);
@@ -567,7 +568,14 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
             }
         });
 
-        modalInstance.result.then(function (selectedItem) {
+        modalInstance.result.then(function (response) {
+
+            switch(response.status){
+                case 'success':
+                    $scope.changePage($scope.currentPage);
+                    break;
+            }
+
             console.log('Success Modal dismissed at: ' + new Date());
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
@@ -600,6 +608,7 @@ housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$ui
     console.log('SuburbAvailabilityCtrl', currentSuburb);
 
     $scope.currentSuburb = currentSuburb;
+    $scope.currentSuburb.availability = $scope.currentSuburb.availability+'';
     $scope.agents = [];
 
     $scope.getSuburbAgents = function () {
@@ -632,7 +641,16 @@ housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$ui
         $uibModalInstance.close(response);
     };
 
+    $scope.saveAvailability = function (){
 
+        http.updateSuburbAvailability($scope.currentSuburb).then(function(response){
+            console.log('save availability', response);
+            $scope.close({
+                status: response.data.type
+            })
+        });
+
+    };
 
     $scope.removeAgent = function (user_meta, index) {
 
@@ -649,7 +667,7 @@ housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$ui
 
 
     // initialize
-    $scope.getAllAgents();
+    //$scope.getAllAgents();
     $scope.getSuburbAgents();
 
 }]);

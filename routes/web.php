@@ -293,6 +293,7 @@ Route::group(['prefix' => ''], function () {
 
             Route::get('', 'SuburbController@getAllSuburbs');
             Route::post('delete', 'SuburbController@deleteSuburb');
+            Route::post('availability/update', 'SuburbController@updateSuburbAvailability');
 
             Route::group(['prefix' => 'agent'], function () {
 
