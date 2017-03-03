@@ -223,6 +223,9 @@
             <div id="content" class="content-container" ng-controller="MainCtrl">
                 <div class="container-fluid">
 
+                    {{--{!! html_entity_decode($alertHtml) !!}--}}
+                    {{--<uib-alert on-ready-state style="display: none;" ng-repeat="alert in $alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>--}}
+                    {{--<div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)">{{alert.msg}}</div>--}}
                     <section data-ng-view class="view-container"></section>
                     {{--@yield('content')--}}
 

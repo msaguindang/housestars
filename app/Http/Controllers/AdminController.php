@@ -90,13 +90,21 @@ class AdminController extends Controller
         return redirect($this->appUrl.'admin');
     }
 
+    private function getAngularDirectiveAlert() {
+        return '<uib-alert on-ready-state style="display: none;" ng-repeat="alert in $alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>';
+    }
+
     public function showDashboard()
     {
         if (!Sentinel::check()) {
             return redirect($this->appUrl.'admin/login');
         }
 
-        return view('layouts.admin');
+        $alertHtml = $this->getAngularDirectiveAlert();
+
+        return view('layouts.admin', compact(
+            'alertHtml'
+        ));
     }
 
     public function showMembers()
