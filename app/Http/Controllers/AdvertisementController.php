@@ -123,7 +123,7 @@ class AdvertisementController extends Controller
             $extension = $this->payload->adFile->getClientOriginalExtension();
             $filename = str_replace('.' . $extension, '', $filenameUponDownload);
 
-            $uploadPath = "/uploads/advertisements/";
+            $uploadPath = "uploads/advertisements";
             $filename = $filename . '_' . time() . '.' . $extension;
 
             $this->payload->adFile->move(public_path($uploadPath), $filename);
@@ -176,7 +176,7 @@ class AdvertisementController extends Controller
             $extension = $this->payload->adFile->getClientOriginalExtension();
             $filename = str_replace('.' . $extension, '', $filenameUponDownload);
 
-            $uploadPath = "/uploads/advertisements/";
+            $uploadPath = "uploads/advertisements";
             $filename = $filename . '_' . time() . '.' . $extension;
 
             $this->payload->adFile->move(public_path($uploadPath), $filename);
