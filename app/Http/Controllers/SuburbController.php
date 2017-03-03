@@ -124,6 +124,21 @@ class SuburbController extends Controller
 
     }
 
+    public function updateSuburbAvailability()
+    {
+        $payload = $this->payload->all();
+
+        $suburb = Suburbs::find($payload['id']);
+        $suburb->availability = $payload['availability'];
+        $suburb->save();
+
+        return Response::json([
+            'suburb' => $payload,
+            'type' => 'success',
+            'msg' => 'Availability successfully updated.'
+        ], 200);
+    }
+
     private function removeUserMetaSuburb($userMetaId, $suburbKeyCombo)
     {
         $currentUserMeta = UserMeta::find($userMetaId);
