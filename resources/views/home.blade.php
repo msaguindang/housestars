@@ -126,14 +126,20 @@
           </div>
         </div>
         <div class="banner-ad">
-          <img src="assets/banner-ad.png" alt="Banner Ad">
+          @if(isset($advert['141x117']))
+            <img src="{{$advert['141x117']['url']}}" alt="Banner Ad">
+          @else
+            <img src="assets/banner-ad.png" alt="Banner Ad">
+          @endif
         </div>
       </div>
     </section>
 
     <div class="horizontal-bg"></div>
     <section id="advertisement-banner">
-      <img src="assets/banner-test.jpg" alt="Banner Description Here">
+      @if(isset($advert['728x90']))
+        <img src="{{$advert['728x90']['url']}}" alt="Banner Ad">
+      @endif
     </section>
 
     <section id="how-it-works" class="home">
