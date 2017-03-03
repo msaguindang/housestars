@@ -1,5 +1,6 @@
 @extends("layouts.main")
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
     <header id="header" class="animated">
         <div class="container">
           <div class="row">
@@ -55,93 +56,90 @@
          <h2 class="wide"><span class="icon icon-left-bar-white"></span>Savings Estimation Calculator<span class="icon icon-right-bar-white"></span></h2>
         </div>
         <div class="calculator">
-          <form>
+          <form id="savingsCalc">
+            {{csrf_field()}}
             <div class="col-xs-4">
               <label>Name</label>
-              <input type="text" name="">
+              <input type="text" name="name">
               <label>Suburb</label>
-              <input type="text" name="">
+              <input type="text" name="suburb">
             </div>
             <div class="col-xs-4">
               <label>Email Address</label>
-              <input type="text" name="">
+              <input type="text" name="email">
               <label>Property Type</label>
               <div class="btn-group">
-                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <input type="radio" id="all" name="all" value="all" checked="">
-                      <label for="all">Any Property type</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="condo" name="condominium" value="Condominium">
-                      <label for="condo">Condominium/label>
-                    </li>
-                    <li>
-                      <input type="radio" id="commercial" name="commercial" value="Commercial">
-                      <label for="commercial">Commercial</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="Apartment" name="Apartment" value="Apartment">
-                      <label for="Apartment">Apartment</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="Foreclosures" name="Foreclosures" value="Foreclosures">
-                      <label for="Foreclosures">Foreclosures</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="Development" name="Development" value="Development">
-                      <label for="Development">Development</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="House" name="House" value="House">
-                      <label for="House">House</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="Land" name="Land" value="Land">
-                      <label for="Land">Land</label>
-                    </li>
-                  </ul>
-              </div>
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <input type="radio" id="a1" name="property-type" value="Condominium">
+                        <label for="a1">Condominium</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="a2" name="property-type" value="Commercial">
+                        <label for="a2">Commercial</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="a3" name="property-type" value="Apartment">
+                        <label for="a3">Apartment</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="a4" name="property-type" value="Foreclosures">
+                        <label for="a4">Foreclosures</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="a5" name="property-type" value="Development">
+                        <label for="a5">Development</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="a6" name="property-type" value="House">
+                        <label for="a6">House</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="a7" name="property-type" value="Land">
+                        <label for="a7">Land</label>
+                      </li>
+                    </ul>
+                </div>
             </div>
             <div class="col-xs-4">
               <label>Phone Number</label>
-              <input type="text" name="">
+              <input type="text" name="phone">
               <label>Estimated Selling Price</label>
                <div class="btn-group">
-                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                  <ul class="dropdown-menu">
+                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+                    <ul class="dropdown-menu">
                     <li>
-                      <input type="radio" id="any" name="any" value="any" checked="">
+                      <input type="radio" id="any" name="any" value="any">
                       <label for="any">Any Price</label>
                     </li>
                     <li>
-                      <input type="radio" id="option1" name="" value="$700,000 - $800,000">
-                      <label for="option1">$700,000 - $800,000</label>
+                      <input type="radio" id="b1" name="estimated-price" value="$700,000 - $800,000">
+                      <label for="b1">$700,000 - $800,000</label>
                     </li>
                     <li>
-                      <input type="radio" id="option2" name="" value="$800,000 - $900,000">
-                      <label for="option2">$800,000 - $900,000</label>
+                      <input type="radio" id="b2" name="estimated-price" value="$800,000 - $900,000">
+                      <label for="b2">$800,000 - $900,000</label>
                     </li>
                     <li>
-                      <input type="radio" id="option3" name="" value="$1,000,000 - $1,100,000">
-                      <label for="option3">$1,000,000 - $1,100,000</label>
+                      <input type="radio" id="b3" name="estimated-price" value="$1,000,000 - $1,100,000">
+                      <label for="b3">$1,000,000 - $1,100,000</label>
                     </li>
                     <li>
-                      <input type="radio" id="option4" name="" value="$1,200,000 - $1,300,000">
-                      <label for="option4">$1,200,000 - $1,300,000</label>
+                      <input type="radio" id="b4" name="estimated-price" value="$1,200,000 - $1,300,000">
+                      <label for="b4">$1,200,000 - $1,300,000</label>
                     </li>
                     <li>
-                      <input type="radio" id="option5" name="" value="$1,400,000 - $1,500,000">
-                      <label for="option5">$1,400,000 - $1,500,000</label>
+                      <input type="radio" id="b5" name="estimated-price" value="$1,400,000 - $1,500,000">
+                      <label for="b5">$1,400,000 - $1,500,000</label>
                     </li>
                     <li>
-                      <input type="radio" id="option6" name="" value="$1,600,000 - $1,800,000">
-                      <label for="option6">$1,600,000 - $1,800,000</label>
+                      <input type="radio" id="b6" name="estimated-price" value="$1,600,000 - $1,800,000">
+                      <label for="b6">$1,600,000 - $1,800,000</label>
                     </li>
                     <li>
-                      <input type="radio" id="option7" name="" value="$1,900,000 - $2,000,000">
-                      <label for="option7">$1,900,000 - $2,000,000</label>
+                      <input type="radio" id="b7" name="estimated-price" value="$1,900,000 - $2,000,000">
+                      <label for="b7">$1,900,000 - $2,000,000</label>
                     </li>
 
                   </ul>
