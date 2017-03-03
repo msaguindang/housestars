@@ -8,6 +8,15 @@ switch (preg_replace("/:.*$/", "", strtolower($_SERVER['HTTP_HOST']))) {
     case 'localhost':
         define ('BRANCH', 'dev');
         break;
+    case 'housestars.com.au':
+        define ('BRANCH', 'master');
+        break;
+    case 'staging.housestars.com.au':
+        define ('BRANCH', 'staging');
+        break;
+    case 'dev.housestars.com.au':
+        define ('BRANCH', 'dev');
+        break;
     default:
         if(strstr($_SERVER['REQUEST_URI'], '/dev')) {
             define ('BRANCH', 'dev');
