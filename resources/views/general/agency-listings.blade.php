@@ -114,7 +114,9 @@
                               @endif
                             </div>
                             <div class="profile-info">
-                              <p>{{$agency['summary']}} ...</p>
+                              @if(isset($agency['summary']))
+                                <p>{{$agency['summary']}} ...</p>
+                              @endif
                               <a href="{{env('APP_URL')}}/profile/agency/{{$agency['id']}}" class="btn hs-primary small">Visit Agency's Page</a>
                             </div>
                           </div>
