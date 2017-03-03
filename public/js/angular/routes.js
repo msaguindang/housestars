@@ -21,12 +21,14 @@
                 var routes, setRoutes;
 
                 routes = [
-                    // 'dashboard',
+                    'dashboard',
                     'properties',
                     'members',
                     'reviews',
                     'categories',
-                    'suburbs'
+                    'suburbs',
+                    'test',
+                    'advertisements'
                 ];
 
                 setRoutes = function (route) {

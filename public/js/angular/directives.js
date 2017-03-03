@@ -15,3 +15,47 @@ housestars.directive('stringToNumber', function() {
         }
     };
 });
+
+housestars.directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);
+
+housestars.directive('fileImageSrc', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        scope: {
+            fileImageSrc: '='
+        },
+        link: function (scope, element, attrs) {
+            // var model = $parse(attrs.fileImageModel);
+            // var modelSetter = model.assign;
+            element.bind('change', function () {
+                scope.$apply(function () {
+                    // modelSetter(scope, element[0].files[0]);
+                    if (element[0].files[0]) {
+                        var FR = new FileReader();
+                        FR.onload = function (e) {
+                            scope.$apply(function () {
+                                scope.fileImageSrc = e.target.result;
+                            });
+                        };
+                        FR.readAsDataURL(element[0].files[0]);
+                    }
+                });
+
+            });
+        }
+    };
+}]);
