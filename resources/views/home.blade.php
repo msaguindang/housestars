@@ -224,7 +224,7 @@
             <div class="featured-img">
               <img src="assets/img-square-buildings.png" alt="Want to sell a property?">
             </div>
-            <a class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
+            <a href="{{env('APP_URL')}}/agency" class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
           </div>
           <div class="col-xs-4 item animated">
             <h3>are you a trade or service?</h3>
@@ -232,7 +232,7 @@
             <div class="featured-img">
               <img src="assets/img-square-services.png" alt="are you a trade or service?">
             </div>
-            <a class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
+            <a href="{{env('APP_URL')}}/tradesman" class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
           </div>
           <div class="col-xs-4 item animated">
             <h3>Are you an agent?</h3>
@@ -240,7 +240,7 @@
             <div class="featured-img">
               <img src="assets/img-square-agent.png" alt="Are you an agent?">
             </div>
-            <a class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
+            <a href="{{env('APP_URL')}}/customer" class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
           </div>
         </div>
       </div>
