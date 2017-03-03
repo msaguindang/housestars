@@ -151,8 +151,11 @@
 
           <div class="col-xs-3 sidebar">
             <div class="advertisement">
-              <div class="ads"></div>
-              <div class="ads"></div>
+              @if(isset($data['advert']))
+                  @foreach($data['advert'] as $ad)
+                    <div class="ads" style="background: url({{env('APP_URL')}}/{{$ad['url']}})"></div>
+                  @endforeach
+                @endif
             </div>
           </div>
         </div>

@@ -16,6 +16,7 @@ use Hash;
 use App\Agents;
 use App\Reviews;
 use App\Property;
+use App\Advertisement;
 use Response;
 
 class AgencyController extends Controller
@@ -40,6 +41,28 @@ class AgencyController extends Controller
 
         $data['properties'] = $this->property_listing(Sentinel::getUser()->id);
         $data['total-listings'] = count($data['properties']);
+
+        $ads = Advertisement::where('type', '=', '270x270')->get();
+        $y = 0;
+
+        foreach ($ads  as $ad) {
+            $advert[$ad->type][$y]['url'] = $ad->image_path;
+            $y++; 
+        }
+
+        if(isset($advert['270x270'])){
+            $numAds =  count($advert['270x270']) - 1;
+            $index1 = rand(0, $numAds);
+            $data['advert'][0] = $advert['270x270'][$index1];
+            $index2 = rand(0, $numAds);
+
+            if($index1 == $index2){
+                $index2 = rand(0, $numAds);
+            }
+            $data['advert'][1] = $advert['270x270'][$index2];
+
+        }
+
         // dd($data);
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
