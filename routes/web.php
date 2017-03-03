@@ -262,6 +262,14 @@ Route::group(['prefix' => ''], function () {
 
         });
 
+        Route::group(['prefix' => 'advertisement'], function () {
+
+            Route::get('', 'AdvertisementController@getAllAdvertisements');
+            Route::post('insert', 'AdvertisementController@insertAdvertisement');
+            Route::post('delete', 'AdvertisementController@deleteAdvertisement');
+
+        });
+
         Route::group(['prefix' => 'category'], function () {
 
             Route::get('', 'CategoryController@getAllCategories');

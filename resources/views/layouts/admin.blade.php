@@ -113,6 +113,12 @@
         }
 
         /* all other browsers */
+
+
+
+        .help-block.has-error{
+            color:#e74c3c;
+        }
     </style>
 
 
@@ -170,12 +176,12 @@
                         <p>Suburbs</p>
                     </a>
                 </li>
-                {{--<li>
+                <li>
                     <a href="#/advertisements"> <!-- #/advertisements -->
                         <i class="pe-7s-rocket"></i>
                         <p>Advertisements</p>
                     </a>
-                </li>--}}
+                </li>
             </ul>
         </div>
     </div>

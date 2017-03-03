@@ -653,3 +653,167 @@ housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$ui
     $scope.getSuburbAgents();
 
 }]);
+
+housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
+
+    console.log('AdvertisementsCtrl');
+
+    $scope.advertisements = [];
+    $scope._advertisements = angular.copy($scope.advertisements);
+
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function(newPage){
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllAdvertisements();
+    };
+
+    $scope.getAllAdvertisements = function () {
+        http.getAllAdvertisements({
+            page_no:$scope.currentPage,
+            limit:$scope.limit
+        }).then(function(response){
+            console.log('advertisements: ', response);
+            $scope.advertisements = response.data.advertisements;
+            $scope._advertisements = angular.copy($scope.advertisements);
+            $scope.totalItems = response.data.length;
+        });
+    };
+
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'advertisements'
+        }).then(function(response){
+            console.log('status toggled');
+            $scope._advertisements[index].status = response.data.status;
+        })
+
+    };
+
+    $scope.deleteAdvertisement = function (advertisement, index) {
+
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        if(confirmation){
+            http.deleteAdvertisement({
+                id:advertisement.id
+            }).then(function(response){
+                console.log('advertisement deleted: ', response);
+                $scope._advertisements.splice(index,1);
+            });
+        }
+
+    };
+
+    $scope.openAdvertisementModal = function () {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'advertisement-modal.html',
+            controller: 'AdvertisementModalCtrl',
+            // size: 'lg',
+            resolve: {
+                advertisementData: function () {
+                    return $scope.advertisementData;
+                },
+            }
+        });
+
+        modalInstance.result.then(function (response) {
+
+            switch(response.status){
+                case 'success':
+                    $scope.changePage($scope.currentPage);
+                    break;
+            }
+
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
+    // initialize
+    $scope.getAllAdvertisements();
+
+}]);
+
+housestars.controller('AdvertisementModalCtrl', ['$scope', 'advertisementData', '$uibModalInstance', 'http', 'validator', function ($scope, advertisementData, $uibModalInstance, http, validator) {
+
+    console.log('AdvertisementModalCtrl', advertisementData);
+
+
+    $scope.errors = {};
+    $scope.$watch('errors', function (errors) {
+        if (errors !== undefined) {
+            validator.errors = errors;
+        }
+    });
+    $scope.hasError = validator.hasError;
+    $scope.showErrorBlock = validator.showErrorBlock;
+
+
+
+
+    $scope.advertisementData = advertisementData;
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+
+    $scope.saveAdvertisement = function () {
+
+        if(typeof $scope.advertisementData == "undefined"){
+            $scope.advertisementData = {
+                name: '',
+                type: '',
+                priority: ''
+            }
+        }
+
+        if(typeof $scope.advertisementData.name == "undefined"){
+            $scope.advertisementData.name = '';
+        }
+
+        if(typeof $scope.advertisementData.type == "undefined"){
+            $scope.advertisementData.type = '';
+        }
+
+        var formData = new FormData();
+        formData.append('name', $scope.advertisementData.name);
+        formData.append('type', $scope.advertisementData.type);
+        formData.append('priority', $scope.advertisementData.priority);
+        formData.append('adFile', $scope.adFile);
+
+        http.saveAdvertisement(formData).then(function(response){
+            console.log('advertisement saved: ', response);
+            $scope.errors = {};
+            $scope.close({
+                status: 'success'
+            });
+        }, function(errResponse){
+            console.log('error: ', errResponse);
+            $scope.errors = errResponse.validator;
+        });
+
+    };
+
+
+
+}]);

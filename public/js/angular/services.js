@@ -82,6 +82,76 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        postUpload: function (url, data) {
+
+            var data = data || {};
+
+            var self = this;
+            //cfpLoadingBar.start();
+            return $q(function (resolve, reject) {
+                data._token = self._token;
+
+                console.log(data._token);
+                console.log($_token);
+
+                jQuery.ajax({
+                    cache: false,
+                    type: 'POST',
+                    dataType: 'json',
+                    url: url,
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    async:false,
+                    headers: {
+                        'X-CSRF-TOKEN': self._token
+                    },
+                    success: function (data) {
+
+                        /*if (data.type !== undefined && data.msg !== undefined) {
+                            var oldMsg = self.alert.msg;
+                            self.alert.type = data.type;
+                            self.alert.msg = data.msg;
+                            //if(oldMsg != self.alert.msg){
+                            global.alert.listUpdate(self.alert);
+                            //}
+                        }*/
+
+                        //self._token = data._token;
+                        //delete data['_token'];
+                        resolve({
+                            data: data,
+                            status: 200,
+                            statusText: "OK"
+                        });
+                        //cfpLoadingBar.complete();
+                        //$anchorScroll();
+                    },
+                    error: function (data) {
+
+                        //try{
+                        var data = JSON.parse(data.responseText);
+
+                        /*if (data.errors.type !== undefined && data.errors.msg !== undefined) {
+                            self.alert.type = data.errors.type;
+                            self.alert.msg = data.errors.msg;
+                            global.alert.listUpdate(self.alert);
+                        }*/
+                        //}catch(e){
+                        //	console.log('error object: ', data);
+                        //	console.log('service error: ', "response text is not a valid JSON");
+                        //}
+
+
+                        //self._token = data._token;
+                        //delete data['_token'];
+                        reject(data);
+                        //cfpLoadingBar.complete();
+                        //$anchorScroll();
+                    }
+                });
+            });
+        },
         get: function (url, data, processData, contentType) {
 
             var data = data || {};
@@ -234,6 +304,37 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        getAllAdvertisements: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/advertisement', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        saveAdvertisement: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.postUpload('admin/advertisement/insert', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         updateProperty: function (data) {
             var self = this;
@@ -372,6 +473,21 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        deleteAdvertisement: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/advertisement/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         toggleStatus: function (data) {
             var self = this;
@@ -438,4 +554,16 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
         },
 
     }
+}]);
+
+housestars.factory('validator', [function () {
+    return {
+        errors: {},
+        hasError: function (key, classError) {
+            return (this.errors[key] === undefined) ? '' : classError;
+        },
+        showErrorBlock: function (key, classError) {
+            return (this.errors[key] === undefined) ? classError : '';
+        }
+    };
 }]);
