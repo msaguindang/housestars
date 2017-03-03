@@ -31,12 +31,12 @@
                             </a>
 
                             <a href="" ng-click="toggleStatus(advertisement, $index)" class="disable">
-                                <i ng-if="advertisement.status == 1" class="pe-7s-check"></i>
-                                <i ng-if="advertisement.status == 0" class="pe-7s-close-circle"></i>
+                                <i ng-if="advertisement.status == 1" class="pe-7s-check text-success"></i>
+                                <i ng-if="advertisement.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
 
                             <a href="" ng-click="deleteAdvertisement(advertisement, $index)" class="delete">
-                                <i class="pe-7s-trash"></i>
+                                <i class="pe-7s-trash text-danger"></i>
                             </a>
 
                         </td>
