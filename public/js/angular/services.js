@@ -351,6 +351,21 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
                 });
             });
         },
+        updateAdvertisement: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.postUpload('admin/advertisement/update', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
         updatePropertyProcessStatus: function (data) {
             var self = this;
             return $q(function(resolve, reject) {
@@ -386,6 +401,21 @@ housestars.factory('http', ['$http', '$q' , function($http, $q) {
             var self = this;
             return $q(function(resolve, reject) {
                 self.get('admin/property/get', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getAdvertisement: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/advertisement/get', data).then(function(response) {
 
                     resolve({
                         data:response.data,

@@ -741,6 +741,49 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
 
     };
 
+    $scope.editAdvertisement = function (advertisement, index) {
+
+        http.getAdvertisement(advertisement).then(function(response){
+            console.log('get advertisement: ', response);
+            $scope.advertisementData = response.data.advertisement;
+            $scope.openEditAdvertisementModal();
+        });
+
+        //$scope.advertisementData = advertisement;
+        //$scope.openEditAdvertisementModal();
+
+    };
+
+    $scope.openEditAdvertisementModal = function () {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'edit-advertisement-modal.html',
+            controller: 'EditAdvertisementModalCtrl',
+            // size: 'lg',
+            resolve: {
+                advertisementData: function () {
+                    return $scope.advertisementData;
+                },
+            }
+        });
+
+        modalInstance.result.then(function (response) {
+
+            switch(response.status){
+                case 'success':
+                    $scope.changePage($scope.currentPage);
+                    break;
+            }
+
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
     // initialize
     $scope.getAllAdvertisements();
 
@@ -802,6 +845,78 @@ housestars.controller('AdvertisementModalCtrl', ['$scope', 'advertisementData', 
         formData.append('adFile', $scope.adFile);
 
         http.saveAdvertisement(formData).then(function(response){
+            console.log('advertisement saved: ', response);
+            $scope.errors = {};
+            $scope.close({
+                status: 'success'
+            });
+        }, function(errResponse){
+            console.log('error: ', errResponse);
+            $scope.errors = errResponse.validator;
+        });
+
+    };
+
+
+
+}]);
+
+housestars.controller('EditAdvertisementModalCtrl', ['$scope', 'advertisementData', '$uibModalInstance', 'http', 'validator', function ($scope, advertisementData, $uibModalInstance, http, validator) {
+
+    console.log('EditAdvertisementModalCtrl', advertisementData);
+
+
+    $scope.errors = {};
+    $scope.$watch('errors', function (errors) {
+        if (errors !== undefined) {
+            validator.errors = errors;
+        }
+    });
+    $scope.hasError = validator.hasError;
+    $scope.showErrorBlock = validator.showErrorBlock;
+
+    $scope.advertisementData = advertisementData;
+    $scope.advertisementData.priority = $scope.advertisementData.priority+'';
+    $scope.adFileSrc = $baseUrl+$scope.advertisementData.image_path;
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+
+    $scope.saveAdvertisement = function () {
+
+        if(typeof $scope.advertisementData == "undefined"){
+            $scope.advertisementData = {
+                name: '',
+                type: '',
+                priority: ''
+            }
+        }
+
+        if(typeof $scope.advertisementData.name == "undefined"){
+            $scope.advertisementData.name = '';
+        }
+
+        if(typeof $scope.advertisementData.type == "undefined"){
+            $scope.advertisementData.type = '';
+        }
+
+        var formData = new FormData();
+        formData.append('id', $scope.advertisementData.id);
+        formData.append('name', $scope.advertisementData.name);
+        formData.append('type', $scope.advertisementData.type);
+        formData.append('priority', $scope.advertisementData.priority);
+        formData.append('adFile', $scope.adFile);
+
+        http.updateAdvertisement(formData).then(function(response){
             console.log('advertisement saved: ', response);
             $scope.errors = {};
             $scope.close({

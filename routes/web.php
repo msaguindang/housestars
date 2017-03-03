@@ -277,7 +277,9 @@ Route::group(['prefix' => ''], function(){
         Route::group(['prefix' => 'advertisement'], function () {
 
             Route::get('', 'AdvertisementController@getAllAdvertisements');
+            Route::get('get', 'AdvertisementController@getAdvertisement');
             Route::post('insert', 'AdvertisementController@insertAdvertisement');
+            Route::post('update', 'AdvertisementController@updateAdvertisement');
             Route::post('delete', 'AdvertisementController@deleteAdvertisement');
 
         });

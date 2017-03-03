@@ -151,3 +151,82 @@
     </div>
 
 </script>
+
+<script type="text/ng-template" id="edit-advertisement-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Edit Advertisement</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Name</label>
+            </div>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" ng-model="advertisementData.name">
+                <span class="help-block has-error {{showErrorBlock('name', 'hidden')}}">
+                    <strong>{{errors.name[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Type</label>
+            </div>
+            <div class="col-xs-8">
+                <select class="form-control" ng-model="advertisementData.type">
+                    <option value="">Select Property Type</option>
+                    <option value="270x270">270x270</option>
+                    <option value="728x90">728x90</option>
+                    <option value="141x117">141x117</option>
+                </select>
+                <span class="help-block has-error {{showErrorBlock('type', 'hidden')}}">
+                    <strong>{{errors.type[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Priority</label>
+            </div>
+            <div class="col-xs-8">
+                <select class="form-control" ng-model="advertisementData.priority">
+                    <option value="">Select Priority</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                </select>
+                <span class="help-block has-error {{showErrorBlock('priority', 'hidden')}}">
+                    <strong>{{errors.priority[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Upload Image</label>
+            </div>
+            <div class="col-xs-8">
+                <img ng-show="adFileSrc" ng-src="{{ adFileSrc }}" class="img-responsive">
+                <input type="file"
+                       file-model="adFile"
+                       file-image-src="adFileSrc"
+                       class="form-control">
+                <span class="help-block has-error {{showErrorBlock('adFile', 'hidden')}}">
+                    <strong>{{errors.adFile[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="saveAdvertisement()">Update</button>
+    </div>
+
+</script>
