@@ -14,6 +14,7 @@ use App\Suburbs;
 use Carbon\Carbon;
 use Hash;
 use App\Agents;
+use App\Advertisement;
 use Response;
 use Mail;
 use App\Reviews;

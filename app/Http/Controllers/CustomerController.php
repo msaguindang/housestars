@@ -12,6 +12,7 @@ use App\Property;
 use App\User;
 use App\Reviews;
 use App\Transactions;
+use App\Advertisement;
 use View;
 use Response;
 use Mail;
