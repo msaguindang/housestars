@@ -12,6 +12,7 @@ use App\Property;
 use App\User;
 use App\Reviews;
 use App\Transactions;
+use App\Advertisement;
 use View;
 use Response;
 use Mail;
@@ -89,8 +90,9 @@ class CustomerController extends Controller
         
 
         if(count($data['property']) > 1){
-            $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
             $lastIndex = count($data['property']) - 2;
+            $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
+            
         }
 
         $total = 0;

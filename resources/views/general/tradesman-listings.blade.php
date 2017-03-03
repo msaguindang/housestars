@@ -95,13 +95,13 @@
                       <div class="col-xs-3">
                         <div class="item">
                            @if(isset($tradesman['cover-photo']))
-                             <div class="cover-photo" style="background: url('{{env('APP_URL')/$tradesman['cover-photo']}}'); background-size: cover;">
+                             <div class="cover-photo" style="background: url('{{env('APP_URL')}}/{{$tradesman['cover-photo']}}'); background-size: cover;">
                             @else
                               <div class="cover-photo">
                             @endif
                            
                             @if(isset($tradesman['profile-photo']))
-                              <div class="profile-thumb" style="background: url('{{env('APP_URL')/$tradesman['profile-photo']}}') no-repeat center center; background-size: cover;"></div>
+                              <div class="profile-thumb" style="background: url('{{env('APP_URL')}}/{{$tradesman['profile-photo']}}') no-repeat center center; background-size: cover;"></div>
                             @else
                              <div class="profile-thumb"></div>
                             @endif
