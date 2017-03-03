@@ -190,7 +190,7 @@ class SearchController extends Controller
                 'from' => $from
             ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('nikko@kudosable.com', 'Housestars');
+                $message->to('info@housestars.com.au', 'Housestars');
                 $message->subject('Suggestion');
             });
     }

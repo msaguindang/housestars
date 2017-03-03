@@ -15,6 +15,7 @@ use App\Transactions;
 use View;
 use Response;
 use Mail;
+use Hash;
 
 class CustomerController extends Controller
 {
@@ -85,14 +86,16 @@ class CustomerController extends Controller
 
         $data['transactions'] = array();
         $data['code'] = $property_code;
-        $lastIndex = count($data['property']) - 2;
+        
 
         if(count($data['property']) > 1){
             $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
+            $lastIndex = count($data['property']) - 2;
         }
 
         $total = 0;
         $li = 0;
+
         foreach ($transactions as $transaction ) {
             $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'business-name')->get();
             if(count($business_name) > 0){
@@ -128,7 +131,8 @@ class CustomerController extends Controller
             $i++;
         }
 
-        $data['recent'] = $lastIndex;
+
+        
 
 
 
@@ -143,11 +147,17 @@ class CustomerController extends Controller
             $data['commission']['total'] = 'N/A';
         }
 
+        if(count($data['property']) > 1){
+            $data['recent'] = $lastIndex;
+            
+            if (isset($data['property'][$lastIndex]['process'])){
+                return View::make('dashboard/customer/profile')->with('data', $data);
+            } 
+        }
+
        // Check of the last property added was proccessed 
     
-        if (isset($data['property'][$lastIndex]['process'])){
-            return View::make('dashboard/customer/profile')->with('data', $data);
-        } 
+        
   
         return View::make('dashboard/customer/process')->with('data', $data);
     }
@@ -171,6 +181,36 @@ class CustomerController extends Controller
         }
 
         return View::make('dashboard/customer/edit')->with('data', $data);
+    }
+
+    public function update(Request $request)
+    {
+        if(Sentinel::check())
+        {
+            $id = Sentinel::getUser()->id;
+
+            if($request->input('password') == ''){
+                User::updateOrCreate(
+                    ['id' => $id],
+                    ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name')]);
+            } else {
+                $password = Hash::make($request->input('password'));
+                User::updateOrCreate(
+                    ['id' => $id],
+                    ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name'), 'password' => $password]);
+            }
+
+            UserMeta::updateOrCreate(
+                ['user_id' => $id, 'meta_name' => 'address'],
+                ['user_id' => $id, 'meta_name' => 'address', 'meta_value' => $request->input('address')]
+            );
+
+            return redirect()->back();
+
+        } else {
+            return redirect(env('APP_URL'));
+        }
+
     }
 
 
@@ -528,7 +568,7 @@ class CustomerController extends Controller
                 'data' => $data
             ], function ($message) use ($name, $email, $subject) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('nikko@kudosable.com');
+                $message->to('info@housestars.com.au');
                 $message->subject('Processing property in '. $subject);
         });
     }

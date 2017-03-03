@@ -223,7 +223,7 @@ class TradesmanController extends Controller
                 'website' => $data->input('website')
             ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('nikko@kudosable.com', 'Housestars');
+                $message->to('info@housestars.com.au', 'Housestars');
                 $message->subject('Order Business Card');
             });
     }
@@ -237,7 +237,7 @@ class TradesmanController extends Controller
                 'email' => $data->input('email')
             ], function ($message) use ($subject) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('nikko@kudosable.com', 'Housestars');
+                $message->to('info@housestars.com.au', 'Housestars');
                 $message->subject('Client Inquiry: ' . $subject);
             });
     }

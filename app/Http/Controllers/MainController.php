@@ -9,6 +9,8 @@ use App\Suburbs;
 use App\Reviews;
 use App\Role;
 use App\UserMeta;
+use Response;
+use Mail;
 
 class MainController extends Controller
 {
@@ -69,5 +71,28 @@ class MainController extends Controller
 
        //dd($data);
         return view('general.agency')->with('data', $data);
+    }
+
+    public function savingsCalculator(Request $request){
+
+        $this->sendEmail($request);
+        return Response::json('success', 200);
+    }
+
+      private function sendEmail($request){
+        $email = $request->input('email');
+        $name = $request->input('name');
+        Mail::send(['html' => 'emails.savings-calculator'], [
+                'name' => $request->input('name'),
+                'email' => $request->input('phone'),
+                'phone' => $request->input('email'),
+                'suburb' => $request->input('suburb'),
+                'type' => $request->input('property-type'),
+                'price' => $request->input('estimated-price')
+            ], function ($message) use ($name) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
+                $message->subject('Savings Estimation Calculator: '. $name);
+            });
     }
 }
