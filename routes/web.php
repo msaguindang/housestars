@@ -288,6 +288,8 @@ Route::group(['prefix' => ''], function () {
 
             Route::get('', 'CategoryController@getAllCategories');
             Route::post('delete', 'CategoryController@deleteCategory');
+            Route::post('insert', 'CategoryController@insertCategory');
+            Route::post('update', 'CategoryController@updateCategory');
 
         });
 
