@@ -1,16 +1,3 @@
-/* TODO */
-
-/*
-
-DASHBOARD
-MEMBERS - list/delete/edit
-PROPERTIES - list/delete/edit
-REVIEWS - delete/disable
-
-
-
- */
-
 (function () {
     'use strict';
 
