@@ -118,7 +118,7 @@
           <div class="col-xs-11 col-xs-offset-1 tooltip-items">
             <ul>
               <li class="search-local animated fadeInDown"><span class="icon icon-search-local"></span><a href="search-category"> Search Local Trades & Services <span class="icon icon-arrow-right"></span></a></li>
-              <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings"></span><a href="#" data-toggle="modal" data-target="#rateTradesman">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
+              <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings"></span><a href="{{env('APP_URL')}}/savings-calculator">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
                 @if(!Sentinel::check())
                  <li class="sign-up animated fadeInDown"><span class="icon icon-sign-up"></span><a href="" data-toggle="modal" data-target="#signup" id="signup-form">Sign Me Up <span class="icon icon-arrow-right"></span></a></li>
                 @endif
