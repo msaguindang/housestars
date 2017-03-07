@@ -1,5 +1,5 @@
 <?php
-
+use App\UserMeta;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +13,16 @@
 
 Route::group(['prefix' => ''], function () {
 
+
     Route::get('/profile', 'MainController@dashboard');
 
 
     Route::get('/', 'MainController@home');
+
+    // Route::get('/', function () {
+    //     return view('home');
+    // })->name('homepage');
+
 
     Route::get('/home', function () {
         return view('general.home');
@@ -45,6 +51,8 @@ Route::group(['prefix' => ''], function () {
 
     Route::get('/register/agency/step-two', function () {
 
+
+    Route::get('/register/agency/step-two', function () {
         return view('register.agency.step-two');
     })->middleware('agency');
 
@@ -152,15 +160,21 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/update-agents', 'AgencyController@updateAgent');
 
+
     Route::post('upload', 'TradesmanController@upload');
 
     Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
+
+    Route::post('/register', 'RegistrationController@postRegister');
 
     Route::post('/delete-item', 'TradesmanController@deleteItem');
 
     Route::post('/agency-list', 'RegistrationController@listAgency');
 
+
     Route::post('/add-property', 'RegistrationController@addProperty');
+
+    Route::get('/login/{provider}/callback/', 'LoginController@handleProviderCallback');
 
     Route::post('/process-trades', 'CustomerController@spending');
 
@@ -310,3 +324,24 @@ Route::group(['prefix' => ''], function () {
 
 });
 
+// Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
+
+// Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
+
+// ===================================================================================================================================================
+// NEW ROUTES
+// ===================================================================================================================================================
+Route::get('/list-agency-and-tradesman', 'LoginController@getAgencyAndTradesman'); // get all agency and tradesmen
+Route::get('/verify/{provider}', 'LoginController@verifyToProvider'); // route for user verification only
+Route::get('/verify/{provider}/callback', 'LoginController@verifyProviderCallback'); // callback for user verification only
+
+Route::get('/reviewer','LoginController@chooseBusiness');
+Route::get('/choose-business', function() {
+    return view('choose_business');
+});
+Route::post('/review', 'ReviewController@addAReview');
+// Route::get('/review/{businessId}', function() {
+//     return view('review_business');
+// });
+Route::post('/create/review', 'ReviewController@create');
+// ===================================================================================================================================================

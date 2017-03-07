@@ -34,16 +34,36 @@ return [
         'secret' => env('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1'),
     ],
 
-    'facebook' => [
-        'client_id' => '1889078964644540',
-        'client_secret' => '94569d661404d0c28372e6d423e63a03',
-        'redirect' => 'http://localhost/login/facebook/callback',
-    ],
+    // // PRINZ CREDENTIALS
+    // 'facebook' => [
+    //     'client_id' => '1889078964644540',
+    //     'client_secret' => '94569d661404d0c28372e6d423e63a03',
+    //     'redirect' => 'http://localhost:8000/login/facebook/callback',
+    // ],
 
+    // MIKOO CREDENTIALS
+    //  'facebook' => [
+    //     'client_id' => '1150866285041256',
+    //     'client_secret' => '573b3fb2adb5735fe38dbbb3228abbc1',
+    //     'redirect' => 'http://localhost:8000/login/facebook/callback',
+    // ],
+
+    // 'google' => [
+    //     'client_id' => '654636135144-hio9bt216h0jcvdbbmiq5fo1v342gnib.apps.googleusercontent.com',
+    //     'client_secret' => 'VzrpCSvLOXQi1Th7YX7UjmKH',
+    //     'redirect' => 'http://localhost:8000/login/google/callback'
+    // ],
+
+    'facebook' => [
+        'client_id' => env('FACEBOOK_KEY'),
+        'client_secret' => env('FACEBOOK_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
+    ],
+    
     'google' => [
-        'client_id' => '469144857452-kq3vdeq6g21vpnaks3vcp1jmlkun2gqk.apps.googleusercontent.com',
-        'client_secret' => '3gwuGjqlEnEOeXgUqPCduCLY',
-        'redirect' => 'http://localhost/login/google/callback',
+        'client_id' => env('GOOGLE_KEY'),
+        'client_secret' => env('GOOGLE_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI')
     ],
 
     'ses' => [
@@ -51,6 +71,4 @@ return [
         'secret' => 'dr251rJQazJwOz1EkaXjqO0acDXjy09GfjQVCqPN',
         'region' => 'us-west-2',
     ],
-
-
 ];

@@ -15,6 +15,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         'App\Events\SomeEvent' => [
             'App\Listeners\EventListener',
+            // \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            //     'SocialiteProviders\facebook\FacebookExtendSocialite@handle',
+            //     'SocialiteProviders\Google\GoogleExtendSocialite@handle',
+            // ],
         ],
     ];
 
@@ -29,4 +33,6 @@ class EventServiceProvider extends ServiceProvider
 
         //
     }
+
+
 }
