@@ -12,7 +12,7 @@ use View;
 use Sentinel;
 use App\UserMeta;
 use Response;
-
+use Socialite;
 class ReviewController extends Controller
 {
 
@@ -63,7 +63,7 @@ class ReviewController extends Controller
     	
     	return Response::json($data, 200); 
     }
-
+	
 	public function getAllReviews()
 	{
 
@@ -130,7 +130,45 @@ class ReviewController extends Controller
 			];
 			return Response::json($response, 404);
 		}
+	}
 
+	public function addAReview(Request $request) {
+		$params = $request->all();
+		$businessId = $params['businessId'];
+		return view('review_business', compact('businessId'));
+	}
+
+	public function create(Request $request) {
+		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
+		$params = $request->all();	
+		$reviewId = $latestRow->id;
+		$reviewerId = $latestRow->reviewer_id;
+		$businessId = $params['tradesman_id'];
+
+		$communication = isset($params['communication']) ? $params['communication'] : NULL;
+		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
+		$price = isset($params['price']) ? $params['price'] : NULL;
+		$punctuality = isset($params['punctuality']) ? $params['punctuality'] : NULL;
+		$attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
+		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
+		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
+		$helpful = isset($params['helpful']) ? $params['helpful'] : NULL;
+		
+		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
+			->update(array(
+				'reviewee_id' => $businessId,
+				'communication' => $communication,
+				'work_quality' => $workQuality,
+				'price' => $price,
+				'punctuality' => $punctuality,
+				'attitude' => $attitude,
+				'title' => $reviewTitle,
+				'content' => $reviewText,
+				'helpful' => $helpful,
+				'updated_at' => Carbon::now()
+		));
+		return redirect('/');
 
 	}
+	
 }

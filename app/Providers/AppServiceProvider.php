@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use DB;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('modals', function($view) {
+            $view->with('businesses', \App\UserMeta::businesses());
+        });
     }
 
     /**

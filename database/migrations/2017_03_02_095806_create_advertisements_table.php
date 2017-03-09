@@ -15,7 +15,6 @@ class CreateAdvertisementsTable extends Migration
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->increments('id');
-
             $table->string('name');
             $table->string('type');
             $table->integer('priority')->nullable();
