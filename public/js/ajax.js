@@ -134,7 +134,7 @@ $(document).on('submit', '#reviewForm' ,function(e){
       var data = $(this).serialize();
 
       $.ajax({
-      url: 'create/review',
+      url: '/create/review',
       data: data,
       type: 'POST',
       processData: false,

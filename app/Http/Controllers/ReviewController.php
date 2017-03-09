@@ -152,7 +152,7 @@ class ReviewController extends Controller
 		$attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
 		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
 		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
-		$helpful = isset($params['helpful']) ? $params['helpful'] : NULL;
+		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
 		
 		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
 			->update(array(
