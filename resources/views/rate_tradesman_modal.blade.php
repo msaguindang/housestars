@@ -68,6 +68,16 @@
 									<input type="radio" name="attitude" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
 								</div>
 							</div>
+							<div class="rating-stars no-border">
+								<p class="rating-label">Helpful</p>
+								<div class="stars">
+									<input type="radio" name="helpful" id="group-5-0" value="5" /><label for="group-5-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
+									<input type="radio" name="helpful" id="group-5-1" value="4" /><label for="group-5-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
+									<input type="radio" name="helpful" id="group-5-2" value="3" /><label for="group-5-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
+									<input type="radio" name="helpful" id="group-5-3" value="2" /><label for="group-5-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
+									<input type="radio" name="helpful" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
+								</div>
+							</div>
 							</br></br></br>
 							<input type="text" name="review-title" placeholder="Enter Review Title">
 							<textarea placeholder="Write your review.." name="review-text" class="no-top"></textarea>

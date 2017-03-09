@@ -240,7 +240,7 @@
 			</div>
 		</div>
 
-     <!-- Agency Rate Us -->
+    <!-- Agency Rate Us -->
     <div class="modal fade" id="agencyRate" tabindex="-1" role="dialog" aria-labelledby="signup-area">
       <div class="modal-dialog" role="document" style="margin-top: 3%;">
         <div class="modal-content">

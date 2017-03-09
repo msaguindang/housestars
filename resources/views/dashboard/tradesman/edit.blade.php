@@ -6,7 +6,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="{{env('APP_URL')}}/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
+              <a href="{{config('app.url')}}/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -30,18 +30,18 @@
                   <ul>
                     @if(Sentinel::check())
                     <li><span class="icon icon-logout-dark"></span>
-                      <form action="{{env('APP_URL')}}/logout" method="POST" id="logout-form">
+                      <form action="{{config('app.url')}}/logout" method="POST" id="logout-form">
                         {{csrf_field() }}
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Profile</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{config('app.url')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="{{config('app.url')}}/">Home</a></li>
                     @else
-                    <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
-                    <li><span class="icon icon-agency-dark"></span><a href="{{env('APP_URL')}}/agency">Agency</a></li>
-                    <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
+                    <li><span class="icon icon-customer-dark"></span><a href="{{config('app.url')}}/customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{config('app.url')}}/trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="{{config('app.url')}}/agency">Agency</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="{{config('app.url')}}/">Home</a></li>
                     @endif
                   </ul>
                 </div>
@@ -49,9 +49,9 @@
             </div>
           </div>
     </header>
- <form action="{{env('APP_URL')}}/tradesman/update-profile" method="POST" enctype="multipart/form-data">
+ <form action="{{config('app.url')}}/tradesman/update-profile" method="POST" enctype="multipart/form-data">
   {{csrf_field() }}
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
+    <section id="cover-container" class="header-margin" style="background: url({{config('app.url')}}/{{$data['cover-photo']}})">
      
         {{csrf_field() }}
       <div class="cover-img">
@@ -64,7 +64,7 @@
             </div>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) 100%">
+            <div class="profile-img" style="background: url({{config('app.url')}}/{{$data['profile-photo']}}) 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo">
             </div>
@@ -356,7 +356,7 @@
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
                   <div class="upload-media">
-                  <form  action="{{env('APP_URL')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
+                  <form  action="{{config('app.url')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
                     {{csrf_field() }}
                     
                   </form>

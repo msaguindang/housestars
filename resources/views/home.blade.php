@@ -15,7 +15,7 @@
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
                     
-                     @if(Sentinel::check())
+                    @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login" id="login-form">Login</a></li>

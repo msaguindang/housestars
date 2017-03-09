@@ -63,7 +63,7 @@ class ReviewController extends Controller
     	
     	return Response::json($data, 200); 
     }
-
+	
 	public function getAllReviews()
 	{
 
@@ -130,14 +130,15 @@ class ReviewController extends Controller
 			];
 			return Response::json($response, 404);
 		}
+	}
 
-	function addAReview(Request $request) {
+	public function addAReview(Request $request) {
 		$params = $request->all();
 		$businessId = $params['businessId'];
 		return view('review_business', compact('businessId'));
 	}
 
-	function create(Request $request) {
+	public function create(Request $request) {
 		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
 		$params = $request->all();	
 		$reviewId = $latestRow->id;
@@ -151,6 +152,7 @@ class ReviewController extends Controller
 		$attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
 		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
 		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
+		$helpful = isset($params['helpful']) ? $params['helpful'] : NULL;
 		
 		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
 			->update(array(
@@ -162,10 +164,11 @@ class ReviewController extends Controller
 				'attitude' => $attitude,
 				'title' => $reviewTitle,
 				'content' => $reviewText,
+				'helpful' => $helpful,
 				'updated_at' => Carbon::now()
 		));
-
 		return redirect('/');
 
 	}
+	
 }

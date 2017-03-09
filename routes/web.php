@@ -50,9 +50,6 @@ Route::group(['prefix' => ''], function () {
     Route::get('/register/agency/step-one', 'RegistrationController@Agency')->middleware('agency');
 
     Route::get('/register/agency/step-two', function () {
-
-
-    Route::get('/register/agency/step-two', function () {
         return view('register.agency.step-two');
     })->middleware('agency');
 
@@ -192,10 +189,9 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/delete-transaction', 'CustomerController@delete');
 
-    Route::post('/review', 'ReviewController@review');
+    // Route::post('/review', 'ReviewController@review');
 
-
-    Route::post('/add-review', 'ReviewController@addReview');
+    // Route::post('/add-review', 'ReviewController@addAReview');
 
     Route::post('/get-agent-info', 'CustomerController@agentInfo');
 
@@ -324,10 +320,6 @@ Route::group(['prefix' => ''], function () {
 
 });
 
-// Route::get('auth/facebook', 'Auth\RegisterController@redirectToProvider');
-
-// Route::get('auth/facebook/callback', 'Auth\RegisterController@handleProviderCallback');
-
 // ===================================================================================================================================================
 // NEW ROUTES
 // ===================================================================================================================================================
@@ -340,8 +332,8 @@ Route::get('/choose-business', function() {
     return view('choose_business');
 });
 Route::post('/review', 'ReviewController@addAReview');
+Route::post('/create/review', 'ReviewController@create');
 // Route::get('/review/{businessId}', function() {
 //     return view('review_business');
 // });
-Route::post('/create/review', 'ReviewController@create');
 // ===================================================================================================================================================

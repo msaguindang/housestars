@@ -134,13 +134,15 @@ $(document).on('submit', '#reviewForm' ,function(e){
       var data = $(this).serialize();
 
       $.ajax({
-      url: 'add-review',
+      url: 'create/review',
       data: data,
       type: 'POST',
       processData: false,
       success: function(data){
         $('#agencyRate').modal('hide');
-        location.reload();
+        // location.reload();        
+        window.location = '/';
+        $('#thankYou').modal('show');
       }
     });
   });

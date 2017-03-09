@@ -10,21 +10,21 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{url('favicon.png')}}">
 
     <!-- Bootstrap -->
-    <link href="{{env('APP_URL')}}/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/dropdowns-enhancement.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/animate.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/selectize.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/basic.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/dropzone.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/housestars-main.css" rel="stylesheet">
-    <link href="{{env('APP_URL')}}/css/housestars-icon.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/dropdowns-enhancement.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/animate.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/selectize.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/basic.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/dropzone.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/housestars-main.css" rel="stylesheet">
+    <link href="{{config('app.url')}}/css/housestars-icon.css" rel="stylesheet">
     
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="{{env('APP_URL')}}/js/loading.js"></script>
-    <script src="{{env('APP_URL')}}/js/standalone/selectize.js"></script>
+    <script src="{{config('app.url')}}/js/loading.js"></script>
+    <script src="{{config('app.url')}}/js/standalone/selectize.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -117,14 +117,14 @@
 
     <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{env('APP_URL')}}/js/bootstrap.min.js"></script>
-    <script src="{{env('APP_URL')}}/js/dropdowns-enhancement.js"></script>
-    <script src="{{env('APP_URL')}}/js/custom.js"></script>
-    <script src="{{env('APP_URL')}}/js/laravel.ajax.js"></script>
+    <script src="{{config('app.url')}}/js/bootstrap.min.js"></script>
+    <script src="{{config('app.url')}}/js/dropdowns-enhancement.js"></script>
+    <script src="{{config('app.url')}}/js/custom.js"></script>
+    <script src="{{config('app.url')}}/js/laravel.ajax.js"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script src="{{env('APP_URL')}}/js/dropzone.js"></script>
-    <script src="{{env('APP_URL')}}/js/pagination.js"></script>
-    <script src="{{env('APP_URL')}}/js/ajax.js"></script>
+    <script src="{{config('app.url')}}/js/dropzone.js"></script>
+    <script src="{{config('app.url')}}/js/pagination.js"></script>
+    <script src="{{config('app.url')}}/js/ajax.js"></script>
     
     <script>
       $('#signup-form').click(function() {
