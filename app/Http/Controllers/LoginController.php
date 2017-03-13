@@ -124,7 +124,7 @@ class LoginController extends Controller
 
 				$user = Sentinel::registerAndActivate($credentials);
 
-				User::where('email', $social_user->email)->update(['social_id' => $social_id, 'name' => $social_user->name]);
+				User::where('email', $social_user->email)->update(['social_id' => $socialId, 'name' => $social_user->name]);
 
 				UserMeta::updateOrCreate(
 						['user_id' => $user->id, 'meta_name' => 'profile-photo'],
