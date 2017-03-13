@@ -20,7 +20,7 @@
         font-size: 14px;
         line-height: 1.4;
         margin: 0;
-        padding: 0; 
+        padding: 0;
         -ms-text-size-adjust: 100%;
         -webkit-text-size-adjust: 100%; }
 
@@ -272,7 +272,7 @@
           font-size: inherit !important;
           font-weight: inherit !important;
           line-height: inherit !important;
-          text-decoration: none !important; } 
+          text-decoration: none !important; }
         .btn-primary table td:hover {
           background-color: #34495e !important; }
         .btn-primary a:hover {
@@ -335,7 +335,7 @@
             </div>
 
             <!-- END FOOTER -->
-            
+
 <!-- END CENTERED WHITE CONTAINER --></div>
         </td>
         <td>&nbsp;</td>
@@ -343,5 +343,3 @@
     </table>
   </body>
 </html>
-
-                                   
