@@ -102,7 +102,7 @@ class LoginController extends Controller
 		else {
 			// $social_user = Socialite::driver($provider)->user();
 			$social_user = $user;
-			$userExists = User::where('social_id', $social_id)->get();
+			$userExists = User::where('social_id', $socialId)->get();
 
 			if(count($userExists) > 0){ // if registered
 				$credentials = [
