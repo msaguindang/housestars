@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Redirect;
 class LoginController extends Controller
 {
 	public function postLogin(Request $request){
-		
+
 		$validation = $this->validate($request, [
 			'email' => 'required',
 			'password' => 'required|',
 		]);
-		
+
 		try{
 		   if( Sentinel::authenticate($request->all()))
 		   {
@@ -43,11 +43,11 @@ class LoginController extends Controller
 			}
 			else {
 				$error['message'] = array("Sorry, our system doesn't recognize your credentials");
-				return Response::json($error, 422); 
+				return Response::json($error, 422);
 		   }
 		}catch(ThrottlingException $e){
 				$error['message'] = array('You are denied access for suspicious activity! Login again after '.$e->getDelay().' seconds');
-				return Response::json($error, 422); 
+				return Response::json($error, 422);
 		}
 	}
 
@@ -60,7 +60,7 @@ class LoginController extends Controller
 
 	public function redirectToProvider($provider){
 		return Socialite::driver($provider)->redirect();
-	} 
+	}
 
 	public function verifyToProvider($provider) {
 		return Socialite::driver($provider)
@@ -71,19 +71,19 @@ class LoginController extends Controller
 
 	public function handleProviderCallback($provider, Request $request) {
 		//=======================================================
-		// TEST 
+		// TEST
 		//=======================================================
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
 		$email = $user->getEmail();
-		
+
 		if($state == 'verify') {
 			$socialId = $user->getId();
 			$socialName = $user->getName();
 			$secret = encrypt($socialId);
 			$query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
 			$secret = encrypt($socialId);
-			if(count($query) == 0) {	
+			if(count($query) == 0) {
 				DB::table('reviews')->insert(array(
 					'reviewee_id' => -1,
 					'reviewer_id' => $socialId,
@@ -93,14 +93,15 @@ class LoginController extends Controller
 				));
 
 				$reviewId = DB::table('reviews')->select('id')->where('reviewer_id', '=', $socialId)->get();
-			}					
-			
+			}
+
 			return redirect()->action(
 				'LoginController@chooseBusiness', ['secret' => $secret]
 			);
 		}
 		else {
-			$social_user = Socialite::driver($provider)->user();
+			// $social_user = Socialite::driver($provider)->user();
+			$social_user = $user;
 			$userExists = User::where('social_id', $social_id)->get();
 
 			if(count($userExists) > 0){ // if registered
@@ -114,7 +115,7 @@ class LoginController extends Controller
 
 				return redirect('/');
 
-			} 
+			}
 			else {
 				$credentials = [
 					'email'    => $social_user->email,
@@ -129,19 +130,19 @@ class LoginController extends Controller
 						['user_id' => $user->id, 'meta_name' => 'profile-photo'],
 						['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
 					);
-				
+
 				Sentinel::login($user);
 
 				return redirect('/account-type');
-			} 
+			}
 		}
 		// =======================================================================
 
 		//=======================================================
-		// ORIGINAL 
+		// ORIGINAL
 		//========================================================
 		// $social_user = Socialite::driver($provider)->user();
-		// $userExists = User::where('social_id', $social_id)->get();	
+		// $userExists = User::where('social_id', $social_id)->get();
 
 		// if(count($userExists) > 0){ // if registered
 		// 	$credentials = [
@@ -168,11 +169,11 @@ class LoginController extends Controller
 		// 			['user_id' => $user->id, 'meta_name' => 'profile-photo'],
 		// 			['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
 		// 		);
-			
+
 		// 	Sentinel::login($user);
 
 		// 	return redirect('/account-type');
-		// } 
+		// }
 		//=======================================================
 	}
 
@@ -183,7 +184,7 @@ class LoginController extends Controller
 		if(count($reviewer) > 0) {
 			return redirect('/choose-business');
 			// return redirect()->action('LoginController@showChooseBusinessPage');
-		}	
+		}
 	}
 
 	// public function showChooseBusinessPage() {
@@ -213,8 +214,7 @@ class LoginController extends Controller
 					->select('user_id', 'meta_name', 'meta_value')
 					->where('meta_name', '=', 'agency-name')
 					->orWhere('meta_name', '=', 'trade')
-					->get(); 
+					->get();
 		return json_decode($query, true);
 	}
 }
-
