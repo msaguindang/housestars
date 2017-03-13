@@ -126,14 +126,16 @@ class LoginController extends Controller
 
 				User::where('email', $social_user->email)->update(['social_id' => $socialId, 'name' => $social_user->name]);
 
-				UserMeta::updateOrCreate(
+				$registeredUser = UserMeta::updateOrCreate(
 						['user_id' => $user->id, 'meta_name' => 'profile-photo'],
 						['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
 					);
-
-				Sentinel::login($user);
-
-				return redirect('/account-type');
+					if($registeredUser){
+							Sentinel::login($user);
+							return redirect('/account-type');
+					} else {
+						return redirect('/home-error');
+					}
 			}
 		}
 		// =======================================================================

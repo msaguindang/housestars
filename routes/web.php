@@ -105,6 +105,10 @@ Route::group(['prefix' => ''], function(){
         return view('general.search-category');
     });
 
+    Route::get('/home-error', function () {
+        return view('social-login');
+    });
+
     Route::get('/category-listings', function () {
         return view('general.category-listings');
     });
@@ -232,7 +236,7 @@ Route::group(['prefix' => ''], function(){
     Route::post('/contact-us', 'TradesmanController@contact');
 
     Route::post('/savings-calculator', 'MainController@savingsCalculator');
-    
+
     Route::post('/customer/update-settings', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');
