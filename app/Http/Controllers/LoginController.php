@@ -76,9 +76,9 @@ class LoginController extends Controller
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
 		$email = $user->getEmail();
+		$socialId = $user->getId();
 
 		if($state == 'verify') {
-			$socialId = $user->getId();
 			$socialName = $user->getName();
 			$secret = encrypt($socialId);
 			$query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
