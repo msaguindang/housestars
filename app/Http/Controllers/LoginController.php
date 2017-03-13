@@ -7,7 +7,6 @@ use Sentinel;
 use Response;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Socialite;
-use Illuminate\Routing\Controller;
 use App\User;
 use App\UserMeta;
 use App\Reviews;
@@ -31,8 +30,14 @@ class LoginController extends Controller
 		   {
 				switch (Sentinel::getUser()->roles()->first()->slug){
 					case 'agency':
+
+						\Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+						$customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+						$payment_status = $customer_info->sources->data[0]->last4;
+
 						return \Ajax::redirect('/dashboard/agency/profile');
 						break;
+
 					case 'tradesman':
 						return \Ajax::redirect('/dashboard/tradesman/profile');;
 						break;
