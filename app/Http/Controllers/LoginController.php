@@ -102,7 +102,7 @@ class LoginController extends Controller
 		else {
 			// $social_user = Socialite::driver($provider)->user();
 			$social_user = $user;
-			$userExists = User::where('social_id', $socialId)->get();
+			$userExists = User::where('social_id', $socialId)->where('email', $social_user->email)->get();
 
 			if(count($userExists) > 0){ // if registered
 				$credentials = [
@@ -126,16 +126,14 @@ class LoginController extends Controller
 
 				User::where('email', $social_user->email)->update(['social_id' => $socialId, 'name' => $social_user->name]);
 
-				$registeredUser = UserMeta::updateOrCreate(
+				UserMeta::updateOrCreate(
 						['user_id' => $user->id, 'meta_name' => 'profile-photo'],
 						['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
 					);
-					if($registeredUser){
-							Sentinel::login($user);
-							return redirect('/account-type');
-					} else {
-						return redirect('/home-error');
-					}
+
+				Sentinel::login($user);
+
+				return redirect('/account-type');
 			}
 		}
 		// =======================================================================
