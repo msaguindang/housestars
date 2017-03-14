@@ -107,7 +107,7 @@
 					</select>
 				</div>
 				<div class="col-xs-4">
-					<label>Base Commission Charge</label>
+					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Lorem Ipsum Dolor</b>" data-html="true"></i></label>
 					<input type="number" min="0" name="base-commission">
 					<label>Marketing Budget</label>
 					<input type="number" min="0" name="marketing-budget">
