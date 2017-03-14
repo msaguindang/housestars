@@ -155,17 +155,14 @@ $("#rateInfo").submit(function() {
 $(document).on('submit', '#reviewForm' ,function(e){
     e.preventDefault();
     var data = $(this).serialize();
-
+    console.log(data);
     $.ajax({
     url: 'create/review',
     data: data,
     type: 'POST',
     processData: false,
     success: function(data){
-      $('#agencyRate').modal('hide');
-      // location.reload();        
-      window.location = '/';
-      $('#thankYou').modal('show');
+      $('#rateTradesmanModal .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote  trades or services.</p>');
     }
   });
 });

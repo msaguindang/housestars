@@ -550,7 +550,6 @@
 			</div>
 		</div>
 
-<<<<<<< HEAD
     <!-- Thank You Note / Tradesman Submission-->
     <div class="modal fade" id="thankYouTrades" tabindex="-1" role="dialog" aria-labelledby="signup-area">
       <div class="modal-dialog" role="document">
