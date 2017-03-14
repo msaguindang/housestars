@@ -299,6 +299,7 @@ class TradesmanController extends Controller
 
         return $data;
     }
+
     public function helpful(Request $request){
         $review = Reviews::where('id', '=', $request->input('id'))->get();
         
@@ -307,6 +308,43 @@ class TradesmanController extends Controller
         Reviews::where('id', '=', $request->input('id'))->update(['helpful' => $data['count']]);
 
         return Response::json($data, 200);
-    } 
+    }
+
+    public function searchSuburb(Request $request)
+    {
+        $query = $request->input('query');
+
+        $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
+            ->where('availability', '<', 3)
+            ->get()
+            ->toArray();
+
+        $response = [
+            'request' => $request->all(),
+            'suburbs' => $suburbs
+        ];
+
+        return Response::json($response, 200);
+    }
+
+    public function validateSuburbAvailability(Request $request)
+    {
+        $id = $request->input('data');
+
+        $suburb = Suburbs::find($id);
+
+        $valid = true;
+
+        if($suburb->availability >= 3){
+            $valid = false;
+        }
+
+        $response = [
+            'request' => $request->all(),
+            'valid' => $valid
+        ];
+
+        return Response::json($response, 200);
+    }
 
 }

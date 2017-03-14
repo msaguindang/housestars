@@ -240,6 +240,24 @@
 			</div>
 		</div>
 
+		<!-- NO POSITIONS AVAILABLE -->
+		<div class="modal fade" id="noPositions" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body">
+						<h4>No Positions Available</h4>
+						</br><p class="sub-heading">
+							We're sorry there are no positions available for your particular trade or service in this area at this point in time.
+						</p>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
     <!-- Agency Rate Us -->
     <div class="modal fade" id="agencyRate" tabindex="-1" role="dialog" aria-labelledby="signup-area">
       <div class="modal-dialog" role="document" style="margin-top: 3%;">

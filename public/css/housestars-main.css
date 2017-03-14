@@ -3151,6 +3151,24 @@ nav.pagination {
     margin: 0 !important;
 }
 
+
+/* CUSTOM CSS */
+
+input.error,
+textarea.error,
+select.error,
+.selectize-input.error,
+#trade-btn-group.error,
+.selectize-control .selectize-input.error{
+    border:1px solid #e74c3c;
+}
+
+.required-symbol{
+    color:red;
+}
+
+/* END CUSTOM CSS */
+
 .error-bar {
     padding: 30px;
     background: #fff6d0;

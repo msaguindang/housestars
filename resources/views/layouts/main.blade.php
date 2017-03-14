@@ -125,6 +125,7 @@
     <script src="{{config('app.url')}}/js/dropzone.js"></script>
     <script src="{{config('app.url')}}/js/pagination.js"></script>
     <script src="{{config('app.url')}}/js/ajax.js"></script>
+    <script src="{{config('app.url')}}/js/jquery.validate.min.js"></script>
     
     <script>
       $('#signup-form').click(function() {

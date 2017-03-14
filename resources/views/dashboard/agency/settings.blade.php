@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -77,7 +77,7 @@
                   @endif
                 <label>Credit Card</label>
                 <input type="text" name="credit-card" value="**** **** **** {{$data['credit-card']}}">
-                
+
                 <div class="col-xs-8 no-padding" >
                   <label>Expiry Date</label>
                   <div class="btn-group" style="width: 40%">
@@ -89,11 +89,11 @@
                 <div class="col-xs-4" style="padding-right: 0;">
                 <label>CVC</label>
                 <input type="text" name="cvc" placeholder="***">
-                </div>   
-                <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE CARD DETAILS <span class="icon icon-arrow-right"></span></button>       
+                </div>
+                <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE CARD DETAILS <span class="icon icon-arrow-right"></span></button>
                 </form>
               </div>
-              
+
             </div>
             <div class="row no-padding agent-settings">
               <div class="spacing"></div>
@@ -151,7 +151,7 @@
                         </tr>
                       @endforeach
 
-                    
+
                   </tbody>
                 </table>
                <div class="col-xs-2 col-xs-offset-7"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>

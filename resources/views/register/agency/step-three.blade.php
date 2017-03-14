@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -90,7 +90,7 @@
 					<label>Name on Card</label>
 					<input type="text" name="full-name" required>
 					<label>Card Number</label>
-					<input type="text" name="number" required>
+					<input type="text" name="number" minlength="16" required>
 					<div class="col-xs-6 no-padding-left">
 						<label>Expiry Date</label>
 						<div class="btn-group" style="width: 40%">
@@ -105,7 +105,7 @@
 					</div>
 				</div>
 				<div class="col-xs-6 border-left padding-40">
-					<h2>Add Billing Address</h2> 
+					<h2>Add Billing Address</h2>
 					<label>Address</label>
 					<input type="text" name="address" required>
 					<label>Suburb</label>
@@ -116,7 +116,7 @@
 							@endforeach
 
 							</select>
-			            
+
 			        </div>
 					<label>State</label>
 					<div class="btn-group">

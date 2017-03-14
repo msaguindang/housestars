@@ -70,10 +70,10 @@ class RegistrationController extends Controller
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
-                                $value .= substr($suburb, 2) . ',';
+                                $value .= $suburb . ',';
 
                                 // Update suburb availability
-                                $suburb = Suburbs::find(substr($suburb, 2));
+                                $suburb = Suburbs::find($suburb);
                                 $available = $suburb->availability +  1;
                                 $suburb->availability = $available;
                                 $suburb->save();

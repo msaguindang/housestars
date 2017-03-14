@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -107,10 +107,10 @@
 					</select>
 				</div>
 				<div class="col-xs-4">
-					<label>Base Commission Charge</label>
-					<input type="number" name="base-commission">
+					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Lorem Ipsum Dolor</b>" data-html="true"></i></label>
+					<input type="number" min="0" name="base-commission">
 					<label>Marketing Budget</label>
-					<input type="number" name="marketing-budget">
+					<input type="number" min="0" name="marketing-budget">
 					<label>Sales Type</label>
 					<div class="btn-group">
 			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
@@ -139,7 +139,7 @@
 			        </div>
 			        <label>Review URL</label>
 			        <input type="text" name="review-url">
-					
+
 					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">
 						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>
@@ -162,7 +162,7 @@
      		btn.disabled = !this.checked;
      	}
 
-		
+
 $(function() {
      	$('#select-state').selectize({
 					maxItems: 3
