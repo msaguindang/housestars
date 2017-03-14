@@ -100,11 +100,11 @@
                                     <span>(Enter the desired postcode and select suburbs)</span> <span class="required-symbol">*</span></label>
                                 <select id="select-state" name="positions[]" multiple class="demo-default"
                                         class="required-input" required>
-                                    @foreach ($suburbs as $suburb)
+                                    {{--@foreach ($suburbs as $suburb)
                                         @if($suburb->availability != '3')
                                             <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->id}} {{ $suburb->name }}</option>
                                         @endif
-                                    @endforeach
+                                    @endforeach--}}
                                 </select>
                                 <label>Trading Name <span class="required-symbol">*</span></label>
                                 <input type="text" name="trading-name" class="required-input" required>
@@ -124,7 +124,7 @@
                         </div>
                         <div class="col-xs-4">
                             <label>Trade or Service <span>(1 only)</span> <span class="required-symbol">*</span></label>
-                            <div id="" class="btn-group">
+                            <div id="trade-btn-group" class="btn-group">
                                 <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select...
                                     <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
                                 </button>
@@ -352,61 +352,101 @@
 
         };
 
-        $('#select-state').selectize({
-            maxItems: 3
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
         });
 
-        jQuery.validator.addMethod('test', function(value, element){
+        $('#select-state').selectize({
+            maxItems: 3,
+            valueField: 'id',
+            searchField: ['name', 'id'],
+            labelField: 'name',
+            options: [],
+            create: false,
+            render: {
+                option: function(item, escape) {
+                    return '<div class="option" data-selectable="" data-value="'+item.availability+','+item.id+''+item.name+'">'+item.id+' '+item.name+'<span class="icn icon-available-'+item.availability+'"></span></div>';
+                }
+            },
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ url('tradesman/search-suburb') }}',
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        console.log('results: ', res);
+                        callback(res.suburbs);
+                        //callback(res.repositories.slice(0, 10));
+                    }
+                });
+            },
+            onChange: function(value) {
 
-            console.log('value: ', value);
-            console.log('element: ', element);
+                if(typeof value == "undefined" || value == null){
+                    return false;
+                }
 
-            $.ajax({
-                url: '{{ url('tradesman/validate-suburb') }}',
-                method: 'POST',
-                data: {
-                    value: value
-                },
-                headers: {
-                    'X-CSRF-TOKEN': $('[name=_token]').val()
-                },
-                success: function (response) {
-                    console.log('response: ', response);
-                    return true;
-                    /*if (response.type == 'error') {
-                        if (response.validation_errors.positions == 'required') {
-                            $('#select-state').next('.selectize-control').find('.selectize-input').addClass('error');
+                var selectize = $('#select-state').selectize();
+                var length = value.length;
+                var currentValue = value[length-1];
+
+                $.ajax({
+                    method:'POST',
+                    url:'{{ url('tradesman/validate-suburb-availability') }}',
+                    data:{
+                        data:currentValue
+                    },
+                    success: function(res){
+
+                        if(!res.valid){
+                            selectize[0].selectize.removeItem(currentValue);
                             $('#noPositions').modal();
                         }
-                        return false;
-                    }
 
-                    if(response.type == 'success'){
-                        return true;
-                    }*/
-                },
-                error: function (error) {
-                    console.log('error: ', error.responseText);
-                }
-            });
+                    }
+                });
+
+            }
+        });
+
+        jQuery.validator.addMethod('positionsRequired', function(value, element){
+
+            if(typeof value == "undefined" || value == null || value == ""){
+
+                $('.selectize-control .selectize-input').addClass('error');
+
+                return false;
+            }
+
+            $('.selectize-control .selectize-input').removeClass('error');
+            return true;
+
         });
 
         jQuery.validator.addMethod('tradeRequired', function(value, element){
 
-            console.log('trade value: ', value);
-            console.log('trade element: ', element);
-
             if(typeof value == "undefined" || value == null || value == ""){
-                )
-                return true;
+
+                console.log('undefined trade');
+                $('#trade-btn-group').addClass('error');
+
+                return false;
             }
 
-            return false;
+            $('#trade-btn-group').removeClass('error');
+            return true;
 
         });
 
         var validator = $('form[name=step_one_form]').validate({
-            debug:true,
             errorPlacement: function (error, element) {
                 //console.log('error: ', error);
                 //console.log('element: ', element);
@@ -414,7 +454,7 @@
             ignore: '',
             rules:{
                 'positions[]':{
-                    test:true
+                    positionsRequired:true
                 },
                 trade: {
                     tradeRequired:true
