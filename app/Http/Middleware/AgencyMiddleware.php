@@ -26,7 +26,7 @@ class AgencyMiddleware
 
                 //dd($meta);
 
-                if(count($meta) == 0){
+                if(count($meta) < 2){
                   return redirect('/register/agency/step-one');
                 }
 

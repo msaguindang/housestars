@@ -23,7 +23,7 @@ class TradesmanMiddleware
                 case 'tradesman':
                   $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
 
-                  if(count($meta) == 0){
+                  if(count($meta) < 2){
                     return redirect('/register/tradesman/step-one');
                   }
 
