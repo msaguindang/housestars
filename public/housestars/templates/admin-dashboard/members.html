@@ -29,16 +29,16 @@
                                 <i class="pe-7s-note"></i>
                             </a>-->
 
-                            <a ng-disabled="user.subscription_type == 'None'" href="" ng-click="openExtensionModal(user, $index)" class="extend-subscription">
+                            <a uib-tooltip="Extend Subscription" ng-disabled="user.subscription_type == 'None'" href="" ng-click="openExtensionModal(user, $index)" class="extend-subscription">
                                 <i class="pe-7s-clock text-warning"></i>
                             </a>
 
-                            <a href="" ng-click="toggleStatus(user, $index)" class="disable">
+                            <a uib-tooltip="Disable Member" href="" ng-click="toggleStatus(user, $index)" class="disable">
                                 <i ng-if="user.status == 1" class="pe-7s-check text-success"></i>
                                 <i ng-if="user.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
 
-                            <a href="" ng-click="deleteUser(user, $index)" class="delete">
+                            <a uib-tooltip="Delete Member" href="" ng-click="deleteUser(user, $index)" class="delete">
                                 <i class="pe-7s-trash text-danger"></i>
                             </a>
                         </td>

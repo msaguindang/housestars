@@ -167,24 +167,22 @@ $(document).on('submit', '#reviewForm' ,function(e){
   });
 });
 
-  $(document).on('click', '#switch' ,function(e){
+$(document).on('click', '#switch' ,function(e){
 
-      var stat = $('input[name=switch]').val();
+    var stat = $('input[name=switch]').val();
 
-      if(stat == '0'){
-        $('.nav-panel').css('display', 'none');
-        $('.profile-details').css('display', 'block');
-        $('input[name=switch]').val('1')
-        $('input[name=switch]').attr('checked', true);
-      } else {
-        $('.nav-panel').css('display', 'block');
-        $('.profile-details').css('display', 'none');
-        $('input[name=switch]').val('0')
-        $('input[name=switch]').attr('checked', false);
-      }
-
-
-  });
+    if(stat == '0'){
+      $('.nav-panel').css('display', 'none');
+      $('.profile-details').css('display', 'block');
+      $('input[name=switch]').val('1')
+      $('input[name=switch]').attr('checked', true);
+    } else {
+      $('.nav-panel').css('display', 'block');
+      $('.profile-details').css('display', 'none');
+      $('input[name=switch]').val('0')
+      $('input[name=switch]').attr('checked', false);
+    }
+});
 
 $(document).on('submit', '#orderBusinessCard' ,function(e){
       e.preventDefault();
@@ -218,21 +216,21 @@ $(document).on('submit', '#contactUS' ,function(e){
       });
   });
 
-$(document).on('submit', '#savingsCalc' ,function(e){
-      e.preventDefault();
-      var data = $(this).serialize();
-      $("#loading").fadeIn("slow");
-      $.ajax({
-        url: '/savings-calculator',
-        data: data,
-        type: 'POST',
-        processData: false,
-        success: function(data){
-          $("#loading").fadeOut("slow");
-          $('#savingsSuccess').modal('show');
-        }
-      });
-  });
+// $(document).on('submit', '#savingsCalc' ,function(e){
+//       e.preventDefault();
+//       var data = $(this).serialize();
+//       $("#loading").fadeIn("slow");
+//       $.ajax({
+//         url: '/savings-calculator',
+//         data: data,
+//         type: 'POST',
+//         processData: false,
+//         success: function(data){
+//           $("#loading").fadeOut("slow");
+//           $('#savingsSuccess').modal('show');
+//         }
+//       });
+//   });
 
 	$(document).on('submit', '#referral' ,function(e){
 		e.preventDefault();
