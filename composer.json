@@ -12,7 +12,8 @@
         "cartalyst/stripe": "~2.0",
         "stripe/stripe-php": "^4.4",
         "laravel/socialite": "^3.0",
-        "aws/aws-sdk-php": "~3.0"
+        "aws/aws-sdk-php": "~3.0",
+        "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
