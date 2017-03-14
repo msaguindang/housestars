@@ -47,11 +47,11 @@ Route::group(['prefix' => ''], function(){
         return view('general.reset-successful');
     });
 
-    Route::get('/register/agency/step-one', 'RegistrationController@Agency')->middleware('agency');
+    Route::get('/register/agency/step-one', 'RegistrationController@Agency');
 
     Route::get('/register/agency/step-two', function () {
         return view('register.agency.step-two');
-    })->middleware('agency');
+    });
 
     Route::get('/register/agency/step-three', 'RegistrationController@Payment');
 
@@ -61,7 +61,7 @@ Route::group(['prefix' => ''], function(){
         return view('register.agency.complete');
     })->middleware('agency');
 
-    Route::get('/register/tradesman/step-one', 'RegistrationController@Tradesman')->middleware('tradesman');
+    Route::get('/register/tradesman/step-one', 'RegistrationController@Tradesman');
 
     Route::get('/register/tradesman/step-two', 'RegistrationController@Payment');
 

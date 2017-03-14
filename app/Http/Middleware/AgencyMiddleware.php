@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Sentinel;
 use URL;
+use App\UserMeta;
 
 class AgencyMiddleware
 {
@@ -21,6 +22,14 @@ class AgencyMiddleware
 
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
+                $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+
+                //dd($meta);
+
+                if(count($meta) == 0){
+                  return redirect('/register/agency/step-one');
+                }
+
                 if(Sentinel::getUser()->customer_id){
                   \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
                   $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
