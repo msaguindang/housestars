@@ -298,16 +298,17 @@ class RegistrationController extends Controller
 
         if($role != 'customer'){
             foreach ($userinfo as $info) {
-               if($info->meta_name == 'positions'){
+               if($info->meta_name == 'positions') {
                     $pos = explode(",", $info->meta_value);
                }
             }
-             foreach ($pos as $position) {
-                if(!empty($position)){
-                    array_push($positions, substr($position, 4));
+            if (isset($pos)) {
+                foreach ($pos as $position) {
+                    if(!empty($position)) {
+                        array_push($positions, substr($position, 4));
+                    }
                 }
-             }
-
+            }
              $price =  count($positions) * 2000;
 
              if($price == 6000){
