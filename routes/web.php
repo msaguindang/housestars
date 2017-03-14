@@ -166,6 +166,8 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
 
+    Route::post('tradesman/validate-suburb', 'TradesmanController@validateSuburb');
+
     Route::post('/register', 'RegistrationController@postRegister');
 
     Route::post('/delete-item', 'TradesmanController@deleteItem');

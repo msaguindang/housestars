@@ -48,6 +48,37 @@ class RegistrationController extends Controller
 
     }
 
+    public function validateUserMeta(Request $request)
+    {
+
+        $positions = $request->input('positions');
+        $businessName = $request->input('business-name');
+        $tradingName = $request->input('trading-name');
+
+        $response = [
+            'validation_errors' => [],
+            'request' => $request->all(),
+            'type' => ''
+        ];
+
+        if(empty($positions)){
+            $response['validation_errors']['positions'] = 'required';
+            $response['type'] = 'error';
+        }
+
+        if(empty($businessName)){
+            $response['validation_errors']['business_name'] = 'required';
+            $response['type'] = 'error';
+        }
+
+        if(empty($tradingName)){
+            $response['validation_errors']['trading_name'] = 'required';
+            $response['type'] = 'error';
+        }
+
+        return Response::json($response, 200);
+    }
+
     public function postUserMeta(Request $request)
     {
     	if(Sentinel::check()){

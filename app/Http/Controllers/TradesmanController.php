@@ -299,6 +299,7 @@ class TradesmanController extends Controller
 
         return $data;
     }
+
     public function helpful(Request $request){
         $review = Reviews::where('id', '=', $request->input('id'))->get();
         
@@ -307,6 +308,15 @@ class TradesmanController extends Controller
         Reviews::where('id', '=', $request->input('id'))->update(['helpful' => $data['count']]);
 
         return Response::json($data, 200);
-    } 
+    }
+
+    public function validateSuburb(Request $request)
+    {
+        $response = [
+            'request' => $request->all()
+        ];
+
+        return Response::json($response, 200);
+    }
 
 }

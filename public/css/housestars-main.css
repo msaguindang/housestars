@@ -3150,3 +3150,18 @@ nav.pagination {
     font-size: 9px !important;
     margin: 0 !important;
 }
+
+/* CUSTOM CSS */
+
+input.error,
+textarea.error,
+select.error,
+.selectize-input.error{
+    border:1px solid #e74c3c;
+}
+
+.required-symbol{
+    color:red;
+}
+
+/* END CUSTOM CSS */
