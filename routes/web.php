@@ -245,6 +245,14 @@ Route::group(['prefix' => ''], function(){
     Route::get('admin/login', 'AdminController@showLogin');
     Route::post('admin/login', 'AdminController@postLogin');
 
+    Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
+    Route::get('/reviewer','LoginController@chooseBusiness');
+    Route::get('/choose-business', function() {
+        return view('choose_business');
+    });
+    Route::post('/review', 'ReviewController@addAReview');
+    Route::post('/create/review', 'ReviewController@create');
+
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('', 'AdminController@showDashboard');
@@ -330,14 +338,6 @@ Route::group(['prefix' => ''], function(){
 // ===================================================================================================================================================
 // NEW ROUTES
 // ===================================================================================================================================================
-Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
-Route::get('/reviewer','LoginController@chooseBusiness');
-Route::get('/choose-business', function() {
-    return view('choose_business');
-});
-Route::post('/review', 'ReviewController@addAReview');
-Route::post('/create/review', 'ReviewController@create');
-// Route::get('/review/{businessId}', function() {
-//     return view('review_business');
-// });
+Route::post('create/potential-customer', 'MainController@createPotentialCustomer');
+
 // ===================================================================================================================================================
