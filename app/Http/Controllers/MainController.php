@@ -12,6 +12,7 @@ use App\UserMeta;
 use App\Advertisement;
 use Response;
 use Mail;
+use View;
 
 class MainController extends Controller
 {
@@ -31,12 +32,12 @@ class MainController extends Controller
                 case 'agent':
                     return redirect(env('APP_URL').'/dashboard/agent/profile');
                     break;
-                default: 
+                default:
                     return redirect(URL::previous());
                     break;
             }
 
-        } else { 
+        } else {
             return redirect(env('APP_URL'));
         }
     }
@@ -63,7 +64,7 @@ class MainController extends Controller
                     $y++;
                     break;
             }
-            
+
         }
 
         $data = array();
@@ -76,7 +77,7 @@ class MainController extends Controller
         } else if(isset($advert['728x90'])){
             $numAds =  count($advert['728x90']) - 1;
             $index = rand(0, $numAds);
-            $data['728x90'] = $advert['728x90'][$index ]; 
+            $data['728x90'] = $advert['728x90'][$index ];
         }
 
         return view('home')->with('advert', $data);
@@ -98,7 +99,7 @@ class MainController extends Controller
                     $review_details['title'] = $review->title;
                     $review_details['content'] = $review->content;
                     $review_details['helpful'] = $review->helpful;
-                // get reviewer details 
+                // get reviewer details
                     $user = UserMeta::where('user_id', '=', $review->reviewer_id)->get();
                     foreach ($user as $key) {
                         if($key->meta_name == 'agency-name'){
@@ -107,9 +108,9 @@ class MainController extends Controller
                             $review_details['img'] = $key->meta_value;
                         }
                     }
-                    
+
                     array_push($data['comments'], $review_details);
-                
+
                 }
             }
        }
@@ -139,5 +140,13 @@ class MainController extends Controller
                 $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
                 $message->subject('Savings Estimation Calculator: '. $name);
             });
+    }
+
+    public function unpaid(){
+      $suburbs = Suburbs::all();
+      \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+      $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+      $payment_status = $customer_info->subscriptions->data[0]->status;
+      return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
     }
 }

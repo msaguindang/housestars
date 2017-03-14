@@ -105,6 +105,8 @@ Route::group(['prefix' => ''], function(){
         return view('general.search-category');
     });
 
+    Route::get('/payment-status', 'MainController@unpaid');
+
     Route::get('/home-error', function () {
         return view('social-login');
     });
