@@ -118,19 +118,6 @@ class MainController extends Controller
         return view('general.agency')->with('data', $data);
     }
 
-    public function createPotentialCustomer (Request $request) 
-    {
-        $name = $request->name;
-        $email = $request->email;
-        $phone = $request->phone;
-        dump($request->name);
-        $inquiry = array(
-            'suburb' => $request->suburb,
-            'property-type' => $request->property-type,
-            'estimated-price' => $request->estimatedprice
-        );
-    }
-
     public function savingsCalculator(Request $request){
 
         $this->sendEmail($request);
