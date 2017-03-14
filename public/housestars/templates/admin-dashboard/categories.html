@@ -25,15 +25,15 @@
 
                         <td class="btn-actions">
 
-                            <a href="" ng-click="editCategory(category, $index)" class="edit">
+                            <a uib-tooltip="Edit Category" href="" ng-click="editCategory(category, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
                             </a>
 
-                            <a href="" ng-click="toggleStatus(category, $index)" class="disable">
+                            <a uib-tooltip="Disable Category" href="" ng-click="toggleStatus(category, $index)" class="disable">
                                 <i ng-if="category.status == 1" class="pe-7s-check text-success"></i>
                                 <i ng-if="category.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
-                            <a href="" ng-click="deleteCategory(category, $index)" class="delete">
+                            <a uib-tooltip="Delete Category" href="" ng-click="deleteCategory(category, $index)" class="delete">
                                 <i class="pe-7s-trash text-danger"></i>
                             </a>
                         </td>

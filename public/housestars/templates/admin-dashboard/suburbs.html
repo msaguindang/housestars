@@ -23,12 +23,12 @@
 
                         <td class="btn-actions">
 
-                            <a href="" ng-click="toggleStatus(suburb, $index)" class="disable">
+                            <a uib-tooltip="Disable Suburb" href="" ng-click="toggleStatus(suburb, $index)" class="disable">
                                 <i ng-if="suburb.status == 1" class="pe-7s-check text-success"></i>
                                 <i ng-if="suburb.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
 
-                            <a href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
+                            <a uib-tooltip="Delete Suburb" href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
                                 <i class="pe-7s-trash text-danger"></i>
                             </a>
 
