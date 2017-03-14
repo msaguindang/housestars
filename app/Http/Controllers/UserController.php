@@ -153,6 +153,7 @@ class UserController extends Controller
         $user = $this->payload->all();
 
         $customerId = $user['customer_id'];
+        $noOfMonths = $user['months'];
 
         $newFormattedEndSubscription = "";
 
@@ -166,7 +167,14 @@ class UserController extends Controller
 
                     $subscriptionId = $subscriptions[0]->id;
                     $endSubscription = $subscriptions[0]->current_period_end;
-                    $newFormattedEndSubscription = Carbon::createFromTimestamp($endSubscription)->addMonth();
+
+                    if($noOfMonths<0){
+                        $newFormattedEndSubscription = Carbon::createFromTimestamp($endSubscription)->subMonths(abs($noOfMonths));
+                    }else{
+                        $newFormattedEndSubscription = Carbon::createFromTimestamp($endSubscription)->addMonths($noOfMonths);
+                    }
+
+
                     $newEndSubscription = $newFormattedEndSubscription->timestamp;
 
                     $currentSubscription = Subscription::retrieve($subscriptionId);
