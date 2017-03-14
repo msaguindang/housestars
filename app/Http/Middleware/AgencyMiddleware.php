@@ -30,8 +30,9 @@ class AgencyMiddleware
                 	return redirect('/payment-status');
                 }
 
-                    return $next($request);
-                    break;
+                return $next($request);
+                break;
+
                 default:
                     return redirect(URL::previous());
                     break;
