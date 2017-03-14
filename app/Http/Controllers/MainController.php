@@ -18,8 +18,7 @@ class MainController extends Controller
 {
     function dashboard(){
     	if(Sentinel::check()){
-
-            switch (Sentinel::getUser()->roles()->first()->slug){
+          switch (Sentinel::getUser()->roles()->get()->slug){
                 case 'agency':
                     return redirect(env('APP_URL').'/dashboard/agency/profile');
                     break;
