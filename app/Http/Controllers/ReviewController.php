@@ -135,7 +135,16 @@ class ReviewController extends Controller
 	public function addAReview(Request $request) {
 		$params = $request->all();
 		$businessId = $params['businessId'];
-		return view('review_business', compact('businessId'));
+		// $businessPhoto = "SELECT meta_value FROM user_meta WHERE user_id=117 AND meta_name = 'profile-photo'";
+		$businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
+		$businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
+		$businessInfo = array(
+			'id' => $businessId,
+			'name' => $businessName->meta_value,
+			'photo' => $businessPhoto->meta_value
+		);
+		// return view('review_business', compact('businessId'));
+		return view('review_business')->with(compact('businessInfo'));
 	}
 
 	public function create(Request $request) {

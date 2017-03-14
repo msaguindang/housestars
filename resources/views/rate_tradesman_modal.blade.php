@@ -8,16 +8,17 @@
 						<h4>Rate a Trade or Service</h4>
 						<div class="col-xs-8  col-xs-offset-2 tradesman-info">
 							<div class="col-xs-4 tradesman-profile">
-								<img src="assets/thumb-profile.jpg" alt="Tradesman Name" id="tradesmanPic">
+								<img src="{{$businessInfo['photo']}}" alt="Tradesman Name" id="tradesmanPic">
 							</div>
 							<div class="col-xs-8 tradesman-name">
-								<h4 id="tradesmanName">John Joe Smith</h4>
+								<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+								
 							</div>
 						</div>
 						<p class="bordered-desc">Your Honest answers really help other customers</p>
 						<form id="reviewForm" enctype="multipart/form-data" method="post" action="/create/review">
 							{{csrf_field() }}
-							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$businessId}}">
+							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$businessInfo['id']}}">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">
@@ -66,16 +67,6 @@
 									<input type="radio" name="attitude" id="group-5-2" value="3" /><label for="group-5-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
 									<input type="radio" name="attitude" id="group-5-3" value="2" /><label for="group-5-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
 									<input type="radio" name="attitude" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
-								</div>
-							</div>
-							<div class="rating-stars no-border">
-								<p class="rating-label">Helpful</p>
-								<div class="stars">
-									<input type="radio" name="helpful" id="group-5-0" value="5" /><label for="group-5-0" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excellent"></label>
-									<input type="radio" name="helpful" id="group-5-1" value="4" /><label for="group-5-1" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Satisfactory"></label>
-									<input type="radio" name="helpful" id="group-5-2" value="3" /><label for="group-5-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Satisfactory"></label>
-									<input type="radio" name="helpful" id="group-5-3" value="2" /><label for="group-5-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Poor"></label>
-									<input type="radio" name="helpful" id="group-5-4"  value="1" /><label for="group-5-4" data-toggle="tooltip" data-placement="top" title="" data-original-title="Very Poor"></label>
 								</div>
 							</div>
 							</br></br></br>

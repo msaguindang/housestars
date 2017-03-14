@@ -105,10 +105,6 @@ Route::group(['prefix' => ''], function(){
         return view('general.search-category');
     });
 
-    Route::get('/home-error', function () {
-        return view('social-login');
-    });
-
     Route::get('/category-listings', function () {
         return view('general.category-listings');
     });
@@ -129,7 +125,6 @@ Route::group(['prefix' => ''], function(){
     Route::get('/account-type', function () {
         return view('general.select-role');
     });
-
 
     Route::post('/register', 'RegistrationController@postRegister');
 
@@ -161,7 +156,6 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/update-agents', 'AgencyController@updateAgent');
 
-
     Route::post('upload', 'TradesmanController@upload');
 
     Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
@@ -171,7 +165,6 @@ Route::group(['prefix' => ''], function(){
     Route::post('/delete-item', 'TradesmanController@deleteItem');
 
     Route::post('/agency-list', 'RegistrationController@listAgency');
-
 
     Route::post('/add-property', 'RegistrationController@addProperty');
 
@@ -236,7 +229,7 @@ Route::group(['prefix' => ''], function(){
     Route::post('/contact-us', 'TradesmanController@contact');
 
     Route::post('/savings-calculator', 'MainController@savingsCalculator');
-
+    
     Route::post('/customer/update-settings', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');
@@ -327,10 +320,7 @@ Route::group(['prefix' => ''], function(){
 // ===================================================================================================================================================
 // NEW ROUTES
 // ===================================================================================================================================================
-Route::get('/list-agency-and-tradesman', 'LoginController@getAgencyAndTradesman'); // get all agency and tradesmen
-Route::get('/verify/{provider}', 'LoginController@verifyToProvider'); // route for user verification only
-Route::get('/verify/{provider}/callback', 'LoginController@verifyProviderCallback'); // callback for user verification only
-
+Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
 Route::get('/reviewer','LoginController@chooseBusiness');
 Route::get('/choose-business', function() {
     return view('choose_business');

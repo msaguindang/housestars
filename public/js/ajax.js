@@ -129,23 +129,46 @@ $(document).on('submit', '#forgotPass' ,function(e){
 
   });
 
-$(document).on('submit', '#reviewForm' ,function(e){
-      e.preventDefault();
-      var data = $(this).serialize();
+// submit rateInfo modal
+// $('#rateInfo').on('submit', '#rateInfo' ,function(e){
+//     e.preventDefault();
+//     var data = $('#rateInfo').serialize();
+//     console.log(data);
+//     $.ajax({
+//       url: '/review',
+//       data: data,
+//       type: 'POST',
+//       processData: false,
+//       success: function(data){
+//         console.log(data);
+//       }
+//   });
+// });
 
-      $.ajax({
-      url: '/create/review',
-      data: data,
-      type: 'POST',
-      processData: false,
-      success: function(data){
-        $('#agencyRate').modal('hide');
-        // location.reload();        
-        window.location = '/';
-        $('#thankYou').modal('show');
-      }
-    });
+// submit rateInfo modal
+$("#rateInfo").submit(function() {
+    var data = $("#rateInfo").serialize();
+    console.log(data); // it's only for test
+});
+
+// submit create review form
+$(document).on('submit', '#reviewForm' ,function(e){
+    e.preventDefault();
+    var data = $(this).serialize();
+
+    $.ajax({
+    url: 'create/review',
+    data: data,
+    type: 'POST',
+    processData: false,
+    success: function(data){
+      $('#agencyRate').modal('hide');
+      // location.reload();        
+      window.location = '/';
+      $('#thankYou').modal('show');
+    }
   });
+});
 
   $(document).on('click', '#switch' ,function(e){
       
