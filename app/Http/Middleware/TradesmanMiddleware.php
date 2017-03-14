@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Sentinel;
 use URL;
+use App\UserMeta;
 
 class TradesmanMiddleware
 {
@@ -30,9 +31,8 @@ class TradesmanMiddleware
                   if(Sentinel::getUser()->customer_id){
                     \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
                     $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-                  //  $payment_status = $customer_info->subscriptions->data[0]->status;
+                    $payment_status = $customer_info->status;
 
-                    dd($customer_info);
                     if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
                       return redirect('/payment-status');
                     }

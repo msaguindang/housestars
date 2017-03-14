@@ -247,6 +247,8 @@ Route::group(['prefix' => ''], function(){
     Route::get('admin/login', 'AdminController@showLogin');
     Route::post('admin/login', 'AdminController@postLogin');
 
+    Route::post('/referral', 'TradesmanController@referral');
+
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('', 'AdminController@showDashboard');
