@@ -208,7 +208,7 @@ class AgencyController extends Controller
                     $customer->save();
                 }
 
-                  User::where('id', $user_id)->update(['customer_id' => $customer->id]);
+                User::where('id', $user_id)->update(['customer_id' => $customer->id]);
                 return redirect()->back();
 
             }catch (\Stripe\Error\Card $e){

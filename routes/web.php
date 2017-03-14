@@ -247,6 +247,7 @@ Route::group(['prefix' => ''], function(){
     Route::get('admin/login', 'AdminController@showLogin');
     Route::post('admin/login', 'AdminController@postLogin');
 
+    Route::post('/referral', 'TradesmanController@referral');
     Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
     Route::get('/reviewer','LoginController@chooseBusiness');
     Route::get('/choose-business', function() {
