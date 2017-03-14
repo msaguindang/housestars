@@ -28,6 +28,19 @@ class LoginController extends Controller
 		try{
 		   if( Sentinel::authenticate($request->all()))
 		   {
+
+			   $status = Sentinel::getUser()->status;
+
+			   if(!$status){
+
+				   Sentinel::removeCheckpoint('throttle');
+				   Sentinel::logout();
+
+				   $error['message'] = array("Member is currently inactive");
+				   return Response::json($error, 422);
+			   }
+
+
 				switch (Sentinel::getUser()->roles()->first()->slug){
 					case 'agency':
 						return \Ajax::redirect('/dashboard/agency/profile');
