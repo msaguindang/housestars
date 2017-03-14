@@ -102,7 +102,7 @@
                                         class="required-input" required>
                                     {{--@foreach ($suburbs as $suburb)
                                         @if($suburb->availability != '3')
-                                            <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->id}} {{ $suburb->name }}</option>
+                                            <option value="{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }} ({{ $suburb->id}})</option>
                                         @endif
                                     @endforeach--}}
                                 </select>
@@ -367,7 +367,7 @@
             create: false,
             render: {
                 option: function(item, escape) {
-                    return '<div class="option" data-selectable="" data-value="'+item.availability+','+item.id+''+item.name+'">'+item.id+' '+item.name+'<span class="icn icon-available-'+item.availability+'"></span></div>';
+                    return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
                 }
             },
             load: function(query, callback) {
@@ -400,7 +400,7 @@
 
                 $.ajax({
                     method:'POST',
-                    url:'{{ url('tradesman/validate-suburb-availability') }}',
+                    url:'{{ url('tradesman/validate-availability') }}',
                     data:{
                         data:currentValue
                     },
