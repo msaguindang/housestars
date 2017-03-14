@@ -53,7 +53,7 @@ Route::group(['prefix' => ''], function(){
         return view('register.agency.step-two');
     })->middleware('agency');
 
-    Route::get('/register/agency/step-three', 'RegistrationController@Payment')->middleware('agency');
+    Route::get('/register/agency/step-three', 'RegistrationController@Payment');
 
     Route::get('/register/agency/step-four', 'RegistrationController@Review')->middleware('agency');
 
@@ -63,7 +63,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('/register/tradesman/step-one', 'RegistrationController@Tradesman')->middleware('tradesman');
 
-    Route::get('/register/tradesman/step-two', 'RegistrationController@Payment')->middleware('tradesman');
+    Route::get('/register/tradesman/step-two', 'RegistrationController@Payment');
 
     Route::get('/register/tradesman/step-three', 'RegistrationController@Review')->middleware('tradesman');
 
@@ -237,7 +237,7 @@ Route::group(['prefix' => ''], function(){
     Route::post('/contact-us', 'TradesmanController@contact');
 
     Route::post('/savings-calculator', 'MainController@savingsCalculator');
-    
+
     Route::post('/customer/update-settings', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');

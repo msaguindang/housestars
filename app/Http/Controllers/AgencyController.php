@@ -47,7 +47,7 @@ class AgencyController extends Controller
 
         foreach ($ads  as $ad) {
             $advert[$ad->type][$y]['url'] = $ad->image_path;
-            $y++; 
+            $y++;
         }
 
         if(isset($advert['270x270'])){
@@ -138,16 +138,20 @@ class AgencyController extends Controller
             $data[$key->meta_name] = $key->meta_value;
         }
 
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        if(Sentinel::getUser()->customer_id){
+          \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
 
-        $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+          $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+        }
 
-        $data['credit-card'] = $customer_info->sources->data[0]->last4;
-        $data['expiry-month'] = $customer_info->sources->data[0]->exp_month;
-        $data['expiry-year'] = $customer_info->sources->data[0]->exp_year;
+
+        $data['credit-card'] = (isset($customer_info) ? $customer_info->sources->data[0]->last4 : '');
+        $data['expiry-month'] = (isset($customer_info) ? $customer_info->sources->data[0]->exp_month : '');
+        $data['expiry-year'] = (isset($customer_info) ? $customer_info->sources->data[0]->exp_year : '');
         $data['name'] = Sentinel::getUser()->name;
         $data['email'] = Sentinel::getUser()->email;
         $data['password'] = Sentinel::getUser()->password;
+
 
         return View::make('dashboard/agency/settings')->with('data', $data)->with('agents', $agents);
     }
@@ -186,20 +190,27 @@ class AgencyController extends Controller
             \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
 
             try{
-                $token = \Stripe\Token::create(
-                    array(
-                        'card'=> array(
-                            'number' => $request->input('credit-card'),
-                            'exp_month' => $request->input('exp_month'),
-                            'exp_year' => $request->input('exp_year'),
-                            'cvc' => $request->input('cvc')
-                        )
-                    )
-                );
-                $customer = \Stripe\Customer::retrieve($customer_id);
-                $customer->source = $token; // obtained with Stripe.js
-                $customer->save();
+
+                if(Sentinel::getUser()->customer_id){
+                  $token = \Stripe\Token::create(
+                      array(
+                          'card'=> array(
+                              'number' => $request->input('credit-card'),
+                              'exp_month' => $request->input('exp_month'),
+                              'exp_year' => $request->input('exp_year'),
+                              'cvc' => $request->input('cvc')
+                          )
+                      )
+                  );
+
+                    $customer = \Stripe\Customer::retrieve($customer_id);
+                    $customer->source = $token; // obtained with Stripe.js
+                    $customer->save();
+                }
+
+                  User::where('id', $user_id)->update(['customer_id' => $customer->id]);
                 return redirect()->back();
+
             }catch (\Stripe\Error\Card $e){
 
                 $body = $e->getJsonBody();

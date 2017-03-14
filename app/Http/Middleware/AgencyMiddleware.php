@@ -24,11 +24,14 @@ class AgencyMiddleware
                 if(Sentinel::getUser()->customer_id){
                   \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
                   $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-                  $payment_status = $customer_info->subscriptions->data[0]->status;
+                  $payment_status = $customer_info->status;
+
 
                   if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
                     return redirect('/payment-status');
                   }
+                } else {
+                  return redirect('/register/agency/step-three');
                 }
 
                 return $next($request);
