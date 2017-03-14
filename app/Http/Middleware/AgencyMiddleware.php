@@ -22,13 +22,13 @@ class AgencyMiddleware
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
 
-                \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
-                $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-                $payment_status = $customer_info->subscriptions->data[0]->status;
-
-                if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
-                	return redirect('/payment-status');
-                }
+                // \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+                // $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+                // $payment_status = $customer_info->subscriptions->data[0]->status;
+                //
+                // if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
+                // 	return redirect('/payment-status');
+                // }
 
                 return $next($request);
                 break;
