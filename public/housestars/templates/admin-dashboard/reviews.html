@@ -39,12 +39,12 @@
 
                         <td class="btn-actions">
 
-                            <a href="" ng-click="toggleStatus(review, $index)" class="disable">
+                            <a uib-tooltip="Disable Review" href="" ng-click="toggleStatus(review, $index)" class="disable">
                                 <i ng-if="review.status == 1" class="pe-7s-check text-success"></i>
                                 <i ng-if="review.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
 
-                            <a href="" ng-click="deleteReview(review, $index)" class="delete">
+                            <a uib-tooltip="Delete Review" href="" ng-click="deleteReview(review, $index)" class="delete">
                                 <i class="pe-7s-trash text-danger"></i>
                             </a>
 

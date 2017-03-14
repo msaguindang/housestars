@@ -165,8 +165,10 @@ Route::group(['prefix' => ''], function(){
     Route::post('upload', 'TradesmanController@upload');
 
     Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
-    
+
     Route::post('tradesman/validate-suburb-availability', 'TradesmanController@validateSuburbAvailability');
+
+    Route::post('tradesman/validate-availability', 'TradesmanController@validateAvailability');
 
     Route::get('tradesman/search-suburb', 'TradesmanController@searchSuburb');
 

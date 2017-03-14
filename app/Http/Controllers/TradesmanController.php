@@ -37,11 +37,11 @@ class TradesmanController extends Controller
     			$y = $y + 1;
 
     		} else {
-    			
+
     			$data[$key->meta_name] = $key->meta_value;
-    		
+
     		}
-    		
+
     	}
 
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
@@ -53,7 +53,7 @@ class TradesmanController extends Controller
 
         foreach ($ads  as $ad) {
             $advert[$ad->type][$y]['url'] = $ad->image_path;
-            $y++; 
+            $y++;
         }
 
         if(isset($advert['270x270'])){
@@ -85,7 +85,7 @@ class TradesmanController extends Controller
     	foreach ($meta as $key) {
     		if($key->meta_name == 'positions'){
     			$positions = explode(",", $key->meta_value);
-    			
+
     			foreach ($positions as $position) {
     				$code[$x] = substr($position, 0, 4);
     				$suburb[$x] = substr($position, 4);
@@ -101,13 +101,13 @@ class TradesmanController extends Controller
     		} else {
 
     			if(strlen($key->meta_value) > 30 && $key->meta_name == 'trade'){
-    				
+
     				$data[$key->meta_name] = substr($key->meta_value, 0, 30).'...';
     			} else {
     				$data[$key->meta_name] = $key->meta_value;
     			}
     		}
-    		
+
     	}
 
 
@@ -124,10 +124,10 @@ class TradesmanController extends Controller
 	        $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
 			$path = $file->move(public_path($localpath), $filename);
 			$url = $localpath.'/'.$filename;
-					
+
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
             array_push($data, $url);
-	
+
 
 	        return Response::json('success', 200);
         }
@@ -144,16 +144,16 @@ class TradesmanController extends Controller
     		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate');
 
     		foreach ($meta_name as $meta) {
-                
-                    
+
+
                 if ($request->hasFile($meta) )  {
-                	
+
                 	$file = $request->file($meta);
                 	$localpath = 'user/user-'.$user_id.'/uploads';
 	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
 					$path = $file->move(public_path($localpath), $filename);
 					$value = $localpath.'/'.$filename;
-                	
+
 				} else {
 					$value = $request->input($meta);
 				}
@@ -161,7 +161,7 @@ class TradesmanController extends Controller
 				if($meta == 'positions' && $request->input($meta) != null && $meta != ''){
                     $suburbs = $request->input($meta);
                     $value = '';
-                    
+
                     foreach ($suburbs as $suburb) {
                         $value .= substr($suburb, 2) . ',';
                     }
@@ -173,18 +173,18 @@ class TradesmanController extends Controller
                     	['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
                 	);
 				}
-                
+
     		}
 
 		    return redirect(env('APP_URL').'/dashboard/tradesman/profile');
-    	
+
     	} else {
     		return redirect(env('APP_URL'));
     	}
     }
 
     public function deleteItem(Request $request){
-    	if(Sentinel::check()){    		
+    	if(Sentinel::check()){
     		DB::table('user_meta')->where('id', '=', $request->input('item-id'))->delete();
     		return Response::json('success', 200);
     	} else {
@@ -197,7 +197,7 @@ class TradesmanController extends Controller
 
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $data = array();
-        
+
 
         foreach ($meta as $key) {
             $data[$key->meta_name] = $key->meta_value;
@@ -279,7 +279,7 @@ class TradesmanController extends Controller
     public function getReviews($id){
 
         $reviews = Reviews::where('reviewee_id', '=', $id)->get();
-        $data = array(); $x = 0; $average = 0; 
+        $data = array(); $x = 0; $average = 0;
         foreach ($reviews as $review) {
             $name = User::where('id', $review->reviewer_id)->get();
             $data[$x]['name'] = $name[0]['name'];
@@ -302,7 +302,7 @@ class TradesmanController extends Controller
 
     public function helpful(Request $request){
         $review = Reviews::where('id', '=', $request->input('id'))->get();
-        
+
         $data['count'] = $review[0]['helpful'] + 1;
 
         Reviews::where('id', '=', $request->input('id'))->update(['helpful' => $data['count']]);
@@ -315,7 +315,6 @@ class TradesmanController extends Controller
         $query = $request->input('query');
 
         $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
-            ->where('availability', '<', 3)
             ->get()
             ->toArray();
 
@@ -336,6 +335,34 @@ class TradesmanController extends Controller
         $valid = true;
 
         if($suburb->availability >= 3){
+            $valid = false;
+        }
+
+        $response = [
+            'request' => $request->all(),
+            'valid' => $valid
+        ];
+
+        return Response::json($response, 200);
+    }
+
+    public function validateAvailability(Request $request)
+    {
+        $id = $request->input('data');
+
+        $suburb = Suburbs::find($id);
+
+        $valid = true;
+
+        $users = DB::table('users')
+                ->join('role_users', function ($join) {
+                    $join->on('users.id', '=', 'role_users.user_id')
+                         ->where('role_users.role_id', '=', '3');
+                })
+                ->get();
+
+
+        if(count($users) >= $suburb->max_tradie){
             $valid = false;
         }
 

@@ -26,16 +26,16 @@
                         <td>{{ advertisement.priority }}</td>
 
                         <td class="btn-actions">
-                            <a href="" ng-click="editAdvertisement(advertisement, $index)" class="edit">
+                            <a uib-tooltip="Edit Advertisement" href="" ng-click="editAdvertisement(advertisement, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
                             </a>
 
-                            <a href="" ng-click="toggleStatus(advertisement, $index)" class="disable">
+                            <a uib-tooltip="Disable Advertisement" href="" ng-click="toggleStatus(advertisement, $index)" class="disable">
                                 <i ng-if="advertisement.status == 1" class="pe-7s-check text-success"></i>
                                 <i ng-if="advertisement.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
 
-                            <a href="" ng-click="deleteAdvertisement(advertisement, $index)" class="delete">
+                            <a uib-tooltip="Delete Advertisement" href="" ng-click="deleteAdvertisement(advertisement, $index)" class="delete">
                                 <i class="pe-7s-trash text-danger"></i>
                             </a>
 
