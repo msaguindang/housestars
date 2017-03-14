@@ -7,6 +7,7 @@ use Sentinel;
 use Response;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 use Socialite;
+use Illuminate\Routing\Controller;
 use App\User;
 use App\UserMeta;
 use App\Reviews;
@@ -19,25 +20,19 @@ use Illuminate\Support\Facades\Redirect;
 class LoginController extends Controller
 {
 	public function postLogin(Request $request){
-
+		
 		$validation = $this->validate($request, [
 			'email' => 'required',
 			'password' => 'required|',
 		]);
-
+		
 		try{
 		   if( Sentinel::authenticate($request->all()))
 		   {
 				switch (Sentinel::getUser()->roles()->first()->slug){
 					case 'agency':
-
-						\Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
-						$customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-						$payment_status = $customer_info->sources->data[0]->last4;
-
 						return \Ajax::redirect('/dashboard/agency/profile');
 						break;
-
 					case 'tradesman':
 						return \Ajax::redirect('/dashboard/tradesman/profile');;
 						break;
@@ -48,11 +43,11 @@ class LoginController extends Controller
 			}
 			else {
 				$error['message'] = array("Sorry, our system doesn't recognize your credentials");
-				return Response::json($error, 422);
+				return Response::json($error, 422); 
 		   }
 		}catch(ThrottlingException $e){
 				$error['message'] = array('You are denied access for suspicious activity! Login again after '.$e->getDelay().' seconds');
-				return Response::json($error, 422);
+				return Response::json($error, 422); 
 		}
 	}
 
@@ -65,7 +60,7 @@ class LoginController extends Controller
 
 	public function redirectToProvider($provider){
 		return Socialite::driver($provider)->redirect();
-	}
+	} 
 
 	public function verifyToProvider($provider) {
 		return Socialite::driver($provider)
@@ -75,20 +70,17 @@ class LoginController extends Controller
 	}
 
 	public function handleProviderCallback($provider, Request $request) {
-		//=======================================================
-		// TEST
-		//=======================================================
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
 		$email = $user->getEmail();
-		$socialId = $user->getId();
-
+		
 		if($state == 'verify') {
+			$socialId = $user->getId();
 			$socialName = $user->getName();
 			$secret = encrypt($socialId);
 			$query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
 			$secret = encrypt($socialId);
-			if(count($query) == 0) {
+			if(count($query) == 0) {	
 				DB::table('reviews')->insert(array(
 					'reviewee_id' => -1,
 					'reviewer_id' => $socialId,
@@ -98,16 +90,15 @@ class LoginController extends Controller
 				));
 
 				$reviewId = DB::table('reviews')->select('id')->where('reviewer_id', '=', $socialId)->get();
-			}
-
+			}					
+			
 			return redirect()->action(
 				'LoginController@chooseBusiness', ['secret' => $secret]
 			);
 		}
 		else {
-			// $social_user = Socialite::driver($provider)->user();
-			$social_user = $user;
-			$userExists = User::where('social_id', $socialId)->orWhere('email', $social_user->email)->get();
+			$social_user = Socialite::driver($provider)->user();
+			$userExists = User::where('social_id', $social_id)->get();
 
 			if(count($userExists) > 0){ // if registered
 				$credentials = [
@@ -120,7 +111,7 @@ class LoginController extends Controller
 
 				return redirect('/');
 
-			}
+			} 
 			else {
 				$credentials = [
 					'email'    => $social_user->email,
@@ -129,25 +120,25 @@ class LoginController extends Controller
 
 				$user = Sentinel::registerAndActivate($credentials);
 
-				User::where('email', $social_user->email)->update(['social_id' => $socialId, 'name' => $social_user->name]);
+				User::where('email', $social_user->email)->update(['social_id' => $social_id, 'name' => $social_user->name]);
 
 				UserMeta::updateOrCreate(
 						['user_id' => $user->id, 'meta_name' => 'profile-photo'],
 						['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
 					);
-
+				
 				Sentinel::login($user);
 
 				return redirect('/account-type');
-			}
+			} 
 		}
 		// =======================================================================
 
 		//=======================================================
-		// ORIGINAL
+		// ORIGINAL 
 		//========================================================
 		// $social_user = Socialite::driver($provider)->user();
-		// $userExists = User::where('social_id', $social_id)->get();
+		// $userExists = User::where('social_id', $social_id)->get();	
 
 		// if(count($userExists) > 0){ // if registered
 		// 	$credentials = [
@@ -174,11 +165,11 @@ class LoginController extends Controller
 		// 			['user_id' => $user->id, 'meta_name' => 'profile-photo'],
 		// 			['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
 		// 		);
-
+			
 		// 	Sentinel::login($user);
 
 		// 	return redirect('/account-type');
-		// }
+		// } 
 		//=======================================================
 	}
 
@@ -188,13 +179,8 @@ class LoginController extends Controller
 		$reviewer = DB::table('reviews')->where('reviewer_id', $socialId)->get();
 		if(count($reviewer) > 0) {
 			return redirect('/choose-business');
-			// return redirect()->action('LoginController@showChooseBusinessPage');
-		}
+		}	
 	}
-
-	// public function showChooseBusinessPage() {
-	// 	return redirect('/choose-business');
-	// }
 
 	public function assignRole($account){
 		$user = Sentinel::getUser();
@@ -212,14 +198,5 @@ class LoginController extends Controller
 			return \Ajax::redirect('/register/customer/step-one');
 			break;
 		}
-	}
-
-	public function getAgencyAndTradesman() {
-		$query = DB::table('user_meta')
-					->select('user_id', 'meta_name', 'meta_value')
-					->where('meta_name', '=', 'agency-name')
-					->orWhere('meta_name', '=', 'trade')
-					->get();
-		return json_decode($query, true);
 	}
 }

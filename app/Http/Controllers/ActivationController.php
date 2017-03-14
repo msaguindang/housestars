@@ -9,9 +9,10 @@ use Activation;
 
 class ActivationController extends Controller
 {
-    public function activate($email, $code, $account){
+    public function activate($email, $code, $account)
+    {
     	
-    	$user = User::whereEmail($email)->first();
+    $user = User::whereEmail($email)->first();
 
     	$sentinelUser = Sentinel::findById($user->id);
     	Sentinel::login($sentinelUser);
