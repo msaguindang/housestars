@@ -27,7 +27,6 @@ class ReviewController extends Controller
 
 		$request = $this->payload;
 
-    	//dd($request->all());
     	$user_id = Sentinel::getUser()->id;
     	$id = $request->input('id');
 

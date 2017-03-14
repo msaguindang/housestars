@@ -288,7 +288,7 @@
      <script type="text/javascript">
       $(function() {
         $('#select-state').selectize({
-            maxItems: 1
+            maxItems: 3
           });
       });
   </script>
