@@ -236,6 +236,7 @@ $(document).on('submit', '#savingsCalc' ,function(e){
 $(document).on('submit', '#referral' ,function(e){
   e.preventDefault();
   var data = $(this).serialize();
+	$('#referral .error').empty();
   $.ajax({
     url: '/referral',
     data: data,

@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -52,7 +52,7 @@
  <form action="{{config('app.url')}}/tradesman/update-profile" method="POST" enctype="multipart/form-data">
   {{csrf_field() }}
     <section id="cover-container" class="header-margin" style="background: url({{config('app.url')}}/{{$data['cover-photo']}})">
-     
+
         {{csrf_field() }}
       <div class="cover-img">
         <div class="breadcrumbs container">
@@ -70,11 +70,11 @@
             </div>
             <div class="profile-info">
               <label>Tradesman Name</label>
-                  
+
               @if(isset($data['business-name']))
-              <input type="text" name="business-name" value="{{$data['business-name']}}">  
+              <input type="text" name="business-name" value="{{$data['business-name']}}">
               @else
-              <input type="text" name="business-name" value="">  
+              <input type="text" name="business-name" value="">
               @endif
             </div>
           </div>
@@ -89,16 +89,16 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-4 dash-field">
               <label>Website</label>
-              
+
               @if(isset($data['website']))
-              <input type="text" name="website" value="{{$data['website']}}"> 
+              <input type="text" name="website" value="{{$data['website']}}">
               @else
-              <input type="text" name="website" value=""> 
+              <input type="text" name="website" value="">
               @endif
             </div>
             <div class="col-xs-4 dash-field" style="padding-right: 0">
               <label>Charge Type</label>
-              
+
               @if(isset($data['charge-rate']))
               <input type="text" name="charge-rate" value="{{$data['charge-rate']}}">
               @else
@@ -108,7 +108,7 @@
 
             <div class="col-xs-3">
               <label>ABN</label>
-              
+
               @if(isset($data['abn']))
               <input type="text" name="abn" value="{{$data['abn']}}">
               @else
@@ -304,25 +304,19 @@
             </div>
             <div class="col-xs-4 dash-field" style="padding-right: 0">
               <label>Postcodes Working In</label>
-              <select id="select-state" name="positions[]" multiple  class="demo-default">
-                @foreach ($suburbs as $suburb)
-                  @if($suburb->availability != '3')
-                  @if(isset($data['suburbs']))
-                    @foreach ($data['suburbs'] as $position)
-                      @if($position['code'] == $suburb->id && $position['name'] == $suburb->name)
-                      <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}" selected>{{ $suburb->name }}</option>
+              <select id="select-state" name="positions[]" multiple class="demo-default"
+                      class="required-input" required>
+                      @if(isset($data['suburbs']))
+                        @foreach ($data['suburbs'] as $suburb)
+                          <option value="{{ $suburb['code']}}{{ $suburb['name'] }}" selected>{{ $suburb['name'] }}</option>
+                        @endforeach
                       @endif
-                    @endforeach
-                    @endif
-                      <option value="{{ $suburb->availability }},{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }}</option> 
-                    @endif
-                @endforeach
               </select>
             </div>
           </div>
           <div class="col-xs-3">
             <label>Write Business Description</label>
-            
+
             @if(isset($data['summary']))
               <textarea style="height: 230px;" name="summary">{{$data['summary']}}</textarea>
               @else
@@ -336,7 +330,7 @@
     </section>
      </form>
 
- 
+
       <div class="container gallery-uploader">
         <div class="row">
           <div class="col-xs-9">
@@ -344,7 +338,7 @@
                 <div class="col-xs-7">
                   <label>Gallery Photos</label>
                   <div class="gallery">
-                  
+
                   @if(isset($data['gallery']))
                     @foreach ($data['gallery'] as $item)
                       <div class="item"><a href="#" data-item-id="{{$item['id']}}" data-token="{{ csrf_token() }}"><i class="fa fa-times" aria-hidden="true" id="close"></a></i><img src="{{url($item['url'])}}" alt="" style="width: 100%; height: auto;"></div>
@@ -358,27 +352,144 @@
                   <div class="upload-media">
                   <form  action="{{config('app.url')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
                     {{csrf_field() }}
-                    
+
                   </form>
                   </div>
-                 
-                  
+
+
                 </div>
               </div>
-            </div>  
+            </div>
         </div>
       </div>
 
 
 @endsection
- @section('scripts')
-     <script type="text/javascript">
+@section('scripts')
+    <script type="text/javascript">
 
-      $(function() {
-      $('#select-state').selectize({
-          maxItems: 3
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
         });
-      });
+
+        $('#select-state').selectize({
+            maxItems: 3,
+            valueField: 'value',
+            searchField: ['name', 'id'],
+            labelField: 'name',
+            options: [],
+            create: false,
+            render: {
+                option: function(item, escape) {
+                    return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+                }
+            },
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ url('tradesman/search-suburb') }}',
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        console.log('results: ', res);
+                        callback(res.suburbs);
+                        //callback(res.repositories.slice(0, 10));
+                    }
+                });
+            },
+            onChange: function(value) {
+
+                if(typeof value == "undefined" || value == null){
+                    return false;
+                }
+
+                var selectize = $('#select-state').selectize();
+                var length = value.length;
+                var currentValue = value[length-1];
+
+                $.ajax({
+                    method:'POST',
+                    url:'{{ url('tradesman/validate-availability') }}',
+                    data:{
+                        data:currentValue
+                    },
+                    success: function(res){
+
+                        if(!res.valid){
+                            selectize[0].selectize.removeItem(currentValue);
+                            $('#noPositions').modal();
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+        jQuery.validator.addMethod('positionsRequired', function(value, element){
+
+            if(typeof value == "undefined" || value == null || value == ""){
+
+                $('.selectize-control .selectize-input').addClass('error');
+
+                return false;
+            }
+
+            $('.selectize-control .selectize-input').removeClass('error');
+            return true;
+
+        });
+
+        jQuery.validator.addMethod('tradeRequired', function(value, element){
+
+            if(typeof value == "undefined" || value == null || value == ""){
+
+                console.log('undefined trade');
+                $('#trade-btn-group').addClass('error');
+
+                return false;
+            }
+
+            $('#trade-btn-group').removeClass('error');
+            return true;
+
+        });
+
+        var validator = $('form[name=step_one_form]').validate({
+            errorPlacement: function (error, element) {
+                //console.log('error: ', error);
+                //console.log('element: ', element);
+            },
+            ignore: '',
+            rules:{
+                'positions[]':{
+                    positionsRequired:true
+                },
+                trade: {
+                    tradeRequired:true
+                }
+            }
+            /*submitHandler: function(form) {
+
+
+
+
+
+            }*/
+        });
+
+        console.log('validator', validator);
+
+    </script>
+
+     <script type="text/javascript">
 
       $(".item a").click(function(){
         var token = $(this).data('token');
@@ -393,8 +504,8 @@
           }
         });
       });
-      
-      
+
+
      </script>
 
      <script src="{{asset('js/image-preview.js')}}"></script>

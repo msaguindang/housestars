@@ -34,14 +34,14 @@ var animation = {
       addAnimation: function(className, isElement, effect, height){
         if(isElement == false){
           if (this.$scroll.scrollTop()>height)
-          { 
+          {
               $(className).addClass(effect);
           }
         } else if(isElement == true){
-          
+
           $(className).addClass(effect);
-          
-          setTimeout(function () { 
+
+          setTimeout(function () {
               $(className).removeClass(effect);
           }, 500);
 
@@ -50,7 +50,7 @@ var animation = {
       },
       stickyNav: function(className, effect, height){
          if (this.$scroll.scrollTop()>height)
-          { 
+          {
               $(className).addClass(effect).removeClass('hide');
 
           } else {
@@ -82,7 +82,7 @@ $("#property-type .options ul li a").click(function() {
     var text = $(this).html();
     $("#property-type .selected a span").html(text);
     $("#property-type .options ul").hide();
-}); 
+});
 
 
 //HIDE OPTIONS IF CLICKED ANYWHERE ELSE ON PAGE
@@ -95,7 +95,56 @@ $(document).bind('click', function(e) {
 
 $("#close").click(function() {
     $('#error').addClass('hide');
-}); 
+});
+
+var _URL = window.URL || window.webkitURL;
+
+$("#CoverUpload").change(function(e) {
+    var file, img;
+
+console.log('YES');
+
+    if ((file = this.files[0])) {
+        img = new Image();
+        img.onload = function() {
+
+            if(this.width < 1328){
+              $('#thankYou .modal-body').html('<p>Image width is too small, please resize and upload it again for better quality.</p>');
+              $('#thankYou').modal('show');
+            }
+        };
+
+        img.onerror = function() {
+            alert( "not a valid file: " + file.type);
+        };
+        img.src = _URL.createObjectURL(file);
 
 
+    }
 
+});
+
+$("#profileUpload").change(function(e) {
+    var file, img;
+
+console.log('YES');
+
+    if ((file = this.files[0])) {
+        img = new Image();
+        img.onload = function() {
+
+            if(this.width < 177){
+              $('#thankYou .modal-body').html('<p>Image width is too small, please resize and upload it again for better quality.</p>');
+              $('#thankYou').modal('show');
+            }
+        };
+
+        img.onerror = function() {
+            alert( "not a valid file: " + file.type);
+        };
+        img.src = _URL.createObjectURL(file);
+
+
+    }
+
+});
