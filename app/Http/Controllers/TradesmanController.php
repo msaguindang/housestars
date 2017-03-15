@@ -110,7 +110,7 @@ class TradesmanController extends Controller
 
     	}
 
-    //  dd($data);
+    // dd($data);
 
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
