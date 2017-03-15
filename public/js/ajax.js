@@ -226,6 +226,7 @@ $(document).on('submit', '#savingsCalc' ,function(e){
         type: 'POST',
         processData: false,
         success: function(data){
+          $("#savingsCalc")[0].reset();
           $("#loading").fadeOut("slow");
           $('#savingsSuccess').modal('show');
         }
