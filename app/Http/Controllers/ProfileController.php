@@ -8,6 +8,7 @@ use App\UserMeta;
 use App\Reviews;
 use App\User;
 use App\Advertisement;
+use App\Property;
 use Response;
 
 class ProfileController extends Controller
@@ -21,16 +22,17 @@ class ProfileController extends Controller
     			break;
             case 'agency':
                 $data = $this->agency($id);
+                $listings = $this->property_listing($id);
+                $data['property-listings'] = $listings;
+                $data['total-listings'] = count($listings);
                 return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                 break;
-    		
-    		default:
-    			
+    		default:    			
     			break;
     	}
     }
 
-    public function tradesman($id){
+    public function tradesman($id) {
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
     	$data = array();
@@ -178,4 +180,29 @@ class ProfileController extends Controller
 
         return Response::json($data, 200);
     }   
+
+    public function property_listing($id) {
+        $property_meta = Property::where('meta_name', '=', 'agent')->where('user_id', '=', $id)->get();
+        $x = 0;
+
+        foreach ($property_meta as $meta) {
+            $prop[$x]['id'] = $meta->user_id;
+            $prop[$x]['code'] = $meta->property_code;
+            $x++;
+        }
+
+        $properties = array();
+
+        if(isset($prop)) {
+            foreach ($prop as $key) {
+                $property = Property::where('user_id', '=', $key['id'])->where('property_code', '=', $key['code'])->get();
+                foreach ($property as $meta) {
+                    $info[$meta->meta_name] = $meta->meta_value;
+                }
+
+                array_push($properties, $info);
+            }
+        }
+        return $properties;
+    }
 }

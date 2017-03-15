@@ -58,7 +58,7 @@
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
               @php ($data['profile-photo'] = env('APP_URL').'/'.$data['profile-photo'])
             @endif
-            <div class="profile-img" style="background: url({{$data['profile-photo']}}) no-repeat center center;">  <!-- background-size: cover; -->
+            <div class="profile-img" style="background: url({{$data['profile-photo']}}) no-repeat center center;">
             </div>
             <div class="profile-info">
               @if(isset($data['agency-name']))
@@ -81,7 +81,11 @@
                 @if(isset($data['trade']))
                   <h2 class="trade">{{$data['trade']}}</h2>
                   @endif
-              
+              <!--  -->
+              <div class="status">
+                  <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{ $data['total-listings'] }} {{ str_plural('Listing', $data['total-listings']) }} </span>
+                  <!-- <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold</span> -->
+              </div>
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
@@ -93,7 +97,7 @@
                       <span class="icon icon-star-grey"></span>
                   @endfor
                 </div>
-                <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
+                <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Reviews</span>
               </div>
             </div>
             

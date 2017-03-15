@@ -41,7 +41,6 @@ class AgencyController extends Controller
 
         $data['properties'] = $this->property_listing(Sentinel::getUser()->id);
         $data['total-listings'] = count($data['properties']);
-
         $ads = Advertisement::where('type', '=', '270x270')->get();
         $y = 0;
 
@@ -346,8 +345,8 @@ class AgencyController extends Controller
         return Response::json($data, 200);
     }
 
-    public function property_listing($id){
-        $property_meta = Property::where('meta_name', '=', 'agent')->where('meta_value', '=', $id)->get();
+    public function property_listing($id) {
+        $property_meta = Property::where('meta_name', '=', 'agent')->where('user_id', '=', $id)->get();
         $x = 0;
 
         foreach ($property_meta as $meta) {

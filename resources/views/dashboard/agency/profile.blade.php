@@ -76,7 +76,8 @@
         <div class="row">
           <div class="col-xs-9">
             <div class="statistics">
-              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{$data['total-listings']}} Listings</span> <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold</span>
+              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{$data['total-listings']}} {{ str_plural('Listing', $data['total-listings']) }} </span> 
+              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold </span>
               <div class="status">
                 <span class="status-icon"></span>
                 <span class="status-p">Available</span>
