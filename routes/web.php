@@ -233,7 +233,20 @@ Route::group(['prefix' => ''], function(){
     Route::post('/send/{type}', 'SearchController@send');
 
     Route::get('/agency-listings', function () {
-        return view('general.agency-listings');
+        $data = [];
+        foreach (App\UserMeta::businesses() as $index => $agency) {
+            $userId = $agency->user_id;
+            $agencyData = App\UserMeta::where('user_id', '=', $userId)->get();
+            foreach ($agencyData as $value) {
+                if ($value->meta_name == 'summary') {
+                    $data[$index][$value->meta_name] = substr($value->meta_value, 0, 150);
+                } else {
+                    $data[$index][$value->meta_name] = $value->meta_value;
+                }
+            }
+            $data[$index]['id'] = $userId;
+        }
+        return view('general.agency-listings')->with('data', $data);
     });
 
     Route::post('/order-business-card', 'TradesmanController@orderBC');

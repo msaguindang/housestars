@@ -85,9 +85,9 @@
             @if(isset($data))
               @php ($x = count($data))
               @if(isset($data['cat']) && $x > 1)
-              <p class="center">Your search for a <b>{{$data['cat']}}</b> generated the folowing results. Thanks for using House Stars.</p></br>
-              @else
-              <p class="center">Your search for a <b>{{$data}}</b> generated no result. Please try searching for a different keyword.</p></br>             
+                <p class="center">
+                  Your search for a <b>{!! $data['cat'] !!}</b> generated the folowing results. Thanks for using House Stars.
+                </p></br>
               @endif
               <ul class="list">
               @if($x > 1)
@@ -102,11 +102,14 @@
                             <div class="cover-photo">
                             @endif
                               @if(isset($agency['profile-photo']))
+                                @if(filter_var($agency['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+                                  @php ($agency['profile-photo'] = env('APP_URL').'/'.$agency['profile-photo'])
+                                @endif
                                 <div class="agency-info">
                                   <div class="col-xs-2"><div class="profile-thumb" style="background: url('{{env('APP_URL')}}/{{$agency['profile-photo']}}'); background-size: cover;"></div></div>
                                   <div class="col-xs-10">
-                                    <h3 class="name">{{$agency['agency-name']}}</h3>
-                                    <p class="location">{{$agency['business-address']}}</p>
+                                    <h3 class="name">{{ isset($agency['agency-name']) ? $agency['agency-name'] : '' }}</h3>
+                                    <p class="location">{{ isset($agency['business-address']) ? $agency['business-address'] : ''}}</p>
                                   </div>
                                 </div>
                               @else

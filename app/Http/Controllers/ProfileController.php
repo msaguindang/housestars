@@ -17,12 +17,10 @@ class ProfileController extends Controller
     	switch ($role) {
     		case 'tradesman':
     			$data = $this->tradesman($id);
-    			//dd($data);
     			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
     			break;
             case 'agency':
                 $data = $this->agency($id);
-                //dd($data);
                 return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                 break;
     		
@@ -54,9 +52,8 @@ class ProfileController extends Controller
     		}
     		
     	}
-
     	$data['rating'] = $this->getRating($id);
-    	$data['reviews'] = $this->getReviews($id);
+        $data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
 
         $ads = Advertisement::where('type', '=', '270x270')->get();
@@ -83,7 +80,7 @@ class ProfileController extends Controller
     	return $data; 
     }
 
-    public function agency($id){
+    public function agency($id) {
         $meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
         $data = array();
@@ -94,7 +91,7 @@ class ProfileController extends Controller
         $x = 0; $y = 0;
 
         foreach ($meta as $key) {
-            if($key->meta_name == 'gallery'){
+            if($key->meta_name == 'gallery') {
                 $data[$key->meta_name][$y] = $key->meta_value;
                 $y = $y + 1;
 
@@ -134,7 +131,7 @@ class ProfileController extends Controller
         return $data; 
     }
 
-    public function getRating($id){
+    public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
@@ -152,9 +149,10 @@ class ProfileController extends Controller
 
     	$reviews = Reviews::where('reviewee_id', '=', $id)->get();
     	$data = array(); $x = 0; $average = 0; 
-    	foreach ($reviews as $review) {
-            $name = User::where('id', $review->reviewer_id)->get();
-            $data[$x]['name'] = $name[0]['name'];
+    	foreach ($reviews as $review) {            
+            if ($user = User::where('id', $review->reviewer_id)->first()) {
+                $data[$x]['name'] = $user->name;
+            }
     		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
     		$data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;
