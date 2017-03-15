@@ -13,9 +13,12 @@ class AddStatusColumnToReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::table('reviews', function ($table) {
-            $table->integer('status')->default(true);
-        });
+        if (!Schema::hasColumn('reviews', 'status')) {
+            Schema::table('reviews', function ($table) {
+                $table->integer('status')->default(true);
+            });
+        }
+
     }
 
     /**
@@ -25,8 +28,11 @@ class AddStatusColumnToReviewsTable extends Migration
      */
     public function down()
     {
-        Schema::table('reviews', function ($table) {
-            $table->dropColumn('status');
-        });
+        if (Schema::hasColumn('reviews', 'status')) {
+            Schema::table('reviews', function ($table) {
+                $table->dropColumn('status');
+            });
+        }
+
     }
 }

@@ -13,15 +13,18 @@ class CreateTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('transactions', function(Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->integer('tradesman_id');
-            $table->string('amount_spent', 100);
-            $table->string('property_code', 100);
-            $table->string('receipt', 100)->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('transactions')) {
+            Schema::create('transactions', function(Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id');
+                $table->integer('tradesman_id');
+                $table->string('amount_spent', 100);
+                $table->string('property_code', 100);
+                $table->string('receipt', 100)->nullable();
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**

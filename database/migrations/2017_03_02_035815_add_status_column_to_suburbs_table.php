@@ -13,9 +13,12 @@ class AddStatusColumnToSuburbsTable extends Migration
      */
     public function up()
     {
-        Schema::table('suburbs', function ($table) {
-            $table->integer('status')->default(true);
-        });
+        if (!Schema::hasColumn('suburbs', 'status')) {
+            Schema::table('suburbs', function ($table) {
+                $table->integer('status')->default(true);
+            });
+        }
+
     }
 
     /**
@@ -25,8 +28,11 @@ class AddStatusColumnToSuburbsTable extends Migration
      */
     public function down()
     {
-        Schema::table('suburbs', function ($table) {
-            $table->dropColumn('status');
-        });
+        if (Schema::hasColumn('suburbs', 'status')) {
+            Schema::table('suburbs', function ($table) {
+                $table->dropColumn('status');
+            });
+        }
+
     }
 }

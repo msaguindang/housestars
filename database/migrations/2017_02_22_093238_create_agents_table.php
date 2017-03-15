@@ -13,13 +13,16 @@ class CreateAgentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('agents', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('agent_id');
-            $table->integer('active');
-            $table->integer('agency_id');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('agents')) {
+            Schema::create('agents', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('agent_id');
+                $table->integer('active');
+                $table->integer('agency_id');
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**

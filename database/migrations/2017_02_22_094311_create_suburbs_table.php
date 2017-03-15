@@ -13,12 +13,15 @@ class CreateSuburbsTable extends Migration
      */
     public function up()
     {
-        Schema::create('suburbs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 50);
-            $table->integer('availability');
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('suburbs')) {
+            Schema::create('suburbs', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name', 50);
+                $table->integer('availability');
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**
