@@ -110,8 +110,9 @@ class TradesmanController extends Controller
 
     	}
 
+    //  dd($data);
 
-    	return View::make('dashboard/tradesman/edit')->with('data', $data)->with('suburbs', $suburbs);
+    	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
 
     public function upload(Request $request){
@@ -163,7 +164,7 @@ class TradesmanController extends Controller
                     $value = '';
 
                     foreach ($suburbs as $suburb) {
-                        $value .= substr($suburb, 2) . ',';
+                        $value .= $suburb . ',';
                     }
                 }
 
@@ -315,6 +316,7 @@ class TradesmanController extends Controller
         $query = $request->input('query');
 
         $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
+            ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
             ->get()
             ->toArray();
 
@@ -377,17 +379,21 @@ class TradesmanController extends Controller
     public function referral(Request $request){
         //check if user already added referral
         $verifyReferral = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'referral')->get();
-        if(count($verifyReferral) == 0){
+        $abn = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'abn')->get();
+        if($abn[0]['meta_value'] == $request->input('referral-code')){
+          $response = 'I see what you did there. Sorry, you can\'t your own ABN.';
+        }else if(count($verifyReferral) == 0){
           UserMeta::updateOrCreate(
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral'],
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral', 'meta_value' => $request->input('referral-code')]
           );
           $response = 'Referral code successfully added.';
-          return Response::json($response, 200);
-        } else {
+        }else {
           $response = 'You already added a referral code.';
-          return Response::json($response, 200);
+
         }
+
+        return Response::json($response, 200);
           //if none add referral meta
         //else return error
     }

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Sentinel;
 use URL;
+use App\UserMeta;
 
 class CustomerMiddleware
 {
@@ -21,6 +22,14 @@ class CustomerMiddleware
 
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'customer':
+                    $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+
+                    //dd($meta);
+
+                    if(count($meta) < 2){
+                      return redirect('/register/agency/step-one');
+                    }
+
                     return $next($request);
                     break;
                 default:
