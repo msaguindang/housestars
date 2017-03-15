@@ -9,6 +9,7 @@ Homestead.yaml
 .env
 
 public/uploads/advertisements/
+public/exports
 /.vscode
 
 .env.save
