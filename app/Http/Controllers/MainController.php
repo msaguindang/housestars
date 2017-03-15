@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RoleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Sentinel;
@@ -17,8 +18,8 @@ use View;
 class MainController extends Controller
 {
     function dashboard(){
-    	if(Sentinel::check()){
-          switch (Sentinel::getUser()->roles()->first()->slug){
+        if(Sentinel::check()){
+            switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
                     return redirect(env('APP_URL').'/dashboard/agency/profile');
                     break;
@@ -91,15 +92,15 @@ class MainController extends Controller
             // check if review is for housestars
             if ($review->reviewee_id == 1) {
                 //Check if agency review
-                $isAgency = Role::where('user_id', '=', $review->reviewer_id)->count();
+                $isAgency = RoleUsers::where('user_id', '=', $review->reviewer_id)->count();
 
                 if ($isAgency > 0) {
-                // get review details
+                    // get review details
                     $review_details['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
                     $review_details['title'] = $review->title;
                     $review_details['content'] = $review->content;
                     $review_details['helpful'] = $review->helpful;
-                // get reviewer details
+                    // get reviewer details
                     $user = UserMeta::where('user_id', '=', $review->reviewer_id)->get();
                     foreach ($user as $key) {
                         if ($key->meta_name == 'agency-name') {
@@ -113,16 +114,16 @@ class MainController extends Controller
 
                 }
             }
-       }
+        }
 
         return view('general.agency')->with('data', $data);
     }
 
     public function unpaid(){
-      $suburbs = Suburbs::all();
-      \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
-      $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-      $payment_status = $customer_info->subscriptions->data[0]->status;
-      return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
+        $suburbs = Suburbs::all();
+        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+        $payment_status = $customer_info->subscriptions->data[0]->status;
+        return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
     }
 }

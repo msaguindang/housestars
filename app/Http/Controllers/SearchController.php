@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RoleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Suburbs;
@@ -43,7 +44,7 @@ class SearchController extends Controller
     	foreach ($suburbExists as $key) {
             $activeUser = User::where('id', '=', $key->user_id)->get();
             if(count($activeUser) > 0){
-        		$roles =  Role::where('user_id', $key->user_id)->where('role_id', 3)->get();
+        		$roles =  RoleUsers::where('user_id', $key->user_id)->where('role_id', 3)->get();
 
         		foreach($roles as $role){
         			//echo $role->user_id. ' = '. $role->role_id.', ';
@@ -125,7 +126,7 @@ class SearchController extends Controller
         $agencies = array();
 
         foreach ($results as $result) {
-            $isAgency = Role::where('user_id', '=', $result->user_id)->get();
+            $isAgency = RoleUsers::where('user_id', '=', $result->user_id)->get();
             if($isAgency[0]['role_id'] == 2){
                 if(!in_array($result->user_id, $agencies)){
                     array_push($agencies, $result->user_id);
