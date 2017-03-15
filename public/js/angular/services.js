@@ -323,6 +323,36 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
                 });
             });
         },
+        getAllReviewees: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/review/reviewees', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getAllRoles: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/user/role', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         saveAdvertisement: function (data) {
             var self = this;
@@ -355,6 +385,22 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             });
         },
 
+        createMember: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/user/insert', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
         updateProperty: function (data) {
             var self = this;
             return $q(function(resolve, reject) {
@@ -374,6 +420,21 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             var self = this;
             return $q(function(resolve, reject) {
                 self.post('admin/category/update', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        updateMember: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/user/update', data).then(function(response) {
 
                     resolve({
                         data:response.data,
@@ -588,6 +649,21 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             var self = this;
             return $q(function(resolve, reject) {
                 self.get('admin/suburb/agent', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getReviewsByFilter: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/review/filter', data).then(function(response) {
 
                     resolve({
                         data:response.data,

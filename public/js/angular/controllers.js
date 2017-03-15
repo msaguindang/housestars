@@ -124,9 +124,156 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
+    $scope.addMember = function () {
+
+        $scope.memberData = {
+            name:'',
+            email:'',
+            role_id:''
+        };
+        $scope.memberAction = 'add';
+
+        $scope.openMemberModal();
+
+    };
+
+    $scope.editUser = function (category, index) {
+        $scope.memberData = category;
+        $scope.memberAction = 'edit';
+        $scope.openMemberModal();
+    };
+
+    $scope.openMemberModal = function () {
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'member-modal.html',
+            controller: 'MemberModalCtrl',
+            // size: 'lg',
+            resolve: {
+                memberData: function () {
+                    return $scope.memberData;
+                },
+                memberAction: function () {
+                    return $scope.memberAction
+                },
+                roles: function () {
+                    return $scope.roles
+                }
+            }
+        });
+
+        modalInstance.result.then(function (response) {
+
+            switch (response.status) {
+                case 'success':
+                    $scope.changePage($scope.currentPage);
+                    break;
+            }
+
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
+    $scope.getAllRoles = function () {
+
+        http.getAllRoles().then(function(response){
+            console.log('all roles: ', response);
+            $scope.roles = response.data.roles;
+        });
+
+    };
+
 
     // initialize
     $scope.getAllUsers();
+    $scope.getAllRoles();
+
+}]);
+
+housestars.controller('MemberModalCtrl', ['$scope', 'memberData', 'memberAction', 'roles', '$uibModalInstance', 'http', 'validator', function ($scope, memberData, memberAction, roles, $uibModalInstance, http, validator) {
+
+    console.log('MemberModalCtrl', memberData);
+
+    $scope.errors = {};
+    $scope.$watch('errors', function (errors) {
+        if (errors !== undefined) {
+            validator.errors = errors;
+        }
+    });
+    $scope.hasError = validator.hasError;
+    $scope.showErrorBlock = validator.showErrorBlock;
+
+    $scope.memberData = angular.copy(memberData);
+    $scope.memberAction = memberAction;
+    $scope.roles = roles;
+
+    if(typeof memberAction == "undefined"){
+        $scope.memberAction = 'add';
+    }
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+    $scope.save = function () {
+
+        switch($scope.memberAction){
+            case 'add':
+                $scope.createMember();
+                break;
+            case 'edit':
+                $scope.updateMember();
+                break;
+        }
+
+
+
+    };
+
+    $scope.createMember = function (){
+
+        http.createMember($scope.memberData).then(function (response) {
+            console.log('member created: ', response);
+            $scope.errors = {};
+            $scope.close({
+                status: 'success'
+            });
+        }, function (errResponse) {
+            console.log('error: ', errResponse);
+            $scope.errors = errResponse.validator;
+        });
+
+    };
+
+    $scope.updateMember = function () {
+
+        console.log('member data: ', $scope.memberData);
+
+        http.updateMember($scope.memberData).then(function (response) {
+            console.log('member updated: ', response);
+            $scope.errors = {};
+            $scope.close({
+                status: 'success'
+            });
+        }, function (errResponse) {
+            console.log('error: ', errResponse);
+            $scope.errors = errResponse.validator;
+        });
+
+    };
+
 
 }]);
 
@@ -384,6 +531,8 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     console.log('reviewsCtrl');
 
+    $scope.reviewees = [];
+
     $scope.reviews = [];
     $scope._reviews = angular.copy($scope.reviews);
 
@@ -391,10 +540,22 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.currentPage = 1;
     $scope.limit = 10;
 
+    $scope.currentFilter = 'all';
+
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
         $scope.currentPage = newPage;
-        $scope.getAllReviews();
+
+        switch($scope.currentFilter){
+            case 'all':
+                $scope.getAllReviews();
+                break;
+            case 'reviewee':
+                $scope.filterReviews();
+                break;
+        }
+
+
     };
 
     $scope.getAllReviews = function () {
@@ -406,6 +567,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
             $scope.reviews = response.data.reviews;
             $scope._reviews = angular.copy($scope.reviews);
             $scope.totalItems = response.data.length;
+            $scope.currentFilter = 'all';
         });
     };
 
@@ -437,8 +599,39 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     };
 
+    $scope.getAllReviewees = function () {
+        http.getAllReviewees().then(function (response) {
+            console.log('reviewees: ', response);
+            $scope.reviewees = response.data.reviewees;
+        });
+    };
+
+    $scope.filterReviews = function () {
+
+        console.log('filter reviews: ', $scope.revieweeFilter);
+
+        if($scope.revieweeFilter == "" || $scope.revieweeFilter == null){
+            $scope.getAllReviews();
+            return false;
+        }
+
+        http.getReviewsByFilter({
+            filter_by:'reviewee',
+            filter_id:$scope.revieweeFilter,
+            page_no: $scope.currentPage,
+            limit: $scope.limit
+        }).then(function(response){
+            console.log('filter response: ', response);
+            $scope.reviews = response.data.reviews;
+            $scope._reviews = angular.copy($scope.reviews);
+            $scope.totalItems = response.data.length;
+            $scope.currentFilter = 'reviewee';
+        });
+    };
+
     // initialize
     $scope.getAllReviews();
+    $scope.getAllReviewees();
 
 }]);
 

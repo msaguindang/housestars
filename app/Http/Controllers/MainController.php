@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RoleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Sentinel;
@@ -91,7 +92,7 @@ class MainController extends Controller
             // check if review is for housestars
             if($review->reviewee_id == 1){
                 //Check if agency review
-                $isAgency = Role::where('user_id', '=', $review->reviewer_id)->get();
+                $isAgency = RoleUsers::where('user_id', '=', $review->reviewer_id)->get();
                 if(count($isAgency) > 0){
                 // get review details
                     $review_details['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);

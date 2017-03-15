@@ -46,14 +46,14 @@ class AdminController extends Controller
 
                 $role = Sentinel::getUser()->roles()->first()->slug;
 
-                if($role == "admin"){
+                if($role == "admin" || $role == "staff"){
                     return \Ajax::redirect(env('APP_URL').'/admin');
                 }else{
                     
                     Sentinel::removeCheckpoint('throttle');
                     Sentinel::logout();
 
-                    $validation->getMessageBag()->add('login_error', "Please login as an admin role");
+                    $validation->getMessageBag()->add('login_error', "Please login as an admin or staff role");
                     // redirect back with inputs and validator instance
                     return redirect(env('APP_URL').'/admin/login')->withErrors($validation)->withInput();
                 }

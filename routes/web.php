@@ -275,6 +275,8 @@ Route::group(['prefix' => ''], function(){
 
             Route::get('', 'UserController@getAllUsers');
             Route::post('delete', 'UserController@deleteUser');
+            Route::post('insert', 'UserController@createUser');
+            Route::post('update', 'UserController@updateUser');
 
             Route::group(['prefix' => 'subscription'], function () {
 
@@ -282,12 +284,21 @@ Route::group(['prefix' => ''], function(){
 
             });
 
+            Route::get('role', 'UserController@getAllRoles');
+
         });
 
         Route::group(['prefix' => 'review'], function () {
 
             Route::get('', 'ReviewController@getAllReviews');
             Route::post('delete', 'ReviewController@deleteReview');
+            Route::get('filter', 'ReviewController@getReviewsByFilter');
+
+            Route::group(['prefix' => 'reviewees'], function () {
+
+                Route::get('', 'ReviewController@getAllReviewees');
+
+            });
 
         });
 
