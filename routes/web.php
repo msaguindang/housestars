@@ -198,9 +198,9 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/delete-transaction', 'CustomerController@delete');
 
-    // Route::post('/review', 'ReviewController@review');
+    Route::post('/review-vendor', 'ReviewController@review');
 
-    // Route::post('/add-review', 'ReviewController@addAReview');
+    Route::post('/add-review', 'ReviewController@addReview');
 
     Route::post('/get-agent-info', 'CustomerController@agentInfo');
 
@@ -240,12 +240,19 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/contact-us', 'TradesmanController@contact');
 
-    Route::post('/savings-calculator', 'MainController@savingsCalculator');
-
     Route::post('/customer/update-settings', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');
     Route::post('admin/login', 'AdminController@postLogin');
+
+    Route::post('/referral', 'TradesmanController@referral');
+    Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
+    Route::get('/reviewer','LoginController@chooseBusiness');
+    Route::get('/choose-business', function() {
+        return view('choose_business');
+    });
+    Route::post('/review', 'ReviewController@addAReview');
+    Route::post('/create/review', 'ReviewController@create');
 
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
@@ -343,14 +350,6 @@ Route::group(['prefix' => ''], function(){
 // ===================================================================================================================================================
 // NEW ROUTES
 // ===================================================================================================================================================
-Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
-Route::get('/reviewer','LoginController@chooseBusiness');
-Route::get('/choose-business', function() {
-    return view('choose_business');
-});
-Route::post('/review', 'ReviewController@addAReview');
-Route::post('/create/review', 'ReviewController@create');
-// Route::get('/review/{businessId}', function() {
-//     return view('review_business');
-// });
+Route::post('/create/potential-customer', 'PotentialCustomerController@store');
+
 // ===================================================================================================================================================

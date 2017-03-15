@@ -1324,6 +1324,7 @@ footer .social-item p{
 }
 .carousel-inner {
     min-height: 300px;
+    overflow: visible;
 }
 .item blockquote {
     border-left: none;
@@ -3184,4 +3185,29 @@ select.error,
 .error-bar i {
     font-size: 73px;
     color: #0f70b7;
+}
+
+
+#referral {
+    width: 40%;
+    margin: 0 auto;
+}
+
+#referral input[type="text"] {
+    width: 75%;
+    float: left;
+}
+
+#referral button {
+    float: right;
+    width: 25%;
+    margin: 0 !important;
+    padding: 16px;
+    border-radius: 0 !important;
+		text-align: center;
+}
+
+.error {
+    color: red;
+    margin: 11px;
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\RoleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Sentinel;
@@ -18,8 +17,8 @@ use View;
 class MainController extends Controller
 {
     function dashboard(){
-    	if(Sentinel::check()){
-          switch (Sentinel::getUser()->roles()->first()->slug){
+        if(Sentinel::check()){
+            switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
                     return redirect(env('APP_URL').'/dashboard/agency/profile');
                     break;
@@ -90,19 +89,20 @@ class MainController extends Controller
 
         foreach ($reviews as $review) {
             // check if review is for housestars
-            if($review->reviewee_id == 1){
+            if ($review->reviewee_id == 1) {
                 //Check if agency review
-                $isAgency = RoleUsers::where('user_id', '=', $review->reviewer_id)->get();
-                if(count($isAgency) > 0){
-                // get review details
+                $isAgency = Role::where('user_id', '=', $review->reviewer_id)->count();
+
+                if ($isAgency > 0) {
+                    // get review details
                     $review_details['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
                     $review_details['title'] = $review->title;
                     $review_details['content'] = $review->content;
                     $review_details['helpful'] = $review->helpful;
-                // get reviewer details
+                    // get reviewer details
                     $user = UserMeta::where('user_id', '=', $review->reviewer_id)->get();
                     foreach ($user as $key) {
-                        if($key->meta_name == 'agency-name'){
+                        if ($key->meta_name == 'agency-name') {
                             $review_details['name'] = $key->meta_value;
                         } else if($key->meta_name == 'profile-photo'){
                             $review_details['img'] = $key->meta_value;
@@ -113,40 +113,16 @@ class MainController extends Controller
 
                 }
             }
-       }
+        }
 
-       //dd($data);
         return view('general.agency')->with('data', $data);
     }
 
-    public function savingsCalculator(Request $request){
-
-        $this->sendEmail($request);
-        return Response::json('success', 200);
-    }
-
-      private function sendEmail($request){
-        $email = $request->input('email');
-        $name = $request->input('name');
-        Mail::send(['html' => 'emails.savings-calculator'], [
-                'name' => $request->input('name'),
-                'email' => $request->input('phone'),
-                'phone' => $request->input('email'),
-                'suburb' => $request->input('suburb'),
-                'type' => $request->input('property-type'),
-                'price' => $request->input('estimated-price')
-            ], function ($message) use ($name) {
-                $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
-                $message->subject('Savings Estimation Calculator: '. $name);
-            });
-    }
-
     public function unpaid(){
-      $suburbs = Suburbs::all();
-      \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
-      $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-      $payment_status = $customer_info->subscriptions->data[0]->status;
-      return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
+        $suburbs = Suburbs::all();
+        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+        $payment_status = $customer_info->subscriptions->data[0]->status;
+        return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
     }
 }

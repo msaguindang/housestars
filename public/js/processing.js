@@ -1,11 +1,11 @@
-  $(document).on("change", '#receipt', function(){ 
+  $(document).on("change", '#receipt', function(){
       var filename = $('#receipt')[0].files[0];
       $('.upload-button span.label').addClass('hidden');
       $( ".upload-button" ).append( '<span class="label">' + filename.name + '</span>' );
     });
 
 
-    $(document).on("change", '#tradesReceipt', function(){ 
+    $(document).on("change", '#tradesReceipt', function(){
 
       var url = window.location.origin;
       var transaction_id = $(this).parent().data('id');
@@ -37,7 +37,7 @@
       });
     });
 
-      $(document).on("change", '#contract', function(){ 
+      $(document).on("change", '#contract', function(){
 
       var url = window.location.origin;
       var user_id = $(this).parent().data('id');
@@ -68,7 +68,7 @@
       var formData =  new FormData(this);
 
       e.preventDefault();
-      
+
        $.ajax({
           url: '/process-trades',
           data: formData,
@@ -90,10 +90,10 @@
             $('#commission .total-amount').remove();
             $('#commission').append('<span class="total-amount" data-total="'+ data['total']+'">$'+ data['total'] +'</span>');
             $( ".upload-button" ).append( '<span class="label">Click to add Receipt</span>' );
-            
+
             if(data['receipt']){
               $('.transactions').append('<div class="entry"><ul><li><div class="label"><h4>'+ data['tradesman'] +'</h4><button class="remove-transaction" data-token="'+ token +'" data-id="'+ trades_id +'">REMOVE TRANSACTION</button></div><div class="value"><div class="action"><input type="checkbox" id="r'+trades_id+'" name="cc" disabled/><label for="r'+trades_id+'"><span></span></label></div><button class="add-review" data-id="'+ tradesman_id +'" data-token="'+ token +'" id="reviewBtn'+ tradesman_id +'"> Rate & Review </button></div></li><li><div class="label"><label>Picture of receipt</label></div><div class="value"><div class="action"><input type="checkbox" id="p'+trades_id+'" name="cc" checked disabled/><label for="p'+trades_id+'"><span></span></label></div><div class="picture"><img src="'+ url + '/' + data['receipt']+'" alt=""></div></div></li><li><div class="label"><label>Amount Spent</label></div><div class="value"><div class="action"><input type="checkbox" id="a'+trades_id+'" name="cc" checked disabled /><label for="a'+trades_id+'"><span></span></label></div><div class="amount" id="'+ trades_id +'" data-token="'+token+'"><h4>$<span contenteditable="true">'+ data['amount']+'</span></h4></div></div></li></ul></div>');
-            
+
             } else {
               $('.transactions').append('<div class="entry"><ul><li><div class="label"><h4>'+ data['tradesman'] +'</h4><button class="remove-transaction" data-token="'+ token +'" data-id="'+ trades_id +'">REMOVE TRANSACTION</button></div><div class="value"><div class="action"><input type="checkbox" id="r'+trades_id+'" name="cc" disabled/><label for="r'+trades_id+'"><span></span></label></div><button class="add-review" data-id="'+ tradesman_id +'" data-token="'+ token +'" id="reviewBtn'+ tradesman_id +'"> Rate & Review </button></div></li><li><div class="label"><label>Picture of receipt</label></div><div class="value"><div class="action"><input type="checkbox" id="p'+trades_id+'" name="cc" disabled/><label for="p'+trades_id+'"><span></span></label></div><div class="picture" id="picture'+trades_id+'"><form id="uploadReceipt" enctype="multipart/form-data" data-id="'+trades_id+'"><input type="hidden" name="_token" value="'+token+'"><input type="file" name="receipt" id="tradesReceipt"><input type="hidden" name="id" value="'+trades_id+'" id="transaction_id"><input type="hidden" name="tid" value="'+tradesman_id+'"><div class="upload-receipt"><span class="ur-text">Add a Receipt</span></div></form></div></div></li><li><div class="label"><label>Amount Spent</label></div><div class="value"><div class="action"><input type="checkbox" id="a'+trades_id+'" name="cc" checked disabled /><label for="a'+trades_id+'"><span></span></label></div><div class="amount" id="'+ trades_id +'" data-token="'+token+'"><h4>$<span contenteditable="true">'+ data['amount']+'</span></h4></div></div></li></ul></div>');
             }
@@ -116,7 +116,7 @@
           $('#commission .total-amount').remove();
           $('#commission').append('<span class="total-amount" data-total="'+ data['total']+'">$'+ data['total'] +'</span>');
         }
-    }); 
+    });
   });
 
   $(document).on('click', '.remove-transaction' ,function(e){
@@ -128,7 +128,7 @@
       data: {_token: $(this).data('token'), id: $(this).data('id')},
       type: 'POST',
       success: function(data){
-          
+
           $('#transactionsTotal .total-amount').remove();
           $('#transactionsTotal .total-label').append('<span class="total-amount" data-total="'+ data['total']+'">$'+ data['total'] +'</span>');
           location.reload();
@@ -137,12 +137,12 @@
     });
   });
 
-  $(document).on('click', '.add-review' ,function(e){    
+  $(document).on('click', '.add-review' ,function(e){
 
     var id = $(this).data('id');
 
     $.ajax({
-      url: '/review',
+      url: '/review-vendor',
       data: {_token: $(this).data('token'), id: $(this).data('id')},
       type: 'POST',
       success: function(data){
@@ -185,14 +185,14 @@
       success: function(data){
         $('#agency').remove();
         $('#addAgent').modal('hide');
-        location.reload();
+        //location.reload();
       }
     });
   });
 
     $(document).on('click', '#c7' ,function(){
       var token = $(this).data('token');
-      var code = $(this).data('code'); 
+      var code = $(this).data('code');
       var meta = 'amount-sold';
 
       if ($(this).is(':checked')){
@@ -213,7 +213,7 @@
 
     $(document).on('click', '#c8' ,function(){
       var token = $(this).data('token');
-      var code = $(this).data('code'); 
+      var code = $(this).data('code');
       var meta = 'commission-percentage';
 
       if ($(this).is(':checked')){
@@ -234,7 +234,7 @@
 
     $(document).on('click', '#c9' ,function(){
       var token = $(this).data('token');
-      var code = $(this).data('code'); 
+      var code = $(this).data('code');
       var meta = 'commission-charged';
 
       if ($(this).is(':checked')){
@@ -265,7 +265,7 @@
         type: 'POST',
         processData: false,
         success: function(data){
-          
+
         }
       });
     });
@@ -273,7 +273,3 @@
     $(document).on('click', '#processSuccess' ,function(){
       location.reload();
     });
-
-
-
-

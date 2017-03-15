@@ -48,6 +48,7 @@ class ReviewController extends Controller
             }
         }
 
+
         return Response::json($data, 200);
     }
 
@@ -62,9 +63,9 @@ class ReviewController extends Controller
             ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
         );
 
-        $data['id'] = $request->input('tradesman_id');
+    	$data['id'] = $request->input('tradesman_id');
 
-        return Response::json($data, 200);
+    	return Response::json($data, 200);
     }
 
     public function getAllReviews()
@@ -89,22 +90,23 @@ class ReviewController extends Controller
             ->first()
             ->length;
 
-        $sql = "SELECT 
+		$sql = "SELECT
 				  reviews.*,
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
+					users
 				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
-				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name 
+					users
+				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
 				FROM
-				  reviews 
+				  reviews
 				LIMIT {$limit}
 				OFFSET {$offset}";
+
 
         $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
 
@@ -159,59 +161,6 @@ class ReviewController extends Controller
             ];
             return Response::json($response, 404);
         }
-    }
-
-    public function addAReview()
-    {
-
-        $params = $this->payload->all();
-
-        $businessId = $params['businessId'];
-        // $businessPhoto = "SELECT meta_value FROM user_meta WHERE user_id=117 AND meta_name = 'profile-photo'";
-        $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
-        $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
-        $businessInfo = array(
-            'id' => $businessId,
-            'name' => $businessName->meta_value,
-            'photo' => $businessPhoto->meta_value
-        );
-        // return view('review_business', compact('businessId'));
-        return view('review_business')->with(compact('businessInfo'));
-    }
-
-    public function create()
-    {
-
-        $latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
-        $params = $this->payload->all();
-        $reviewId = $latestRow->id;
-        $reviewerId = $latestRow->reviewer_id;
-        $businessId = $params['tradesman_id'];
-
-        $communication = isset($params['communication']) ? $params['communication'] : NULL;
-        $workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
-        $price = isset($params['price']) ? $params['price'] : NULL;
-        $punctuality = isset($params['punctuality']) ? $params['punctuality'] : NULL;
-        $attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
-        $reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
-        $reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
-        $helpful = isset($params['helpful']) ? $params['helpful'] : 0;
-
-        $query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
-            ->update(array(
-                'reviewee_id' => $businessId,
-                'communication' => $communication,
-                'work_quality' => $workQuality,
-                'price' => $price,
-                'punctuality' => $punctuality,
-                'attitude' => $attitude,
-                'title' => $reviewTitle,
-                'content' => $reviewText,
-                'helpful' => $helpful,
-                'updated_at' => Carbon::now()
-            ));
-        return redirect('/');
-
     }
 
     public function getReviewsByFilter()
@@ -275,5 +224,53 @@ class ReviewController extends Controller
 
 
     }
+
+	public function addAReview(Request $request) {
+		$params = $request->all();
+		$businessId = $params['businessId'];
+		// $businessPhoto = "SELECT meta_value FROM user_meta WHERE user_id=117 AND meta_name = 'profile-photo'";
+		$businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
+		$businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
+		$businessInfo = array(
+			'id' => $businessId,
+			'name' => $businessName->meta_value,
+			'photo' => $businessPhoto->meta_value
+		);
+		// return view('review_business', compact('businessId'));
+		return view('review_business')->with(compact('businessInfo'));
+	}
+
+	public function create(Request $request) {
+		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
+		$params = $request->all();
+		$reviewId = $latestRow->id;
+		$reviewerId = $latestRow->reviewer_id;
+		$businessId = $params['tradesman_id'];
+
+		$communication = isset($params['communication']) ? $params['communication'] : NULL;
+		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
+		$price = isset($params['price']) ? $params['price'] : NULL;
+		$punctuality = isset($params['punctuality']) ? $params['punctuality'] : NULL;
+		$attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
+		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
+		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
+		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
+		
+		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
+			->update(array(
+				'reviewee_id' => $businessId,
+				'communication' => $communication,
+				'work_quality' => $workQuality,
+				'price' => $price,
+				'punctuality' => $punctuality,
+				'attitude' => $attitude,
+				'title' => $reviewTitle,
+				'content' => $reviewText,
+				'helpful' => $helpful,
+				'updated_at' => Carbon::now()
+		));
+		return redirect('/');
+
+	}
 
 }

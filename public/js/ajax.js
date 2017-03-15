@@ -26,13 +26,13 @@ $(document).on('submit', '#forgotPass' ,function(e){
 	type: 'POST',
 	processData: false,
 	success: function(data){
-		
+
 		console.log(data);
-		
+
 
 		if(typeof data['err'] === 'undefined'){
 		var error = '<span class="success">'+ data['msg'] +'</span>';
-		
+
 		} else {
 		var error = '<span class="error">'+ data['err'] +'</span>';
 		}
@@ -60,18 +60,18 @@ $(document).on('submit', '#forgotPass' ,function(e){
           var exists = data['item'];
 
           $('.message').append('<p>Available Trades And Services for location <b class="suburb">'+ suburb +'</b></p>');
-            
-          for(i = 0; i < data['cat'].length; i++){               
+
+          for(i = 0; i < data['cat'].length; i++){
             if(jQuery.inArray(data['cat'][i]['category'], exists) !== -1){
               $('#trades').append('<div class="col-xs-4 item"><a href="/search/category/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             } else {
               $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesman"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
-            } 
+            }
           }
 
           $('#trades').append('<div class="col-xs-12"><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#submitCategory"><span class="icon icon-arrow-right"></span>The category I am looking for is not here</button></div></div>');
-          
-          
+
+
         }
 
       });
@@ -167,24 +167,22 @@ $(document).on('submit', '#reviewForm' ,function(e){
   });
 });
 
-  $(document).on('click', '#switch' ,function(e){
-      
-      var stat = $('input[name=switch]').val();
+$(document).on('click', '#switch' ,function(e){
 
-      if(stat == '0'){
-        $('.nav-panel').css('display', 'none');
-        $('.profile-details').css('display', 'block');
-        $('input[name=switch]').val('1')
-        $('input[name=switch]').attr('checked', true);
-      } else {
-        $('.nav-panel').css('display', 'block');
-        $('.profile-details').css('display', 'none');
-        $('input[name=switch]').val('0')
-        $('input[name=switch]').attr('checked', false);
-      }
-      
+    var stat = $('input[name=switch]').val();
 
-  });
+    if(stat == '0'){
+      $('.nav-panel').css('display', 'none');
+      $('.profile-details').css('display', 'block');
+      $('input[name=switch]').val('1')
+      $('input[name=switch]').attr('checked', true);
+    } else {
+      $('.nav-panel').css('display', 'block');
+      $('.profile-details').css('display', 'none');
+      $('input[name=switch]').val('0')
+      $('input[name=switch]').attr('checked', false);
+    }
+});
 
 $(document).on('submit', '#orderBusinessCard' ,function(e){
       e.preventDefault();
@@ -223,15 +221,27 @@ $(document).on('submit', '#savingsCalc' ,function(e){
       var data = $(this).serialize();
       $("#loading").fadeIn("slow");
       $.ajax({
-        url: '/savings-calculator',
+        url: '/create/potential-customer',
         data: data,
         type: 'POST',
         processData: false,
         success: function(data){
+          $("#savingsCalc")[0].reset();
           $("#loading").fadeOut("slow");
           $('#savingsSuccess').modal('show');
         }
       });
   });
 
-
+$(document).on('submit', '#referral' ,function(e){
+  e.preventDefault();
+  var data = $(this).serialize();
+  $.ajax({
+    url: '/referral',
+    data: data,
+    type: 'POST',
+    success: function(data){
+      $('#referral .error').append(data);
+    }
+  });
+});

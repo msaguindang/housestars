@@ -374,4 +374,22 @@ class TradesmanController extends Controller
         return Response::json($response, 200);
     }
 
+    public function referral(Request $request){
+        //check if user already added referral
+        $verifyReferral = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'referral')->get();
+        if(count($verifyReferral) == 0){
+          UserMeta::updateOrCreate(
+              ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral'],
+              ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral', 'meta_value' => $request->input('referral-code')]
+          );
+          $response = 'Referral code successfully added.';
+          return Response::json($response, 200);
+        } else {
+          $response = 'You already added a referral code.';
+          return Response::json($response, 200);
+        }
+          //if none add referral meta
+        //else return error
+    }
+
 }
