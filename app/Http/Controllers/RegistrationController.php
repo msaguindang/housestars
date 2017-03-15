@@ -31,20 +31,20 @@ class RegistrationController extends Controller
 	        'password_confirmation' => 'required|min:6'
 	    ]);
 
-            $user = Sentinel::register($request->all());
+        $user = Sentinel::register($request->all());
 
-            User::where('email', $user->email)->update(['name' => $request->input('name')]);
+        User::where('email', $user->email)->update(['name' => $request->input('name')]);
 
-            $activation = Activation::create($user);
+        $activation = Activation::create($user);
 
-            $account = $request->input('account');
-                
-            $role = Sentinel::findRoleBySlug($account);
-            $role->users()->attach($user);
+        $account = $request->input('account');
+            
+        $role = Sentinel::findRoleBySlug($account);
+        $role->users()->attach($user);
 
-            $this->sendEmail($user, $activation->code, $request->input('name'), $account);
+        $this->sendEmail($user, $activation->code, $request->input('name'), $account);
 
-           return \Ajax::redirect(env('APP_URL').'/activation-sent');
+        return \Ajax::redirect(env('APP_URL').'/activation-sent');
 
     }
 
