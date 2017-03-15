@@ -147,36 +147,34 @@ class ReviewController extends Controller
 	}
 
 	public function create(Request $request) {
-		$user = Sentinel::getUser();
-		$params = $request->all();
+		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
+		$params = $request->all();	
+		$reviewId = $latestRow->id;
+		$reviewerId = $latestRow->reviewer_id;
+		$businessId = $params['tradesman_id'];
 
-		$data = [
-			'reviewee_id' 	=> $params['tradesman_id'],
-			'communication' => isset($params['communication']) ? $params['communication'] : NULL,
-			'work_quality'  => isset($params['work-quality']) ? $params['work-quality'] : NULL,
-			'price' 		=> isset($params['price']) ? $params['price'] : NULL,
-			'punctuality' 	=> isset($params['punctuality']) ? $params['punctuality'] : NULL,
-			'attitude' 		=> isset($params['attitude']) ? $params['attitude'] : NUL,
-			'title'			=> isset($params['review-title']) ? $params['review-title'] : NULL,
-			'content' 		=> isset($params['review-text']) ? $params['review-text'] : NULL,
-			'helpful' 		=> isset($params['helpful']) ? $params['helpful'] : 0,
-			'updated_at' 	=> Carbon::now()
-		];
-
-		if ($latestRow = DB::table('reviews')->select('id', 'reviewer_id')->where('reviewer_id', $user->id)->orderBy('id', 'desc')->first()) {
-			DB::table('reviews')
-						->where('id', '=', $latestRow->id)
-						->where('reviewer_id', '=', $latestRow->reviewer_id)
-						->update($data);
-		} else {
-			$data += [
-				'name' 		  => $user->name,
-				'reviewer_id' => $user->id,
-				'created_at'  => Carbon::now()
-			];
-			DB::table('reviews')->insert($data);
-		}
-
+		$communication = isset($params['communication']) ? $params['communication'] : NULL;
+		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
+		$price = isset($params['price']) ? $params['price'] : NULL;
+		$punctuality = isset($params['punctuality']) ? $params['punctuality'] : NULL;
+		$attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
+		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
+		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
+		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
+		
+		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
+			->update(array(
+				'reviewee_id' => $businessId,
+				'communication' => $communication,
+				'work_quality' => $workQuality,
+				'price' => $price,
+				'punctuality' => $punctuality,
+				'attitude' => $attitude,
+				'title' => $reviewTitle,
+				'content' => $reviewText,
+				'helpful' => $helpful,
+				'updated_at' => Carbon::now()
+		));
 		return redirect('/');
 
 	}
