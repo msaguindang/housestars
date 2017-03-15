@@ -1324,6 +1324,7 @@ footer .social-item p{
 }
 .carousel-inner {
     min-height: 300px;
+    overflow: visible;
 }
 .item blockquote {
     border-left: none;

@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -148,10 +148,11 @@
              @endif
           </div>
           @if(isset($data['comments']))
+          @if(count($data['comments']) > 0)
           <div class="testimonials-carousel">
             <div class="col-md-12" data-wow-delay="0.2s">
                 <div class="carousel slide" data-ride="carousel" id="quote-carousel">
-                    <div class="carousel-inner text-center">
+                    <div class="carousel-inner">
                       @php ($x = count($data['comments']))
                       @php ($y = 0)
                       @php ($counter = 2)
@@ -161,7 +162,7 @@
                           <div class="item active">
                             <div class="row">
                               <div class="col-xs-1 col-xs-offset-1 thumb">
-                                <img src="{{url($comment['img'])}}" alt="Name Here">
+                                <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
                               </div>
                               <div class="col-xs-4 bubble-left">
                                 <b class="left">{{$comment['name']}}</b>
@@ -185,7 +186,7 @@
                           <div class="item">
                               <div class="row">
                                 <div class="col-xs-1 col-xs-offset-1 thumb">
-                                  <img src="{{url($comment['img'])}}" alt="Name Here">
+                                  <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
                                 </div>
                                 <div class="col-xs-4 bubble-left">
                                   <b class="left">{{$comment['name']}}</b>
@@ -206,7 +207,7 @@
                           @php ($counter = $counter + 2)
                         @else
                             <div class="col-xs-1 thumb">
-                              <img src="{{url($comment['img'])}}" alt="Name Here">
+                              <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
                             </div>
                             <div class="col-xs-4 bubble-left">
                               <b class="left">{{$comment['name']}}</b>
@@ -224,13 +225,14 @@
                               </div>
                             </div>
                             @php ($y++)
-                        @endif
+                            @endif
+
 
                         @if($y == $x)
                           </div>
                         </div>
                         @endif
-                          
+
                       @endforeach
 
                       <!-- <div class="item active">
@@ -238,7 +240,7 @@
                             <div class="col-xs-1 col-xs-offset-1 thumb">
                               <img src="assets/testimonial-thumb.jpg" alt="Name Here">
                             </div>
-                            
+
                             <div class="col-xs-1 thumb">
                               <img src="assets/testimonial-thumb.jpg" alt="Name Here">
                             </div>
@@ -254,12 +256,13 @@
                               </div>
                             </div>
                           </div>
-                      </div>     -->     
+                      </div>     -->
                             <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><span class="icon icon-left"></span></a>
                             <a data-slide="next" href="#quote-carousel" class="right carousel-control"><span class="icon icon-right"></span></i></a>
                         </div>
                     </div>
           </div>
+            @endif
           @endif
         </div>
       </div>
@@ -285,7 +288,7 @@
      <script type="text/javascript">
       $(function() {
         $('#select-state').selectize({
-            maxItems: 1
+            maxItems: 3
           });
       });
   </script>
