@@ -181,7 +181,7 @@ class CustomerController extends Controller
 
        // Check of the last property added was proccessed
 
-       //dd($data);
+       dd($data);
 
         return View::make('dashboard/customer/process')->with('data', $data);
     }
@@ -534,8 +534,9 @@ class CustomerController extends Controller
           if(!isset($photo)){
             $photo = 'assets/default.png';
           }
-            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'rate' => $rate);
-
+            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'rate' => $rate)
+        } else {
+            $agent = null;
         }
 
         return $agent;

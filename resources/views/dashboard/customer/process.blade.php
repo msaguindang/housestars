@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -83,7 +83,7 @@
                           <span class="icon icon-star-grey"></span>
                           <span class="icon icon-star-grey"></span>
                           <span class="icon icon-star-grey"></span>
-                        @else 
+                        @else
                           @for($i = 0; $i < $data['agent']['rating']; $i++)
                               <span class="icon icon-star"></span>
                           @endfor
@@ -108,7 +108,7 @@
                   <h2 class="estimates">{{$data['commission']['total']}}</h2>
               @endif
             </div>
-            <div class="col-xs-2 terms"> 
+            <div class="col-xs-2 terms">
               @if(isset($data['meta']['commission']))
                 <p>This is an estimate only. Actual amount will vary with sale price Please see <a href="#" class="content-hyperlink">Terms & Conditions</a>.</p>
               @endif
@@ -150,7 +150,7 @@
               <div class="col-xs-12 section-title">
                 <h4>Trades and Services</h4>
               </div>
-              
+
               @if(isset($data['transactions']))
               <div class="transactions">
                   @foreach($data['transactions'] as $transaction)
@@ -183,7 +183,7 @@
                                           <span class="icon icon-star-grey"></span>
                                           <span class="icon icon-star-grey"></span>
                                           <span class="icon icon-star-grey"></span>
-                                        @else 
+                                        @else
                                           @for($i = 0; $i < $review['rate']; $i++)
                                               <span class="icon icon-star"></span>
                                           @endfor
@@ -204,7 +204,7 @@
                               @if($x == 0)
                                 <button class="add-review" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
                               @endif
-                                 
+
                             </div>
                           </li>
                           <li>
@@ -248,7 +248,7 @@
               </div>
                 <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Transaction</span></a>
                @endif
-              
+
               <div class="total" id="transactionsTotal">
                 <div class="total-label">
                   <span>Total Spending</span>
@@ -258,7 +258,7 @@
                 @if($data['spending']['total'] > $data['commission']['total'])
                   <p class="spending">Spending above estimate <span class="spending-amount">${{$data['commission']['total']}}</span></p>
                 @endif
-              
+
             </div>
 
             <div class="row">
@@ -279,7 +279,7 @@
                         @else
                           <input type="checkbox" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
                         @endif
-                        
+
                         <label for="c7"><span></span></label>
                       </div>
                       <div class="amount">
@@ -288,7 +288,7 @@
                         @else
                           <h4>N/A</h4>
                         @endif
-                        
+
                       </div>
                     </div>
                   </li>
@@ -379,7 +379,7 @@
                           <span class="icon icon-star-grey"></span>
                           <span class="icon icon-star-grey"></span>
                           <span class="icon icon-star-grey"></span>
-                        @else 
+                        @else
                           @for($i = 0; $i < $data['agent']['rating']; $i++)
                               <span class="icon icon-star"></span>
                           @endfor
@@ -405,7 +405,7 @@
                         <label for="c11"><span></span></label>
                         @else
                         <input type="checkbox" id="c11" name="cc" disabled/>
-                        <label for="c11"><span></span></label>  
+                        <label for="c11"><span></span></label>
                          @endif
                       </div>
                       <div class="picture" id="contract{{$data['property']['user_id']}}">
@@ -427,7 +427,7 @@
                     <div class="label">
                       @if($data['agent']['rating'] == 0)
                         <button class="btn hs-primary btn-write add-review" data-id="{{$data['agent']['id']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$data['agent']['id']}}"><span class="icon icon-write"></span>RATE AND REVIEW</span></button>
-                      @endif  
+                      @endif
                     </div>
                   </li>
                 </ul>
@@ -436,7 +436,7 @@
               <div class="agency"></div>
               <button id="agency" class="btn hs-primary btn-add" data-toggle="modal" data-target="#addAgent"><span class="icon icon-add" style="margin-top: 6px;"></span>Agent</span></button>
               @endif
-              
+
             </div>
 
             <div class="row" style="padding: 10px 20px;a">
