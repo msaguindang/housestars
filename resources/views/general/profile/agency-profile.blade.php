@@ -55,17 +55,18 @@
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) no-repeat center center">
+            @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+              @php ($data['profile-photo'] = env('APP_URL').'/'.$data['profile-photo'])
+            @endif
+            <div class="profile-img" style="background: url({{$data['profile-photo']}}) no-repeat center center;">  <!-- background-size: cover; -->
             </div>
             <div class="profile-info">
-                  
-                  @if(isset($data['agency-name']))
-                  <h1>{{$data['agency-name']}}</h1>
-                  @endif
-                  @if (isset($data['business-address']))
-                  <p>Location: {{$data['business-address']}}</p>
-                  @endif
-                  
+              @if(isset($data['agency-name']))
+              <h1>{{$data['agency-name']}}</h1>
+              @endif
+              @if (isset($data['business-address']))
+              <p>Location: {{$data['business-address']}}</p>
+              @endif
             </div>
           </div>
         </div>
