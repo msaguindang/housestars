@@ -15,7 +15,7 @@ class UserMeta extends Model
         return DB::table('user_meta')
 					->select('user_id', 'meta_name', 'meta_value')
 					->where('meta_name', '=', 'agency-name')
-					->orWhere('meta_name', '=', 'trade')
+					->orWhere('meta_name', '=', 'business-name')
 					->get();
     }
 }

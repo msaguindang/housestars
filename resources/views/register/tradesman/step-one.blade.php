@@ -360,7 +360,7 @@
 
         $('#select-state').selectize({
             maxItems: 3,
-            valueField: 'id',
+            valueField: 'value',
             searchField: ['name', 'id'],
             labelField: 'name',
             options: [],

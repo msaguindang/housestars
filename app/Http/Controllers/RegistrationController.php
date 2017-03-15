@@ -19,7 +19,7 @@ use Activation;
 use Mail;
 
 class RegistrationController extends Controller
-{   
+{
 
     public function postRegister(Request $request)
     {
@@ -36,6 +36,7 @@ class RegistrationController extends Controller
         User::where('email', $user->email)->update(['name' => $request->input('name')]);
 
         $activation = Activation::create($user);
+
 
         $account = $request->input('account');
             
@@ -54,8 +55,8 @@ class RegistrationController extends Controller
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
 
-    		
-    	   
+
+    	   //dd($request->all());
 
     		if($role == 'agency'){
                 $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url');
@@ -89,7 +90,7 @@ class RegistrationController extends Controller
     			}
 
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
-                
+
     		} else if($role == 'tradesman'){
                 $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate');
                 foreach ($meta_name as $meta) {
@@ -101,7 +102,7 @@ class RegistrationController extends Controller
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
-                                $value .= substr($suburb, 2) . ',';
+                                $value .= $suburb . ',';
 
                             }
                         }
@@ -114,27 +115,27 @@ class RegistrationController extends Controller
                 }
 
                 return redirect(env('APP_URL').'/register/tradesman/step-two');
-                
+
             }
-    	
+
     	} else {
     		return redirect('/');
     	}
 
-    } 
+    }
 
     public function addProperty(Request $request)
-    {   
+    {
         $user_id = Sentinel::getUser()->id;
         $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $user_meta = array('address', 'phone', 'username');
         $property_code = md5(uniqid(rand(), true));
-        
+
         foreach ($property_meta as $meta) {
             if($request->input($meta) != null || $request->input($meta) != '')
             {
                 $value = $request->input($meta);
-                
+
                 Property::updateOrCreate(
                         ['user_id' => $user_id, 'meta_name' => $meta, 'property_code' => $property_code],
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value, 'property_code' => $property_code]
@@ -146,7 +147,7 @@ class RegistrationController extends Controller
             if($request->input($meta) != null || $request->input($meta) != '')
             {
                 $value = $request->input($meta);
-                
+
                 UserMeta::updateOrCreate(
                         ['user_id' => $user_id, 'meta_name' => $meta],
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
@@ -156,7 +157,7 @@ class RegistrationController extends Controller
 
         return redirect(env('APP_URL').'/register/customer/complete');
 
-    }  
+    }
 
     public function postAddAgents(Request $request)
     {
@@ -167,7 +168,7 @@ class RegistrationController extends Controller
             $agents = $request->input('add-agents');
 
             if($agents != null){
-                
+
                 foreach ($agents as $agent) {
                     try{
 
@@ -178,7 +179,7 @@ class RegistrationController extends Controller
                                 'name'    => $agent['name'],
                                 'password'    => $agent['password'],
                             ];
-                       
+
                             $user = Sentinel::registerAndActivate($credentials);
                             $role = Sentinel::findRoleBySlug('agent');
                             $role->users()->attach($user);
@@ -193,19 +194,19 @@ class RegistrationController extends Controller
                                 Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
                             }
 
-                            
-                            
+
+
                             //return redirect('register/agency/step-three');
                         } else {
                             return redirect(env('APP_URL').'/register/agency/step-three');
                         }
-                        
+
                     }
                     catch (\Exception $e){
                         $error = $agent['email'].' already in use, please use another email address.';
                         return redirect()->back()->with('error', $error);
                     }
-                    
+
                 }
 
                 return redirect(env('APP_URL').'/register/agency/step-three');
@@ -221,30 +222,30 @@ class RegistrationController extends Controller
 
     public function Agency()
     {
-        
+
         $suburbs = Suburbs::all();
         return View::make('register/agency/step-one')->with('suburbs', $suburbs);
     }
 
     public function Tradesman()
     {
-           
+
         $suburbs = Suburbs::all();
         return View::make('register/tradesman/step-one')->with('suburbs', $suburbs);
-    
+
     }
 
     public function Customer()
     {
-           
+
         $suburbs = Suburbs::all();
-        
+
         $customer_info['name'] = Sentinel::getUser()->name;
         $customer_info['email'] = Sentinel::getUser()->email;
         $customer_info['password'] = Sentinel::getUser()->password;
 
         return View::make('register/customer/step-one')->with('suburbs', $suburbs)->with('user', $customer_info);
-    
+
     }
 
     public function listAgency(Request $request){
@@ -266,11 +267,11 @@ class RegistrationController extends Controller
                 }
            }
         }
-        
+
         if(empty($data )){
-            return Response::json('error', 422); 
+            return Response::json('error', 422);
         } else {
-            return Response::json($data , 200); 
+            return Response::json($data , 200);
         }
     }
 
@@ -284,11 +285,11 @@ class RegistrationController extends Controller
             } else {
                 return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
             }
-            
+
     }
 
      public function review()
-    {   
+    {
         $user_id = Sentinel::getUser()->id;
         $role = Sentinel::getUser()->roles()->first()->slug;
         $user_email = Sentinel::getUser()->email;
@@ -314,14 +315,14 @@ class RegistrationController extends Controller
              if($price == 6000){
                 $price =  5000;
              }
-        }       
+        }
 
         if($role == 'tradesman'){
             \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
             $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
             $data['plan'] = $customer_info->metadata->selected;
 
-            
+
             if($data['plan'] == 'yearly'){
                 $price =  550;
                 $expiry = date('F d, Y', strtotime('+1 year'));
@@ -366,7 +367,7 @@ class RegistrationController extends Controller
                             )
                         );
 
-                    
+
                     $description = $role.' Customer';
                     $subscription = array();
                     if($role == 'Tradesman'){
@@ -382,26 +383,26 @@ class RegistrationController extends Controller
 
                     User::where('id', $user_id)->update(['customer_id' => $customer->id]);
                 } catch (\Stripe\Error\Card $e){
-                    
+
                     $body = $e->getJsonBody();
                     $err  = ''.$body['error']['message'].'';
-                    
+
                     //dd($err);
                     return redirect()->back()->with('error', $err);
                 }
-            
+
             if($role == 'Tradesman'){
                 return redirect(env('APP_URL').'/register/tradesman/step-three');
             } else {
                 return redirect(env('APP_URL').'/register/agency/step-four');
             }
-            
+
 
         } else {
             return redirect(env('APP_URL'));
         }
 
-       
+
     }
 
     public function postCharge(Request $request)
@@ -430,7 +431,7 @@ class RegistrationController extends Controller
 
                 $body = $e->getJsonBody();
                 $err  = ''.$body['error']['message'].'';
-                    
+
                 return redirect()->back()->with('error', $err);
 
             }
