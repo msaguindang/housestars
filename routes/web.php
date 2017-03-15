@@ -240,8 +240,6 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/contact-us', 'TradesmanController@contact');
 
-    Route::post('/savings-calculator', 'MainController@savingsCalculator');
-
     Route::post('/customer/update-settings', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');
@@ -341,6 +339,6 @@ Route::group(['prefix' => ''], function(){
 // ===================================================================================================================================================
 // NEW ROUTES
 // ===================================================================================================================================================
-Route::post('create/potential-customer', 'PotentialCustomerController@createPotentialCustomer');
+Route::post('/create/potential-customer', 'PotentialCustomerController@store');
 
 // ===================================================================================================================================================
