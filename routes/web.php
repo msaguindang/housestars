@@ -256,6 +256,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
+        Route::get('test', 'AdminController@test');
         Route::get('', 'AdminController@showDashboard');
         Route::post('status/toggle', 'AdminController@toggleStatus');
 
@@ -347,6 +348,7 @@ Route::group(['prefix' => ''], function(){
 
             Route::get('', 'PotentialCustomerController@getAllPotentialCustomers');
             Route::post('delete', 'PotentialCustomerController@deletePotentialCustomer');
+            Route::get('export', 'PotentialCustomerController@exportPotentialCustomers');
 
         });
 

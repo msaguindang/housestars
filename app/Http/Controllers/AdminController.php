@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Property;
+use App\User;
 use App\UserMeta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Validator;
 use Sentinel;
 use Response;
+use Excel;
 
 class AdminController extends Controller
 {
@@ -19,6 +21,12 @@ class AdminController extends Controller
     {
         $this->appUrl = env('APP_URL').'/';
         $this->payload = $request;
+    }
+
+    public function test()
+    {
+
+
     }
 
     public function showLogin()

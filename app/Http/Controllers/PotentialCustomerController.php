@@ -7,6 +7,7 @@ use App\PotentialCustomer;
 use Illuminate\Support\Facades\DB;
 use Response;
 use Mail;
+use Excel;
 
 class PotentialCustomerController extends Controller
 {
@@ -103,5 +104,23 @@ class PotentialCustomerController extends Controller
             ];
             return Response::json($response, 404);
         }
+    }
+
+    public function exportPotentialCustomers()
+    {
+        $excel = Excel::create('mailing-list', function($excel) {
+            $excel->sheet('Potential Customers', function(\PHPExcel_Worksheet $sheet) {
+
+                $potentialCustomers = PotentialCustomer::where('id','!=',null)->select('name','email','phone')->get()->toArray();
+                $sheet->fromArray($potentialCustomers);
+
+            });
+        })->store('xlsx', public_path('exports'));
+
+        $response = [
+            'excel' => $excel
+        ];
+
+        return Response::json($response, 200);
     }
 }

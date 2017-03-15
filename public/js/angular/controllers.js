@@ -1331,6 +1331,15 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
 
     };
 
+    $scope.exportToExcel = function () {
+
+        http.exportPotentialCustomers().then(function(response){
+            console.log('response export: ', response);
+            window.location.href=$baseUrl+'/exports/mailing-list.xlsx';
+        });
+
+    };
+
 
     // initialize
     $scope.getAllPotentialCustomers();

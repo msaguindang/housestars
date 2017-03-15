@@ -738,6 +738,22 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             });
         },
 
+        exportPotentialCustomers: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/potential-customer/export', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
     }
 }]);
 
