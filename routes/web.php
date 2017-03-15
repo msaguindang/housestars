@@ -198,9 +198,9 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/delete-transaction', 'CustomerController@delete');
 
-    // Route::post('/review', 'ReviewController@review');
+    Route::post('/review-vendor', 'ReviewController@review');
 
-    // Route::post('/add-review', 'ReviewController@addAReview');
+    Route::post('/add-review', 'ReviewController@addReview');
 
     Route::post('/get-agent-info', 'CustomerController@agentInfo');
 

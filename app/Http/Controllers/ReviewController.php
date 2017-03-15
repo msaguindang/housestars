@@ -46,7 +46,7 @@ class ReviewController extends Controller
 			}
 		}
 
-		 return Response::json($data, 200); 
+		 return Response::json($data, 200);
     }
 
     public function addReview(){
@@ -60,10 +60,10 @@ class ReviewController extends Controller
             );
 
     	$data['id'] = $request->input('tradesman_id');
-    	
-    	return Response::json($data, 200); 
+
+    	return Response::json($data, 200);
     }
-	
+
 	public function getAllReviews()
 	{
 
@@ -86,20 +86,20 @@ class ReviewController extends Controller
 			->first()
 			->length;
 
-		$sql = "SELECT 
+		$sql = "SELECT
 				  reviews.*,
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
+					users
 				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
-				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name 
+					users
+				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
 				FROM
-				  reviews 
+				  reviews
 				LIMIT {$limit}
 				OFFSET {$offset}";
 
@@ -149,7 +149,7 @@ class ReviewController extends Controller
 
 	public function create(Request $request) {
 		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
-		$params = $request->all();	
+		$params = $request->all();
 		$reviewId = $latestRow->id;
 		$reviewerId = $latestRow->reviewer_id;
 		$businessId = $params['tradesman_id'];
@@ -162,7 +162,7 @@ class ReviewController extends Controller
 		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
 		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
 		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
-		
+
 		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
 			->update(array(
 				'reviewee_id' => $businessId,
@@ -179,5 +179,5 @@ class ReviewController extends Controller
 		return redirect('/');
 
 	}
-	
+
 }
