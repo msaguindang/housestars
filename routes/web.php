@@ -71,7 +71,7 @@ Route::group(['prefix' => ''], function(){
         return view('register.tradesman.complete');
     })->middleware('tradesman');
 
-    Route::get('/register/customer/step-one', 'RegistrationController@Customer')->middleware('customer');
+    Route::get('/register/customer/step-one', 'RegistrationController@Customer');
 
     Route::get('/register/customer/complete', 'RegistrationController@Review')->middleware('customer');
 
