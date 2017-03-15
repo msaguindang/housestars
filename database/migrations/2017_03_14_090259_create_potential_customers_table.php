@@ -20,6 +20,7 @@ class CreatePotentialCustomersTable extends Migration
                 $table->string('name');
                 $table->string('email');
                 $table->string('phone');
+                $table->integer('status')->default(true);
                 $table->timestamps();
             });
         }

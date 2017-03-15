@@ -28,7 +28,8 @@
                     'categories',
                     'suburbs',
                     'test',
-                    'advertisements'
+                    'advertisements',
+                    'mailing-lists'
                 ];
 
                 setRoutes = function (route) {

@@ -343,6 +343,13 @@ Route::group(['prefix' => ''], function(){
 
         });
 
+        Route::group(['prefix' => 'potential-customer'], function () {
+
+            Route::get('', 'PotentialCustomerController@getAllPotentialCustomers');
+            Route::post('delete', 'PotentialCustomerController@deletePotentialCustomer');
+
+        });
+
     });
 
 });

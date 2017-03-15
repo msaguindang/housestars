@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\PotentialCustomer;
+use Illuminate\Support\Facades\DB;
 use Response;
 use Mail;
 
 class PotentialCustomerController extends Controller
 {
+    protected $payload;
+
+    public function __construct(Request $request)
+    {
+        $this->payload = $request;
+    }
+
     public function store (Request $request) 
     {   
         $customer = PotentialCustomer::firstOrCreate([
@@ -37,5 +45,63 @@ class PotentialCustomerController extends Controller
                 $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
                 $message->subject('Savings Estimation Calculator: '. $name);
             });
+    }
+
+    public function getAllPotentialCustomers()
+    {
+        $payload = $this->payload->all();
+        $pageNo = 1;
+        $limit = 10;
+
+        if (isset($payload['page_no'])) {
+            $pageNo = $payload['page_no'];
+        }
+
+        if (isset($payload['limit'])) {
+            $limit = $payload['limit'];
+        }
+
+        $offset = $limit * ($pageNo - 1);
+
+        $length = DB::table('potential_customers')
+            ->selectRaw('count(*) as length')
+            ->first()
+            ->length;
+
+        $sql = "SELECT
+				  *
+				FROM
+				  potential_customers
+				LIMIT {$limit}
+				OFFSET {$offset}";
+
+
+        $potential_customers = json_decode(json_encode(DB::select($sql)), TRUE);
+
+        $response = [
+            'potential_customers' => $potential_customers,
+            'length' => $length
+        ];
+
+        return Response::json($response, 200);
+    }
+
+    public function deletePotentialCustomer()
+    {
+        $id = $this->payload->input('id');
+
+        try {
+
+            PotentialCustomer::find($id)->delete();
+            $response['success'] = [
+                'message' => "Potential Customer successfully deleted."
+            ];
+            return Response::json($response, 200);
+        } catch (Exception $e) {
+            $response['error'] = [
+                'message' => $e->getMessage()
+            ];
+            return Response::json($response, 404);
+        }
     }
 }

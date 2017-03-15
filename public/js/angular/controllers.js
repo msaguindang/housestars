@@ -1274,3 +1274,66 @@ housestars.controller('EditAdvertisementModalCtrl', ['$scope', 'advertisementDat
 
 
 }]);
+
+housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', function ($scope, http, validator) {
+
+    console.log('MailingListsCtrl', 'test');
+
+    $scope.customers = [];
+    $scope._customers = angular.copy($scope.customers);
+
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function (newPage) {
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllPotentialCustomers();
+    };
+
+    $scope.getAllPotentialCustomers = function () {
+        http.getAllPotentialCustomers({
+            page_no: $scope.currentPage,
+            limit: $scope.limit
+        }).then(function (response) {
+            console.log('all potential customers: ', response);
+            $scope.customers = response.data.potential_customers;
+            $scope._customers = angular.copy($scope.customers);
+            $scope.totalItems = response.data.length;
+        });
+    };
+
+    $scope.deleteCustomer = function (customer, index) {
+
+        var confirmation = confirm("Are you sure you want to delete?");
+
+        if (confirmation) {
+            http.deletePotentialCustomer({
+                id: customer.id
+            }).then(function (response) {
+                console.log('potential customer deleted: ', response);
+                $scope._customers.splice(index, 1);
+            });
+        }
+    };
+
+    $scope.toggleStatus = function (item, index) {
+
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'potential_customers'
+        }).then(function (response) {
+            console.log('status toggled');
+            $scope._customers[index].status = response.data.status;
+        })
+
+    };
+
+
+    // initialize
+    $scope.getAllPotentialCustomers();
+
+
+}]);

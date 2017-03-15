@@ -353,6 +353,21 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
                 });
             });
         },
+        getAllPotentialCustomers: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/potential-customer', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         saveAdvertisement: function (data) {
             var self = this;
@@ -617,6 +632,21 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             var self = this;
             return $q(function(resolve, reject) {
                 self.post('admin/advertisement/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        deletePotentialCustomer: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/potential-customer/delete', data).then(function(response) {
 
                     resolve({
                         data:response.data,
