@@ -89,10 +89,11 @@ class MainController extends Controller
 
         foreach ($reviews as $review) {
             // check if review is for housestars
-            if($review->reviewee_id == 1){
+            if ($review->reviewee_id == 1) {
                 //Check if agency review
-                $isAgency = Role::where('user_id', '=', $review->reviewer_id)->get();
-                if(count($isAgency) > 0){
+                $isAgency = Role::where('user_id', '=', $review->reviewer_id)->count();
+
+                if ($isAgency > 0) {
                 // get review details
                     $review_details['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
                     $review_details['title'] = $review->title;
@@ -101,7 +102,7 @@ class MainController extends Controller
                 // get reviewer details
                     $user = UserMeta::where('user_id', '=', $review->reviewer_id)->get();
                     foreach ($user as $key) {
-                        if($key->meta_name == 'agency-name'){
+                        if ($key->meta_name == 'agency-name') {
                             $review_details['name'] = $key->meta_value;
                         } else if($key->meta_name == 'profile-photo'){
                             $review_details['img'] = $key->meta_value;
@@ -114,31 +115,7 @@ class MainController extends Controller
             }
        }
 
-       //dd($data);
         return view('general.agency')->with('data', $data);
-    }
-
-    public function savingsCalculator(Request $request){
-
-        $this->sendEmail($request);
-        return Response::json('success', 200);
-    }
-
-      private function sendEmail($request){
-        $email = $request->input('email');
-        $name = $request->input('name');
-        Mail::send(['html' => 'emails.savings-calculator'], [
-                'name' => $request->input('name'),
-                'email' => $request->input('phone'),
-                'phone' => $request->input('email'),
-                'suburb' => $request->input('suburb'),
-                'type' => $request->input('property-type'),
-                'price' => $request->input('estimated-price')
-            ], function ($message) use ($name) {
-                $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
-                $message->subject('Savings Estimation Calculator: '. $name);
-            });
     }
 
     public function unpaid(){

@@ -56,7 +56,7 @@
          <h2 class="wide"><span class="icon icon-left-bar-white"></span>Savings Estimation Calculator<span class="icon icon-right-bar-white"></span></h2>
         </div>
         <div class="calculator">
-          <form id="savingsCalc" method="POST" action="/create/potential-customer">
+          <form id="savingsCalc" method="POST">
             {{csrf_field()}}
             <div class="col-xs-4">
               <label>Name</label>

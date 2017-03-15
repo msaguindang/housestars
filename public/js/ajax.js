@@ -216,31 +216,31 @@ $(document).on('submit', '#contactUS' ,function(e){
       });
   });
 
-// $(document).on('submit', '#savingsCalc' ,function(e){
-//       e.preventDefault();
-//       var data = $(this).serialize();
-//       $("#loading").fadeIn("slow");
-//       $.ajax({
-//         url: '/savings-calculator',
-//         data: data,
-//         type: 'POST',
-//         processData: false,
-//         success: function(data){
-//           $("#loading").fadeOut("slow");
-//           $('#savingsSuccess').modal('show');
-//         }
-//       });
-//   });
+$(document).on('submit', '#savingsCalc' ,function(e){
+      e.preventDefault();
+      var data = $(this).serialize();
+      $("#loading").fadeIn("slow");
+      $.ajax({
+        url: '/create/potential-customer',
+        data: data,
+        type: 'POST',
+        processData: false,
+        success: function(data){
+          $("#loading").fadeOut("slow");
+          $('#savingsSuccess').modal('show');
+        }
+      });
+  });
 
-	$(document).on('submit', '#referral' ,function(e){
-		e.preventDefault();
-		var data = $(this).serialize();
-		$.ajax({
-			url: '/referral',
-			data: data,
-			type: 'POST',
-			success: function(data){
-				$('#referral .error').append(data);
-			}
-		});
-	});
+$(document).on('submit', '#referral' ,function(e){
+  e.preventDefault();
+  var data = $(this).serialize();
+  $.ajax({
+    url: '/referral',
+    data: data,
+    type: 'POST',
+    success: function(data){
+      $('#referral .error').append(data);
+    }
+  });
+});
