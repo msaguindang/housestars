@@ -531,10 +531,11 @@ class CustomerController extends Controller
         $rating = $this->getRating($id);
 
         if(isset($name)){
+
           if(!isset($photo)){
             $photo = 'assets/default.png';
           }
-            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'rate' => $rate)
+            $agent = array('id' => $id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'rate' => $rate);
         } else {
             $agent = null;
         }
