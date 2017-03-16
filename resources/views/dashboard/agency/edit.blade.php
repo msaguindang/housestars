@@ -209,18 +209,7 @@
                     <label>Gallery Photos</label>
                     <div id="gallery-carousel" class="carousel slide multi-item-carousel">
                       <div class="carousel-inner">
-                        @if(isset($data['gallery']))
-                          @foreach ($data['gallery'] as $index => $item)
-                            <div class="item {{ ($index == 0 ? 'active' : '') }}">
-                              <div class="col-xs-4">
-                                <a class="remove-photo" href="javascript:void(0);" data-item-id="{{$item['id']}}" data-token="{{ csrf_token() }}">
-                                  <i class="fa fa-times" aria-hidden="true" id="close"></i>
-                                </a>
-                                <img src="{{ url($item['url']) }}" alt="{{ $item['url'] }}" style="width:140px; height:140px; "> 
-                              </div>
-                            </div>
-                          @endforeach
-                        @endif
+                        @include('dashboard.agency.partials.gallery_items')
                       </div>
                       <!-- Left and right controls -->
                       <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
@@ -317,32 +306,26 @@
           });
       });
 
-      $('.remove-photo').click(function (e) {
-        if(!confirm("Are you sure you want to delete this photo?")) {
-          return;
+      $('body').on('click', '.remove-photo', function (e) {
+        if(confirm("Are you sure you want to delete this photo?")) {
+          $.ajax({
+            method: "POST",
+            url: "{{ route('delete.gallery.photo')  }}",
+            data: { 
+              id: $(this).data('id'),
+              filename: $(this).data('filename')
+            },
+            dataType : 'json',
+            success: function(responseData, textStatus, jqXHR) {
+              $('.carousel-inner .item').remove();
+              $('.carousel-inner').append(responseData.html);
+              if(responseData.html.indexOf('') > -1) {
+                $('.carousel-control').hide();
+              }
+            }
+          });
         }
       });
-
-      // Instantiate the Bootstrap carousel
-      $('.multi-item-carousel').carousel({
-        interval: false
-      });
-
-      // for every slide in carousel, copy the next slide's item in the slide.
-      // Do the same for the next, next item.
-      $('.multi-item-carousel .item').each(function() {
-        var next = $(this).next();
-        if (!next.length) {
-          next = $(this).siblings(':first');
-        }
-        next.children(':first-child').clone().appendTo($(this));
-        
-        if (next.next().length>0) {
-          next.next().children(':first-child').clone().appendTo($(this));
-        } else {
-          $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
-        }
-      });      
   </script>
   <script src="{{asset('js/image-preview.js')}}"></script>
  @stop

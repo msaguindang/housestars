@@ -2778,7 +2778,7 @@ input#profileupload {
     margin-top: 20px;
 }
 
-.upload-gallery #gallery-carousel .item a {
+.upload-gallery #gallery-carousel .item .remove-photo {
     position: relative;
     top: 0;
     float: right;
@@ -3233,15 +3233,6 @@ select.error,
 }
 .multi-item-carousel .carousel-inner .prev {
   left: -33%;
-}
-
-@media all and (transform-3d), (-webkit-transform-3d) {
-  .multi-item-carousel .carousel-inner > .item {
-    transition: 500ms ease-in-out left;
-    transition: 500ms ease-in-out all;
-    backface-visibility: visible;
-    transform: none!important;
-  }
 }
 
 .multi-item-carousel .carouse-control.left,
