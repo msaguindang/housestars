@@ -20,7 +20,11 @@
     <link href="{{config('app.url')}}/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{config('app.url')}}/css/housestars-main.css" rel="stylesheet">
     <link href="{{config('app.url')}}/css/housestars-icon.css" rel="stylesheet">
-    
+
+    <!-- Responsiveness -->
+
+    <link href="{{config('app.url')}}/css/housestars-tablet.css" rel="stylesheet">
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="{{config('app.url')}}/js/loading.js"></script>
@@ -34,6 +38,86 @@
     <![endif]-->
   </head>
   <body>
+    <header id="header" class="tablet">
+        <div class="container">
+          <div class="row">
+            <div class="col-xs-3 branding">
+              <a href="{{env('APP_URL')}}/"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+            </div>
+            <div class="col-xs-7 col-xs-offset-2 navigation">
+              <div class="row top-links">
+                <div class="customer-care">
+                  <p><span class="label">Call Customer Care </span><a href="tel:0404045597" class="number">0404045597</a></p>
+                </div>
+                <!-- <div class="nav-items">
+                  <ul>
+                    @if(Sentinel::check())
+                     <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @else
+                      <li><a href="#" data-toggle="modal" data-target="#login" id="login-form">Login</a></li>
+                    @endif
+                  </ul>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="main-nav">
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <!-- /.navbar-collapse -->
+                  <!-- <ul>
+                    @if(Sentinel::check())
+                    <li><span class="icon icon-logout-dark"></span>
+                      <form action="{{env('APP_URL')}}/logout" method="POST" id="logout-form">
+                        {{csrf_field() }}
+                        <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                      </form>
+                    </li>
+                    <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="{{env('APP_URL')}}/agency">Agency</a></li>
+                    @else
+                    <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
+                    <li><span class="icon icon-agency-dark"></span><a href="{{env('APP_URL')}}/agency">Agency</a></li>
+                    <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
+                    @endif
+                  </ul> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="dropdown-nav">
+          <div class="collapse navbar-collapse" id="mainnav">
+            <ul class="nav navbar-nav">
+              @if(Sentinel::check())
+              <li><a href="{{env('APP_URL')}}/profile">Profile</a></li>
+              <li><a href="{{env('APP_URL')}}/agency">Agency</a></li>
+              <li><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
+              <li><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
+              <li>
+                <form action="{{env('APP_URL')}}/logout" method="POST" id="logout-form">
+                  {{csrf_field() }}
+                  <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
+                </form>
+              </li>
+              @else
+              <li><a href="{{env('APP_URL')}}/">Home</a></li>
+              <li><a href="{{env('APP_URL')}}/agency">Agency</a></li>
+              <li><a href="{{env('APP_URL')}}/trades-services">Trades & Services</a></li>
+              <li><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
+              <li><a href="#" data-toggle="modal" data-target="#login" id="login-form">Login</a></li>
+              <li><a href="#" data-toggle="modal" data-target="#signup" id="signup-form">Signup</a></li>
+              @endif
+            </ul>
+          </div>
+        </div>
+    </header>
+
 
 @yield("content")
     <footer>
@@ -111,7 +195,7 @@
         </div>
       </div>
     </footer>
-  
+
 
 @include("modals")
 
@@ -126,7 +210,7 @@
     <script src="{{config('app.url')}}/js/pagination.js"></script>
     <script src="{{config('app.url')}}/js/ajax.js"></script>
     <script src="{{config('app.url')}}/js/jquery.validate.min.js"></script>
-    
+
     <script>
       $('#signup-form').click(function() {
           laravel.errors.errorBagContainer = $('#errors-signup');

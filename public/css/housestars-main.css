@@ -39,6 +39,9 @@ a:focus{
     color: #fff;
 }
 
+.tablet, .mobile{
+	display: none;
+}
 
 .separator{
     width: 55px;
