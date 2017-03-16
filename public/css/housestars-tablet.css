@@ -404,7 +404,7 @@
         width: 50%;
     }
 
-    .form-box.tradesman .col-xs-6.no-padding-left, .form-box.tradesman .col-xs-6.no-padding-left{
+    .form-box.tradesman .col-xs-6.no-padding-left, .form-box.tradesman .col-xs-6.no-padding-right{
       width: 100%
     }
 
