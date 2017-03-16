@@ -40,7 +40,6 @@ class LoginController extends Controller
 				   return Response::json($error, 422);
 			   }
 
-
 				switch (Sentinel::getUser()->roles()->first()->slug){
 					case 'agency':
 						return \Ajax::redirect('/dashboard/agency/profile');
@@ -51,6 +50,12 @@ class LoginController extends Controller
 						break;
 					case 'customer':
 						return \Ajax::redirect('/dashboard/customer/profile');
+						break;
+					case 'admin':
+					return \Ajax::redirect('/admin');
+						break;
+					case 'agent':
+						return \Ajax::redirect('/dashboard/agent/profile');
 						break;
 				}
 			}
