@@ -83,7 +83,7 @@
     <section id="sign-up-form">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 form-box" style="padding: 40px 25px;">
+                <div class="col-xs-12 form-box tradesman" style="padding: 40px 25px;">
                     <h2>Tradesman Registration Form</h2>
                     <form name="step_one_form" action="{{env('APP_URL')}}/add-info" method="POST">
                         @if(session('error'))
