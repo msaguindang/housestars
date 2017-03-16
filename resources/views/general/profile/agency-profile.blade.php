@@ -55,8 +55,7 @@
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) no-repeat center center">
-            </div>
+            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) no-repeat center center"></div>
             <div class="profile-info">
                   
                   @if(isset($data['agency-name']))
@@ -65,7 +64,7 @@
                   @if (isset($data['business-address']))
                   <p>Location: {{$data['business-address']}}</p>
                   @endif
-                  
+              
             </div>
           </div>
         </div>
@@ -207,7 +206,9 @@
             </div>
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
-              <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
+              <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a><br>
+              <button onClick="openRatingModal()" class="btn hs-primary" style="">Review This Agency</button>
+              
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
                   @if($review['content'] != '')
@@ -233,7 +234,6 @@
                   @endif
                 @endforeach
               @endif
-             
             </div>
           </div>
             <div class="col-xs-3 sidebar">
@@ -247,6 +247,11 @@
             </div>
         </div>
       </div>
+      @include("modals.rating");
     </section>
-
+    <script>
+      function openRatingModal() {
+        $('#rating').modal('show');
+      }
+    </script>
 @endsection

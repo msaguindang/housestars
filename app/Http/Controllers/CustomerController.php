@@ -529,7 +529,7 @@ class CustomerController extends Controller
         }
 
         $rating = $this->getRating($id);
-
+        
         if(isset($name)){
           if(!isset($photo)){
             $photo = 'assets/default.png';

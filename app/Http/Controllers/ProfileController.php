@@ -9,6 +9,7 @@ use App\Reviews;
 use App\User;
 use App\Advertisement;
 use Response;
+use App\Agents;
 
 class ProfileController extends Controller
 {
@@ -36,6 +37,7 @@ class ProfileController extends Controller
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
     	$data = array();
+        $data['tradesman-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -86,7 +88,9 @@ class ProfileController extends Controller
     public function agency($id){
         $meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
+        $agencyId = Agents::where('agent_id', $id)->get();
         $data = array();
+        $data['agency-id'] = $agencyId[0]['agency_id'];
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
