@@ -207,20 +207,22 @@
                 <div class="upload-gallery" style="margin: 35px 0;">
                   <div class="col-xs-7">
                     <label>Gallery Photos</label>
-                    <div id="gallery-carousel" class="carousel slide multi-item-carousel">
-                      <div class="carousel-inner">
-                        @include('dashboard.agency.partials.gallery_items')
+                    @if($data['hasGallery'])
+                      <div id="gallery-carousel" class="carousel slide multi-item-carousel">
+                        <div class="carousel-inner">
+                          @include('dashboard.agency.partials.gallery_items')
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
                       </div>
-                      <!-- Left and right controls -->
-                      <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                      </a>
-                    </div>
+                    @endif
                   </div>
                   <div class="col-xs-5">
                     <label>Upload More Gallery Photos</label>

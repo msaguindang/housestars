@@ -83,7 +83,7 @@ class AgencyController extends Controller
                 $data[$key->meta_name] = $key->meta_value;
             }            
         }
-
+        $data['hasGallery'] = $index;
         return View::make('dashboard/agency/edit')->with('data', $data);
     }
 
