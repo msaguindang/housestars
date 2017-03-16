@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -112,39 +112,46 @@
           </div>
           <div class="col-xs-3 profile-details" style="display: none;">
            <!--  <h3>More Details</h3> -->
+         <div class="info-item">
             @if(isset($data['website']))
             <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
             </div>
             @endif
-
+          </div>
+          <div class="info-item">
             @if(isset($data['email']))
             <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
             </div>
             @endif
-
+          </div>
+          <div class="info-item">
             @if(isset($data['abn']))
             <div class="col-xs-2 icon"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p><b> ABN </b></br><span class="detail">{{$data['abn']}}</span></p>
             </div>
             @endif
-
+          </div>
+          <div class="info-item">
             @if(isset($data['charge-rate']))
             <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
             </div>
             @endif
+          </div>
+          <div class="switch-holder">
             <div class="col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>
-            <div class="col-xs-4">
-               <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="true"><div id="switch" class="slider round" style="float: right;"></div></label>
+            <div class="col-xs-4 switch-guest">
+              <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
             </div>
+          </div>
 
           </div>
         </div>

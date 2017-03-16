@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -76,7 +76,7 @@
         <div class="row">
           <div class="col-xs-9">
             <div class="statistics">
-              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{$data['total-listings']}} {{ str_plural('Listing', $data['total-listings']) }} </span> 
+              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{$data['total-listings']}} {{ str_plural('Listing', $data['total-listings']) }} </span>
               <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold </span>
               <div class="status">
                 <span class="status-icon"></span>
@@ -115,49 +115,61 @@
 
           <div class="col-xs-3 profile-details" style="display: none">
            <!--  <h3>More Details</h3> -->
+         <div class="info-item">
             @if(isset($data['phone']))
             <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p> <b> Phone </b></br><span class="detail">{{$data['phone']}}</span></p>
             </div>
             @endif
+          </div>
+          <div class="info-item">
             @if(isset($data['email']))
             <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
             </div>
             @endif
-
+          </div>
+          <div class="info-item">
             @if(isset($data['abn']))
             <div class="col-xs-2 icon"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p><b> ABN </b></br><span class="detail">{{$data['abn']}}</span></p>
             </div>
             @endif
-
+          </div>
+          <div class="info-item">
             @if(isset($data['charge-rate']))
             <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
             </div>
             @endif
+          </div>
+          <div class="info-item">
             @if(isset($data['website']))
             <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
             </div>
             @endif
+          </div>
+          <div class="info-item">
             @if(isset($data['review-url']))
             <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
               <p> <b> Review URL </b></br><span class="detail">{{$data['review-url']}}</span></p>
             </div>
             @endif
-            <div class="col-xs-8 no-padding-left">
-              <p style="line-height: 30px;">Switch to Customer View</p>
-            </div>
-            <div class="col-xs-4 switch-guest">
-              <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
+          </div>
+            <div class="switch-holder">
+              <div class="col-xs-8 no-padding-left">
+                <p style="line-height: 30px;">Switch to Customer View</p>
+              </div>
+              <div class="col-xs-4 switch-guest">
+                <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
+              </div>
             </div>
           </div>
         </div>
@@ -175,7 +187,7 @@
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>      
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                           <div class="carousel-inner">
                             <div class="item active">
                                 <div class="row">
@@ -185,7 +197,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -199,7 +211,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -213,7 +225,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -230,7 +242,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -244,21 +256,21 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
                                       </div>
                                     </div>
                                   </div>
-                                  
+
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
                                       <div class="gallery-image">
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -275,7 +287,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -289,21 +301,21 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
                                       </div>
                                     </div>
                                   </div>
-                                  
+
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
                                       <div class="gallery-image">
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -313,7 +325,7 @@
                                 </div>
                             </div>
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -333,9 +345,9 @@
                     <p><b>{{$review['name']}}</b></p>
                     <p class="left rating-p">{{$review['content']}}</p>
                     <button class="btn btn-helpful right" id="helpful" data-id="{{$review['id']}}" data-token="{{csrf_token()}}"><span class="icon icon-helpful"></span> Helpful <span class="small" id="count-{{$review['id']}}">({{$review['helpful']}})</span></button>
-                    
+
                     <div class="stars left">
-                     
+
                         @for($i = 1; $i <= $review['average']; $i++)
                             <span class="icon icon-star"></span>
                         @endfor
@@ -343,13 +355,13 @@
                         @for($i = 1; $i <= $rating; $i++)
                             <span class="icon icon-star-grey"></span>
                         @endfor
-                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a> 
+                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a>
                     </div>
                   </div>
                   @endif
                 @endforeach
               @endif
-             
+
             </div>
           </div>
             <div class="col-xs-3 sidebar">

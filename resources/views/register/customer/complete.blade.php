@@ -1,7 +1,7 @@
 @extends("layouts.main")
 @section("content")
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -15,7 +15,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -50,7 +50,7 @@
           </div>
     </header>
 
-<section id="progress-bar" class="header-margin">
+<section id="progress-bar" class="header-margin customer">
   <div class="container">
     <div class="row">
       <span class="progress-line completed" style="width: 300px"></span>

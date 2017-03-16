@@ -145,11 +145,11 @@
     }
 
     .wide {
-        width: 85%;
+        width: 95%;
     }
 
     .section-title p {
-        width: 90%;
+        width: 95%;
     }
 
     .home .steps .divider {
@@ -165,8 +165,16 @@
         margin-top: 65px;
     }
 
-    .narrow {
+    .narrow, .narrower {
         width: 70%;
+    }
+
+    .narrow-1x {
+        width: 50%;
+    }
+
+    .pricing {
+        width: 100%;
     }
 
     #how-we-help .col-xs-4 {
@@ -197,10 +205,295 @@
     }
 
     footer .social-media {
-        margin-top: 0px;
+        margin-top: 35px;
+        padding: 0px 30px;
     }
 
     footer {
         background-size: cover;
     }
+
+    .tradesman .steps .divider {
+        height: 915px;
+        margin-left: 71px;
+        background: url(../assets/img-divider-tablet.png) center top no-repeat;
+
+    }
+
+    #how-it-works.tradesman .step-description.stepTwo {
+        margin-top: 107px;
+    }
+
+    #how-it-works.tradesman .step-description.stepThree {
+        margin-top: 80px;
+    }
+
+    #why-sign-up .col-xs-6 {
+        width: 100%;
+    }
+
+    #why-sign-up .widget-item {
+        width: 100%;
+    }
+
+    #savings-calculator .col-xs-4 {
+        width: 100%;
+    }
+
+    #savings-calculator .col-xs-4.col-xs-offset-4 {
+        margin-left: 0;
+    }
+
+    #suburb-availability .col-xs-6.col-xs-offset-3 {
+        width: 80%;
+        margin-left: 10%;
+    }
+
+    .hs-primary {
+        padding: 12px 20px;
+    }
+
+    span.icon.icon-search {
+        display: none;
+    }
+
+    #trades .item, #agency-results .col-xs-4, #tradesman-results .col-xs-3 {
+        width: 50%;
+    }
+
+    .category .item a {
+        padding: 15px 15px;
+    }
+
+    #agency-results .item .profile-info p {
+        min-height: 80px;
+    }
+
+    .agency input.search {
+        width: 82%;
+    }
+
+    #user-info .col-xs-9 {
+        width: 100%;
+    }
+
+    .profile-details {
+        width: 100%;
+        margin-top: 25px;
+    }
+
+    .info-item {
+      width: 33%;
+      float: left;
+    }
+
+    #main-content .col-xs-9 {
+        width: 100%;
+    }
+
+    .nav li form {
+        padding: 15px;
+        width: 100%;
+    }
+
+    .progress-line {
+        width: 101px !important;
+    }
+
+    #progress-bar .label span {
+        margin-left: 82px !important;
+    }
+
+    #progress-bar .label span:nth-child(2) {
+        margin-left: 77px !important;
+    }
+
+    #progress-bar .label span:nth-child(3) {
+        margin-left: 97px !important;
+    }
+
+    #progress-bar .label span:nth-child(4) {
+        margin-left: 71px !important;
+    }
+
+    .form-box .col-xs-4 {
+        width: 100%;
+    }
+
+    #sign-up-form .agreement {
+        position: relative;
+        top: 100px;
+        left: 189px;
+    }
+
+    .form-box .col-xs-offset-8 {
+        margin-left: 45.666667%;
+    }
+
+    .form-box .col-xs-2 {
+        width: 26.666667%;
+    }
+
+    .form-box .col-xs-6 {
+        width: 100%;
+    }
+
+    .form-box .col-xs-6.border-left {
+        border-left: snow;
+        border-top: 1px solid #d9d9d9;
+    }
+
+    .package-review .col-xs-4 {
+        width: 50%;
+    }
+
+    .nav-panel {
+        width: 100%;
+    }
+
+    .switch-holder {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .switch-guest #switch {
+        float: right !important;
+    }
+
+    #edit-user-info .col-xs-4 , #edit-user-info .col-xs-8 {
+        width: 90%;
+        margin-left: 10%;
+    }
+
+    #settings .col-xs-2.col-xs-offset-7 {
+        margin-left: 38%;
+    }
+
+    #settings .col-xs-2{
+        width:24%
+    }
+    #settings .col-xs-3{
+        width: 36%;
+    }
+
+    .tradesman .progress-line {
+        width: 142px !important;
+    }
+
+    #progress-bar.tradesman .label span:first-child {
+        margin-left: 120px !important;
+    }
+
+    #progress-bar.tradesman .label span:nth-child(2) {
+        margin-left: 108px !important;
+    }
+
+    #progress-bar.tradesman .label span:nth-child(3) {
+        margin-left: 117px !important;
+    }
+
+    .form-box .col-xs-8 {
+        width: 100%;
+    }
+
+    .form-box .col-xs-8 .col-xs-6 {
+        padding: 0 !important;
+    }
+
+    .form-box .col-xs-6.no-padding-left, .form-box .col-xs-6.no-padding-right {
+        width: 50%;
+    }
+
+    .col-xs-5.tradesman {
+        width: 63%;
+    }
+
+    #referral {
+        width: 52%;
+    }
+
+    #edit-user-info.tradesman .col-xs-9, #edit-user-info.tradesman .col-xs-3{
+        width: 73%;
+        margin-left: 27%;
+    }
+
+    #edit-user-info.tradesman .col-xs-9 .col-xs-3{
+      width: 100%;
+      margin-left: 0;
+    }
+
+    #edit-user-info.tradesman .col-xs-4.dash-field {
+        margin: 0 !important;
+        width: 100%;
+        padding-right: 15px !important;
+    }
+
+    .upload-gallery {
+        position: relative;
+        left: 38%;
+        width: 97%;
+        top: -130px;
+        z-index: 100;
+    }
+
+    #edit-user-info.tradesman .hs-primary.full-width {
+        position: relative;
+        top: 260px;
+        z-index: 1000;
+    }
+
+    .subscription-details .col-xs-5, .subscription-details .col-xs-3, .subscription-details .col-xs-4 {
+        width: 100%;
+    }
+
+    .customer .progress-line {
+        width: 210px !important;
+    }
+
+    .form-box .col-xs-4.no-padding-left {
+        padding: 0 15px;
+    }
+
+    .agreement.customer {
+        top: 0px !important;
+        left: 0px !important;
+        width: 193px;
+    }
+
+    #progress-bar.customer .label span:first-child {
+        margin-left: 189px !important;
+    }
+
+    #progress-bar.customer .label span:first-child {
+        margin-left: 189px !important;
+    }
+
+    #progress-bar.customer .label span:last-child {
+        margin-left: 185px !important;
+    }
+
+    #user-info.customer .col-xs-9 .col-xs-4.agency-info {
+        width: 40%;
+        margin-bottom: 18px;
+    }
+
+    #user-info.customer .col-xs-9 .col-xs-3 {
+        width: 27%;
+    }
+
 }
+
+@media only screen
+  and (max-width: 1000px) {
+
+    .row.gallery {
+        margin-top: 60px;
+    }
+
+    .gallery h2.section-title {
+        float: left;
+        position: relative;
+        top: -50px;
+    }
+
+  }

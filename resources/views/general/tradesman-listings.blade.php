@@ -2,7 +2,7 @@
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -50,7 +50,7 @@
             </div>
           </div>
     </header>
-    
+
     <div id="tradesmanList">
     <section id="cover-container" class="header-margin tradesman-listings">
       <div class="cover-img">
@@ -64,7 +64,7 @@
           <h2 class="narrower"><span class="icon icon-left-bar"></span> Tradesman Listings <span class="icon icon-right-bar"></span></h2>
           <span class="separator"></span>
         </div>
-        </div>   
+        </div>
       </div>
     </section>
     <div class="dark-bg">
@@ -99,7 +99,7 @@
                             @else
                               <div class="cover-photo">
                             @endif
-                           
+
                             @if(isset($tradesman['profile-photo']))
                               <div class="profile-thumb" style="background: url('{{env('APP_URL')}}/{{$tradesman['profile-photo']}}') no-repeat center center; background-size: cover;"></div>
                             @else

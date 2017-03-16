@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -48,7 +48,7 @@
           </div>
     </header>
 
-    <section id="edit-user-info" class="header-margin">
+    <section id="settings" class="header-margin">
       <div class="container">
         <div class="row">
           <div class="col-xs-12">

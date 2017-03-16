@@ -42,7 +42,7 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
-              <a href="{{env('APP_URL')}}/"><img src="assets/logo-nav.png" alt="HouseStars Logo"></a>
+              <a href="{{env('APP_URL')}}/"><img src="{{asset('assets/logo-nav.png')}}" alt="HouseStars Logo"></a>
             </div>
             <div class="col-xs-7 col-xs-offset-2 navigation">
               <div class="row top-links">
@@ -165,7 +165,7 @@
                 </ul>
               </div>
             </div>
-            <div class="row social-media">
+            <div class="row social-media desktop">
               <div class="col-xs-4 social-item">
                 <span class="icon icon-fb"></span>
                 <a href="#">Housestars</a>
@@ -182,6 +182,23 @@
                 <p>www.twitter.com/housestars</p>
               </div>
             </div>
+          </div>
+        </div>
+        <div class="row social-media tablet">
+          <div class="col-xs-4 social-item">
+            <span class="icon icon-fb"></span>
+            <a href="#">Housestars</a>
+            <p>www.facebook.com/housestars</p>
+          </div>
+          <div class="col-xs-4 social-item">
+            <span class="icon icon-ig"></span>
+            <a href="#">@Housestars</a>
+            <p>www.instagram.com/housestars</p>
+          </div>
+          <div class="col-xs-4 social-item">
+            <span class="icon icon-tw"></span>
+            <a href="#">@Housestars</a>
+            <p>www.twitter.com/housestars</p>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -77,11 +77,11 @@
                 <h2 class="estimates">N/A</h2>
             </div>
             <div class="col-xs-3">
-              
+
               <label>Estimated Commission Target</label>
               <h2 class="estimates">N/A</h2>
             </div>
-            <div class="col-xs-2 terms"> 
+            <div class="col-xs-2 terms">
               @if(isset($data['meta']['commission']))
                 <p>This is an estimate only. Actual amount will vary with sale price Please see <a href="#" class="content-hyperlink">Terms & Conditions</a>.</p>
               @endif
@@ -129,14 +129,24 @@
                               <td><p>{{$property['suburb']}}, {{$property['state']}}</p></td>
                               <td><p>{{$property['property-type']}}</p></td>
                               <td><p>${{$property['value-from']}} - ${{$property['value-to']}}</p></td>
-                              <td><p>${{$property['discount']}}</p></td>
+                              <td><p>
+                              @if(isset($property['discount']))
+                                ${{$property['discount']}}
+                              @endif
+                              </p></td>
                               @if(isset($property['contract']))
                               <td><button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{$property['property-code']}}">Contract</button></td>
                               @else
                               <td><button type="button" class="btn btn-primary btn-xs disabled" >Contract</button></td>
                               @endif
-                              
-                              <td style="text-align:center"><p class="bg-info">{{$property['process']}}</p></td>
+
+                              <td style="text-align:center"><p class="bg-info">
+
+                                @if(isset($property['process']))
+                                  ${{$property['process']}}
+                                @endif
+
+                              </p></td>
                           </tr>
                         @endif
                       @endforeach

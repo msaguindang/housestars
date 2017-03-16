@@ -1,6 +1,6 @@
   @extends("layouts.main")
   @section("content")
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -59,13 +59,13 @@
           <p>Your password has been changed successfully, please try to login in now.</p>
         </div>
         <div class="col-xs-4">
-         
+
         </div>
         <div class="col-xs-4">
           <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="#" data-toggle="modal" data-target="#login">Click here to Login</a>
         </div>
         <div class="col-xs-4">
-          
+
         </div>
       </div>
     </div>

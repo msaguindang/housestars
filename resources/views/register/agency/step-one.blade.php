@@ -2,7 +2,7 @@
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -107,7 +107,7 @@
 					</select>
 				</div>
 				<div class="col-xs-4">
-					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Lorem Ipsum Dolor</b>" data-html="true"></i></label>
+					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="NB. This figure is not shown to customers. It is used to measure the customers’ savings estimate only and will not be disclosed to any external party." data-html="true"></i></label>
 					<input type="number" min="0" name="base-commission">
 					<label>Marketing Budget</label>
 					<input type="number" min="0" name="marketing-budget">

@@ -1,7 +1,7 @@
 
 @extends("layouts.main")
 @section("content")
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
