@@ -166,7 +166,8 @@ var factory = function () {
         } else if (status == 404) { //not found
             laravel.alert('Sorry. Requested page "' + url + '" not found')
         } else if (status == 200) { //OK but not really :)
-            laravel.alert('Sorry. Response is not valid JSON');
+            // laravel.alert('Sorry. Response is not valid JSON');
+            console.log(event, this);
         } else if (status == 0) {
             //Aborted request
         } else {
