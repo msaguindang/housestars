@@ -115,7 +115,7 @@ class TradesmanController extends Controller
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
 
-    public function upload(Request $request){
+    public function upload(Request $request) {
 
         if ($request->hasFile('file') ) {
             $user_id = Sentinel::getUser()->id;

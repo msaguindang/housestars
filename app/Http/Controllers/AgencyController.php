@@ -61,8 +61,7 @@ class AgencyController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-
-        // dd($data);
+        
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
@@ -71,22 +70,25 @@ class AgencyController extends Controller
 
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $data = array();
+        $index = 0;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
 
         foreach ($meta as $key) {
-            $data[$key->meta_name] = $key->meta_value;
+            if($key->meta_name == 'gallery') {
+                $data[$key->meta_name][$index] = array('id' => $key->id, 'url'=> $key->meta_value);
+                $index ++;
+            } else {                
+                $data[$key->meta_name] = $key->meta_value;
+            }            
         }
-
 
         return View::make('dashboard/agency/edit')->with('data', $data);
     }
 
     public function updateProfile(Request $request)
     {
-
-        //dd($request->all());
         if(Sentinel::check()){
             $user_id = Sentinel::getUser()->id;
 
@@ -410,7 +412,5 @@ class AgencyController extends Controller
             $error['message'] = array('You are not authorized.');
             return Response::json($error, 422);
         }*/
-
     }
-
 }
