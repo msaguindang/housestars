@@ -71,7 +71,7 @@ Route::group(['prefix' => ''], function(){
         return view('register.tradesman.complete');
     })->middleware('tradesman');
 
-    Route::get('/register/customer/step-one', 'RegistrationController@Customer')->middleware('customer');
+    Route::get('/register/customer/step-one', 'RegistrationController@Customer');
 
     Route::get('/register/customer/complete', 'RegistrationController@Review')->middleware('customer');
 
@@ -233,7 +233,20 @@ Route::group(['prefix' => ''], function(){
     Route::post('/send/{type}', 'SearchController@send');
 
     Route::get('/agency-listings', function () {
-        return view('general.agency-listings');
+        $data = [];
+        foreach (App\UserMeta::businesses() as $index => $agency) {
+            $userId = $agency->user_id;
+            $agencyData = App\UserMeta::where('user_id', '=', $userId)->get();
+            foreach ($agencyData as $value) {
+                if ($value->meta_name == 'summary') {
+                    $data[$index][$value->meta_name] = substr($value->meta_value, 0, 150);
+                } else {
+                    $data[$index][$value->meta_name] = $value->meta_value;
+                }
+            }
+            $data[$index]['id'] = $userId;
+        }
+        return view('general.agency-listings')->with('data', $data);
     });
 
     Route::post('/order-business-card', 'TradesmanController@orderBC');
@@ -256,6 +269,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
+        Route::get('test', 'AdminController@test');
         Route::get('', 'AdminController@showDashboard');
         Route::post('status/toggle', 'AdminController@toggleStatus');
 
@@ -282,6 +296,8 @@ Route::group(['prefix' => ''], function(){
 
             Route::get('', 'UserController@getAllUsers');
             Route::post('delete', 'UserController@deleteUser');
+            Route::post('insert', 'UserController@createUser');
+            Route::post('update', 'UserController@updateUser');
 
             Route::group(['prefix' => 'subscription'], function () {
 
@@ -289,12 +305,21 @@ Route::group(['prefix' => ''], function(){
 
             });
 
+            Route::get('role', 'UserController@getAllRoles');
+
         });
 
         Route::group(['prefix' => 'review'], function () {
 
             Route::get('', 'ReviewController@getAllReviews');
             Route::post('delete', 'ReviewController@deleteReview');
+            Route::get('filter', 'ReviewController@getReviewsByFilter');
+
+            Route::group(['prefix' => 'reviewees'], function () {
+
+                Route::get('', 'ReviewController@getAllReviewees');
+
+            });
 
         });
 
@@ -329,6 +354,14 @@ Route::group(['prefix' => ''], function(){
                 Route::post('delete', 'SuburbController@deleteSuburbAgent');
 
             });
+
+        });
+
+        Route::group(['prefix' => 'potential-customer'], function () {
+
+            Route::get('', 'PotentialCustomerController@getAllPotentialCustomers');
+            Route::post('delete', 'PotentialCustomerController@deletePotentialCustomer');
+            Route::get('export', 'PotentialCustomerController@exportPotentialCustomers');
 
         });
 

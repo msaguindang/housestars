@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\RoleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Suburbs;
@@ -14,7 +15,8 @@ use Mail;
 
 class SearchController extends Controller
 {
-    public function search(Request $request, $item){
+    public function search(Request $request, $item)
+    {
 
     	switch ($item) {
     		case 'category':
@@ -23,9 +25,7 @@ class SearchController extends Controller
     			return Response::json($data, 200);
     			break;
     		case 'agency':
-                $data = $this->agencyListing($request->input('term'));
-                
-                //dd($data);
+                $data = $this->agencyListing($request->get('term', ''));
                 return view('general.agency-listings')->with('data', $data);
                 break;
     		default:
@@ -43,7 +43,7 @@ class SearchController extends Controller
     	foreach ($suburbExists as $key) {
             $activeUser = User::where('id', '=', $key->user_id)->get();
             if(count($activeUser) > 0){
-        		$roles =  Role::where('user_id', $key->user_id)->where('role_id', 3)->get();
+        		$roles =  RoleUsers::where('user_id', $key->user_id)->where('role_id', 3)->get();
 
         		foreach($roles as $role){
         			//echo $role->user_id. ' = '. $role->role_id.', ';
@@ -85,8 +85,6 @@ class SearchController extends Controller
             }
         }
 
-        //dd($suburb);
-
         //$data = array();
         $x = 0;
         foreach ($tradesmen as $id) {
@@ -106,40 +104,38 @@ class SearchController extends Controller
         $data['cat'] = $category;
         $data['suburb'] = $suburb;
 
-       // dd($data);
-
        return view('general.tradesman-listings')->with('data', $data);
     }
 
 
-    public function agencyListing($term){
+    public function agencyListing($term)
+    {
         //check if term has result
         $results = UserMeta::where('meta_value', 'LIKE', '%'.$term.'%')->get();
         // return no result 
-        //dd($results);
 
-        if(count($results) == 0){
+        if(count($results) == 0) {
             return $data['cat'] = $term;
         }
         //process result
-        $agencies = array();
+        $agencies = [];
 
         foreach ($results as $result) {
-            $isAgency = Role::where('user_id', '=', $result->user_id)->get();
-            if($isAgency[0]['role_id'] == 2){
-                if(!in_array($result->user_id, $agencies)){
+            $agencyRoleId = 2;
+            if(RoleUsers::hasRole($result->user_id, $agencyRoleId)) {
+                if(!in_array($result->user_id, $agencies)) {
                     array_push($agencies, $result->user_id);
                 }
             }
         }
-        $x = 0;
 
+        $x = 0;
         foreach ($agencies as $id) {
-           $activeUser = User::where('id', '=', $id)->get();
-           if(count($activeUser) > 0){
+            $activeUser = User::where('id', '=', $id)->get();
+            if(count($activeUser) > 0) {
                 $agencyData = UserMeta::where('user_id', '=', $id)->get();
                 foreach ($agencyData as $value) {
-                if($value->meta_name == 'summary'){
+                if ($value->meta_name == 'summary') {
                     $data[$x][$value->meta_name] = substr($value->meta_value, 0, 150);
                 } else {
                     $data[$x][$value->meta_name] = $value->meta_value;
@@ -151,8 +147,6 @@ class SearchController extends Controller
                 $x++;
            }
         }
-        //return data
-        //dd($data);
         $data['cat'] = $term;
         return $data;
     }

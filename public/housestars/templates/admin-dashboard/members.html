@@ -1,6 +1,12 @@
 <div class="row">
     <div class="col-md-12">
         <h4 class="title">Members</h4>
+        <div class="pull-right">
+            <a class="btn btn-primary btn-sm add-btn" ng-click="addMember()">
+                <i class="pe-7s-plus"></i>
+                Add Member
+            </a>
+        </div>
         <div class="card">
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
@@ -25,9 +31,9 @@
                         <td>{{ user.sub_end }}</td>
 
                         <td class="btn-actions">
-                            <!--<a href="" ng-click="editUser(user, $index)" class="edit">
+                            <a href="" ng-click="editUser(user, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
-                            </a>-->
+                            </a>
 
                             <a uib-tooltip="Extend Subscription" ng-disabled="user.subscription_type == 'None'" href="" ng-click="openExtensionModal(user, $index)" class="extend-subscription">
                                 <i class="pe-7s-clock text-warning"></i>
@@ -93,6 +99,75 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
         <button type="button" class="btn btn-primary" ng-click="extendSubscriptionUser()">Save changes</button>
+    </div>
+
+</script>
+
+
+<script type="text/ng-template" id="member-modal.html">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="close()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">{{ (memberAction=='edit')?'Edit':'Add New' }} Member</h4>
+    </div>
+    <div class="modal-body">
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Name</label>
+            </div>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" ng-model="memberData.name">
+                <span class="help-block has-error {{showErrorBlock('name', 'hidden')}}">
+                    <strong>{{errors.name[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Email</label>
+            </div>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" ng-model="memberData.email">
+                <span class="help-block has-error {{showErrorBlock('email', 'hidden')}}">
+                    <strong>{{errors.email[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div ng-if="memberAction=='add'" class="row form-item">
+            <div class="col-xs-4">
+                <label>Password</label>
+            </div>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" ng-model="memberData.password">
+                <span class="help-block has-error {{showErrorBlock('password', 'hidden')}}">
+                    <strong>{{errors.password[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Role</label>
+            </div>
+            <div class="col-xs-8">
+                <select ng-model="memberData.role" class="form-control" ng-options="role.id as role.name for role in roles">
+                    <option value="">Select Role</option>
+                </select>
+                <span class="help-block has-error {{showErrorBlock('role', 'hidden')}}">
+                    <strong>{{errors.role[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-primary" ng-click="save()">Save changes</button>
     </div>
 
 </script>

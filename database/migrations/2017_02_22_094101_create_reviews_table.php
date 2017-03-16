@@ -13,21 +13,24 @@ class CreateReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('reviews', function(Blueprint $table) {
-            $table->increments('id');
-            $table->integer('reviewee_id')->nullable();
-            $table->string('reviewer_id');
-            $table->string('name');
-            $table->integer('communication')->nullable();
-            $table->integer('work_quality')->nullable();
-            $table->integer('price')->nullable();
-            $table->integer('punctuality')->nullable();
-            $table->integer('attitude')->nullable();
-            $table->string('title')->nullable();
-            $table->string('content', 2000)->nullable();
-            $table->integer('helpful')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('reviews')) {
+            Schema::create('reviews', function(Blueprint $table) {
+                $table->increments('id');
+                $table->integer('reviewee_id')->nullable();
+                $table->string('reviewer_id');
+                $table->string('name');
+                $table->integer('communication')->nullable();
+                $table->integer('work_quality')->nullable();
+                $table->integer('price')->nullable();
+                $table->integer('punctuality')->nullable();
+                $table->integer('attitude')->nullable();
+                $table->string('title')->nullable();
+                $table->string('content', 2000)->nullable();
+                $table->integer('helpful')->nullable();
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**

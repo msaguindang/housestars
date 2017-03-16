@@ -27,7 +27,7 @@ class CustomerMiddleware
                     //dd($meta);
 
                     if(count($meta) < 2){
-                      return redirect('/register/agency/step-one');
+                      return redirect('/register/customer/step-one');
                     }
 
                     return $next($request);

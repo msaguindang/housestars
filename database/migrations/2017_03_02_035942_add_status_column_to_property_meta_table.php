@@ -13,9 +13,12 @@ class AddStatusColumnToPropertyMetaTable extends Migration
      */
     public function up()
     {
-        Schema::table('property_meta', function ($table) {
-            $table->integer('status')->default(true);
-        });
+        if (!Schema::hasColumn('property_meta', 'status')) {
+            Schema::table('property_meta', function ($table) {
+                $table->integer('status')->default(true);
+            });
+        }
+
     }
 
     /**
@@ -25,8 +28,11 @@ class AddStatusColumnToPropertyMetaTable extends Migration
      */
     public function down()
     {
-        Schema::table('property_meta', function ($table) {
-            $table->dropColumn('status');
-        });
+        if (Schema::hasColumn('property_meta', 'status')) {
+            Schema::table('property_meta', function ($table) {
+                $table->dropColumn('status');
+            });
+        }
+
     }
 }

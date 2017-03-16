@@ -13,17 +13,20 @@ class CreateAdvertisementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('advertisements', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('type');
-            $table->integer('priority')->nullable();
-            $table->string('image_path')->nullable();
-            $table->integer('user_id')->nullable();
-            $table->integer('status')->default(true);
+        if (!Schema::hasTable('advertisements')) {
+            Schema::create('advertisements', function (Blueprint $table) {
+                $table->increments('id');
+                $table->string('name');
+                $table->string('type');
+                $table->integer('priority')->nullable();
+                $table->string('image_path')->nullable();
+                $table->integer('user_id')->nullable();
+                $table->integer('status')->default(true);
 
-            $table->timestamps();
-        });
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**

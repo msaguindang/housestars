@@ -23,6 +23,9 @@ class AdminMiddleware
                 case 'admin':
                     return $next($request);
                     break;
+                case 'staff':
+                    return $next($request);
+                    break;
                 default:
                     return redirect(env('APP_URL').'/');
                     break;

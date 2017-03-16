@@ -13,14 +13,17 @@ class CreatePropertyMetaTable extends Migration
      */
     public function up()
     {
-        Schema::create('property_meta', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id');
-            $table->string('meta_name', 50);
-            $table->string('meta_value', 1000);
-            $table->string('property_code', 50);
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('property_meta')) {
+            Schema::create('property_meta', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('user_id');
+                $table->string('meta_name', 50);
+                $table->string('meta_value', 1000);
+                $table->string('property_code', 50);
+                $table->timestamps();
+            });
+        }
+
     }
 
     /**

@@ -13,9 +13,12 @@ class AddStatusColumnToCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::table('categories', function ($table) {
-            $table->integer('status')->default(true);
-        });
+        if (!Schema::hasColumn('categories', 'status')) {
+            Schema::table('categories', function ($table) {
+                $table->integer('status')->default(true);
+            });
+        }
+
     }
 
     /**
@@ -25,8 +28,11 @@ class AddStatusColumnToCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::table('categories', function ($table) {
-            $table->dropColumn('status');
-        });
+        if (Schema::hasColumn('categories', 'status')) {
+            Schema::table('categories', function ($table) {
+                $table->dropColumn('status');
+            });
+        }
+
     }
 }

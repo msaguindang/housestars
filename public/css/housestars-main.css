@@ -3211,3 +3211,7 @@ select.error,
     color: red;
     margin: 11px;
 }
+
+.controller {
+    overflow: auto;
+}

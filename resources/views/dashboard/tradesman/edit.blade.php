@@ -59,14 +59,14 @@
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
             <div class="upload">
-              <input id="CoverUpload" type="file" name="cover-photo">
+              <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
           </div>
           <div class="profile">
             <div class="profile-img" style="background: url({{config('app.url')}}/{{$data['profile-photo']}}) 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
-              <input id="profileupload" type="file" name="profile-photo">
+              <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
             </div>
             <div class="profile-info">
               <label>Tradesman Name</label>

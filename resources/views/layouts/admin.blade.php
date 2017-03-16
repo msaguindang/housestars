@@ -186,6 +186,12 @@
                         <p>Advertisements</p>
                     </a>
                 </li>
+                <li>
+                    <a href="#/mailing-lists"> <!-- #/mailing-lists -->
+                        <i class="pe-7s-mail"></i>
+                        <p>Mailing Lists</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

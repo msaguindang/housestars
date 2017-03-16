@@ -56,8 +56,6 @@ class RegistrationController extends Controller
     		$role = Sentinel::getUser()->roles()->first()->slug;
 
 
-    	   //dd($request->all());
-
     		if($role == 'agency'){
                 $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url');
 
@@ -71,10 +69,9 @@ class RegistrationController extends Controller
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
-                                $value .= $suburb . ',';
-
+                                $value .= substr($suburb, 2). ',';
                                 // Update suburb availability
-                                $suburb = Suburbs::find($suburb);
+                                $suburb = Suburbs::find(substr($suburb, 2, 4));
                                 $available = $suburb->availability +  1;
                                 $suburb->availability = $available;
                                 $suburb->save();
