@@ -2131,7 +2131,7 @@ input:checked + .slider:before {
     margin: 35px 15px;
     padding-bottom: 25px;
     position: relative;
-    top: -165px;
+    /*top: -165px;*/
 }
 
 
@@ -2777,24 +2777,27 @@ input#profileupload {
     overflow: hidden;
 }
 
-.upload-gallery .gallery .item a {
+#gallery-carousel {
+    margin-top: 20px;
+}
+
+.upload-gallery #gallery-carousel .item .remove-photo {
     position: relative;
     top: 0;
     float: right;
     height: 0;
 }
 
-.upload-gallery .gallery .item #close {
+.upload-gallery #gallery-carousel .item #close {
     display: none;
     color: #f6f7f8;
     background: #337ab7;
     padding: 2px;
 }
 
-.upload-gallery .gallery .item:hover #close{
+.upload-gallery #gallery-carousel .item:hover #close{
     display: block;
 }
-
 
 .tradesman .gallery-item {
     max-height: 177px;
@@ -3223,4 +3226,41 @@ select.error,
 button.disabled {
     border-color: #c7c7c7;
     color: #000;
+}
+
+.multi-item-carousel .carousel-inner > .item {
+  transition: 500ms ease-in-out left;
+}
+.multi-item-carousel .carousel-inner .active.left {
+  left: -33%;
+}
+.multi-item-carousel .carousel-inner .active.right {
+  left: 33%;
+}
+.multi-item-carousel .carousel-inner .next {
+  left: 33%;
+}
+.multi-item-carousel .carousel-inner .prev {
+  left: -33%;
+}
+
+.multi-item-carousel .carouse-control.left,
+.multi-item-carousel .carouse-control.right {
+  background-image: none;
+}
+
+#gallery-carousel .carousel-inner {
+    min-height: 100px;
+}
+
+#gallery-carousel .left.carousel-control {
+    position: absolute;
+    left: 0;
+    top: 70px;
+}
+
+#gallery-carousel .right.carousel-control {
+    position: absolute;
+    right: 0;
+    top: 70px;
 }

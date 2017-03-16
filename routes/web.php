@@ -1,5 +1,8 @@
 <?php
+
 use App\UserMeta;
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,10 +22,13 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('/', 'MainController@home');
 
-    // Route::get('/', function () {
-    //     return view('home');
-    // })->name('homepage');
-
+    Route::post('/delete-gallery-photo', [
+        'as' => 'delete.gallery.photo',
+        function(Request $request) {
+            $galleryService = app()->make(App\Services\GalleryService::class);
+            return $galleryService->delete($request->all());
+        }
+    ]);
 
     Route::get('/home', function () {
         return view('general.home');

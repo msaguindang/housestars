@@ -64,7 +64,10 @@
             </div>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{config('app.url')}}/{{$data['profile-photo']}}) 100%">
+            @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+              @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
+            @endif
+            <div class="profile-img" style="background: url('{{$data['profile-photo']}}') 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
             </div>
@@ -338,25 +341,25 @@
                 <div class="col-xs-7">
                   <label>Gallery Photos</label>
                   <div class="gallery">
-
-                  @if(isset($data['gallery']))
-                    @foreach ($data['gallery'] as $item)
-                      <div class="item"><a href="#" data-item-id="{{$item['id']}}" data-token="{{ csrf_token() }}"><i class="fa fa-times" aria-hidden="true" id="close"></a></i><img src="{{url($item['url'])}}" alt="" style="width: 100%; height: auto;"></div>
-                    @endforeach
-                  @endif
+                    @if(isset($data['gallery']))
+                      @foreach ($data['gallery'] as $item)
+                        <div class="item">
+                          <a href="#" data-item-id="{{$item['id']}}" data-token="{{ csrf_token() }}">
+                            <i class="fa fa-times" aria-hidden="true" id="close"></i>
+                          </a>
+                          <img src="{{url($item['url'])}}" alt="" style="width: 100%; height: auto;">
+                        </div>
+                      @endforeach
+                    @endif
                   </div>
-
                 </div>
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
                   <div class="upload-media">
-                  <form  action="{{config('app.url')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
-                    {{csrf_field() }}
-
-                  </form>
+                    <form  action="{{config('app.url')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
+                      {{csrf_field() }}
+                    </form>
                   </div>
-
-
                 </div>
               </div>
             </div>
