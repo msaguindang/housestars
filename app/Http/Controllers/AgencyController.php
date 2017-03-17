@@ -95,18 +95,18 @@ class AgencyController extends Controller
             $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
 
             foreach ($meta_name as $meta) {
-
-
                 if ($request->hasFile($meta)) {
                     $localpath = 'user/user-'.$user_id.'/uploads';
                     $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
                     $path = $request->file($meta)->move(public_path($localpath), $filename);
                     $value = $localpath.'/'.$filename;
+                } else if(!empty($request->get($meta.'-drag', ''))) {
+                    $value = $request->input($meta.'-drag');
                 } else {
                     $value = $request->input($meta);
                 }
 
-                if($value !== null){
+                if($value !== null) {
                     UserMeta::updateOrCreate(
                         ['user_id' => $user_id, 'meta_name' => $meta],
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]

@@ -7,7 +7,7 @@
           <a class="remove-photo" href="javascript:void(0);" data-id="{{$item['id']}}" data-filename="{{$item['url']}}" data-token="{{ csrf_token() }}">
             <i class="fa fa-times" aria-hidden="true" id="close"></i>
           </a>
-          <img src="{{ url($item['url']) }}" alt="{{ $item['url'] }}" style="width:140px; height:140px; "> 
+          <img id="img-{{$item['id']}}" width="140" height="140" draggable="true" ondragstart="drag(event);" src="{{ url($item['url']) }}" alt="{{ $item['url'] }}" style="width:140px; height:140px; "> 
         </div>
       @endforeach
     </div>
