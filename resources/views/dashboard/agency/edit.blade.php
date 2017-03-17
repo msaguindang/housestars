@@ -56,7 +56,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
+            <p class="links small-screen"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
@@ -70,7 +70,7 @@
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
             </div>
-            <div class="profile-info">
+            <div class="profile-info edit">
               <label>Agency Name</label>
 
                   @if(isset($data['agency-name']))
@@ -202,7 +202,7 @@
             </div>
           </div>
           <!-- Gallery -->
-          <div class="container gallery-uploader">
+          <div class="container gallery-uploader agency">
             <div class="col-xs-10 col-xs-offset-2">
                 <div class="upload-gallery" style="margin: 35px 0;">
                   <div class="col-xs-7">
@@ -295,7 +295,7 @@
               url: "{{ config('app.url') . '/upload' }}",
               addRemoveLinks: true,
               sending: function(file, xhr, formData) {
-                  formData.append("_token", $('[name=_token').val()); 
+                  formData.append("_token", $('[name=_token').val());
               },
               success: function (file, response) {
                   var imgName = response;
@@ -313,7 +313,7 @@
           $.ajax({
             method: "POST",
             url: "{{ route('delete.gallery.photo')  }}",
-            data: { 
+            data: {
               id: $(this).data('id'),
               filename: $(this).data('filename')
             },

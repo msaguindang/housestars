@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -56,7 +56,7 @@
             <p class="links"><a href=""> Home Page</a> > <a href=""> Search Category Listings</a> > <span class="blue"> Category Listings</span> </p>
           </div>
         </div>
-      </div>   
+      </div>
     </section>
 
     <section id="search-results" class="category-listings dark-bg">
@@ -103,5 +103,5 @@
         </div>
       </div>
     </section>
-  
+
 @endsection

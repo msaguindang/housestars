@@ -61,7 +61,7 @@ class AgencyController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        
+
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
@@ -79,9 +79,9 @@ class AgencyController extends Controller
             if($key->meta_name == 'gallery') {
                 $data[$key->meta_name][$index] = array('id' => $key->id, 'url'=> $key->meta_value);
                 $index ++;
-            } else {                
+            } else {
                 $data[$key->meta_name] = $key->meta_value;
-            }            
+            }
         }
         $data['hasGallery'] = $index;
         return View::make('dashboard/agency/edit')->with('data', $data);
@@ -243,7 +243,7 @@ class AgencyController extends Controller
     public function updateAgent(Request $request)
     {
         if(Sentinel::check()){
-
+          //dd($request->all());
             $agents = $request->input('add-agents');
             foreach ($agents as $agent) {
                 if($agent['name'] != '' && $agent['email'] != ''){
