@@ -79,7 +79,7 @@
 			<div class="col-xs-12 form-box" style="padding: 40px">
 				<h2>Add Agents</h2>
 				<p>By adding your staff, they can update your profile page with pictures, stats and comments. If they leave your company, just mark them inactive.</p>
-				<form class="repeater agents" action="{{env('APP_URL')}}/add-agents" method="POST">
+				<form class="repeater agents small-screen" action="{{env('APP_URL')}}/add-agents" method="POST">
 					{{csrf_field() }}
 
 					@if(session('error'))
@@ -108,6 +108,32 @@
 						</tbody>
 					</table>
 					<div class="col-xs-2 col-xs-offset-8"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
+				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
+
+				</form>
+
+        <form class="repeater agents mobile" action="{{env('APP_URL')}}/add-agents" method="POST">
+					{{csrf_field() }}
+
+					@if(session('error'))
+					<div class="alert alert-danger">
+						{{session('error')}}
+					</div>
+					@endif
+						<div data-repeater-list="add-agents">
+							<div data-repeater-item>
+                <label>Full Name</label>
+								<input type="text" name="name" value="" placeholder="" required/>
+                <label>Email</label>
+								<input type="text" name="email" value="" placeholder="" required/>
+                <label>Password</label>
+								<input type="password" name="password" value="" placeholder="" required/>
+                <label>Status (Active/Inactive)</label>
+								<label class="switch"><input type="checkbox" name="active"><div class="slider round"></div></label>
+								<i data-repeater-delete  class="fa fa-minus" aria-hidden="true"><span class="btn-label">REMOVE AGENT</span></i>
+						</div>
+					</div>
+					<div class="add-agent-button"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD AGENT</span></i></div>
 				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
 
 				</form>

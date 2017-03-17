@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\DB;
 use App\UserMeta;
 use App\Reviews;
 use App\User;
+use App\Agents;
 use App\Advertisement;
 use App\Property;
 use Response;
-use App\Agents;
 
 class ProfileController extends Controller
 {
@@ -28,7 +28,6 @@ class ProfileController extends Controller
           $data['total-listings'] = count($listings);
           return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
           break;
-
     		default:
     			break;
     	}
@@ -38,7 +37,6 @@ class ProfileController extends Controller
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
     	$data = array();
-        $data['tradesman-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -87,16 +85,16 @@ class ProfileController extends Controller
 
     public function agency($id) {
         $user = User::where('id', $id)->get();
-        $agencyId = Agents::where('agent_id', $id)->first();
-        $data = array();
-        if(isset($agencyId)) {
-            $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
-            $data['agency-id'] = $agencyId->agency_id;
-        }
-        else {
-            $meta = UserMeta::where('user_id', $id)->get();
-            $data['agency-id'] = $id;
-        }
+         $agencyId = Agents::where('agent_id', $id)->first();
+         $data = array();
+         if(isset($agencyId)) {
+             $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
+             $data['agency-id'] = $agencyId->agency_id;
+         }
+         else {
+             $meta = UserMeta::where('user_id', $id)->get();
+             $data['agency-id'] = $id;
+         }
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';

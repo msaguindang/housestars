@@ -67,21 +67,21 @@
           <div class="col-xs-4 animated">
             <h3>Build A Personalize Page</h3>
             <p>Populate your page with your logo, as well as pictures and details of what you do. The page is easily edited so you can update it as often as you like.</p>
-            <div class="featured-img">
+            <div class="featured-img mobile-hidden">
               <img src="assets/img-square-agent.png" alt="Want to sell a property?">
             </div>
           </div>
           <div class="col-xs-4 animated">
             <h3>Monopolize a Suburb</h3>
             <p>There is only space for three agents in each suburb. You have the ability to take one space, and compete with your fellow agents, or take all three spots and really boost your sales figures.</p>
-            <div class="featured-img">
+            <div class="featured-img mobile-hidden">
               <img src="assets/img-house.png" alt="are you a trade or service?">
             </div>
           </div>
           <div class="col-xs-4 animated">
             <h3>ATTRACT NEW VENDORS</h3>
             <p>The vendors that come to you from this site are new prospects that do not have a preferred agent. Our aim is to make you number 1 in your suburb, by using our sales funnel to dominate your competition and position your business as the best choice in the area.</p>
-            <div class="featured-img">
+            <div class="featured-img mobile-hidden">
               <img src="assets/img-agentcalling.png" alt="Are you an agent?">
             </div>
           </div>
