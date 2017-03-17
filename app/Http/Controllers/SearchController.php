@@ -26,6 +26,7 @@ class SearchController extends Controller
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));
+              //  dd($data);
                 return view('general.agency-listings')->with('data', $data);
                 break;
     		default:
@@ -75,7 +76,7 @@ class SearchController extends Controller
 
         $trade = UserMeta::where('meta_value', 'LIKE', '%'.$category.'%')->get();
 
-        
+
         $tradesmen = array();
 
         foreach ($trade as $key) {
@@ -90,7 +91,7 @@ class SearchController extends Controller
         foreach ($tradesmen as $id) {
            $activeUser = User::where('id', '=', $id)->get();
            if(count($activeUser) > 0){
-                
+
                 $tradesmanData = UserMeta::where('user_id', '=', $id)->get();
                 foreach ($tradesmanData as $value) {
                    $data[$x][$value->meta_name] = $value->meta_value;
@@ -112,7 +113,7 @@ class SearchController extends Controller
     {
         //check if term has result
         $results = UserMeta::where('meta_value', 'LIKE', '%'.$term.'%')->get();
-        // return no result 
+        // return no result
 
         if(count($results) == 0) {
             return $data['cat'] = $term;
@@ -121,14 +122,15 @@ class SearchController extends Controller
         $agencies = [];
 
         foreach ($results as $result) {
-            $agencyRoleId = 2;
-            if(RoleUsers::hasRole($result->user_id, $agencyRoleId)) {
+            $verifyRole =  RoleUsers::where('user_id', $result->user_id)->first()->role_id;
+            if($verifyRole ==  2) {
                 if(!in_array($result->user_id, $agencies)) {
                     array_push($agencies, $result->user_id);
                 }
             }
         }
 
+        //dd($agencies);
         $x = 0;
         foreach ($agencies as $id) {
             $activeUser = User::where('id', '=', $id)->get();
@@ -140,7 +142,7 @@ class SearchController extends Controller
                 } else {
                     $data[$x][$value->meta_name] = $value->meta_value;
                 }
-                   
+
                 }
                 // $data[$x]['rating'] = $this->getRating($id);
                 $data[$x]['id'] = $value->user_id;
