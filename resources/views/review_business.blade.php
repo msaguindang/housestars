@@ -49,7 +49,7 @@
 					</div>
 		</header>
 
-		<section id="top-header">
+		<section id="top-header desktop">
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-7 col-xs-offset-5 navigation">
@@ -76,7 +76,7 @@
 
 		<section id="home-banner">
 			<div class="container">
-				<div class="row header">
+				<div class="row header desktop">
 					<div class="col-xs-4 logo">
 						<a href="/"><img src="assets/logo-header-home.png" alt="HouseStars Logo"></a>
 					</div>
