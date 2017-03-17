@@ -98,7 +98,7 @@
 									</ul>
 					</div>
 				</div>
-				<div class="rate-trade-services">
+				<div class="rate-trade-services desktop">
 					<a href="#" id="rate" data-toggle="modal" data-target="#rating"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
 				</div>
 				<div class="row highlight">
@@ -118,7 +118,10 @@
 						</ul>
 					</div>
 				</div>
-				<div class="banner-ad">
+				<div class="rate-trade-services desktop">
+					<a href="#" id="rate" data-toggle="modal" data-target="#rating"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
+				</div>
+				<div class="banner-ad desktop">
 					<img src="assets/banner-ad.png" alt="Banner Ad">
 				</div>
 			</div>
