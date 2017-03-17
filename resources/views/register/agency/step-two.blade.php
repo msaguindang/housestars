@@ -2,7 +2,7 @@
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -109,9 +109,9 @@
 					</table>
 					<div class="col-xs-2 col-xs-offset-8"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
 				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
-				    
+
 				</form>
-				
+
 			</div>
 		</div>
 	</div>

@@ -2,7 +2,7 @@
 @extends("layouts.main")
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -51,23 +51,7 @@
           </div>
     </header>
 
-<section id="progress-bar" class="header-margin">
-	<div class="container">
-		<div class="row">
-			<span class="progress-line completed" style="width: 300px"></span>
-			<span class="icon icon-additional-info-completed"></span>
-			<span class="progress-line" style="width: 464px"></span>
-			<span class="icon icon-payment" ></span>
-			<span class="progress-line" style="width: 300px"></span>
-		</div>
-		<div class="row label">
-			<span class="completed" style="margin-left: 275px;">Additional Information</span>
-			<span style="margin-left: 443px;">Confirmation</span>
-		</div>
-	</div>
-</section>
-
-<section id="sign-up-form">
+<section id="sign-up-form" class="header-margin">
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
@@ -116,7 +100,7 @@
 				              </li>
 				            </ul>
 				        </div>
-						
+
 						<label>Number of Bedrooms</label>
 						<input type="text" name="number-rooms">
 						<label>Post Code</label>
@@ -173,7 +157,7 @@
 							<div class="radio-select"><input type="radio" name="leased" value="yes"> Yes </div>
 							<div class="radio-select"> <input type="radio" name="leased" value="no"> No </div>
 				        </div>
-						
+
 
 					</div>
 
@@ -183,17 +167,14 @@
 						<label>Anything Specific we need to know?</label>
 						<textarea name="more-details" placeholder="" class="no-top" style="height: 145px;"></textarea>
 
-					</div>					
+					</div>
 				</div>
 
 				<span class="label-header">Agent Selection</span>
 
 				<div class="col-xs-12" id="agencyList"></div>
 				<div class="col-xs-3 col-xs-offset-9">
-					<button class="btn hs-primary" id="submit" disabled>ADD PROPERTY <span class="icon icon-arrow-right"></span></button>
-					<div class="agreement">
-						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>
-					</div>
+					<button class="btn hs-primary" id="submit">ADD PROPERTY <span class="icon icon-arrow-right"></span></button>
 				<div>
 				</form>
 			</div>
@@ -230,14 +211,14 @@
 	          type: 'POST',
 	          success: function(data){
 	          	$( ".option" ).addClass('hidden');
-	          	
+
 	          	for (var i in data){
 	          		$( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data[i].id +'" name="agent"> <span class="checklist-label"> '+ data[i].name +' </span> ' );
 	          	}
 
 	          	console.log(data);
 	          	$( "#agencyList" ).append('<span class="option"><input type="radio" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span>');
-	          	
+
 	          },
 	          error: function(data){
 	          	$( ".option" ).addClass('hidden');

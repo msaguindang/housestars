@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -62,7 +62,7 @@
           <span class="separator"></span>
           <p>Selecting your next Trade or Service with House Stars means no nasty surprises. Each of our business are rated and reviewed so you can choose the one that is best suited to your needs. Just enter your suburb below to get started.</p>
         </div>
-        </div>   
+        </div>
       </div>
     </section>
 
@@ -94,7 +94,7 @@
           <div id="trades"></div>
           <div class="spacing"></div>
         </div>
-          
+
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -48,7 +48,7 @@
             </div>
           </div>
     </header>
-    
+
     <section id="cover-container" class="header-margin tradesman-listings">
       <div class="cover-img">
         <div class="container">
@@ -61,7 +61,7 @@
           <h2 class="narrower"><span class="icon icon-left-bar"></span> Agency Listings <span class="icon icon-right-bar"></span></h2>
           <span class="separator"></span>
         </div>
-        </div>   
+        </div>
       </div>
     </section>
     <div class="dark-bg agency">

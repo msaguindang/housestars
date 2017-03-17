@@ -3,7 +3,7 @@
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -17,7 +17,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -53,7 +53,7 @@
     </header>
 
 
-<section id="progress-bar" class="header-margin">
+<section id="progress-bar" class="header-margin tradesman">
 	<div class="container">
 		<div class="row">
 			<span class="progress-line completed" style="width: 139px"></span>
@@ -76,7 +76,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box no-padding payment">
-				
+
 					<form action="{{env('APP_URL')}}/add-payment" method="POST">
 
 					{{csrf_field() }}
@@ -108,7 +108,7 @@
 					<input type="radio" name="subscription" value="monthly"> Pay an ongoing fee of $50 per month
 				</div>
 				<div class="col-xs-6 border-left padding-40">
-					<h2>Add Billing Address</h2> 
+					<h2>Add Billing Address</h2>
 					<label>Address</label>
 					<input type="text" name="address" required>
 					<label>Suburb</label>
@@ -119,7 +119,7 @@
 							@endforeach
 
 							</select>
-			            
+
 			        </div>
 					<label>State</label>
 					<div class="btn-group">

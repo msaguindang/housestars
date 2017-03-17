@@ -1,7 +1,7 @@
 @extends("layouts.main")
 @section("content")
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -15,7 +15,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -128,22 +128,22 @@
 								<p>For 3 Positions = $1000 per year</p>
 							@endif
 
-							
+
 						</div>
 					</div>
 					<div class="col-xs-4">
 						<div class="preview-total">
-						
+
 							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
 							<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
 						</div>
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
 				</div>
-				
+
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
 				<button class="btn hs-default close-btn"><span class="icon icon-close"></span> CANCEL</button>
-			
+
 			</div>
 		</div>
 	</div>

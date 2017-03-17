@@ -1,6 +1,6 @@
   @extends("layouts.main")
   @section("content")
-    <header id="header" class="animated hide sticky">
+    <header id="header" class="animated hide sticky desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                     @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -49,7 +49,7 @@
           </div>
     </header>
 
-    <section id="top-header">
+    <section id="top-header" class="desktop">
       <div class="container">
         <div class="row">
           <div class="col-xs-7 col-xs-offset-5 navigation">
@@ -60,7 +60,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -76,7 +76,7 @@
 
     <section id="home-banner">
       <div class="container">
-        <div class="row header">
+        <div class="row header desktop">
           <div class="col-xs-4 logo">
             <a href=""><img src="assets/logo-header-home.png" alt="HouseStars Logo"></a>
           </div>
@@ -100,13 +100,13 @@
                   </ul>
           </div>
         </div>
-        <div class="rate-trade-services">
+        <div class="rate-trade-services desktop">
           @if(Sentinel::check())
             <a href="#" id="rate" data-toggle="modal" data-target="#rateInfo"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
           @else
             <a href="#" id="rate" data-toggle="modal" data-target="#rating"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
           @endif
-          
+
         </div>
         <div class="row highlight">
           <div class="col-xs-6 col-xs-offset-3 highlight-text">
@@ -125,17 +125,26 @@
             </ul>
           </div>
         </div>
-        <div class="banner-ad">
+        <div class="banner-ad desktop">
           @if(isset($advert['141x117']))
             <img src="{{$advert['141x117']['url']}}" alt="Banner Ad">
           @else
             <img src="assets/banner-ad.png" alt="Banner Ad">
           @endif
         </div>
+
+        <div class="rate-trade-services tablet">
+          @if(Sentinel::check())
+            <a href="#" id="rate" data-toggle="modal" data-target="#rateInfo"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
+          @else
+            <a href="#" id="rate" data-toggle="modal" data-target="#rating"><img src="assets/img-banner-rate.png" alt="Rate Trade & Services" class="animated"></a>
+          @endif
+
+        </div>
       </div>
     </section>
 
-    <div class="horizontal-bg"></div>
+    <div class="horizontal-bg desktop"></div>
     <section id="advertisement-banner">
       @if(isset($advert['728x90']))
         <img src="{{$advert['728x90']['url']}}" alt="Banner Ad">
@@ -152,12 +161,12 @@
         <div class="row steps">
           <div class="left">
             <!---- STEP ONE ---->
-            <div class="step-image stepOne">
+            <div class="step-image stepOne desktop">
               <img src="assets/img-hand.png" alt="Step 1: Signup">
             </div>
 
             <!---- STEP 2 ---->
-            <div class="step-description stepTwo animated">
+            <div class="step-description stepTwo animated desktop">
               <div class="description-box-right">
                 <h3>Hire Tradesman to Renovate your Property</h3>
                 <p>Once you have signed up, you can start using the trades and services on the site, all rated and reviewed by house owners like you, to work on your property. You organise the tradies, the work is performed and you pay them as you normally would. Then you simply add the receipts to your process page and leave a rating and a comment about them for future users to see. The total of the receipts will be the savings you receive when you sell your property using one of the agents listed on the site. </p>
@@ -166,12 +175,12 @@
             </div>
 
             <!---- STEP 3 ---->
-            <div class="step-image stepThree">
+            <div class="step-image stepThree desktop">
               <img src="assets/img-agent.png" alt="Step 3: Engage an Agent">
             </div>
 
             <!---- STEP 4 ---->
-            <div class="step-description stepFour animated">
+            <div class="step-description stepFour animated desktop">
               <div class="description-box-right">
                 <h3>Sign Up</h3>
                 <p>Once the property is sold, the agent helps you through the closing process, and charges you the normal commission price. After your process page is complete, you receive your discount via a cheque in the mail. You can then spend that money on your new home, or a trip to Bali, or whatever you want!</p>
@@ -191,8 +200,16 @@
             </div>
 
             <!---- STEP 2 ---->
-            <div class="step-image stepTwo">
+            <div class="step-image stepTwo desktop">
               <img src="assets/img-tradesman.png" alt="Step 2: Hire Tradesman to Renovate your Property">
+            </div>
+
+            <div class="step-description stepTwo animated tablet">
+              <div class="description-box-left">
+                <h3>Hire Tradesman to Renovate your Property</h3>
+                <p>Once you have signed up, you can start using the trades and services on the site, all rated and reviewed by house owners like you, to work on your property. You organise the tradies, the work is performed and you pay them as you normally would. Then you simply add the receipts to your process page and leave a rating and a comment about them for future users to see. The total of the receipts will be the savings you receive when you sell your property using one of the agents listed on the site. </p>
+                <p class="highlight-small">(See our faq for details about how much you can save)</p>
+              </div>
             </div>
 
             <!---- STEP 3 ---->
@@ -204,8 +221,15 @@
             </div>
 
             <!---- STEP 4 ---->
-            <div class="step-image stepFour">
+            <div class="step-image stepFour desktop">
               <img src="assets/img-relaxing.png" alt="Step 4: The Property is Sold">
+            </div>
+
+            <div class="step-description stepFour animated tablet">
+              <div class="description-box-left">
+                <h3>Sign Up</h3>
+                <p>Once the property is sold, the agent helps you through the closing process, and charges you the normal commission price. After your process page is complete, you receive your discount via a cheque in the mail. You can then spend that money on your new home, or a trip to Bali, or whatever you want!</p>
+              </div>
             </div>
 
           </div>

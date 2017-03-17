@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -47,9 +47,9 @@
             </div>
           </div>
     </header>
- 
+
     <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
-     
+
         {{csrf_field() }}
       <div class="cover-img">
         <div class="breadcrumbs container">
@@ -60,7 +60,7 @@
       </div>
     </section>
 
-    <section id="edit-user-info">
+    <section id="settings">
       <div class="container">
         <div class="row">
           <div class="col-xs-12">
@@ -103,7 +103,7 @@
                         @endif
                       <label>Credit Card</label>
                       <input type="text" name="credit-card" value="**** **** **** {{$data['credit-card']}}">
-                      
+
                       <div class="col-xs-8 no-padding" >
                         <label>Expiry Date</label>
                         <div class="btn-group" style="width: 40%">
@@ -115,12 +115,12 @@
                       <div class="col-xs-4" style="padding-right: 0;">
                       <label>CVC</label>
                       <input type="text" name="cvc" placeholder="***">
-                      </div>   
-                      <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE CARD DETAILS <span class="icon icon-arrow-right"></span></button>       
+                      </div>
+                      <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE CARD DETAILS <span class="icon icon-arrow-right"></span></button>
                     </form>
                   </div>
-                  
-                  
+
+
               </div>
             </div>
           <div class="spacing"></div>

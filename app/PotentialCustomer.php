@@ -8,5 +8,5 @@ class PotentialCustomer extends Model
 {
     protected $table = 'potential_customers';
     public $timestamps = true;
-    protected $fillable = ['name', 'email', 'phone'];
+    protected $fillable = ['name', 'email', 'phone', 'status'];
 }

@@ -1,6 +1,6 @@
   @extends("layouts.main")
   @section("content")
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -62,7 +62,7 @@
           <p>Password must contain at least 7 characters and a special character.</p>
         </div>
         <div class="col-xs-4">
-         
+
         </div>
         <div class="col-xs-4">
           @if(count($errors)>0)
@@ -80,7 +80,7 @@
           <button class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;">Reset Password</button>
         </div>
         <div class="col-xs-4">
-          
+
         </div>
       </form>
       </div>

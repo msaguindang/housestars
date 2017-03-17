@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -100,50 +100,58 @@
                 <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Reviews</span>
               </div>
             </div>
-            
-                
+
+
                 @if(isset($data['summary']) && $data['summary'] != '')
                   <div class="description">
                     <p>{{$data['summary']}}</p>
                   </div>
                 @endif
-            
+
           </div>
           <div class="col-xs-3 profile-details">
            <!--  <h3>More Details</h3> -->
-            @if(isset($data['phone']))
-            <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
-            <div class="col-xs-10 detail">
-              <p> <b> Phone </b></br><span class="detail">{{$data['phone']}}</span></p>
+           <div class="info-item">
+              @if(isset($data['phone']))
+              <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p> <b> Phone </b></br><span class="detail">{{$data['phone']}}</span></p>
+              </div>
+              @endif
             </div>
-            @endif
-            @if(isset($data['email']))
-            <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
-            <div class="col-xs-10 detail">
-              <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
+            <div class="info-item">
+              @if(isset($data['email']))
+              <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
+              </div>
+              @endif
             </div>
-            @endif
+            <div class="info-item">
+              @if(isset($data['abn']))
+              <div class="col-xs-2 icon"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p><b> ABN </b></br><span class="detail">{{$data['abn']}}</span></p>
+              </div>
+              @endif
+            </div>
+            <div class="info-item">
 
-            @if(isset($data['abn']))
-            <div class="col-xs-2 icon"><i class="fa fa-info-circle" aria-hidden="true"></i></div>
-            <div class="col-xs-10 detail">
-              <p><b> ABN </b></br><span class="detail">{{$data['abn']}}</span></p>
+              @if(isset($data['charge-rate']))
+              <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+              </div>
+              @endif
             </div>
-            @endif
-
-            @if(isset($data['charge-rate']))
-            <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
-            <div class="col-xs-10 detail">
-              <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+            <div class="info-item">
+              @if(isset($data['website']))
+              <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
+              </div>
+              @endif
             </div>
-            @endif
-            @if(isset($data['website']))
-            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-            <div class="col-xs-10 detail">
-              <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
-            </div>
-            @endif
-            
           </div>
         </div>
       </div>
@@ -153,15 +161,15 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
-           
-                                
+
+
             <div class="row gallery">
-                @if(isset($data['gallery'])) 
+                @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
                 @else
                   <div class="spacing"></div>
                 @endif
-                
+
                 <div class="gallery-carousel ">
                    @if(isset($data['gallery']))
                                 @php($x = 0)
@@ -169,20 +177,22 @@
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                         <!-- Carousel Buttons Next/Prev -->
+                        <div class="controller">
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>      
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                                </div>
                         <!-- Carousel Slides / Quotes -->
                           <div class="carousel-inner">
                           <!-- Gallery 1 -->
-                            
-                              
+
+
                                 @php($items = count($data['gallery']) - 1)
 
                                 @foreach($data['gallery'] as $item)
                                   @if ($x == 0 )
                                     <div class="item active">
                                       <div class="row">
-                                  @endif  
+                                  @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
                                       <div class="gallery-image" style="background: url({{url($item)}})"></div>
@@ -203,7 +213,7 @@
 
                                   @php($x++)
 
-                                @endforeach   
+                                @endforeach
                         </div>
                     </div>
                 </div>
@@ -223,9 +233,9 @@
                     <p><b>{{$review['name']}}</b></p>
                     <p class="left rating-p">{{$review['content']}}</p>
                     <button class="btn btn-helpful right" id="helpful" data-id="{{$review['id']}}" data-token="{{csrf_token()}}"><span class="icon icon-helpful"></span> Helpful <span class="small" id="count-{{$review['id']}}">({{$review['helpful']}})</span></button>
-                    
+
                     <div class="stars left">
-                     
+
                         @for($i = 1; $i <= $review['average']; $i++)
                             <span class="icon icon-star"></span>
                         @endfor
@@ -233,7 +243,7 @@
                         @for($i = 1; $i <= $rating; $i++)
                             <span class="icon icon-star-grey"></span>
                         @endfor
-                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a> 
+                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a>
                     </div>
                   </div>
                   @endif
@@ -241,7 +251,7 @@
               @endif
             </div>
           </div>
-            <div class="col-xs-3 sidebar">
+            <div class="col-xs-3 sidebar desktop">
               <div class="advertisement">
                 @if(isset($data['advert']))
                   @foreach($data['advert'] as $ad)
@@ -254,9 +264,11 @@
       </div>
       @include("modals.rating");
     </section>
+
     <script>
       function openRatingModal() {
         $('#rating').modal('show');
       }
     </script>
 @endsection
+

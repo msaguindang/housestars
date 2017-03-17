@@ -2,7 +2,7 @@
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
-<header id="header" class="animated">
+<header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -63,7 +63,10 @@
             </div>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) 100%">
+            @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+              @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
+            @endif
+            <div class="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
             </div>
@@ -198,27 +201,44 @@
               </div>
             </div>
           </div>
-       <!--    <div class="col-xs-10 col-xs-offset-2">
-            <div class="upload-gallery">
-              <div class="col-xs-6">
-                <label>Gallery Photos</label>
-                <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-                <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-                <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-                <img src="{{asset('assets/img-gallery-1.jpg')}}" alt="">
-
-              </div>
-              <div class="col-xs-6">
-                <label>Upload More Gallery Photos</label>
-                <div class="upload-media">
-                  <span> Click to Add Images</span>
-                  <input type="file" name="img" multiple>
-                  <button class="btn hs-upload-icon"></button>
+          <!-- Gallery -->
+          <div class="container gallery-uploader">
+            <div class="col-xs-10 col-xs-offset-2">
+                <div class="upload-gallery" style="margin: 35px 0;">
+                  <div class="col-xs-7">
+                    <label>Gallery Photos</label>
+                    @if($data['hasGallery'])
+                      <div id="gallery-carousel" class="carousel slide multi-item-carousel">
+                        <div class="carousel-inner">
+                          @include('dashboard.agency.partials.gallery_items')
+                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </div>
+                    @endif
+                  </div>
+                  <div class="col-xs-5">
+                    <label>Upload More Gallery Photos</label>
+                    <div class="upload-media">
+                      <div id="agency-gallery" class="dropzone">
+                        {{ csrf_field() }}
+                        <div class="dz-default dz-message">
+                          click or drag photos here
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
               </div>
-            </div>
-          </div> -->
+          </div>
+          <!-- end Gallery -->
           <div class="col-xs-10 col-xs-offset-2">
             <div class="col-xs-8">
             <label>Write Agency Summary</label>
@@ -244,6 +264,11 @@
 
  @section('scripts')
   <script type="text/javascript">
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+          },
+      });
       function readURL(input, url) {
           if (input.files && input.files[0]) {
               var preview = url;
@@ -264,7 +289,45 @@
       $("#profileupload").change(function () {
           readURL(this, '.profile-img');
       });
+      $(document).ready(function () {
+          Dropzone.autoDiscover = false;
+          $("#agency-gallery").dropzone({
+              url: "{{ config('app.url') . '/upload' }}",
+              addRemoveLinks: true,
+              sending: function(file, xhr, formData) {
+                  formData.append("_token", $('[name=_token').val()); 
+              },
+              success: function (file, response) {
+                  var imgName = response;
+                  file.previewElement.classList.add("dz-success");
+                  console.log("Successfully uploaded :" + imgName);
+              },
+              error: function (file, response) {
+                  file.previewElement.classList.add("dz-error");
+              }
+          });
+      });
 
-
+      $('body').on('click', '.remove-photo', function (e) {
+        if(confirm("Are you sure you want to delete this photo?")) {
+          $.ajax({
+            method: "POST",
+            url: "{{ route('delete.gallery.photo')  }}",
+            data: { 
+              id: $(this).data('id'),
+              filename: $(this).data('filename')
+            },
+            dataType : 'json',
+            success: function(responseData, textStatus, jqXHR) {
+              $('.carousel-inner .item').remove();
+              $('.carousel-inner').append(responseData.html);
+              if(responseData.html.indexOf('') > -1) {
+                $('.carousel-control').hide();
+              }
+            }
+          });
+        }
+      });
   </script>
+  <script src="{{asset('js/image-preview.js')}}"></script>
  @stop

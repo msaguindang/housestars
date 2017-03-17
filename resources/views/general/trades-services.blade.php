@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -67,12 +67,12 @@
         <div class="row steps">
           <div class="left">
             <!---- STEP ONE ---->
-            <div class="step-image stepOne">
+            <div class="step-image stepOne desktop">
               <img src="assets/img-agent.png" alt="Step 1: Sign up as a Trade or Service">
             </div>
 
             <!---- STEP 2 ---->
-            <div class="step-description stepTwo animated">
+            <div class="step-description stepTwo animated desktop">
               <div class="description-box-right">
                 <h3>Get Listed in our System</h3>
                 <p>You will be listed next to all of the other similar businesses in your area. Every time someone rates you, your listing goes to the top of the page, so its important to ask people to rate you on every job, including the ones that don't go so well. 100 comments at 3 stars is better than 5 comments at 5 stars.</p>
@@ -80,7 +80,7 @@
             </div>
 
             <!---- STEP 3 ---->
-            <div class="step-image stepThree">
+            <div class="step-image stepThree desktop">
               <img src="assets/img-city.png" alt="Step 3: Get Hired to do a Task">
             </div>
 
@@ -96,8 +96,15 @@
             </div>
 
             <!---- STEP 2 ---->
-            <div class="step-image stepTwo">
+            <div class="step-image stepTwo desktop">
               <img src="assets/img-list.png" alt="Step 2: Get Listed in our System">
+            </div>
+
+            <div class="step-description stepTwo animated tablet">
+              <div class="description-box-left">
+                <h3>Get Listed in our System</h3>
+                <p>You will be listed next to all of the other similar businesses in your area. Every time someone rates you, your listing goes to the top of the page, so its important to ask people to rate you on every job, including the ones that don't go so well. 100 comments at 3 stars is better than 5 comments at 5 stars.</p>
+              </div>
             </div>
 
             <!---- STEP 3 ---->

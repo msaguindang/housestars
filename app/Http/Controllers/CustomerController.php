@@ -170,6 +170,7 @@ class CustomerController extends Controller
 
         }
 
+        //dd($data);
 
         if(count($data['property']) > 1){
             $data['recent'] = $lastIndex;
@@ -181,7 +182,7 @@ class CustomerController extends Controller
 
        // Check of the last property added was proccessed
 
-       dd($data);
+       //dd($data);
 
         return View::make('dashboard/customer/process')->with('data', $data);
     }

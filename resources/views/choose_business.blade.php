@@ -1,6 +1,6 @@
 	@extends("layouts.main")
 	@section("content")
-	<header id="header" class="animated hide sticky">
+	<header id="header" class="animated hide sticky desktop">
 		<div class="container">
 			<div class="row">
 			<div class="col-xs-3 branding">
@@ -14,7 +14,7 @@
 				<div class="nav-items">
 					<ul>
 					<!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-					
+
 					 @if(Sentinel::check())
 					 <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
 					@else
@@ -59,7 +59,7 @@
 				<div class="nav-items">
 					<ul>
 					<!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-					
+
 					 @if(Sentinel::check())
 					 <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
 					@else

@@ -100,13 +100,9 @@ class ProfileController extends Controller
             if($key->meta_name == 'gallery') {
                 $data[$key->meta_name][$y] = $key->meta_value;
                 $y = $y + 1;
-
             } else {
-                
                 $data[$key->meta_name] = $key->meta_value;
-            
             }
-            
         }
 
         $data['rating'] = $this->getRating($id);

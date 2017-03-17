@@ -119,7 +119,7 @@
 							<div class="btn-group dropdown">
 								<button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
 								<ul class="dropdown-menu">
-									@foreach($businesses as $business)	
+									@foreach($businesses as $business)
 									<li>
 										<label for="{{$business->user_id}}">{{$business->meta_value}}</label>
 										<input type="radio" id="{{$business->user_id}}" name="businessId" value="{{$business->user_id}}">
@@ -129,7 +129,7 @@
 							</div>
 							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
 							<button type="submit" class="btn hs-primary">Rate Tradesman Now</button>
-						</form>	
+						</form>
 					</div>
 				</div>
 			</div>
@@ -417,7 +417,7 @@
     @endif
 
     <!-- RATE SUMMARY-->
-    
+
 
      <!-- NO TRADESMAN LISTED-->
     <div class="modal fade" id="noTradesman" tabindex="-1" role="dialog" aria-labelledby="signup-area">
@@ -712,7 +712,7 @@
               @endif
               <input type="text" name="subject" placeholder="Subject">
               <textarea name="message" placeholder="Your Message Here" class="no-top"></textarea>
-              
+
               <button class="btn hs-primary">Send Message</button>
             </form>
           </div>
@@ -757,11 +757,11 @@
                 <span class="label">Click to add Receipt</span>
                 <input type="file" name="receipt" id="receipt">
               </div>
-              
-                    
+
+
                 <button class="btn hs-primary" id="transaction">Order Now</button>
-              </form>   
-            @else 
+              </form>
+            @else
             <h4>NO LISTED TRADESMAN</h4>
             <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
             @endif
@@ -782,7 +782,7 @@
 						<h4>SELECT YOUR AGENT</h4>
 						</br><p class="sub-heading">Select an agency near your property location.</p>
 						 <div class="agents">
-							
+
 							@php($x = 0)
 							@if(isset($data['agents']))
 								@foreach($data['agents'] as $agent)
@@ -793,7 +793,7 @@
 												<p class="agent-name" style="margin-top: 10px;">{{$agent['name']}}</p>
 											</div>
 											</br>
-											
+
 											<div class="stars">
 												@if($agent['rating'] == 0)
 													<span class="icon icon-star-grey"></span>
@@ -801,7 +801,7 @@
 													<span class="icon icon-star-grey"></span>
 													<span class="icon icon-star-grey"></span>
 													<span class="icon icon-star-grey"></span>
-												@else 
+												@else
 													@for($i = 0; $i < $agent['rating']; $i++)
 															<span class="icon icon-star"></span>
 													@endfor
@@ -840,7 +840,7 @@
                 </div>
               </div>
             </div>
-          </div>    
+          </div>
         @endif
       @endforeach
     @endif
@@ -860,4 +860,3 @@
         </div>
       </div>
     </div>
-

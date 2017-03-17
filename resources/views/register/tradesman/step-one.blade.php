@@ -4,7 +4,7 @@
         <div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}"/></div>
     </div>
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
             <div class="row">
                 <div class="col-xs-3 branding">
@@ -62,7 +62,7 @@
         </div>
     </header>
 
-    <section id="progress-bar" class="header-margin">
+    <section id="progress-bar" class="header-margin tradesman">
         <div class="container">
             <div class="row">
                 <span class="progress-line completed" style="width: 139px"></span>
@@ -83,7 +83,7 @@
     <section id="sign-up-form">
         <div class="container">
             <div class="row">
-                <div class="col-xs-12 form-box" style="padding: 40px 25px;">
+                <div class="col-xs-12 form-box tradesman" style="padding: 40px 25px;">
                     <h2>Tradesman Registration Form</h2>
                     <form name="step_one_form" action="{{env('APP_URL')}}/add-info" method="POST">
                         @if(session('error'))

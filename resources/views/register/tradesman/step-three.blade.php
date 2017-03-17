@@ -2,7 +2,7 @@
 @extends("layouts.main")
 @section("content")
 
-    <header id="header" class="animated">
+    <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -16,7 +16,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -51,7 +51,7 @@
           </div>
     </header>
 
-<section id="progress-bar" class="header-margin">
+<section id="progress-bar" class="header-margin tradesman">
 	<div class="container">
 		<div class="row">
 			<span class="progress-line completed" style="width: 139px"></span>
@@ -106,10 +106,10 @@
 						</div>
 					</div>
 
-					<div class="col-xs-5">
+					<div class="col-xs-5 tradesman">
 						<div class="preview-total">
 							<span class="icon icon-total"></span>
-							@if($price == '550') 
+							@if($price == '550')
 							<p> Total charges = <b>${{$price}} for a 12 month subscription</b></p>
 							@else
 							<p> Total charges = <b>${{$price}} for a 1 month subscription</b></p>
@@ -119,7 +119,7 @@
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
 				</div>
-				
+
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
 				<a class="btn hs-default close-btn" href="{{env('APP_URL')}}/register/tradesman/step-two"><span class="icon icon-close"></span> CANCEL</a>
 			</div>

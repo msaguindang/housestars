@@ -185,7 +185,7 @@
       success: function(data){
         $('#agency').remove();
         $('#addAgent').modal('hide');
-        //location.reload();
+        location.reload();
       }
     });
   });
