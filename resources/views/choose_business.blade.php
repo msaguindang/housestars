@@ -48,7 +48,7 @@
 			</div>
 	</header>
 
-	<section id="top-header desktop">
+	<section id="top-header" class="desktop">
 		<div class="container">
 		<div class="row">
 			<div class="col-xs-7 col-xs-offset-5 navigation">
