@@ -86,11 +86,17 @@ class ProfileController extends Controller
     }
 
     public function agency($id) {
-        $meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
-        $agencyId = Agents::where('agent_id', $id)->get();
+        $agencyId = Agents::where('agent_id', $id)->first();
         $data = array();
-        $data['agency-id'] = $agencyId[0]['agency_id'];
+        if(isset($agencyId)) {
+            $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
+            $data['agency-id'] = $agencyId->agency_id;
+        }
+        else {
+            $meta = UserMeta::where('user_id', $id)->get();
+            $data['agency-id'] = $id;
+        }
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
