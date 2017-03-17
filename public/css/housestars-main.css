@@ -3264,3 +3264,7 @@ button.disabled {
     right: 0;
     top: 70px;
 }
+
+#agency-results .profile-info p {
+    min-height: 80px;
+}

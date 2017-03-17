@@ -84,6 +84,8 @@
           <div class="row">
             @if(isset($data))
               @php ($x = count($data))
+              @php ($y = 2)
+              @php ($z = 0)
               @if(isset($data['cat']) && $x > 1)
                 <p class="center">
                   Your search for a <b>{!! $data['cat'] !!}</b> generated the folowing results. Thanks for using House Stars.
@@ -93,6 +95,13 @@
               @if($x > 1)
                   @foreach($data as $agency)
                     @if(count($agency) > 5)
+
+                      @if($z == 0 || $z == $y)
+
+                        <div class="row">
+
+                      @endif
+
                       <li>
                         <div class="col-xs-4">
                           <div class="item">
@@ -125,6 +134,13 @@
                           </div>
                         </div>
                       </li>
+
+                      @if($z == $y)
+
+                      </div>
+                      @php($y = $y + 3)
+                      @endif
+                      @php($z++)
                     @endif
                 @endforeach
                 @endif
