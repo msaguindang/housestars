@@ -84,6 +84,11 @@
         font-weight: bold;
     }
 
+    .branding img {
+        width: 225px;
+        margin-top: 17px;
+    }
+
     #home-banner {
         background: url(../assets/bg-banner-tablet.jpg) center top no-repeat;
         background-size: cover;
@@ -135,7 +140,7 @@
         position: relative;
         width: 100%;
         height: 50px;
-        padding: 16px 25px 16px 74px;
+        padding: 14px 15px 12px 35px;
     }
 
     #home-banner .rate-trade-services {
@@ -146,7 +151,8 @@
     }
 
     .col-xs-11.col-xs-offset-1.tooltip-items {
-        margin-left: 5%;
+        margin-left: 0;
+        width: 100%;
     }
 
     .wide, .narrow, .narrow-1x {
@@ -155,6 +161,7 @@
 
     p{
       width: 100% !important;
+      font-size: 12px !important;
     }
 
     #how-it-works {
@@ -162,16 +169,33 @@
     }
 
     .steps .right {
-        width: 90%;
+        width: 85%;
+    }
+
+    .step-description h3 {
+        font-size: 15px;
+    }
+
+    .description-box-left {
+        margin: 48px 0 0 12px;
+        padding: 15px;
+    }
+
+    .steps .divider {
+        background: url(../assets/img-divider-mobile.png) center top no-repeat;
     }
 
     #how-it-works.home .steps .step-description.stepTwo {
-        margin-top: 132px;
+        margin-top: 101px;
     }
 
     #how-it-works.home .steps .step-description.stepThree {
-          margin-top: 96px;
-      }
+        margin-top: 156px;
+    }
+
+    #how-it-works.home .steps .step-description.stepFour {
+        margin-top: 111px;
+    }
 
       .widget .item {
           width: 100%;
@@ -189,8 +213,9 @@
         padding: 20px 33px 40px;
     }
 
-    footer .company-identity {
-        width: 82%;
+    footer .company-identity .logo {
+        margin-bottom: 30px;
+        width: 100%;
     }
 
     footer .nav-category {
