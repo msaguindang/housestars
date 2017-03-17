@@ -3,14 +3,224 @@
   and (max-width: 768px){
 
     body{
-      min-width: 480px;
+      min-width: 450px;
     }
     .container{
-    	width: 480px;
+    	width: 450px;
     	max-width: none !important;
     }
 
     .desktop{
       display: none;
+    }
+
+    .tablet{
+      display: block;
+    }
+
+    .mobile-hidden{
+      display: none;
+    }
+
+    .navbar-toggle {
+        display: block;
+        margin-right: 0;
+    }
+
+    #home-banner .col-xs-6{
+      width: 100%;
+      margin: 0;
+    }
+
+    #home-banner .col-xs-3{
+      width: 50%;
+      margin: 0;
+    }
+
+    .navbar-toggle .icon-bar {
+         background-color: #3a4e58;
+         width: 30px;
+         height: 4px;
+    }
+
+   .dropdown-nav .collapse {
+       display: none!important;
+       height: auto!important;
+       padding-bottom: 0;
+       overflow: hidden!important;
+   }
+
+   .navbar-collapse.in {
+        overflow: visible !important;
+        display: block !important;
+        padding: 0;
+   }
+
+   .top-links {
+        height: 30px;
+    }
+
+    .dropdown-nav {
+        background: #e8e8e8;
+    }
+
+    .dropdown-nav {
+        background: #f9f9f9;
+    }
+
+    .nav li {
+        width: 100%;
+        text-align: center;
+        float: none;
+        border-bottom: 1px solid #eaeaea
+    }
+
+    .nav {
+        width: 100%;
+    }
+
+    .nav li a {
+        color: #3a4e58;
+        font-weight: bold;
+    }
+
+    #home-banner {
+        background: url(../assets/bg-banner-tablet.jpg) center top no-repeat;
+        background-size: cover;
+    }
+
+    #home-banner h1 {
+        margin-top: 150px;
+    }
+
+    .tooltip-items ul li {
+        width: 100%;
+        padding: 0 !important;
+        margin-top: 25px;
+    }
+
+    .icon-search-local {
+        width: 30px;
+        height: 30px;
+        background-position-x: 564px;
+        background-position-y: 214px;
+        z-index: 100;
+        position: absolute;
+        margin: 10px 17px;
+    }
+
+    .icon-calculate-savings {
+        width: 30px;
+        height: 30px;
+        background-position-x: 452px;
+        background-position-y: 213px;
+        z-index: 100;
+        position: absolute;
+        margin: 10px 17px;
+    }
+
+    .icon-sign-up {
+        width: 30px;
+        height: 30px;
+        background-position-x: 343px;
+        background-position-y: 213px;
+        position: absolute;
+        z-index: 100;
+        margin: 10px 17px;
+    }
+
+    #home-banner .tooltip-nav .tooltip-items a {
+        margin: 0;
+        z-index: 50;
+        position: relative;
+        width: 100%;
+        height: 50px;
+        padding: 16px 25px 16px 74px;
+    }
+
+    #home-banner .rate-trade-services {
+        float: none;
+        height: 0;
+        text-align: center;
+        margin: 35px;
+    }
+
+    .col-xs-11.col-xs-offset-1.tooltip-items {
+        margin-left: 5%;
+    }
+
+    .wide, .narrow, .narrow-1x {
+        width: 100%;
+    }
+
+    p{
+      width: 100% !important;
+    }
+
+    #how-it-works {
+        margin-top: 70px;
+    }
+
+    .steps .right {
+        width: 90%;
+    }
+
+    #how-it-works.home .steps .step-description.stepTwo {
+        margin-top: 132px;
+    }
+
+    #how-it-works.home .steps .step-description.stepThree {
+          margin-top: 96px;
+      }
+
+      .widget .item {
+          width: 100%;
+      }
+
+      #how-we-help .widget p {
+          min-height: auto;
+      }
+
+    footer {
+          background-size: cover;
+    }
+
+    footer .main-footer {
+        padding: 20px 33px 40px;
+    }
+
+    footer .company-identity {
+        width: 82%;
+    }
+
+    footer .nav-category {
+        width: 50%;
+        padding: 31px 0px 0px 0px !important;
+    }
+
+    footer .links {
+        margin: 10px !important;
+    }
+
+    footer .social-media {
+        margin-top: 26px;
+    }
+
+    footer .social-item {
+        padding-left: 0px;
+        width: 100%;
+        margin-bottom: 23px;
+    }
+
+    footer .copyright p {
+        margin: 0;
+        text-align: center;
+    }
+
+    footer ul.legal-links {
+        float: none;
+        width: 50%;
+        overflow: auto;
+        margin: 5px auto;
     }
 }
