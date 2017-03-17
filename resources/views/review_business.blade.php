@@ -127,8 +127,8 @@
 			</div>
 		</section>
 
-		<div class="horizontal-bg"></div>
-		
+		<div class="horizontal-bg desktop"></div>
+
 		<section id="how-it-works" class="home">
       <div class="container">
         <div class="row section-title">
