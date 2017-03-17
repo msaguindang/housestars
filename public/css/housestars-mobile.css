@@ -252,4 +252,8 @@
     footer .company-identity img {
         width: 100%;
     }
+
+    ul.nav.navbar-nav {
+        margin: 0 !important;
+    }
 }
