@@ -336,26 +336,6 @@
         }
       });
   </script>
-  <script type="text/javascript">
-    jQuery.event.props.push('dataTransfer');
-    function allowDrop(ev) {
-        ev.preventDefault();
-        return false;
-    }
-
-    function drag(ev) {
-      ev.stopPropagation();
-      ev.dataTransfer.setData("id", ev.target.id);
-    }
-
-    $('#profile-img, #cover-container').bind('drop', function( event ) {
-      $target = $(event.target);
-      url = event.dataTransfer.getData('URL');
-      $target.find("input[type='hidden']").val(url);
-      $target.find("input[type='file']").val('');
-      $target.css('background-image', "url('" + url + "')");
-    });
-
-  </script>
+  <script type="text/javascript" src="{{asset('js/upload-draggable.js')}}"></script>
   <script src="{{asset('js/image-preview.js')}}"></script>
  @stop

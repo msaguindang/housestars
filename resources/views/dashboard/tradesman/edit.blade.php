@@ -51,7 +51,11 @@
     </header>
  <form action="{{config('app.url')}}/tradesman/update-profile" method="POST" enctype="multipart/form-data">
   {{csrf_field() }}
-    <section id="cover-container" class="header-margin" style="background: url({{config('app.url')}}/{{$data['cover-photo']}})">
+
+    @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+      @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
+    @endif
+    <section id="cover-container" ondragover="allowDrop(event);" class="header-margin" style="background: url('{{$data['cover-photo']}}')">
 
         {{csrf_field() }}
       <div class="cover-img">
@@ -60,6 +64,7 @@
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
+              <input id="cover-photo-drag" name="cover-photo-drag" type="hidden" />
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
           </div>
@@ -67,9 +72,10 @@
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
               @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
             @endif
-            <div class="profile-img" style="background: url('{{$data['profile-photo']}}') 100%">
+            <div ondragover="allowDrop(event);" class="profile-img" id="profile-img" style="background: url('{{$data['profile-photo']}}') 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
+              <input id="profile-photo-drag" name="profile-photo-drag" type="hidden" />
             </div>
             <div class="profile-info">
               <label>Tradesman Name</label>
@@ -340,18 +346,22 @@
               <div class="upload-gallery" style="margin: 35px 0;">
                 <div class="col-xs-7">
                   <label>Gallery Photos</label>
-                  <div class="gallery">
                     @if(isset($data['gallery']))
-                      @foreach ($data['gallery'] as $item)
-                        <div class="item">
-                          <a href="#" data-item-id="{{$item['id']}}" data-token="{{ csrf_token() }}">
-                            <i class="fa fa-times" aria-hidden="true" id="close"></i>
-                          </a>
-                          <img src="{{url($item['url'])}}" alt="" style="width: 100%; height: auto;">
+                      <div id="gallery-carousel" class="carousel slide multi-item-carousel">
+                        <div class="carousel-inner">
+                          @include('dashboard.tradesman.partials.gallery_items')
                         </div>
-                      @endforeach
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </div>
                     @endif
-                  </div>
                 </div>
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
@@ -494,22 +504,21 @@
 
      <script type="text/javascript">
 
-      $(".item a").click(function(){
+      $(".item a").click(function() {
         var token = $(this).data('token');
-        var id = $(this).data('item-id');
-        console.log(token);
+        var id = $(this).data('id');
         $.ajax({
           url: '/delete-item',
           data: {'_token': token, 'item-id': id},
           type: 'POST',
-          success: function(result){
-            $('.item a[data-item-id=' + id + ']').parent().addClass('hidden');
+          success: function(result) {
+            $('.item a[data-id=' + id + ']').parent().addClass('hidden');
           }
         });
       });
 
 
      </script>
-
+     <script type="text/javascript" src="{{asset('js/upload-draggable.js')}}"></script>
      <script src="{{asset('js/image-preview.js')}}"></script>
 @stop
