@@ -213,7 +213,7 @@
         padding: 20px 33px 40px;
     }
 
-    footer .company-identity .logo {
+    footer .company-identity {
         margin-bottom: 30px;
         width: 100%;
     }
@@ -247,5 +247,9 @@
         width: 50%;
         overflow: auto;
         margin: 5px auto;
+    }
+
+    footer .company-identity img {
+        width: 100%;
     }
 }
