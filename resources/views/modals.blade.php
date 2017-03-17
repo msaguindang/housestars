@@ -129,7 +129,6 @@
 							</div>
 							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
 							<button type="submit" class="btn hs-primary">Rate Tradesman Now</button>
-							
 						</form>	
 					</div>
 				</div>

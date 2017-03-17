@@ -76,27 +76,39 @@ class LoginController extends Controller
 		return redirect('/');
 	}
 
-	public function redirectToProvider($provider){
+	public function redirectToProvider ($provider)
+	{
 		return Socialite::driver($provider)->redirect();
 	}
 
-	public function verifyToProvider($provider) {
+	public function verifyToProvider ($provider) 
+	{
 		return Socialite::driver($provider)
 			->with(['state' => 'verify'])
 			->stateless()
 			->redirect();
 	}
 
-	public function handleProviderCallback($provider, Request $request) {
+	public function verifyToProviderAgency ($provider, $id)
+	{
+		return Socialite::driver($provider)
+			->with(['state' => $id])
+			->stateless()
+			->redirect();
+	}
+
+	public function handleProviderCallback ($provider, Request $request) 
+	{
 		//=======================================================
 		// TEST
 		//=======================================================
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
+		$stateIsNumeric = is_numeric($state); 
 		$email = $user->getEmail();
 		$socialId = $user->getId();
-
-		if($state == 'verify') {
+		
+		if($state == 'verify' || $stateIsNumeric) {
 			$socialName = $user->getName();
 			$secret = encrypt($socialId);
 			$query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
@@ -113,9 +125,16 @@ class LoginController extends Controller
 				$reviewId = DB::table('reviews')->select('id')->where('reviewer_id', '=', $socialId)->get();
 			}
 
-			return redirect()->action(
-				'LoginController@chooseBusiness', ['secret' => $secret]
-			);
+			if ($state == 'verify') {
+				return redirect()->action(
+					'LoginController@chooseBusiness', ['secret' => $secret]
+				);
+			}
+			else {
+				return redirect('review-agency')->with([
+					'state' => $state
+				]);
+			}
 		}
 		else {
 			// $social_user = Socialite::driver($provider)->user();
@@ -154,45 +173,6 @@ class LoginController extends Controller
 				return redirect('/account-type');
 			}
 		}
-		// =======================================================================
-
-		//=======================================================
-		// ORIGINAL
-		//========================================================
-		// $social_user = Socialite::driver($provider)->user();
-		// $userExists = User::where('social_id', $social_id)->get();
-
-		// if(count($userExists) > 0){ // if registered
-		// 	$credentials = [
-		// 		'login' => $social_user->email,
-		// 	];
-
-		// 	$user = Sentinel::findByCredentials($credentials);
-
-		// 	Sentinel::login($user);
-
-		// 	return redirect('/');
-
-		// } else {
-		// 	$credentials = [
-		// 		'email'    => $social_user->email,
-		// 		'password' => $social_user->token
-		// 	];
-
-		// 	$user = Sentinel::registerAndActivate($credentials);
-
-		// 	User::where('email', $social_user->email)->update(['social_id' => $social_id, 'name' => $social_user->name]);
-
-		// 	UserMeta::updateOrCreate(
-		// 			['user_id' => $user->id, 'meta_name' => 'profile-photo'],
-		// 			['user_id' => $user->id, 'meta_name' => 'profile-photo', 'meta_value' => $social_user->avatar]
-		// 		);
-
-		// 	Sentinel::login($user);
-
-		// 	return redirect('/account-type');
-		// }
-		//=======================================================
 	}
 
 	public function chooseBusiness(Request $request) {
@@ -201,13 +181,8 @@ class LoginController extends Controller
 		$reviewer = DB::table('reviews')->where('reviewer_id', $socialId)->get();
 		if(count($reviewer) > 0) {
 			return redirect('/choose-business');
-			// return redirect()->action('LoginController@showChooseBusinessPage');
 		}
 	}
-
-	// public function showChooseBusinessPage() {
-	// 	return redirect('/choose-business');
-	// }
 
 	public function assignRole($account){
 		$user = Sentinel::getUser();

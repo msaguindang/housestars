@@ -1,5 +1,6 @@
 <?php
 use App\UserMeta;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -373,5 +374,10 @@ Route::group(['prefix' => ''], function(){
 // NEW ROUTES
 // ===================================================================================================================================================
 Route::post('/create/potential-customer', 'PotentialCustomerController@store');
-
+Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAgency');
+// Route::get('/review-agency', 'ReviewController@reviewAgency');
+// Route::get('/review-agency', 'Rev') {
+    
+// });
+// Route::post('/review', 'ReviewController@addAReview');
 // ===================================================================================================================================================

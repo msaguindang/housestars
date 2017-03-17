@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Reviews;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -225,9 +226,10 @@ class ReviewController extends Controller
 
     }
 
-	public function addAReview(Request $request) {
+	public function addAReview (Request $request) 
+    {
 		$params = $request->all();
-		$businessId = $params['businessId'];
+        $businessId = $params['businessId'];
 		// $businessPhoto = "SELECT meta_value FROM user_meta WHERE user_id=117 AND meta_name = 'profile-photo'";
 		$businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
 		$businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
@@ -240,7 +242,13 @@ class ReviewController extends Controller
 		return view('review_business')->with(compact('businessInfo'));
 	}
 
-	public function create(Request $request) {
+    public function reviewAgency (Request $request) 
+    {
+       dump($request);
+    }
+
+	public function create (Request $request) 
+    {
 		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
 		$params = $request->all();
 		$reviewId = $latestRow->id;
