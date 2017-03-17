@@ -51,7 +51,7 @@
           </div>
     </header>
 
-    <div id="tradesmanList">
+  <div id="tradesmanList">
     <section id="cover-container" class="header-margin tradesman-listings">
       <div class="cover-img">
         <div class="container">
@@ -149,7 +149,6 @@
         </div>
       </section>
     </div>
-
   </div>
 
 

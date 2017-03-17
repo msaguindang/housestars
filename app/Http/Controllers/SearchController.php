@@ -21,7 +21,7 @@ class SearchController extends Controller
     	switch ($item) {
     		case 'category':
     			$data['cat'] = Category::all();
-                $data['item'] = $this->hasResults($request->input('suburb'));
+          $data['item'] = $this->hasResults($request->input('suburb'));
     			return Response::json($data, 200);
     			break;
     		case 'agency':
@@ -80,13 +80,15 @@ class SearchController extends Controller
         $tradesmen = array();
 
         foreach ($trade as $key) {
-            $suburbExist = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->where('user_id', '=', $key->user_id)->get();
-            if($key->user_id == $suburbExist[0]['user_id']){
-                array_push($tradesmen, $key->user_id);
+            $suburbExist = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->where('user_id', '=', $key->user_id)->first();
+            if(isset($suburbExist)){
+              if($key->user_id == $suburbExist->user_id){
+                  array_push($tradesmen, $key->user_id);
+              }
             }
         }
 
-        //$data = array();
+        $data = array();
         $x = 0;
         foreach ($tradesmen as $id) {
            $activeUser = User::where('id', '=', $id)->get();
