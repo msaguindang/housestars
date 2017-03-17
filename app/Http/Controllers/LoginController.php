@@ -131,9 +131,11 @@ class LoginController extends Controller
 				);
 			}
 			else {
-				return redirect('review-agency')->with([
-					'state' => $state
-				]);
+				return redirect('/review-agency/'.$state);
+
+				// return redirect()->action('LoginController@test')->send();
+
+				// return redirect('/review-agency');
 			}
 		}
 		else {
@@ -209,5 +211,10 @@ class LoginController extends Controller
 					->orWhere('meta_name', '=', 'trade')
 					->get();
 		return json_decode($query, true);
+	}
+
+	public function test ()
+	{
+		dd('test');
 	}
 }

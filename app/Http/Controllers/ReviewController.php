@@ -242,9 +242,9 @@ class ReviewController extends Controller
 		return view('review_business')->with(compact('businessInfo'));
 	}
 
-    public function reviewAgency (Request $request) 
+    public function reviewAgency ($id) 
     {
-       dump($request);
+       return view('');
     }
 
 	public function create (Request $request) 
@@ -280,5 +280,5 @@ class ReviewController extends Controller
 		return redirect('/');
 
 	}
-
+    
 }

@@ -380,9 +380,10 @@ Route::group(['prefix' => ''], function(){
 // ===================================================================================================================================================
 Route::post('/create/potential-customer', 'PotentialCustomerController@store');
 Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAgency');
-// Route::get('/review-agency', 'ReviewController@reviewAgency');
+Route::get('/review-agency/{id}', 'ReviewController@reviewAgency');
 // Route::get('/review-agency', 'Rev') {
     
 // });
+// Route::get('/review-agency', 'ReviewController@test');
 // Route::post('/review', 'ReviewController@addAReview');
 // ===================================================================================================================================================
