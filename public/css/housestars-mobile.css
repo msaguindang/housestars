@@ -277,5 +277,10 @@
 
     .icon-fb-white, .icon-g-white {
       margin-left: 7px !important;
-  }
+    }
+
+    .rating-stars .rating-label {
+        float: left !important;
+        width: auto !important;
+    }
 }
