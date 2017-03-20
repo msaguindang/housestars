@@ -48,14 +48,20 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
+    @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+      @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
+    @endif
+    <section id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) 100%">
+            @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+              @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
+            @endif
+            <div class="profile-img" style="background: url({{$data['profile-photo']}}) 100%">
             </div>
             <div class="profile-info">
 

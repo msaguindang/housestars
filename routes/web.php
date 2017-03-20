@@ -122,7 +122,11 @@ Route::group(['prefix' => ''], function(){
     });
 
     Route::get('/tradesman-listings', function () {
-        return view('general.tradesman-listings');
+        $data['cat'] = App\Category::all();
+        $data['suburb'] = "";
+        $data['item'] = app()->make('App\Http\Controllers\SearchController')->hasResults($data['suburb']);
+        
+        return view('general.tradesman-listings')->with('data', $data);
     });
 
     Route::get('/search-agency', function () {
@@ -228,9 +232,12 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('/{action}/{provider}/callback', 'LoginController@verifyProviderCallback');
 
-    Route::post('/search/{item}', 'SearchController@search');
-
     Route::get('/search/category/{category}/{suburb}', 'SearchController@tradesmenListing');
+
+    Route::post('/search/{item}',[
+        'as'   => 'search.item',
+        'uses' => 'SearchController@search'
+    ]);
 
     Route::get('/profile/{role}/{id}', 'ProfileController@profile');
 

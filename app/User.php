@@ -26,4 +26,9 @@ class User extends Model
     {
         return $this->hasOne(RoleUsers::class);
     }
+
+    public function usermetas()
+    {
+        return $this->hasMany(UserMeta::class);
+    }
 }
