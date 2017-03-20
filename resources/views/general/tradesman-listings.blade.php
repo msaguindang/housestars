@@ -67,12 +67,16 @@
         </div>
       </div>
     </section>
-    <div class="dark-bg">
+    <div class="dark-bg tradesman">
       <section id="search-bar" class="no-margin">
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
-              <input type="text" class="search" placeholder="Enter Tradesman Name Or Business Name" style="margin: 0">
+                <form action="{{ route('search.item', ['item' => 'category']) }}" method="POST">
+                  {{csrf_field()}}
+                <input type="text" name="suburb" class="search" placeholder="Enter Tradesman Name Or Business Name" style="margin: 0">
+                <button class="btn btn-primary">Search</button>
+              </form>
             </div>
           </div>
         </div>
@@ -84,41 +88,54 @@
             @php ($x = count($data))
             @php ($y = 0)
             @php ($z = 4)
+            @php ($index = 0)
+
             @if(isset($data['cat']) && $x > 0)
-            <p class="center">Your search for a <b>{{$data['cat']}}</b> in <b>{{$data['suburb']}}</b> generated the folowing results. Thanks for using House Stars.</p></br>
+              @if($data['suburb'])
+                <!--  a <b>{{ $data['cat'] }}</b> in -->
+                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using House Stars.</p></br>
+              @endif
             @endif
             <ul class="list">
               @if($x > 0)
-                @foreach($data as $tradesman)
+                @foreach($data['item'] as $tradesman)
                   @if(count($tradesman) > 5)
                     <li>
                       <div class="col-xs-3">
                         <div class="item">
                            @if(isset($tradesman['cover-photo']))
-                             <div class="cover-photo" style="background: url('{{env('APP_URL')}}/{{$tradesman['cover-photo']}}'); background-size: cover;">
+                              @if(filter_var($tradesman['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+                                @php ($tradesman['cover-photo'] = config('app.url') . '/' . $tradesman['cover-photo'])
+                              @endif
+                              <div class="cover-photo" style="background: url('{{ $tradesman['cover-photo'] }}'); background-size: cover;">
                             @else
                               <div class="cover-photo">
                             @endif
 
                             @if(isset($tradesman['profile-photo']))
-                              <div class="profile-thumb" style="background: url('{{env('APP_URL')}}/{{$tradesman['profile-photo']}}') no-repeat center center; background-size: cover;"></div>
+                              @if(filter_var($tradesman['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+                                @php ($tradesman['profile-photo'] = config('app.url') . '/' . $tradesman['profile-photo'])
+                              @endif
+                              <div class="profile-thumb" style="background: url('{{ $tradesman['profile-photo'] }}') no-repeat center center; background-size: cover;"></div>
                             @else
                              <div class="profile-thumb"></div>
                             @endif
                           </div>
                           <div class="profile-info">
-                            <h3 class="name">{{$tradesman['business-name']}}</h3>
-                            <p class="location">{{$tradesman['trade']}}</p>
-                            <div class="stars">
-                              @for($i = 1; $i <= $tradesman['rating']; $i++)
-                                <span class="icon icon-star"></span>
-                              @endfor
-                              @php ($rating = 5 - $tradesman['rating'])
-                              @for($i = 1; $i <= $rating; $i++)
-                                <span class="icon icon-star-grey"></span>
-                              @endfor
-                            </div>
-                            <a href="{{env('APP_URL')}}/profile/tradesman/{{$tradesman['id']}}" class="btn hs-primary small">Visit Tradesman's Page</a>
+                            <h3 class="name">{{ isset($tradesman['business-name']) ? $tradesman['business-name'] : '' }}</h3>
+                            <p class="location">{{ isset($tradesman['trade']) ? $tradesman['trade'] : ''}}</p>
+                            @if(isset($tradesman['rating']))
+                              <div class="stars">
+                                @for($i = 1; $i <= $tradesman['rating']; $i++)
+                                  <span class="icon icon-star"></span>
+                                @endfor
+                                @php ($rating = 5 - $tradesman['rating'])
+                                @for($i = 1; $i <= $rating; $i++)
+                                  <span class="icon icon-star-grey"></span>
+                                @endfor
+                              </div>
+                            @endif
+                            <a href="{{env('APP_URL')}}/profile/tradesman/{{ $tradesman['id'] }}" class="btn hs-primary small">Visit Tradesman's Page</a>
                           </div>
                         </div>
                       </div>
@@ -131,6 +148,7 @@
                   </div>
                   @php($z = $z + 8)
                   @endif
+                  @php ($index ++)
               @endforeach
               @endif
               <!-- END AD SPACE HERE -->
@@ -142,9 +160,9 @@
                     <ul class="pagination"></ul>
                 </nav>
             </div>
-            <div class="col-xs-3">
+            <!-- <div class="col-xs-3">
               <a class="btn hs-primary medium search-again"><span class="icon icon-arrow-right"></span>Search Again</a>
-            </div>
+            </div> -->
           </div>
         </div>
       </section>

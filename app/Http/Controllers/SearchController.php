@@ -17,16 +17,16 @@ class SearchController extends Controller
 {
     public function search(Request $request, $item)
     {
-
     	switch ($item) {
     		case 'category':
     			$data['cat'] = Category::all();
-          $data['item'] = $this->hasResults($request->input('suburb'));
-    			return Response::json($data, 200);
+                $data['suburb'] = $request->get('suburb', '');
+                $data['item'] = $this->hasResults($data['suburb']);
+    			// return Response::json($data, 200);
+                return view('general.tradesman-listings')->with('data', $data);
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));
-              //  dd($data);
                 return view('general.agency-listings')->with('data', $data);
                 break;
     		default:
@@ -35,45 +35,42 @@ class SearchController extends Controller
 
     }
 
-    public function hasResults($suburb){
-
+    public function hasResults($suburb)
+    {
     	$suburbExists = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
-
     	$tradesmen = array();
 
     	foreach ($suburbExists as $key) {
-            $activeUser = User::where('id', '=', $key->user_id)->get();
-            if(count($activeUser) > 0){
-        		$roles =  RoleUsers::where('user_id', $key->user_id)->where('role_id', 3)->get();
-
-        		foreach($roles as $role){
-        			//echo $role->user_id. ' = '. $role->role_id.', ';
-        			if($role->role_id == 3){
-        				$tradesman = UserMeta::where('meta_name', 'trade')->where('user_id', $key->user_id)->get();
+            if($activeUser = User::where('id', '=', $key->user_id)->first()){
+    			if ($activeUser->role && ($activeUser->role->role_id == 3)) {
+    				$tradesman = $activeUser->usermetas->toArray(); //$activeUser->usermetas->where('meta_name', 'trade')->toArray();
+                    if (!in_array($tradesman, $tradesmen)) {
     	    			array_push($tradesmen, $tradesman);
-    	    		}
-        		}
+                    }
+	    		}
             }
     	}
 
     	$data = array();
 
-    	if(count($tradesmen) == 0){
+    	if (count($tradesmen) == 0) {
     		$data['msg'] = 'No result found for '. $suburb;
     		return $data;
     	}
 
-    	foreach ($tradesmen as $tradesman) {
-    		if(!in_array($tradesman[0]->meta_value, $data)){
-    			array_push($data, $tradesman[0]->meta_value);
-    		}
+    	foreach ($tradesmen as $key => $tradesman) {
+            $mapped = collect($tradesman)->mapWithKeys(function ($item) {
+                return [$item['meta_name'] => $item['meta_value']];
+            });
+            $mapped = $mapped->put('id', $tradesman[0]['user_id']);
+            array_push($data, $mapped);
     	}
-
+        
     	return $data;
     }
 
-    public function tradesmenListing($category, $suburb){
-
+    public function tradesmenListing(Request $request)
+    {
         $trade = UserMeta::where('meta_value', 'LIKE', '%'.$category.'%')->get();
 
 
@@ -124,15 +121,13 @@ class SearchController extends Controller
         $agencies = [];
 
         foreach ($results as $result) {
-            $verifyRole =  RoleUsers::where('user_id', $result->user_id)->first()->role_id;
-            if($verifyRole ==  2) {
+            if(RoleUsers::hasRole($result->user_id, 2)) {
                 if(!in_array($result->user_id, $agencies)) {
                     array_push($agencies, $result->user_id);
                 }
             }
         }
 
-        //dd($agencies);
         $x = 0;
         foreach ($agencies as $id) {
             $activeUser = User::where('id', '=', $id)->get();

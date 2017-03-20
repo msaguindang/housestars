@@ -262,7 +262,7 @@
             </div>
         </div>
       </div>
-      @include("modals.rating");
+      @include("modals.rating")
     </section>
 
     <script>
