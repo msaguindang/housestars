@@ -26,6 +26,7 @@ class ProfileController extends Controller
           $listings = $this->property_listing($id);
           $data['property-listings'] = $listings;
           $data['total-listings'] = count($listings);
+        //   dd($data);
           return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
           break;
 
@@ -87,16 +88,18 @@ class ProfileController extends Controller
 
     public function agency($id) {
         $user = User::where('id', $id)->get();
-        $agencyId = Agents::where('agent_id', $id)->first();
+        // $agencyId = Agents::where('agent_id', $id)->first();
+        $meta = UserMeta::where('user_id', $id)->get();
         $data = array();
-        if(isset($agencyId)) {
-            $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
-            $data['agency-id'] = $agencyId->agency_id;
-        }
-        else {
-            $meta = UserMeta::where('user_id', $id)->get();
-            $data['agency-id'] = $id;
-        }
+        // if(isset($agencyId)) {
+        //     $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
+        //     $data['agency-id'] = $agencyId->agency_id;
+        // }
+        // else {
+        //     $meta = UserMeta::where('user_id', $id)->get();
+        //     $data['agency-id'] = $id;
+        // }
+        $data['agency-id'] = $id; 
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -159,9 +162,9 @@ class ProfileController extends Controller
     	$reviews = Reviews::where('reviewee_id', '=', $id)->get();
     	$data = array(); $x = 0; $average = 0;
     	foreach ($reviews as $review) {
-            if ($user = User::where('id', $review->reviewer_id)->first()) {
-                $data[$x]['name'] = $user->name;
-            }
+            // if ($user = User::where('id', $review->reviewer_id)->first()) {
+                $data[$x]['name'] = $review->name;
+            // }
     		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
     		$data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;

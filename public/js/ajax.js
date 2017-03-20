@@ -151,7 +151,7 @@ $("#rateInfo").submit(function() {
     console.log(data); // it's only for test
 });
 
-// submit create review form
+// submit create review form on homepage
 $(document).on('submit', '#reviewForm' ,function(e){
     e.preventDefault();
     var data = $(this).serialize();
@@ -162,7 +162,25 @@ $(document).on('submit', '#reviewForm' ,function(e){
     type: 'POST',
     processData: false,
     success: function(data){
-      $('#rateTradesmanModal .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote  trades or services.</p>');
+      $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote  trades or services.</p>');
+      $('#rateTradesmanModal').modal('hide');
+      $('#thankYou').modal('show');
+    }
+  });
+});
+
+$(document).on('submit', '#rateTradesmanForm' ,function(e){ 
+    e.preventDefault();
+    var data = $(this).serialize();
+    console.log(data);
+    $.ajax({
+    url: 'create/review',
+    data: data,
+    type: 'POST',
+    processData: false,
+    success: function(data){
+      $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
+      $('#thankYou').modal('show'); 
     }
   });
 });

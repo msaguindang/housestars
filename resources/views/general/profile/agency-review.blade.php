@@ -1,6 +1,7 @@
 @extends("layouts.main")
 @section("content")
 <header id="header" class="animated desktop">
+        
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -161,6 +162,8 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
+
+
             <div class="row gallery">
                 @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
@@ -221,7 +224,6 @@
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a><br>
-              <button onClick="openRatingModal()" class="btn hs-primary" style="">Review This Agency</button>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
                   @if($review['content'] != '')
@@ -260,14 +262,19 @@
             </div>
         </div>
       </div>
-      @include("modals.rating")
-      @include("modals.thankyou")
+      @include("modals.ratetradesman");
+      @include("modals.thankyou");
     </section>
-
+    <input type="hidden" id="agencyId" data-agency-id="{{$data['agency-id']}}"></input>
     <script>
-      function openRatingModal() {
-        $('#rating').modal('show');
-      }
+     	$(document).ready(function() {
+        $('#rateTradesman').modal('show');
+      });
+      // redirect when review form is closed
+      $('#rateTradesman').on('hidden.bs.modal', function () {
+        var id = $('#agencyId').data("agency-id");
+        window.location.replace('/profile/agency/'+id);
+      });
     </script>
 @endsection
 
