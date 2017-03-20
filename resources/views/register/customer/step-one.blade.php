@@ -192,15 +192,15 @@
 					<div class="col-xs-4">
 						<label>Address</label>
 						<input type="text" name="address">
-						<label>Username</label>
-						<input type="text" name="username">
+						<!-- <label>Username</label>
+						<input type="text" name="username"> -->
 					</div>
 
 					<div class="col-xs-4 no-padding-right">
 						<label>Phone Number</label>
 						<input type="text" name="phone">
-						<label>Password</label>
-						<input type="password" name="password" disabled value="******" class="disabled">
+						<!-- <label>Password</label>
+						<input type="password" name="password" disabled value="******" class="disabled"> -->
 					</div>
 				</div>
 
