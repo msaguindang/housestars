@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -47,9 +47,9 @@
             </div>
           </div>
     </header>
- 
+
     <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
-     
+
         {{csrf_field() }}
       <div class="cover-img">
         <div class="breadcrumbs container">
@@ -60,7 +60,7 @@
       </div>
     </section>
 
-    <section id="edit-user-info">
+    <section id="settings">
       <div class="container">
         <div class="row">
           <div class="col-xs-12">
@@ -82,9 +82,9 @@
               </form>
               </div>
               <div class="col-xs-6 ">
-               
-                  
-                  
+
+
+
               </div>
             </div>
           <div class="spacing"></div>
