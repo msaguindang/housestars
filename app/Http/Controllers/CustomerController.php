@@ -519,8 +519,6 @@ class CustomerController extends Controller
                           $name =  $info->meta_value;
                       } else if($info->meta_name == 'profile-photo'){
                           $photo = $info->meta_value;
-                      } else {
-                          $photo = '';
                       }
                   }
 
@@ -547,8 +545,6 @@ class CustomerController extends Controller
                             $name =  $info->meta_value;
                         } else if($info->meta_name == 'profile-photo'){
                             $photo = $info->meta_value;
-                        } else {
-                            $photo = '';
                         }
                     }
 

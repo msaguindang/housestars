@@ -802,7 +802,11 @@
 									<div class="col-xs-4">
 										<a class="selectAgent" data-id="{{$agent['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
 											<div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+												@if(isset($agent['photo']))
 												<img src="{{url($agent['photo'])}}" alt="{{$agent['name']}}">
+												@else
+												<img src="{{asset('assets/default.png')}}" alt="{{$agent['name']}}">
+												@endif
 												<p class="agent-name" style="margin-top: 10px;">{{$agent['name']}}</p>
 											</div>
 											</br>
