@@ -792,8 +792,13 @@
 						 <div class="agents">
 
 							@php($x = 0)
+							@php($y = 0)
+							@php($z = 2)
 							@if(isset($data['agents']))
 								@foreach($data['agents'] as $agent)
+								@if($y == 0)
+									<div class="row">
+								@endif
 									<div class="col-xs-4">
 										<a class="selectAgent" data-id="{{$agent['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
 											<div class="col-xs-8  col-xs-offset-2 tradesman-profile">
@@ -821,6 +826,14 @@
                       </div>
                     </a>
                   </div>
+								@if($y == $z)
+									</div>
+									<div class="row">
+								@php($z = $z + 2)
+								@endif
+
+								@php($y++)
+
                 @endforeach
               @endif
              </div>
