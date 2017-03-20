@@ -102,9 +102,9 @@
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
-            <a href="settings" class="btn hs-primary"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a>
-            <div class="col-xs-8 no-padding-left">
+            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a> 
+            <!-- <a href="settings" class="btn hs-primary"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a> --><br/><br/>
+            <div class="clearfix col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>
             <div class="col-xs-4 switch-user">
