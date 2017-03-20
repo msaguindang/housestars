@@ -534,29 +534,31 @@ class CustomerController extends Controller
         }
 
         foreach ($nearby as $key) {
-          $users = DB::table('user_meta')->where('meta_value', 'LIKE', '%'. $key->name .'%')->get();
+          if($sub != $key->name){
+            $users = DB::table('user_meta')->where('meta_value', 'LIKE', '%'. $key->name .'%')->get();
 
-          foreach ($users as $user) {
-              if($this->is_agent($user->user_id) == true){
-                  $agent_info = DB::table('user_meta')->where('user_id', '=',$user->user_id)->get();
+            foreach ($users as $user) {
+                if($this->is_agent($user->user_id) == true){
+                    $agent_info = DB::table('user_meta')->where('user_id', '=',$user->user_id)->get();
 
 
-                  foreach ($agent_info as $info) {
-                      if($info->meta_name == 'agency-name'){
-                          $name =  $info->meta_value;
-                      } else if($info->meta_name == 'profile-photo'){
-                          $photo = $info->meta_value;
-                      } else {
-                          $photo = '';
-                      }
-                  }
+                    foreach ($agent_info as $info) {
+                        if($info->meta_name == 'agency-name'){
+                            $name =  $info->meta_value;
+                        } else if($info->meta_name == 'profile-photo'){
+                            $photo = $info->meta_value;
+                        } else {
+                            $photo = '';
+                        }
+                    }
 
-                  $rating = $this->getRating($user->user_id);
+                    $rating = $this->getRating($user->user_id);
 
-                  $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name);
+                    $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name);
 
-                  array_push($agents, $agent);
-              }
+                    array_push($agents, $agent);
+                }
+            }
           }
         }
         return $agents;
