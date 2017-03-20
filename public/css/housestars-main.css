@@ -3094,7 +3094,7 @@ nav.pagination {
     padding: 8px;
 }
 
-.agency input.search {
+.agency input.search, .tradesman input.search {
     width: 89%;
     border: none !important;
 }

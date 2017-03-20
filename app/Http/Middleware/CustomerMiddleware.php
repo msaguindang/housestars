@@ -24,9 +24,7 @@ class CustomerMiddleware
                 case 'customer':
                     $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
 
-                    //dd($meta);
-
-                    if(count($meta) < 2){
+                    if (count($meta) < 2) {
                       return redirect('/register/customer/step-one');
                     }
 

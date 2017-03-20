@@ -48,14 +48,20 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
+    @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+      @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
+    @endif
+    <section id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
           </div>
           <div class="profile">
-            <div class="profile-img" style="background: url({{env('APP_URL')}}/{{$data['profile-photo']}}) 100%">
+            @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
+              @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
+            @endif
+            <div class="profile-img" style="background: url({{$data['profile-photo']}}) 100%">
             </div>
             <div class="profile-info">
 
@@ -149,7 +155,7 @@
           <div class="col-xs-9">
 
 
-            <div class="row gallery">
+            <div class="row gallery mobile-hidden">
                 @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
                 @else
@@ -206,6 +212,59 @@
                     @endif
               </div>
             </div>
+
+            <div class="row gallery mobile">
+                @if(isset($data['gallery']))
+                <h2 class="section-title">Gallery</h2>
+                @else
+                  <div class="spacing"></div>
+                @endif
+
+                <div class="gallery-carousel ">
+                   @if(isset($data['gallery']))
+                                @php($x = 0)
+                  <div class="col-md-12" data-wow-delay="0.2s">
+                      <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
+                        <!-- Carousel Buttons Next/Prev -->
+                              <div class="controller">
+                                  <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                              </div>
+                        <!-- Carousel Slides / Quotes -->
+                          <div class="carousel-inner">
+                          <!-- Gallery 1 -->
+
+
+                                @php($items = count($data['gallery']) - 1)
+
+                                @foreach($data['gallery'] as $item)
+                                  @if ($x == 0 )
+                                    <div class="item active">
+                                      <div class="row">
+                                  @else
+                                  <div class="item">
+                                    <div class="row">
+                                  @endif
+                                  <div class="col-xs-4">
+                                    <div class="gallery-item">
+                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                    </div>
+                                  </div>
+
+                                    </div>
+                                  </div>
+
+
+                                  @php($x++)
+
+                                @endforeach
+                        </div>
+                    </div>
+                </div>
+                    @endif
+              </div>
+            </div>
+
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>

@@ -95,8 +95,16 @@
 						<h4>Rate a Trade or Service</h4>
 						<p class="sub-heading">Verify that you are a real customer by signing in below</p>
 						<div class="info-bar" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
-							<a href="/verify/facebook" class="btn social-button hs-facebook"><span class="icon icon-fb-white">Sign in Using Facebook </span> </a>
+							<form action="login?rate" method="POST" class="ajax">
+								{{csrf_field() }}
+								<div id="error"></div>
+								<div id="login-error"></div>
+								<input type="text" name="email" placeholder="Email">
+								<input type="password" name="password" placeholder="Password" class="no-top">
+								<button class="btn hs-primary"> Login </button>
+							</form>
 							</br><p>OR</p>
+							<a href="/verify/facebook" class="btn social-button hs-facebook"><span class="icon icon-fb-white">Sign in Using Facebook </span> </a>
 							<a href="/verify/google" class="btn social-button hs-google-plus"><span class="icon icon-g-white">Sign in Using GOOGLE PLUS</span> </a>
 					</div>
 				</div>
@@ -114,7 +122,7 @@
 						<h4>Rate a Trade or Service</h4>
 						<p class="sub-heading">Choose a tradesman or an agency.</p>
 						<form method="post" action="/review">
-              <input type="hidden" name="_token" value="{{csrf_token()}}">
+				            <input type="hidden" name="_token" value="{{csrf_token()}}">
 							<!-- dropdown list tradesmen and services -->
 							<div class="btn-group dropdown">
 								<button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
@@ -784,12 +792,21 @@
 						 <div class="agents">
 
 							@php($x = 0)
+							@php($y = 0)
+							@php($z = 2)
 							@if(isset($data['agents']))
 								@foreach($data['agents'] as $agent)
+								@if($y == 0)
+									<div class="row">
+								@endif
 									<div class="col-xs-4">
 										<a class="selectAgent" data-id="{{$agent['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
 											<div class="col-xs-8  col-xs-offset-2 tradesman-profile">
+												@if(isset($agent['photo']))
 												<img src="{{url($agent['photo'])}}" alt="{{$agent['name']}}">
+												@else
+												<img src="{{asset('assets/default.png')}}" alt="{{$agent['name']}}">
+												@endif
 												<p class="agent-name" style="margin-top: 10px;">{{$agent['name']}}</p>
 											</div>
 											</br>
@@ -813,6 +830,14 @@
                       </div>
                     </a>
                   </div>
+								@if($y == $z)
+									</div>
+									<div class="row">
+								@php($z = $z + 2)
+								@endif
+
+								@php($y++)
+
                 @endforeach
               @endif
              </div>

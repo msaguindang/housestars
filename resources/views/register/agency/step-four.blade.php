@@ -85,7 +85,7 @@
 			<div class="col-xs-12 form-box" style="padding: 40px">
 				<h2>Agency Package</h2>
 				<p>Please review the details below. If you are happy with your selection, click "Subscribe Now”</p>
-				<div class="package-review row">
+				<div class="package-review row small-screen">
 					<div class="col-xs-4">
 						<div class="preview-label">
 							<p>Business Name:</p>
@@ -122,6 +122,55 @@
 						<div class="preview-value">
 							@foreach($positions as $position)
 								<p>{{$position}} <span class="price"> = $2,000 per year</span></p>
+							@endforeach
+
+							@if(count($positions) > 2)
+								<p>For 3 Positions = $1000 per year</p>
+							@endif
+
+
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="preview-total">
+
+							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
+							<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+						</div>
+						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
+					</div>
+				</div>
+        <div class="package-review row mobile">
+					<div class="col-xs-4">
+						<div class="preview-value">
+							@foreach($userinfo as $info)
+
+								@if($info->meta_name == 'agency-name')
+                  <p><b>Business Name:</b>
+									{{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'trading-name')
+                  <p><b>Trading Name:</b>
+									{{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'principal-name')
+                  <p><b>Principal Name:</b>
+									{{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'phone')
+                  <p><b>Principal Phone:</b>
+									{{$info->meta_value}}</p>
+								@endif
+
+							@endforeach
+              <p><b>Principal Email:</b>
+							{{$email}}</p>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="preview-value">
+              @php ($x = 1)
+							@foreach($positions as $position)
+                <p><b>Position {{$x}} Taken:</b>
+								{{$position}} <span class="price"> = $2,000 per year</span></p>
+                @php ($x++)
 							@endforeach
 
 							@if(count($positions) > 2)

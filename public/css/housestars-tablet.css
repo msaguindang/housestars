@@ -485,6 +485,14 @@
         width: 27%;
     }
 
+    .agency .upload-gallery {
+        position: relative;
+        left: 11%;
+        width: 89%;
+        top: 12px;
+        z-index: 100;
+    }
+
 }
 
 @media only screen

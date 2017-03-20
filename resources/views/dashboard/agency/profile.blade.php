@@ -47,8 +47,10 @@
             </div>
           </div>
     </header>
-
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$cp}})">
+    @if(filter_var($cp, FILTER_VALIDATE_URL) === FALSE)
+      @php ($cp = config('app.url') . '/' . $cp)
+    @endif
+    <section id="cover-container" class="header-margin" style="background: url('{{ $cp }}')">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">

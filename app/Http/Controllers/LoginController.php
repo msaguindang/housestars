@@ -20,6 +20,7 @@ class LoginController extends Controller
 {
 	public function postLogin(Request $request){
 
+
 		$validation = $this->validate($request, [
 			'email' => 'required',
 			'password' => 'required|',
@@ -31,14 +32,18 @@ class LoginController extends Controller
 
 			   $status = Sentinel::getUser()->status;
 
-			   if(!$status){
+			   if(!$status) {
 
 				   Sentinel::removeCheckpoint('throttle');
 				   Sentinel::logout();
 
 				   $error['message'] = array("Member is currently inactive");
 				   return Response::json($error, 422);
-			   }
+			    }
+			    
+			    if($request->exists('rate')) {
+			    	return \Ajax::redirect('/');
+			    }
 
 				switch (Sentinel::getUser()->roles()->first()->slug){
 					case 'agency':

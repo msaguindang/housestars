@@ -61,7 +61,7 @@ class AgencyController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        
+
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
@@ -79,9 +79,9 @@ class AgencyController extends Controller
             if($key->meta_name == 'gallery') {
                 $data[$key->meta_name][$index] = array('id' => $key->id, 'url'=> $key->meta_value);
                 $index ++;
-            } else {                
+            } else {
                 $data[$key->meta_name] = $key->meta_value;
-            }            
+            }
         }
         $data['hasGallery'] = $index;
         return View::make('dashboard/agency/edit')->with('data', $data);
@@ -95,18 +95,18 @@ class AgencyController extends Controller
             $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
 
             foreach ($meta_name as $meta) {
-
-
                 if ($request->hasFile($meta)) {
                     $localpath = 'user/user-'.$user_id.'/uploads';
                     $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
                     $path = $request->file($meta)->move(public_path($localpath), $filename);
                     $value = $localpath.'/'.$filename;
+                } else if(!empty($request->get($meta.'-drag', ''))) {
+                    $value = $request->input($meta.'-drag');
                 } else {
                     $value = $request->input($meta);
                 }
 
-                if($value !== null){
+                if($value !== null) {
                     UserMeta::updateOrCreate(
                         ['user_id' => $user_id, 'meta_name' => $meta],
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
@@ -186,30 +186,30 @@ class AgencyController extends Controller
     {
         if(Sentinel::check())
         {
-            $customer_id = Sentinel::getUser()->customer_id;
 
             \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
 
             try{
 
-                if(Sentinel::getUser()->customer_id){
-                  $token = \Stripe\Token::create(
+                if ($customer_id = Sentinel::getUser()->customer_id) {
+                    $user_id = Sentinel::getUser()->id;
+                    $token = \Stripe\Token::create(
                       array(
                           'card'=> array(
                               'number' => $request->input('credit-card'),
                               'exp_month' => $request->input('exp_month'),
                               'exp_year' => $request->input('exp_year'),
                               'cvc' => $request->input('cvc')
-                          )
-                      )
-                  );
+                            )
+                        )
+                    );
 
                     $customer = \Stripe\Customer::retrieve($customer_id);
                     $customer->source = $token; // obtained with Stripe.js
                     $customer->save();
-                }
-
-                User::where('id', $user_id)->update(['customer_id' => $customer->id]);
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id]);
+                }                
+                
                 return redirect()->back();
 
             }catch (\Stripe\Error\Card $e){
@@ -243,7 +243,7 @@ class AgencyController extends Controller
     public function updateAgent(Request $request)
     {
         if(Sentinel::check()){
-
+          //dd($request->all());
             $agents = $request->input('add-agents');
             foreach ($agents as $agent) {
                 if($agent['name'] != '' && $agent['email'] != ''){

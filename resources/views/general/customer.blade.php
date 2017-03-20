@@ -113,7 +113,7 @@
     <section id="savings-calculator" class="blue-area">
       <div class="container">
         <div class="row section-title">
-         <h2 class="wide"><span class="icon icon-left-bar-white"></span>Savings Estimation Calculator<span class="icon icon-right-bar-white"></span></h2>
+         <h2 class="wide"><span class="icon icon-left-bar-white mobile-hidden"></span>Savings Estimation Calculator<span class="icon icon-right-bar-white mobile-hidden"></span></h2>
         </div>
         <div class="calculator">
           <form id="savingsCalc" method="POST" action="/create/potential-customer">

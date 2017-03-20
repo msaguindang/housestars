@@ -88,7 +88,7 @@ class CustomerController extends Controller
         $data['transactions'] = array();
         $data['code'] = $property_code;
 
-
+        //dd($data['property']);
         if(count($data['property']) > 1){
             $lastIndex = count($data['property']) - 2;
             $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
@@ -487,30 +487,75 @@ class CustomerController extends Controller
 
     function find_agent_by_suburb($suburb){
 
-        $users = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+        $sub = preg_replace('/[0-9]+/', '', $suburb);
+        $postcode = preg_replace('/\D/', '', $suburb);
+      //  dd($postcode);
+
+        $suburbInfo =  Suburbs::where('name', $sub)->first();
+        $lat = $suburbInfo->latitude;
+        $long = $suburbInfo->longitude;
+
+
+        $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
+                from suburbs
+                having  distance <= 10
+                order by distance
+                limit 5";
+
+        $nearby = DB::select($qry);
         $agents = array();
 
-        foreach ($users as $user) {
-            if($this->is_agent($user->user_id) == true){
-                $agent_info = DB::table('user_meta')->where('user_id', '=',$user->user_id)->get();
+        $searchInArray = array_search($sub, $nearby);
+        if($searchInArray == false){
+          $users = DB::table('user_meta')->where('meta_value', 'LIKE', '%'. $sub .'%')->get();
+
+          foreach ($users as $user) {
+              if($this->is_agent($user->user_id) == true){
+                  $agent_info = DB::table('user_meta')->where('user_id', '=',$user->user_id)->get();
 
 
-                foreach ($agent_info as $info) {
-                    if($info->meta_name == 'agency-name'){
-                        $name =  $info->meta_value;
-                    } else if($info->meta_name == 'profile-photo'){
-                        $photo = $info->meta_value;
-                    } else {
-                        $photo = '';
+                  foreach ($agent_info as $info) {
+                      if($info->meta_name == 'agency-name'){
+                          $name =  $info->meta_value;
+                      } else if($info->meta_name == 'profile-photo'){
+                          $photo = $info->meta_value;
+                      }
+                  }
+
+                  $rating = $this->getRating($user->user_id);
+
+                  $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $sub);
+
+                  array_push($agents, $agent);
+              }
+          }
+        }
+
+        foreach ($nearby as $key) {
+          if($sub != $key->name){
+            $users = DB::table('user_meta')->where('meta_value', 'LIKE', '%'. $key->name .'%')->get();
+
+            foreach ($users as $user) {
+                if($this->is_agent($user->user_id) == true){
+                    $agent_info = DB::table('user_meta')->where('user_id', '=',$user->user_id)->get();
+
+
+                    foreach ($agent_info as $info) {
+                        if($info->meta_name == 'agency-name'){
+                            $name =  $info->meta_value;
+                        } else if($info->meta_name == 'profile-photo'){
+                            $photo = $info->meta_value;
+                        }
                     }
+
+                    $rating = $this->getRating($user->user_id);
+
+                    $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name);
+
+                    array_push($agents, $agent);
                 }
-
-                $rating = $this->getRating($user->user_id);
-
-                $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating);
-
-                array_push($agents, $agent);
             }
+          }
         }
         return $agents;
     }
@@ -530,7 +575,7 @@ class CustomerController extends Controller
         }
 
         $rating = $this->getRating($id);
-        
+
         if(isset($name)){
 
           if(!isset($photo)){
@@ -573,6 +618,7 @@ class CustomerController extends Controller
     function agentInfo(Request $request){
         $user_id = Sentinel::getUser()->id;
         $agent_meta = DB::table('user_meta')->where('user_id', '=', $request->input('id'))->get();
+
         $data = array();
 
         foreach ($agent_meta as $agent) {

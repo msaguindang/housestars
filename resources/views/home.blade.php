@@ -117,10 +117,10 @@
         <div class="row tooltip-nav">
           <div class="col-xs-11 col-xs-offset-1 tooltip-items">
             <ul>
-              <li class="search-local animated fadeInDown"><span class="icon icon-search-local"></span><a href="search-category"> Search Local Trades & Services <span class="icon icon-arrow-right"></span></a></li>
-              <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings"></span><a href="{{env('APP_URL')}}/savings-calculator">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
+              <li class="search-local animated fadeInDown"><span class="icon icon-search-local mobile-hidden"></span><a href="search-category"> Search Local Trades & Services <span class="icon icon-arrow-right"></span></a></li>
+              <li class=" calculate-savings animated fadeInDown"><span class="icon icon-calculate-savings mobile-hidden"></span><a href="{{env('APP_URL')}}/savings-calculator">Calculate My Savings <span class="icon icon-arrow-right"></span></a></li>
                 @if(!Sentinel::check())
-                 <li class="sign-up animated fadeInDown"><span class="icon icon-sign-up"></span><a href="" data-toggle="modal" data-target="#signup" id="signup-form">Sign Me Up <span class="icon icon-arrow-right"></span></a></li>
+                 <li class="sign-up animated fadeInDown"><span class="icon icon-sign-up mobile-hidden"></span><a href="" data-toggle="modal" data-target="#signup" id="signup-form">Sign Me Up <span class="icon icon-arrow-right"></span></a></li>
                 @endif
             </ul>
           </div>
@@ -154,7 +154,7 @@
     <section id="how-it-works" class="home">
       <div class="container">
         <div class="row section-title">
-          <h2 class="wide"><span class="icon icon-left-bar"></span>How Housestars.com.au Works <span class="icon icon-right-bar"></span></h2>
+          <h2 class="wide"><span class="icon icon-left-bar mobile-hidden"></span>How Housestars.com.au Works <span class="icon icon-right-bar mobile-hidden"></span></h2>
           <span class="separator"></span>
           <p>House Stars is a great way to sell your property. By using local trades and services to prepare your house for sale, and by hiring the best agents to represent you, you can be sure you'll get the best results, at the cheapest prices.</p>
         </div>
@@ -239,13 +239,13 @@
     <section id="how-we-help" class="grey-area">
       <div class="container">
         <div class="row section-title">
-          <h2 class="narrow"><span class="icon icon-left-bar"></span>How May We Help You <span class="icon icon-right-bar"></span></h2>
+          <h2 class="narrow"><span class="icon icon-left-bar mobile-hidden"></span>How May We Help You <span class="icon icon-right-bar mobile-hidden"></span></h2>
         </div>
         <div class="row widget">
           <div class="col-xs-4 item animated">
             <h3>Want to sell a property?</h3>
             <p>There’s no better way to sell your property than with House Stars. The best team with the best results at the best prices.</p>
-            <div class="featured-img">
+            <div class="featured-img mobile-hidden">
               <img src="assets/img-square-buildings.png" alt="Want to sell a property?">
             </div>
             <a href="{{env('APP_URL')}}/agency" class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
@@ -253,7 +253,7 @@
           <div class="col-xs-4 item animated">
             <h3>are you a trade or service?</h3>
             <p>House Stars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
-            <div class="featured-img">
+            <div class="featured-img mobile-hidden">
               <img src="assets/img-square-services.png" alt="are you a trade or service?">
             </div>
             <a href="{{env('APP_URL')}}/tradesman" class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>
@@ -261,7 +261,7 @@
           <div class="col-xs-4 item animated">
             <h3>Are you an agent?</h3>
             <p>Need more listings? could you do with a great funnel for attracting new interest to your company? Fancy yourself as being number 1 in your suburb? hit the video below to see what the benefits are for you.</p>
-            <div class="featured-img">
+            <div class="featured-img mobile-hidden">
               <img src="assets/img-square-agent.png" alt="Are you an agent?">
             </div>
             <a href="{{env('APP_URL')}}/customer" class="btn hs-primary"><span class="icon icon-play-video"></span> Watch Video</a>

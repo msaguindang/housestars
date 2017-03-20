@@ -7,39 +7,38 @@ use Illuminate\Support\Facades\DB;
 use App\UserMeta;
 use App\Reviews;
 use App\User;
+use App\Agents;
 use App\Advertisement;
 use App\Property;
 use Response;
-use App\Agents;
 
 class ProfileController extends Controller
 {
-    public function profile($role, $id){
-
+    public function profile($role, $id)
+    {
     	switch ($role) {
     		case 'tradesman':
     			$data = $this->tradesman($id);
     			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
     			break;
-        case 'agency':
-          $data = $this->agency($id);
-          $listings = $this->property_listing($id);
-          $data['property-listings'] = $listings;
-          $data['total-listings'] = count($listings);
-        //   dd($data);
-          return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
-          break;
 
-    		default:
-    			break;
-    	}
+            case 'agency':
+                $data = $this->agency($id);
+                $listings = $this->property_listing($id);
+                $data['property-listings'] = $listings;
+                $data['total-listings'] = count($listings);
+                return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
+                break;
+
+            default:
+                break;
+            }
     }
 
     public function tradesman($id) {
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
     	$data = array();
-        $data['tradesman-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -88,6 +87,7 @@ class ProfileController extends Controller
 
     public function agency($id) {
         $user = User::where('id', $id)->get();
+<<<<<<< HEAD
         // $agencyId = Agents::where('agent_id', $id)->first();
         $meta = UserMeta::where('user_id', $id)->get();
         $data = array();
@@ -100,6 +100,18 @@ class ProfileController extends Controller
         //     $data['agency-id'] = $id;
         // }
         $data['agency-id'] = $id; 
+=======
+         $agencyId = Agents::where('agent_id', $id)->first();
+         $data = array();
+         if(isset($agencyId)) {
+             $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
+             $data['agency-id'] = $agencyId->agency_id;
+         }
+         else {
+             $meta = UserMeta::where('user_id', $id)->get();
+             $data['agency-id'] = $id;
+         }
+>>>>>>> ed66d5aa287d6b69b836e9cf1c6adba4e4efd813
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -162,9 +174,13 @@ class ProfileController extends Controller
     	$reviews = Reviews::where('reviewee_id', '=', $id)->get();
     	$data = array(); $x = 0; $average = 0;
     	foreach ($reviews as $review) {
+<<<<<<< HEAD
             // if ($user = User::where('id', $review->reviewer_id)->first()) {
                 $data[$x]['name'] = $review->name;
             // }
+=======
+            $data[$x]['name'] = $review->name;
+>>>>>>> ed66d5aa287d6b69b836e9cf1c6adba4e4efd813
     		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
     		$data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;

@@ -50,15 +50,19 @@
           </div>
     </header>
  <form action="{{env('APP_URL')}}/update-profile" method="POST" enctype="multipart/form-data">
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
+    @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+      @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
+    @endif
+    <section ondragover="allowDrop(event);" id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
 
         {{csrf_field() }}
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
+            <p class="links small-screen"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
+              <input id="cover-photo-drag" type='hidden' name="cover-photo-drag" />
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
           </div>
@@ -66,11 +70,12 @@
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
               @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
             @endif
-            <div class="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
+            <div ondragover="allowDrop(event);" class="profile-img" id="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
+              <input id="profileupload-drag" type='hidden' name="profile-photo-drag" />
             </div>
-            <div class="profile-info">
+            <div class="profile-info edit">
               <label>Agency Name</label>
 
                   @if(isset($data['agency-name']))
@@ -202,7 +207,7 @@
             </div>
           </div>
           <!-- Gallery -->
-          <div class="container gallery-uploader">
+          <div class="container gallery-uploader agency">
             <div class="col-xs-10 col-xs-offset-2">
                 <div class="upload-gallery" style="margin: 35px 0;">
                   <div class="col-xs-7">
@@ -226,6 +231,7 @@
                   </div>
                   <div class="col-xs-5">
                     <label>Upload More Gallery Photos</label>
+                    <span class='error gallery-error-span' style="display: none;"> </span>
                     <div class="upload-media">
                       <div id="agency-gallery" class="dropzone">
                         {{ csrf_field() }}
@@ -280,6 +286,7 @@
 
               reader.readAsDataURL(input.files[0]);
           }
+          $(url).find("input[type='hidden']").val('');
       }
 
       $("#CoverUpload").change(function () {
@@ -289,31 +296,32 @@
       $("#profileupload").change(function () {
           readURL(this, '.profile-img');
       });
+
       $(document).ready(function () {
           Dropzone.autoDiscover = false;
           $("#agency-gallery").dropzone({
               url: "{{ config('app.url') . '/upload' }}",
               addRemoveLinks: true,
               sending: function(file, xhr, formData) {
-                  formData.append("_token", $('[name=_token').val()); 
+                  formData.append("_token", $('[name=_token').val());
               },
               success: function (file, response) {
                   var imgName = response;
                   file.previewElement.classList.add("dz-success");
-                  console.log("Successfully uploaded :" + imgName);
               },
               error: function (file, response) {
-                  file.previewElement.classList.add("dz-error");
+                $('.gallery-error-span').show().text(response.error).delay(1000).fadeOut('slow');
+                file.previewElement.remove();
               }
           });
       });
-
+      
       $('body').on('click', '.remove-photo', function (e) {
         if(confirm("Are you sure you want to delete this photo?")) {
           $.ajax({
             method: "POST",
             url: "{{ route('delete.gallery.photo')  }}",
-            data: { 
+            data: {
               id: $(this).data('id'),
               filename: $(this).data('filename')
             },
@@ -329,5 +337,6 @@
         }
       });
   </script>
+  <script type="text/javascript" src="{{asset('js/upload-draggable.js')}}"></script>
   <script src="{{asset('js/image-preview.js')}}"></script>
  @stop

@@ -81,28 +81,24 @@
 				<div class="package-review row">
 					<div class="col-xs-6">
 						<div class="preview-label" style="width: 25%">
-							<p>Business Name:</p>
-							<p>Trading Name:</p>
-							<p>Trade or Service:</p>
-							<p>Charge Rate:</p>
-							<p>Email Address:</p>
+
 						</div>
 						<div class="preview-value">
 							@foreach($userinfo as $info)
 
 								@if($info->meta_name == 'business-name')
-									<p>{{$info->meta_value}}</p>
+									<p><b>Business Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'trading-name')
-									<p>{{$info->meta_value}}</p>
+									<p><b>Trading Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'charge-rate')
-									<p>{{$info->meta_value}}</p>
+									<p><b>Trade or Service:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'trade')
-									<p>{{$info->meta_value}}</p>
+									<p><b>Charge Rate:</b> {{$info->meta_value}}</p>
 								@endif
 
 							@endforeach
 
-							<p>{{$email}}</p>
+							<p><b>Email Address:</b>{{$email}}</p>
 						</div>
 					</div>
 
