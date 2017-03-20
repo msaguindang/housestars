@@ -21,6 +21,7 @@ use App\Reviews;
 
 class TradesmanController extends Controller
 {
+    const MAX_PHOTO = 10;
 
     public function dashboard(){
 
@@ -113,9 +114,8 @@ class TradesmanController extends Controller
     }
 
     public function upload(Request $request) {
-
-        if ($request->hasFile('file') ) {
-            $user_id = Sentinel::getUser()->id;
+        $user_id = Sentinel::getUser()->id;
+        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->get()->count() < self::MAX_PHOTO) {
             $file = $request->file('file');
             $data = array();
 	        $localpath = 'user/user-'.$user_id.'/uploads';
@@ -128,6 +128,9 @@ class TradesmanController extends Controller
 
 
 	        return Response::json('success', 200);
+        }else {
+            $max = self::MAX_PHOTO;
+            return Response::json(['error' => "You can only upload up to $max photos!"], 422);
         }
 
         return Response::json('error', 400);

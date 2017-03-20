@@ -365,10 +365,14 @@
                 </div>
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
+                  <span class='error gallery-error-span' style="display: none;"> </span>
                   <div class="upload-media">
-                    <form  action="{{config('app.url')}}/upload" method="POST" enctype="multipart/form-data" class="dropzone">
-                      {{csrf_field() }}
-                    </form>
+                    <div id="tradesman-gallery" class="dropzone">
+                      {{ csrf_field() }}
+                      <div class="dz-default dz-message">
+                        click or drag photos here
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -517,6 +521,24 @@
         });
       });
 
+      $(document).ready(function () {
+          Dropzone.autoDiscover = false;
+          $("#tradesman-gallery").dropzone({
+              url: "{{ config('app.url') . '/upload' }}",
+              addRemoveLinks: true,
+              sending: function(file, xhr, formData) {
+                  formData.append("_token", $('[name=_token').val());
+              },
+              success: function (file, response) {
+                  var imgName = response;
+                  file.previewElement.classList.add("dz-success");
+              },
+              error: function (file, response) {
+                $('.gallery-error-span').show().text(response.error).delay(1000).fadeOut('slow');
+                file.previewElement.remove();
+              }
+          });
+      });
 
      </script>
      <script type="text/javascript" src="{{asset('js/upload-draggable.js')}}"></script>

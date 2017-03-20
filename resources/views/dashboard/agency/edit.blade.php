@@ -231,6 +231,7 @@
                   </div>
                   <div class="col-xs-5">
                     <label>Upload More Gallery Photos</label>
+                    <span class='error gallery-error-span' style="display: none;"> </span>
                     <div class="upload-media">
                       <div id="agency-gallery" class="dropzone">
                         {{ csrf_field() }}
@@ -307,10 +308,10 @@
               success: function (file, response) {
                   var imgName = response;
                   file.previewElement.classList.add("dz-success");
-                  console.log("Successfully uploaded :" + imgName);
               },
               error: function (file, response) {
-                  file.previewElement.classList.add("dz-error");
+                $('.gallery-error-span').show().text(response.error).delay(1000).fadeOut('slow');
+                file.previewElement.remove();
               }
           });
       });
