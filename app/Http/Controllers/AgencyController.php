@@ -186,30 +186,30 @@ class AgencyController extends Controller
     {
         if(Sentinel::check())
         {
-            $customer_id = Sentinel::getUser()->customer_id;
 
             \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
 
             try{
 
-                if(Sentinel::getUser()->customer_id){
-                  $token = \Stripe\Token::create(
+                if ($customer_id = Sentinel::getUser()->customer_id) {
+                    $user_id = Sentinel::getUser()->id;
+                    $token = \Stripe\Token::create(
                       array(
                           'card'=> array(
                               'number' => $request->input('credit-card'),
                               'exp_month' => $request->input('exp_month'),
                               'exp_year' => $request->input('exp_year'),
                               'cvc' => $request->input('cvc')
-                          )
-                      )
-                  );
+                            )
+                        )
+                    );
 
                     $customer = \Stripe\Customer::retrieve($customer_id);
                     $customer->source = $token; // obtained with Stripe.js
                     $customer->save();
-                }
-
-                User::where('id', $user_id)->update(['customer_id' => $customer->id]);
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id]);
+                }                
+                
                 return redirect()->back();
 
             }catch (\Stripe\Error\Card $e){
