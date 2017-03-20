@@ -619,7 +619,6 @@ class CustomerController extends Controller
         $user_id = Sentinel::getUser()->id;
         $agent_meta = DB::table('user_meta')->where('user_id', '=', $request->input('id'))->get();
 
-        dd($agent_meta);
         $data = array();
 
         foreach ($agent_meta as $agent) {
