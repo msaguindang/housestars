@@ -116,19 +116,20 @@ class LoginController extends Controller
 		if($state == 'verify' || $stateIsNumeric) {
 			$socialName = $user->getName();
 			$secret = encrypt($socialId);
-			$query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
+			// $query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
 			$secret = encrypt($socialId);
-			if(count($query) == 0) {
-				DB::table('reviews')->insert(array(
-					'reviewee_id' => -1,
-					'reviewer_id' => $socialId,
-					'name' => $socialName,
-					'created_at' => Carbon::now(),
-					'updated_at' => Carbon::now()
-				));
+			// if(count($query) == 0) {
+			$this->deleteEmptyReview();
+			DB::table('reviews')->insert(array(
+				'reviewee_id' => -1,
+				'reviewer_id' => $socialId,
+				'name' => $socialName,
+				'created_at' => Carbon::now(),
+				'updated_at' => Carbon::now()
+			));
 
-				$reviewId = DB::table('reviews')->select('id')->where('reviewer_id', '=', $socialId)->get();
-			}
+			$reviewId = DB::table('reviews')->select('id')->where('reviewer_id', '=', $socialId)->get();
+			// }
 
 			if ($state == 'verify') {
 				return redirect()->action(
@@ -218,8 +219,9 @@ class LoginController extends Controller
 		return json_decode($query, true);
 	}
 
-	public function test ()
-	{
-		dd('test');
-	}
+	public function deleteEmptyReview () 
+    {
+        $query = DB::table('reviews')->where('reviewee_id', '=', -1)->delete();
+    }
+
 }

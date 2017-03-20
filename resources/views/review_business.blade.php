@@ -253,5 +253,10 @@
             $(document).ready(function() {
                 $('#rateTradesmanModal').modal('show');
             });
+
+			// redirect when review form is closed
+			$('#rateTradesmanModal').on('hidden.bs.modal', function () {
+				window.location.replace('/');
+			});
 		</script>
 		@endsection

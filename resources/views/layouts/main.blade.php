@@ -242,6 +242,11 @@
           laravel.errors.errorBagContainer = $('#error');
       });
 
+      // redirect when review form is closed
+      $('#rateInfo').on('hidden.bs.modal', function () {
+        window.location.replace('/');
+      });
+
       laravel.errors.showErrorsBag = true;
       laravel.errors.showErrorsInFormGroup = false;
     </script>
