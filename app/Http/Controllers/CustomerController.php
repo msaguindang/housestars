@@ -88,7 +88,7 @@ class CustomerController extends Controller
         $data['transactions'] = array();
         $data['code'] = $property_code;
 
-
+        dd($data['property']);
         if(count($data['property']) > 1){
             $lastIndex = count($data['property']) - 2;
             $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
@@ -530,7 +530,7 @@ class CustomerController extends Controller
         }
 
         $rating = $this->getRating($id);
-        
+
         if(isset($name)){
 
           if(!isset($photo)){

@@ -125,7 +125,7 @@
 					</div>
 					<div class="col-xs-4">
 						<label>Suburb</label>
-            <select id="select-state" name="positions[]" class="demo-default"
+            <select id="select-state" name="suburb" class="demo-default"
                     class="required-input" required>
                 {{--@foreach ($suburbs as $suburb)
                     @if($suburb->availability != '3')
