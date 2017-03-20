@@ -110,7 +110,7 @@
 					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="NB. This figure is not shown to customers. It is used to measure the customers’ savings estimate only and will not be disclosed to any external party." data-html="true"></i></label>
 					<input type="number" min="0" name="base-commission" id="base-commission">
 					<label>Marketing Budget</label>
-					<input type="number" min="0" name="marketing-budget">
+					<input type="number" min="0" name="marketing-budget" id="marketing-budget">
 					<label>Sales Type</label>
 					<div class="btn-group">
 			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
@@ -166,7 +166,7 @@
  			$('#select-state').selectize({
 				maxItems: 3
 			});
-			$('#base-commission').bind('input', function(e) {
+			$('#base-commission, #marketing-budget').bind('input', function(e) {
 				val = $(this).val();
 				$(this).val(Math.abs(val));
 			});
