@@ -50,7 +50,10 @@
           </div>
     </header>
  <form action="{{env('APP_URL')}}/update-profile" method="POST" enctype="multipart/form-data">
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
+    @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+      @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
+    @endif
+    <section ondragover="allowDrop(event);" id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
 
         {{csrf_field() }}
       <div class="cover-img">
@@ -59,6 +62,7 @@
             <p class="links small-screen"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
+              <input id="cover-photo-drag" type='hidden' name="cover-photo-drag" />
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
           </div>
@@ -66,9 +70,10 @@
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
               @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
             @endif
-            <div class="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
+            <div ondragover="allowDrop(event);" class="profile-img" id="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
+              <input id="profileupload-drag" type='hidden' name="profile-photo-drag" />
             </div>
             <div class="profile-info edit">
               <label>Agency Name</label>
@@ -280,6 +285,7 @@
 
               reader.readAsDataURL(input.files[0]);
           }
+          $(url).find("input[type='hidden']").val('');
       }
 
       $("#CoverUpload").change(function () {
@@ -289,6 +295,7 @@
       $("#profileupload").change(function () {
           readURL(this, '.profile-img');
       });
+
       $(document).ready(function () {
           Dropzone.autoDiscover = false;
           $("#agency-gallery").dropzone({
@@ -307,7 +314,7 @@
               }
           });
       });
-
+      
       $('body').on('click', '.remove-photo', function (e) {
         if(confirm("Are you sure you want to delete this photo?")) {
           $.ajax({
@@ -329,5 +336,6 @@
         }
       });
   </script>
+  <script type="text/javascript" src="{{asset('js/upload-draggable.js')}}"></script>
   <script src="{{asset('js/image-preview.js')}}"></script>
  @stop

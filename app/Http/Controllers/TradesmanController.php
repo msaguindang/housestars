@@ -43,19 +43,16 @@ class TradesmanController extends Controller
     		}
 
     	}
-
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
         $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
         $data['total'] = count($data['reviews']);
 
         $ads = Advertisement::where('type', '=', '270x270')->get();
         $y = 0;
-
         foreach ($ads  as $ad) {
             $advert[$ad->type][$y]['url'] = $ad->image_path;
             $y++;
         }
-
         if(isset($advert['270x270'])){
             $numAds =  count($advert['270x270']) - 1;
             $index1 = rand(0, $numAds);
@@ -154,8 +151,9 @@ class TradesmanController extends Controller
 	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
 					$path = $file->move(public_path($localpath), $filename);
 					$value = $localpath.'/'.$filename;
-
-				} else {
+				} else if(!empty($request->get($meta.'-drag', ''))) {
+                    $value = $request->input($meta.'-drag');
+                } else {
 					$value = $request->input($meta);
 				}
 
@@ -282,8 +280,8 @@ class TradesmanController extends Controller
         $reviews = Reviews::where('reviewee_id', '=', $id)->get();
         $data = array(); $x = 0; $average = 0;
         foreach ($reviews as $review) {
-            $name = User::where('id', $review->reviewer_id)->get();
-            $data[$x]['name'] = $name[0]['name'];
+            $user = User::where('id', $review->reviewer_id)->first();
+            $data[$x]['name'] = $user ? $user->name : '';
             $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
             $data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;
@@ -319,7 +317,7 @@ class TradesmanController extends Controller
             ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
             ->get()
             ->toArray();
-
+        
         $response = [
             'request' => $request->all(),
             'suburbs' => $suburbs
@@ -353,18 +351,22 @@ class TradesmanController extends Controller
         $id = $request->input('data');
 
         $suburb = Suburbs::find($id);
-
         $valid = true;
 
-        $users = DB::table('users')
+        // count number of traders per area
+        $tradersCount = DB::table('users')
                 ->join('role_users', function ($join) {
                     $join->on('users.id', '=', 'role_users.user_id')
                          ->where('role_users.role_id', '=', '3');
                 })
-                ->get();
+                ->join('property_meta', function ($join) use ($suburb) {
+                    $join->on('users.id', '=', 'property_meta.user_id')
+                         ->where('property_meta.meta_name', '=', 'suburb')
+                         ->where('property_meta.meta_value', '=', $suburb->name);
+                })
+                ->count();
 
-
-        if(count($users) >= $suburb->max_tradie){
+        if ($tradersCount >= $suburb->availability) {
             $valid = false;
         }
 

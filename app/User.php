@@ -21,4 +21,9 @@ class User extends Model
     function socialProviders() {
         return $this->hasMany(SocialProvider::class);
     }
+
+    public function role()
+    {
+        return $this->hasOne(RoleUsers::class);
+    }
 }
