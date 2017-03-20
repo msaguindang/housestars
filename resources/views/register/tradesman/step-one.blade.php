@@ -397,7 +397,7 @@
                 var selectize = $('#select-state').selectize();
                 var length = value.length;
                 var currentValue = value[length-1];
-
+                
                 $.ajax({
                     method:'POST',
                     url:'{{ url('tradesman/validate-availability') }}',

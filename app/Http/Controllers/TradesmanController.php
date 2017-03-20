@@ -351,18 +351,23 @@ class TradesmanController extends Controller
         $id = $request->input('data');
 
         $suburb = Suburbs::find($id);
-
         $valid = true;
 
+        // count number of tradie per area
         $users = DB::table('users')
                 ->join('role_users', function ($join) {
                     $join->on('users.id', '=', 'role_users.user_id')
                          ->where('role_users.role_id', '=', '3');
                 })
+                ->join('property_meta', function ($join) use ($suburb) {
+                    $join->on('users.id', '=', 'property_meta.user_id')
+                         ->where('property_meta.meta_name', '=', 'suburb')
+                         ->where('property_meta.meta_value', '=', $suburb->name);
+                })
                 ->get();
 
-
-        if(count($users) >= $suburb->max_tradie){
+        // if(count($users) >= $suburb->max_tradie) {
+        if ($users->count() >= $suburb->availability) {
             $valid = false;
         }
 
