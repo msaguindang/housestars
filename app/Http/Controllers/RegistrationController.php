@@ -39,7 +39,7 @@ class RegistrationController extends Controller
 
 
         $account = $request->input('account');
-            
+
         $role = Sentinel::findRoleBySlug($account);
         $role->users()->attach($user);
 
@@ -245,26 +245,70 @@ class RegistrationController extends Controller
 
     }
 
+
     public function listAgency(Request $request){
+
+      $suburb = preg_replace('/[0-9]+/', '', $request->input('data'));
+      $postcode = preg_replace('/\D/', '', $request->input('data'));
+    //  dd($postcode);
+
+      $suburbInfo =  Suburbs::where('name', $suburb)->first();
+      $lat = $suburbInfo->latitude;
+      $long = $suburbInfo->longitude;
+
+
+      $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
+              from suburbs
+              having  distance <= 10
+              order by distance
+              limit 5";
+
+        $nearby = DB::select($qry);
+      //  dd($nearby);
         $agencies = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
                                  ->where('role_users.role_id', '=', 2);
                         })
                         ->get();
+        $search = array();
+        $nearbySearch = array();
+        $data['term'] = $suburb.', '.$postcode;
 
-        $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$request->input('suburb').'%')->get();
-
-        $data = array();
-
-        foreach ($agencies as $agency) {
-           foreach ($suburbs as $suburb) {
-                if($suburb->user_id == $agency->id){
-                    array_push($data, $agency);
-                }
-           }
+        $searchInArray = array_search($suburb, $nearby);
+        if($searchInArray == false){
+          $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+          foreach ($agencies as $agency) {
+             foreach ($suburbs as $suburb) {
+                  if($suburb->user_id == $agency->id){
+                      array_push($search, $agency);
+                  }
+             }
+          }
         }
 
+        foreach ($nearby as $key) {
+
+          if($key->name != $suburb){
+            $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
+
+            foreach ($agencies as $agency) {
+               foreach ($suburbs as $suburb) {
+                    if($suburb->user_id == $agency->id){
+                        $agencyInfo['id'] = $agency->id;
+                        $agencyInfo['name'] = $agency->name;
+                        $agencyInfo['suburb'] = $key->name .', '.$key->id;
+                        array_push($nearbySearch, $agencyInfo);
+                    }
+               }
+            }
+          }
+        }
+
+        $data['search'] = $search;
+        $data['nearby'] = $nearbySearch;
+
+        //dd($data);
         if(empty($data )){
             return Response::json('error', 422);
         } else {
