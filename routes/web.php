@@ -266,7 +266,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/order-business-card', 'TradesmanController@orderBC');
 
-    Route::post('/contact-us', 'TradesmanController@contact');
+    Route::post('/contact-us', 'MainController@contact');
 
     Route::post('/customer/update-settings', 'CustomerController@update');
 

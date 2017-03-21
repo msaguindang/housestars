@@ -3275,3 +3275,16 @@ button.disabled {
     letter-spacing: 1px;
     line-height: 15px;
 }
+
+#contact .btn-group {
+    width: 100%;
+}
+
+#contact .btn-group button{
+    padding: 15px;
+    color: #a9a9bc;
+    text-align: left;
+    font-weight: 300;
+    border-bottom: none;
+    border-color: #e0e0e0;
+}
