@@ -845,6 +845,7 @@
         </div>
       </div>
     </div>
+	</div>
 
     @if(isset($data['property']))
       @foreach($data['property'] as $property)
