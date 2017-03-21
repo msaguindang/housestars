@@ -48,7 +48,7 @@ class MainController extends Controller
         // $numAds =  count($ads['728x90'] );
         // $index = rand(0, $numAds);
         $x = 0; $z = 0; $y = 0;
-        
+
         if($request->has('rate'))
             dd($request->all());
 
@@ -129,4 +129,27 @@ class MainController extends Controller
         $payment_status = $customer_info->subscriptions->data[0]->status;
         return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
     }
+
+    public function contact(Request $request){
+
+       $this->sendInquiry($request);
+
+       return Response::json('success', 200);
+   }
+
+     private function sendInquiry($data){
+        $subject = $data->input('subject');
+        $topic = $data->input('topic');
+        Mail::send(['html' => 'emails.contact-us'], [
+                'subject' => $data->input('subject'),
+                'content' => $data->input('message'),
+                'name' => $data->input('name'),
+                'email' => $data->input('email')
+            ], function ($message) use ($subject, $topic) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au', 'Housestars');
+                $message->subject($topic.': ' . $subject);
+            });
+    }
+
 }

@@ -138,7 +138,7 @@
                 <ul>
                   <li><a href="#">About Us</a></li>
                   <li><a href="#">Sitemap</a></li>
-                  <li><a href="#">Contact Us</a></li>
+                  <li><a href="#" data-toggle="modal" data-target="#contact">Contact Us</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">

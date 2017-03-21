@@ -714,10 +714,34 @@
             <form id="contactUS">
               {{csrf_field() }}
               <div id="error"></div>
-              @if(Sentinel::check())
-              <input type="hidden" name="name" value="{{Sentinel::getUser()->name}}">
+							@if(Sentinel::check())
+							<input type="hidden" name="name" value="{{Sentinel::getUser()->name}}">
               <input type="hidden" name="email" value="{{Sentinel::getUser()->email}}">
-              @endif
+							@else
+							<input type="text" name="name" placeholder="Full Name">
+              <input type="text" name="email" placeholder="Email Address" class="no-top">
+							@endif
+							<div class="btn-group">
+					            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle no-top">Please Select A Topic... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+					            <ul class="dropdown-menu">
+					              <li>
+					                <input type="radio" id="a1" name="topic" value="General Enquiry" selected>
+					                <label for="a1">General Enquiry</label>
+					              </li>
+					              <li>
+					                <input type="radio" id="a2" name="topic" value="Support">
+					                <label for="a2">Support</label>
+					              </li>
+					              <li>
+					                <input type="radio" id="a3" name="topic" value="Complaints">
+					                <label for="a3">Complaints</label>
+					              </li>
+					              <li>
+					                <input type="radio" id="a4" name="topic" value="Make a Suggestion">
+					                <label for="a4">Make a Suggestion</label>
+					              </li>
+					            </ul>
+					        </div>
               <input type="text" name="subject" placeholder="Subject">
               <textarea name="message" placeholder="Your Message Here" class="no-top"></textarea>
 
@@ -845,6 +869,7 @@
         </div>
       </div>
     </div>
+	</div>
 
     @if(isset($data['property']))
       @foreach($data['property'] as $property)

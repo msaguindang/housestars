@@ -98,7 +98,7 @@
             @endif
             <ul class="list">
               @if($x > 0)
-                @foreach($data['item'] as $tradesman)
+                @foreach($data as $tradesman)
                   @if(count($tradesman) > 5)
                     <li>
                       <div class="col-xs-3">

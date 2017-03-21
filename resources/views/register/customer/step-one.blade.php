@@ -380,16 +380,4 @@
      console.log('validator', validator);
 
  </script>
-
-
-     <script type="text/javascript">
-     	var checker = document.getElementById('terms');
-     	var btn = document.getElementById('submit');
-
-     	checker.onchange = function(){
-     		btn.disabled = !this.checked;
-     	}
-
-
-     </script>
 @stop

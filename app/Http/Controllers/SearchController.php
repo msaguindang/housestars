@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\RoleUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 use App\Suburbs;
 use App\UserMeta;
 use App\User;
@@ -19,11 +20,11 @@ class SearchController extends Controller
     {
     	switch ($item) {
     		case 'category':
-    			$data['cat'] = Category::all();
+    			     $data['cat'] = Category::all();
                 $data['suburb'] = $request->get('suburb', '');
                 $data['item'] = $this->hasResults($data['suburb']);
-    			// return Response::json($data, 200);
-                return view('general.tradesman-listings')->with('data', $data);
+    			      return Response::json($data, 200);
+                //return view('general.tradesman-listings')->with('data', $data);
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));
@@ -65,21 +66,19 @@ class SearchController extends Controller
             $mapped = $mapped->put('id', $tradesman[0]['user_id']);
             array_push($data, $mapped);
     	}
-        
+
     	return $data;
     }
 
-    public function tradesmenListing(Request $request)
+    public function tradesmenListing()
     {
-        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$category.'%')->get();
-
-
+        $trade = UserMeta::where('meta_value', 'LIKE', '%'.Input::get('category').'%')->get();
         $tradesmen = array();
 
         foreach ($trade as $key) {
-            $suburbExist = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->where('user_id', '=', $key->user_id)->first();
+            $suburbExist = UserMeta::where('meta_value', 'LIKE', '%'.Input::get('suburb').'%')->where('user_id', '=', $key->user_id)->first();
             if(isset($suburbExist)){
-              if($key->user_id == $suburbExist->user_id){
+              if($key->user_id == $suburbExist->user_id && !in_array($key->user_id, $tradesmen)){
                   array_push($tradesmen, $key->user_id);
               }
             }
@@ -101,8 +100,8 @@ class SearchController extends Controller
            }
         }
 
-        $data['cat'] = $category;
-        $data['suburb'] = $suburb;
+        $data['cat'] = Input::get('category');
+        $data['suburb'] = Input::get('suburb');
 
        return view('general.tradesman-listings')->with('data', $data);
     }

@@ -138,6 +138,16 @@ class RegistrationController extends Controller
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value, 'property_code' => $property_code]
                     );
             }
+
+            if($meta == 'agent' && $request->input($meta) != null){
+              $propertyInfo = Property::where('property_code', $property_code)->get();
+              $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
+              foreach ($propertyInfo as $info) {
+                $data[$info->meta_name] = $info->meta_value;
+              }
+              $data['code'] = $request->input('code');
+              $this->notifyAgency($data, $agencyEmail);
+            }
         }
 
         foreach ($user_meta as $meta) {
@@ -493,6 +503,17 @@ class RegistrationController extends Controller
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to($user->email);
                 $message->subject('Activate your Housestars Account');
+            });
+    }
+
+    private function notifyAgency($property, $email){
+        // $property_name = $property->suburb. ', '.$property->state;
+        Mail::send(['html' => 'emails.property-offer'], [
+                'property' => $property
+            ], function ($message) use ($email) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to($email);
+                $message->subject('Property Offer');
             });
     }
 }

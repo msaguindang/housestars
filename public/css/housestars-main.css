@@ -3268,3 +3268,23 @@ button.disabled {
 #agency-results .profile-info p {
     min-height: 80px;
 }
+
+.ratings button.btn.hs-primary {
+    float: right;
+    padding: 5px 11px;
+    letter-spacing: 1px;
+    line-height: 15px;
+}
+
+#contact .btn-group {
+    width: 100%;
+}
+
+#contact .btn-group button{
+    padding: 15px;
+    color: #a9a9bc;
+    text-align: left;
+    font-weight: 300;
+    border-bottom: none;
+    border-color: #e0e0e0;
+}

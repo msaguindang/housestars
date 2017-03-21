@@ -231,13 +231,6 @@ class TradesmanController extends Controller
         return Response::json('success', 200);
     }
 
-     public function contact(Request $request){
-
-        $this->sendInquiry($request);
-
-        return Response::json('success', 200);
-    }
-
     private function sendOrder($data){
         Mail::send(['html' => 'emails.order-bc'], [
                 'name' => $data->input('name'),
@@ -252,19 +245,6 @@ class TradesmanController extends Controller
             });
     }
 
-     private function sendInquiry($data){
-        $subject = $data->input('subject');
-        Mail::send(['html' => 'emails.contact-us'], [
-                'subject' => $data->input('subject'),
-                'content' => $data->input('message'),
-                'name' => $data->input('name'),
-                'email' => $data->input('email')
-            ], function ($message) use ($subject) {
-                $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('info@housestars.com.au', 'Housestars');
-                $message->subject('Client Inquiry: ' . $subject);
-            });
-    }
 
     public function getRating($id){
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
@@ -320,7 +300,7 @@ class TradesmanController extends Controller
             ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
             ->get()
             ->toArray();
-        
+
         $response = [
             'request' => $request->all(),
             'suburbs' => $suburbs

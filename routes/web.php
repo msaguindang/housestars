@@ -234,7 +234,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('/{action}/{provider}/callback', 'LoginController@verifyProviderCallback');
 
-    Route::get('/search/category/{category}/{suburb}', 'SearchController@tradesmenListing');
+    Route::get('/listing/{category}/{suburb}', 'SearchController@tradesmenListing');
 
     Route::post('/search/{item}',[
         'as'   => 'search.item',
@@ -266,7 +266,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/order-business-card', 'TradesmanController@orderBC');
 
-    Route::post('/contact-us', 'TradesmanController@contact');
+    Route::post('/contact-us', 'MainController@contact');
 
     Route::post('/customer/update-settings', 'CustomerController@update');
 
@@ -281,7 +281,7 @@ Route::group(['prefix' => ''], function(){
     });
     Route::post('/review', 'ReviewController@addAReview');
     Route::post('/create/review', 'ReviewController@create');
-    
+
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('test', 'AdminController@test');
@@ -391,10 +391,5 @@ Route::post('/create/potential-customer', 'PotentialCustomerController@store');
 Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAgency');
 Route::get('/review-agency/{id}', 'ReviewController@reviewAgency');
 Route::post('/review-agency/create/review', 'ReviewController@create');
-// Route::get('/profile/agency/{id}', 'ReviewController@showAgencyProfile');
-// Route::get('/review-agency', 'Rev') {
 
-// });
-// Route::get('/review-agency', 'ReviewController@test');
-// Route::post('/review', 'ReviewController@addAReview');
 // ===================================================================================================================================================
