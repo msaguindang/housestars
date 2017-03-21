@@ -392,4 +392,8 @@ Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAg
 Route::get('/review-agency/{id}', 'ReviewController@reviewAgency');
 Route::post('/review-agency/create/review', 'ReviewController@create');
 
+Route::get('/review-tradesman/{id}', 'ReviewController@reviewTradesman');
+
+Route::get('/review/business/{id}', 'ReviewController@reviewBusiness');
+
 // ===================================================================================================================================================

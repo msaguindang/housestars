@@ -1,4 +1,4 @@
-<div class="modal fade" id="rateTradesmanModal" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+<div class="modal fade" id="rateModal" tabindex="-1" role="dialog" aria-labelledby="signup-area">
 			<div class="modal-dialog" role="document" style="margin-top: 3%;">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -16,7 +16,7 @@
 							</div>
 						</div>
 						<p class="bordered-desc">Your Honest answers really help other customers</p>
-						<form id="reviewForm" enctype="multipart/form-data" method="post" action="/create/review">
+						<form id="rateForm" enctype="multipart/form-data" method="post" action="/create/review">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$businessInfo['id']}}">
 							<div class="rating-stars">

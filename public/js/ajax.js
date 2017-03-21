@@ -181,13 +181,29 @@ $(document).on('submit', '#rateTradesmanForm' ,function(e){
     var data = $(this).serialize();
     console.log(data);
     $.ajax({
-    url: 'create/review',
+    url: '/create/review',
     data: data,
     type: 'POST',
     processData: false,
     success: function(data){
       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
       $('#rateTradesmanModal').modal('hide');
+      $('#thankYou').modal('show'); 
+    }
+  });
+});
+
+$(document).on('submit', '#rateForm' ,function(e){
+    e.preventDefault();
+    var data = $(this).serialize();
+    $.ajax({
+    url: '/create/review',
+    data: data,
+    type: 'POST',
+    processData: false,
+    success: function(data){
+      $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
+      $('#rateModal').modal('hide');
       $('#thankYou').modal('show'); 
     }
   });

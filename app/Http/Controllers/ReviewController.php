@@ -256,6 +256,53 @@ class ReviewController extends Controller
         return view('general.profile.agency-review')->with('data', $data)->with('category', $role);
     }
 
+    public function reviewTradesman ($id) 
+    {
+        $role = 'tradesman';
+        $data = $this->tradesman($id);
+        $listings = $this->property_listing($id);
+        $data['property-listings'] = $listings;
+        $data['total-listings'] = count($listings);
+        return view('general.profile.tradesman-review')->with('data', $data)->with('category', $role);
+    }
+
+    public function reviewBusiness ($id) 
+    {
+        $role = $this->checkRole($id);
+        if ($role == 'agency') {
+            $data = $this->agency($id);
+        }
+        elseif ($role == 'tradesman') {
+            $data = $this->tradesman($id);
+        }
+        
+        $listings = $this->property_listing($id);
+        $data['property-listings'] = $listings;
+        $data['total-listings'] = count($listings);
+
+        if ($role == 'agency') {
+            return view('general.profile.agency-review')->with('data', $data)->with('category', $role);
+        }
+        elseif ($role == 'tradesman') {
+            return view('general.profile.tradesman-review')->with('data', $data)->with('category', $role);
+        }
+        
+    }
+
+    public function checkRole ($id)
+    {
+        $agency = UserMeta::select('meta_name')->where('user_id', $id)->where('meta_name', 'agency-name')->get();
+        $tradesman = UserMeta::select('meta_name')->where('user_id', $id)->where('meta_name', 'business-name')->get();
+
+        if(count($agency) > 0 ) {
+            return 'agency';
+        }
+        elseif(count($tradesman) > 0) {
+            return 'tradesman';
+        }   
+
+    }
+
     public function showAgencyProfile ($id)
     {
         $role = 'agency';
