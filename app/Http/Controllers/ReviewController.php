@@ -50,6 +50,7 @@ class ReviewController extends Controller
         foreach ($tradesmen as $tradesman) {
             if ($tradesman->meta_name == 'profile-photo') {
                 $data['photo'] = $tradesman->meta_value;
+                $data['isPhotoUrl'] = filter_var($data['photo'], FILTER_VALIDATE_URL);
             }
         }
 

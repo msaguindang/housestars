@@ -157,11 +157,13 @@
       url: '/review-vendor',
       data: {_token: $(this).data('token'), id: $(this).data('id')},
       type: 'POST',
-      success: function(data){
-        var url = window.location.origin;
+      success: function(data) {
+        var url = window.location.origin + '/',
+            photo = data['isPhotoUrl'] ? data['photo'] : url + data['photo'];
+            
         $("#reviewForm").trigger("reset");
         $('#tradesmanPic').remove();
-        $('.tradesman-profile').append('<img src="'+ url + '/' + data['photo'] +'" alt="'+ data['name'] +'" id="tradesmanPic">');
+        $('.tradesman-profile').append('<img src="'+ photo +'" alt="'+ data['name'] +'" id="tradesmanPic">');
         $('#tradesmanName').remove();
         $('.tradesman-name').append('<h4 id="tradesmanName">'+ data['name'] +'</h4>');
         $('#tradesmanID').val(id);
