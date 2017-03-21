@@ -271,7 +271,6 @@
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
-                  @if($review['content'] != '')
                   <div class="col-xs-12 review-box">
                     <!-- <b class="left"></b> -->
                     <span class="date right">Posted: {{$review['created']}}</span>
@@ -291,7 +290,6 @@
                        <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a>
                     </div>
                   </div>
-                  @endif
                 @endforeach
               @endif
 
@@ -318,4 +316,3 @@
     </script>
 
 @endsection
- 
