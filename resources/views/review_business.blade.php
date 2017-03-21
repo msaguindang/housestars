@@ -256,7 +256,10 @@
 
 			// redirect when review form is closed
 			$('#rateTradesmanModal').on('hidden.bs.modal', function () {
-				window.location.replace('/');
+				setTimeout(function() {
+					window.location.replace('/');	
+				}, 2000);
+				
 			});
 		</script>
 		@endsection

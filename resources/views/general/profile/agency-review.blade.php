@@ -273,13 +273,11 @@
       // redirect when review form is closed
       $('#rateTradesman').on('hidden.bs.modal', function () {
         var id = $('#agencyId').data("agency-id");
-        window.location.replace('/profile/agency/'+id);
+        setTimeout(function() {
+					window.location.replace('/profile/agency/'+id);
+				}, 2000);
       });
 
-      function closeRateTradesmanModal () 
-      {
-        $('#rateTradesman').modal('hide');
-      }
     </script>
 @endsection
 
