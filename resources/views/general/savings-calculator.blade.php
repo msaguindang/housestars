@@ -57,6 +57,7 @@
         </div>
         <div class="calculator">
           <form id="savingsCalc" method="POST">
+            <div class="alert alert-danger" style="width: 100%; text-align: center; color: #000;"><span id="error"></span></div>
             {{csrf_field()}}
             <div class="col-xs-4">
               <label>Name</label>
