@@ -57,13 +57,19 @@ $(document).on('submit', '#forgotPass' ,function(e){
         type: 'POST',
         success: function(data){
           var suburb = $('#suburb').val();
-          var exists = data['item'];
+          var exists = [];
+
+					for(i = 0; i < data['item'].length; i++){
+						exists.push(data['item'][i]['trade']);
+					}
+
 
           $('.message').append('<p>Available Trades And Services for location <b class="suburb">'+ suburb +'</b></p>');
-					console.log(data);
+
           for(i = 0; i < data['cat'].length; i++){
+						console.log(exists[0]['trade']);
             if(jQuery.inArray(data['cat'][i]['category'], exists) !== -1){
-              $('#trades').append('<div class="col-xs-4 item"><a href="/search/category/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
+              $('#trades').append('<div class="col-xs-4 item"><a href="/listing/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             } else {
               $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesman"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             }

@@ -234,7 +234,7 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('/{action}/{provider}/callback', 'LoginController@verifyProviderCallback');
 
-    Route::get('/search/category/{category}/{suburb}', 'SearchController@tradesmenListing');
+    Route::get('/listing/{category}/{suburb}', 'SearchController@tradesmenListing');
 
     Route::post('/search/{item}',[
         'as'   => 'search.item',
@@ -281,7 +281,7 @@ Route::group(['prefix' => ''], function(){
     });
     Route::post('/review', 'ReviewController@addAReview');
     Route::post('/create/review', 'ReviewController@create');
-    
+
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('test', 'AdminController@test');
