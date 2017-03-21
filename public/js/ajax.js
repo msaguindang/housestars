@@ -152,21 +152,6 @@ $(document).on('submit', '#forgotPass' ,function(e){
 
   });
 
-// submit rateInfo modal
-// $('#rateInfo').on('submit', '#rateInfo' ,function(e){
-//     e.preventDefault();
-//     var data = $('#rateInfo').serialize();
-//     console.log(data);
-//     $.ajax({
-//       url: '/review',
-//       data: data,
-//       type: 'POST',
-//       processData: false,
-//       success: function(data){
-//         console.log(data);
-//       }
-//   });
-// });
 
 // submit rateInfo modal
 $("#rateInfo").submit(function() {
@@ -174,38 +159,19 @@ $("#rateInfo").submit(function() {
     console.log(data); // it's only for test
 });
 
-// submit create review form on homepage
-$(document).on('submit', '#reviewForm' ,function(e){
+// on submit rate form
+$(document).on('submit', '#rateForm' ,function(e){
     e.preventDefault();
     var data = $(this).serialize();
-    console.log(data);
     $.ajax({
-    url: 'create/review',
-    data: data,
-    type: 'POST',
-    processData: false,
-    success: function(data){
-      $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote  trades or services.</p>');
-      $('#rateTradesmanModal').modal('hide');
-      $('#thankYou').modal('show');
-    }
-  });
-});
-
-// submit create review form on agency/business profile
-$(document).on('submit', '#rateTradesmanForm' ,function(e){
-    e.preventDefault();
-    var data = $(this).serialize();
-    console.log(data);
-    $.ajax({
-    url: 'create/review',
+    url: '/create/review',
     data: data,
     type: 'POST',
     processData: false,
     success: function(data){
       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
-      $('#rateTradesmanModal').modal('hide');
-      $('#thankYou').modal('show');
+      $('#rateModal').modal('hide');
+      $('#thankYou').modal('show'); 
     }
   });
 });

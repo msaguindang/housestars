@@ -39,6 +39,7 @@ class ProfileController extends Controller
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
     	$data = array();
+        $data['tradesman-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -155,7 +156,6 @@ class ProfileController extends Controller
             // if ($user = User::where('id', $review->reviewer_id)->first()) {
             $data[$x]['name'] = $review->name;
             // }
-            $data[$x]['name'] = $review->name;
     		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
     		$data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;

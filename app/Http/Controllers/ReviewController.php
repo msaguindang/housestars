@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Reviews;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\UploadedFile;
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use View;
 use Sentinel;
+use App\Reviews;
 use App\UserMeta;
 use App\User;
 use App\Agents;
@@ -246,14 +246,41 @@ class ReviewController extends Controller
 		return view('review_business')->with(compact('businessInfo'));
 	}
 
-    public function reviewAgency ($id) 
+    public function reviewBusiness ($id) 
     {
-        $role = 'agency';
-        $data = $this->agency($id);
+        $role = $this->checkRole($id);
+        if ($role == 'agency') {
+            $data = $this->agency($id);
+        }
+        elseif ($role == 'tradesman') {
+            $data = $this->tradesman($id);
+        }
+        
         $listings = $this->property_listing($id);
         $data['property-listings'] = $listings;
         $data['total-listings'] = count($listings);
-        return view('general.profile.agency-review')->with('data', $data)->with('category', $role);
+
+        if ($role == 'agency') {
+            return view('general.profile.agency-review')->with('data', $data)->with('category', $role);
+        }
+        elseif ($role == 'tradesman') {
+            return view('general.profile.tradesman-review')->with('data', $data)->with('category', $role);
+        }
+        
+    }
+
+    public function checkRole ($id)
+    {
+        $agency = UserMeta::select('meta_name')->where('user_id', $id)->where('meta_name', 'agency-name')->get();
+        $tradesman = UserMeta::select('meta_name')->where('user_id', $id)->where('meta_name', 'business-name')->get();
+
+        if(count($agency) > 0 ) {
+            return 'agency';
+        }
+        elseif(count($tradesman) > 0) {
+            return 'tradesman';
+        }   
+
     }
 
     public function showAgencyProfile ($id)
@@ -270,16 +297,7 @@ class ReviewController extends Controller
     {
         $user = User::where('id', $id)->get();
         $meta = UserMeta::where('user_id', $id)->get();
-        // $agencyId = Agents::where('agent_id', $id)->first();
         $data = array();
-        // if(isset($agencyId)) {
-        //     $meta = UserMeta::where('user_id', $agencyId->agency_id)->get();
-        //     $data['agency-id'] = $agencyId->agency_id;
-        // }
-        // else {
-        //     $meta = UserMeta::where('user_id', $id)->get();
-        //     $data['agency-id'] = $id;
-        // }
         $data['agency-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
@@ -322,6 +340,58 @@ class ReviewController extends Controller
         }
         //dd($data);
         return $data;
+    }
+
+    public function tradesman($id) 
+    {
+    	$meta = UserMeta::where('user_id', $id)->get();
+        $user = User::where('id', $id)->get();
+    	$data = array();
+        $data['tradesman-id'] = $id;
+        $data['summary'] = '';
+        $data['profile-photo'] = 'assets/default.png';
+        $data['cover-photo'] = 'assets/default_cover_photo.jpg';
+        $data['email'] = $user[0]['email'];
+        $x = 0; $y = 0;
+
+    	foreach ($meta as $key) {
+    		if($key->meta_name == 'gallery'){
+    			$data[$key->meta_name][$y] = $key->meta_value;
+    			$y = $y + 1;
+
+    		} else {
+
+    			$data[$key->meta_name] = $key->meta_value;
+
+    		}
+
+    	}
+    	$data['rating'] = $this->getRating($id);
+        $data['reviews'] = $this->getReviews($id);
+        $data['total'] = count($data['reviews']);
+
+        $ads = Advertisement::where('type', '=', '270x270')->get();
+        $y = 0;
+
+        foreach ($ads  as $ad) {
+            $advert[$ad->type][$y]['url'] = $ad->image_path;
+            $y++;
+        }
+
+        if(isset($advert['270x270'])){
+            $numAds =  count($advert['270x270']) - 1;
+            $index1 = rand(0, $numAds);
+            $data['advert'][0] = $advert['270x270'][$index1];
+            $index2 = rand(0, $numAds);
+
+            if($index1 == $index2){
+                $index2 = rand(0, $numAds);
+            }
+            $data['advert'][1] = $advert['270x270'][$index2];
+
+        }
+        //dd($data);
+    	return $data;
     }
 
     public function property_listing($id) 
@@ -373,6 +443,9 @@ class ReviewController extends Controller
     	foreach ($reviews as $review) {
             if ($user = User::where('id', $review->reviewer_id)->first()) {
                 $data[$x]['name'] = $user->name;
+            }
+            else {
+                $data[$x]['name'] = $review->name;
             }
     		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
     		$data[$x]['communication'] = (int)$review->communication;

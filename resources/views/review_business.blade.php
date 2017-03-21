@@ -251,14 +251,14 @@
 		@include("agency_rate_modal");
 		<script>
 			$(document).ready(function() {
-					$('#rateTradesmanModal').modal('show');
+					$('#rateModal').modal('show');
 			});
 
 			// redirect when review form is closed
-			$('#rateTradesmanModal').on('hidden.bs.modal', function () {
+			$('#rateModal').on('hidden.bs.modal', function () {
 				setTimeout(function() {
 					window.location.replace('/');	
-				}, 2000);
+				}, 4000);
 				
 			});
 		</script>

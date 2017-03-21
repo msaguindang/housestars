@@ -1,5 +1,5 @@
 <!-- RATE A TRADESMAN -->
-		<div class="modal fade" id="rateTradesman" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+		<div class="modal fade" id="rateModal" tabindex="-1" role="dialog" aria-labelledby="signup-area">
 			<div class="modal-dialog" role="document" style="margin-top: 3%;">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -12,13 +12,13 @@
 								<img src="{{$data['profile-photo']}}" alt="Tradesman Name" id="tradesmanPic">
 							</div>
 							<div class="col-xs-8 tradesman-name">
-								<h4 id="tradesmanName">{{$data['agency-name']}}</h4>
+								<h4 id="tradesmanName">{{isset($data['agency-name']) ? $data['agency-name'] : $data['business-name']}}</h4>
 							</div>
 						</div>
 						<p class="bordered-desc">Your Honest answers really help other customers</p>
-						<form id="rateTradesmanForm" enctype="multipart/form-data" method="post" action="/create">
+						<form id="rateForm" enctype="multipart/form-data" method="post" action="/create">
 							{{csrf_field() }}
-							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$data['agency-id']}}">
+							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{isset($data['agency-id']) ? $data['agency-id'] : $data['tradesman-id']}}">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">
