@@ -82,7 +82,7 @@ class ProfileController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        //dd($data);
+        dd($data);
     	return $data;
     }
 
@@ -90,7 +90,7 @@ class ProfileController extends Controller
         $user = User::where('id', $id)->get();
         $meta = UserMeta::where('user_id', $id)->get();
         $data = array();
-        $data['agency-id'] = $id; 
+        $data['agency-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';

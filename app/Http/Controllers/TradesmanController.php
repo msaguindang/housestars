@@ -67,9 +67,9 @@ class TradesmanController extends Controller
 
         }
 
-        dd($data);
+        //dd($data);
 
-    	return View::make('dashboard/tradesman/profile')->with('data', $data);
+    	   return View::make('dashboard/tradesman/profile')->with('data', $data);
     }
 
     public function edit()
