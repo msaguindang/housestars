@@ -16,23 +16,27 @@ class ProfileController extends Controller
 {
     public function profile($role, $id)
     {
-    	switch ($role) {
-    		case 'tradesman':
-    			$data = $this->tradesman($id);
-    			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
-    			break;
+        try {
+        	switch ($role) {
+        		case 'tradesman':
+        			$data = $this->tradesman($id);
+        			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
+        			break;
 
-            case 'agency':
-                $data = $this->agency($id);
-                $listings = $this->property_listing($id);
-                $data['property-listings'] = $listings;
-                $data['total-listings'] = count($listings);
-                return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
-                break;
+                case 'agency':
+                    $data = $this->agency($id);
+                    $listings = $this->property_listing($id);
+                    $data['property-listings'] = $listings;
+                    $data['total-listings'] = count($listings);
+                    return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
+        } catch (\Exception $e) {
+            abort(404);
+        }
     }
 
     public function tradesman($id) {
