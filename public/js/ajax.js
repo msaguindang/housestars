@@ -60,7 +60,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
           var exists = data['item'];
 
           $('.message').append('<p>Available Trades And Services for location <b class="suburb">'+ suburb +'</b></p>');
-
+					console.log(data);
           for(i = 0; i < data['cat'].length; i++){
             if(jQuery.inArray(data['cat'][i]['category'], exists) !== -1){
               $('#trades').append('<div class="col-xs-4 item"><a href="/search/category/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
@@ -169,7 +169,7 @@ $(document).on('submit', '#reviewForm' ,function(e){
   });
 });
 
-$(document).on('submit', '#rateTradesmanForm' ,function(e){ 
+$(document).on('submit', '#rateTradesmanForm' ,function(e){
     e.preventDefault();
     var data = $(this).serialize();
     console.log(data);
@@ -180,7 +180,7 @@ $(document).on('submit', '#rateTradesmanForm' ,function(e){
     processData: false,
     success: function(data){
       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
-      $('#thankYou').modal('show'); 
+      $('#thankYou').modal('show');
     }
   });
 });

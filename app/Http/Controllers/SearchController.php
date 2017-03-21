@@ -22,8 +22,8 @@ class SearchController extends Controller
     			$data['cat'] = Category::all();
                 $data['suburb'] = $request->get('suburb', '');
                 $data['item'] = $this->hasResults($data['suburb']);
-    			// return Response::json($data, 200);
-                return view('general.tradesman-listings')->with('data', $data);
+    			      return Response::json($data, 200);
+                //return view('general.tradesman-listings')->with('data', $data);
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));
@@ -65,7 +65,7 @@ class SearchController extends Controller
             $mapped = $mapped->put('id', $tradesman[0]['user_id']);
             array_push($data, $mapped);
     	}
-        
+
     	return $data;
     }
 
