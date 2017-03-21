@@ -76,7 +76,7 @@
 								<p class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tips for writing a great review </br> </br> <b>DO</b> </br> - Describe your overall experience</br> - Tell us if you would recommended the business to others</br>-Talk about the strengths and weaknesses of the experience </br></br> <b>DON'T</b></br>-Lie. Be as honest as possible</br>-Use bad language or personal insults</br>-Be racist, sexist or vulgar" data-html="true">Tips for writing a good review</p>
 							 </br></br>
 							</div>
-							<button type="submit" class="btn hs-primary" onclick="" >Submit Reviews</button>
+							<button type="submit" class="btn hs-primary">Submit Reviews</button>
 						</form>
 					</div>
 				</div>

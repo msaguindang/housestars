@@ -275,6 +275,11 @@
         var id = $('#agencyId').data("agency-id");
         window.location.replace('/profile/agency/'+id);
       });
+
+      function closeRateTradesmanModal () 
+      {
+        $('#rateTradesman').modal('hide');
+      }
     </script>
 @endsection
 

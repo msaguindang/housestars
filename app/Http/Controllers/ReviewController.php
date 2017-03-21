@@ -398,7 +398,11 @@ class ReviewController extends Controller
 		$reviewId = $latestRow->id;
 		$reviewerId = $latestRow->reviewer_id;
 		$businessId = $params['tradesman_id'];
-        
+
+        $reviewExists = DB::table('reviews')->where('reviewee_id', '=', $businessId)->where('reviewer_id', '=', $reviewerId)->first();
+        if(count($reviewExists) > 0) {
+            $reviewId = $reviewExists->id;
+        }
 		$communication = isset($params['communication']) ? $params['communication'] : NULL;
 		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
 		$price = isset($params['price']) ? $params['price'] : NULL;

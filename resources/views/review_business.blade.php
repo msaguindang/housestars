@@ -247,12 +247,12 @@
         </div>
       </div>
     </section>
-        @include("rate_tradesman_modal");
+    @include("rate_tradesman_modal");
 		@include("agency_rate_modal");
 		<script>
-            $(document).ready(function() {
-                $('#rateTradesmanModal').modal('show');
-            });
+			$(document).ready(function() {
+					$('#rateTradesmanModal').modal('show');
+			});
 
 			// redirect when review form is closed
 			$('#rateTradesmanModal').on('hidden.bs.modal', function () {

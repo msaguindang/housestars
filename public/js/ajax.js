@@ -169,6 +169,7 @@ $(document).on('submit', '#reviewForm' ,function(e){
   });
 });
 
+// submit create review form on agency/business profile
 $(document).on('submit', '#rateTradesmanForm' ,function(e){ 
     e.preventDefault();
     var data = $(this).serialize();
