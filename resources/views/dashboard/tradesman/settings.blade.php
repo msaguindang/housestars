@@ -94,7 +94,7 @@
                   </div>
 
                   <div class="subscription-payment row">
-                     <form action="update-payment" method="POST" enctype="multipart/form-data">
+                     <form action="{{ env('APP_URL') }}/update-payment" method="POST" enctype="multipart/form-data">
                       {{csrf_field() }}
                       @if(session('error'))
                         <div class="alert alert-danger">
