@@ -205,7 +205,7 @@ $(document).on('submit', '#rateTradesmanForm' ,function(e){
     success: function(data){
       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
       $('#rateTradesmanModal').modal('hide');
-      $('#thankYou').modal('show'); 
+      $('#thankYou').modal('show');
     }
   });
 });
@@ -269,10 +269,18 @@ $(document).on('submit', '#savingsCalc' ,function(e){
         type: 'POST',
         processData: false,
         success: function(data){
-          $("#savingsCalc")[0].reset();
-          $("#loading").fadeOut("slow");
-          $('#savingsSuccess').modal('show');
-        }
+					console.log(data);
+					$('#error').empty();
+					$("#savingsCalc")[0].reset();
+					$("#loading").fadeOut("slow");
+					$('#savingsSuccess').modal('show');
+        },
+				error: function(data){
+					$("#loading").fadeOut("slow");
+					$errors = data.responseJSON;
+					$('#error').empty();
+					$('#error').append('Please complete the form, you need to fill in all fields.');
+				}
       });
   });
 

@@ -119,6 +119,7 @@
           <form id="savingsCalc" method="POST" action="/create/potential-customer">
             {{csrf_field()}}
         		<div class="col-xs-4">
+              <div class="alert alert-danger" style="width: 100%; text-align: center; color: #000;"><span id="error"></span></div>
         			<label>Name</label>
         			<input type="text" name="name">
         			<label>Suburb</label>
@@ -170,7 +171,7 @@
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                     <ul class="dropdown-menu">
                     <li>
-                      <input type="radio" id="any" name="any" value="any">
+                      <input type="radio" id="any" name="estimated-price" value="any">
                       <label for="any">Any Price</label>
                     </li>
                     <li>
