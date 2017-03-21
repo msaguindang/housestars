@@ -125,7 +125,7 @@ Route::group(['prefix' => ''], function(){
         $data['cat'] = App\Category::all();
         $data['suburb'] = "";
         $data['item'] = app()->make('App\Http\Controllers\SearchController')->hasResults($data['suburb']);
-        
+
         return view('general.tradesman-listings')->with('data', $data);
     });
 

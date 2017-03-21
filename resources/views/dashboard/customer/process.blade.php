@@ -115,7 +115,7 @@
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <button class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></button>
+            <a class="btn hs-primary" style="margin-bottom: 0;" href="{{env('APP_URL')}}/dashboard/customer/edit"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
           </div>
         </div>
       </div>

@@ -628,6 +628,18 @@ class CustomerController extends Controller
             }
         }
 
+        $propertyInfo = Property::where('property_code', $request->input('code'))->get();
+
+        $agencyEmail =  User::where('id', $request->input('id'))->first()->email;
+
+        foreach ($propertyInfo as $info) {
+          $data[$info->meta_name] = $info->meta_value;
+        }
+        $data['code'] = $request->input('code');
+
+        $this->notifyAgency($data, $agencyEmail);
+
+
         Property::updateOrCreate(
                         ['user_id' => $user_id, 'meta_name' => 'agent', 'property_code' => $request->input('code')],
                         ['user_id' => $user_id, 'meta_name' => 'agent', 'meta_value' => $request->input('id'), 'property_code' => $request->input('code')]
@@ -678,5 +690,16 @@ class CustomerController extends Controller
 
         return redirect(env('APP_URL').'/dashboard/customer/profile');
 
+    }
+
+    private function notifyAgency($property, $email){
+        // $property_name = $property->suburb. ', '.$property->state;
+        Mail::send(['html' => 'emails.property-offer'], [
+                'property' => $property
+            ], function ($message) use ($email) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to($email);
+                $message->subject('Property Offer');
+            });
     }
 }
