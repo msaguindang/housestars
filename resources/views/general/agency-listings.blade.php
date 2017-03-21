@@ -69,6 +69,11 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
+              @if(session('error'))
+    					<div class="alert alert-danger">
+    						{{session('error')}}
+    					</div>
+    					@endif
                 <form action="{{env('APP_URL')}}/search/agency" method="POST">
                   {{csrf_field()}}
                   <input type="text" class="search" name="term" placeholder="Enter Agency Name or Suburb" style="margin: 0">

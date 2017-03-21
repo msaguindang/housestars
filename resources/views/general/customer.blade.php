@@ -222,13 +222,164 @@
           </div>
           <div class="col-xs-6 col-xs-offset-3">
             <p>House Stars has been developed to maximize the return on selling your property. It uses trid-and-tested methods, as well as modern technology to track your progress and help you get the best results for your sale.</p>
-            <form action="{{env('APP_URL')}}/search/agency" method="POST">
-                {{csrf_field()}}
-                <input type="text" name="term" placeholder="Enter Postcode" class="search" onchange="this.form.submit()">
-            </form>
+            <input type="text" id="select-state" name="term"
+                    class="required-input" required>
           </div>
         </div>
       </div>
     </section>
 
 @endsection
+
+@section('scripts')
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+    });
+
+    $('#select-state').selectize({
+        maxItems: 1,
+        valueField: 'value',
+        searchField: ['name', 'id'],
+        labelField: 'name',
+        sortField: 'text',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+            }
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '{{ url('tradesman/search-suburb') }}',
+                type: 'GET',
+                data: {
+                    query: query
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    console.log('results: ', res);
+                    callback(res.suburbs);
+                    //callback(res.repositories.slice(0, 10));
+                }
+            });
+        },
+        onChange: function(value) {
+
+            if(typeof value == "undefined" || value == null){
+                return false;
+            }
+
+            var selectize = $('#select-state').selectize();
+            var length = value.length;
+
+            $.ajax({
+                method:'POST',
+                url:'{{ url('/search/agency') }}',
+                data:{
+                    term:value
+                },
+                success: function(term){
+
+
+                 $('.thumb-holder0').empty();
+                 $('.thumb-holder1').empty();
+                 $('.thumb-holder2').empty();
+
+                 $('.agent-name0').empty();
+                 $('.agent-name1').empty();
+                 $('.agent-name2').empty();
+
+                 $('.location0').empty();
+                 $('.location1').empty();
+                 $('.location2').empty();
+
+                 if(term == 'redirect'){
+                   window.location.href = "/search-agency";
+                 }
+
+                  if(term.length < 1000 && term != 'error' && term != 'redirect'){
+                    $('#noAgency').modal('show');
+                    for(i = 0; term.length - 1; i++){
+                      if(term[i]['photo'] == null){
+                        $('.thumb-holder'+i).append('<img src="/assets/default.png" alt="">');
+                      } else {
+                        $('.thumb-holder'+i).append('<img src="'+term[i]['photo']+'" alt="">');
+                      }
+                      $('.agent-profile'+i).attr("href", "/profile/agency/"+term[i]['id'])
+                      $('.agent-name'+i).append(term[i]['name']);
+                      $('.location'+i).append('('+term[i]['suburb']+')');
+                    }
+                  } else if(term != 'error' && term != 'redirect'){
+                      $('#noAgency').modal('show');
+                  }
+
+
+               }
+            });
+
+        }
+    });
+
+    jQuery.validator.addMethod('positionsRequired', function(value, element){
+
+        if(typeof value == "undefined" || value == null || value == ""){
+
+            $('.selectize-control .selectize-input').addClass('error');
+
+            return false;
+        }
+
+        $('.selectize-control .selectize-input').removeClass('error');
+        return true;
+
+    });
+
+    jQuery.validator.addMethod('tradeRequired', function(value, element){
+
+        if(typeof value == "undefined" || value == null || value == ""){
+
+            console.log('undefined trade');
+            $('#trade-btn-group').addClass('error');
+
+            return false;
+        }
+
+        $('#trade-btn-group').removeClass('error');
+        return true;
+
+    });
+
+    var validator = $('form[name=step_one_form]').validate({
+        errorPlacement: function (error, element) {
+            //console.log('error: ', error);
+            //console.log('element: ', element);
+        },
+        ignore: '',
+        rules:{
+            'positions[]':{
+                positionsRequired:true
+            },
+            trade: {
+                tradeRequired:true
+            }
+        }
+        /*submitHandler: function(form) {
+
+
+
+
+
+        }*/
+    });
+
+    console.log('validator', validator);
+
+</script>
+@stop

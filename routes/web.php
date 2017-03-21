@@ -182,6 +182,8 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('tradesman/search-suburb', 'TradesmanController@searchSuburb');
 
+    Route::get('/search-agency', 'SearchController@showResults');
+
     Route::post('/register', 'RegistrationController@postRegister');
 
     Route::post('/delete-item', 'TradesmanController@deleteItem');

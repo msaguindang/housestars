@@ -93,6 +93,7 @@
         <div class="row category">
           <div id="trades"></div>
           <div class="spacing"></div>
+          
         </div>
 
         </div>

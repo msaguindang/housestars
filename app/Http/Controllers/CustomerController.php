@@ -69,6 +69,7 @@ class CustomerController extends Controller
 
         	}else if($key->meta_name == 'agent'){
                 $data['agent'] = $this->find_agent_by_id($key->meta_value);
+                $data['property'][$x][$key->meta_name] = $key->meta_value;
             } else if($property_code == $key->property_code){
         		$data['property'][$x][$key->meta_name] = $key->meta_value;
         		$property_code = $key->property_code;

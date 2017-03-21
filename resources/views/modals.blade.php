@@ -428,7 +428,7 @@
 
 
      <!-- NO TRADESMAN LISTED-->
-    <div class="modal fade" id="noTradesman" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+    <div class="modal fade" id="noTradesmen" tabindex="-1" role="dialog" aria-labelledby="signup-area">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -447,6 +447,70 @@
         </div>
       </div>
     </div>
+
+		<!-- NO TRADESMAN LISTED-->
+	 <div class="modal fade" id="noAgency" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+		 <div class="modal-dialog" role="document">
+			 <div class="modal-content">
+				 <div class="modal-header">
+					 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				 </div>
+				 <div class="modal-body">
+					 <h4>There are no agents currently</br>listed in your suburb</h4>
+				 </br><p class="sub-heading">If you know an agent/agency that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+					 <form id="suggestAgency">
+						 {{csrf_field() }}
+						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
+						 <input type="text" name="contact" placeholder="Contact Number" class="no-top"></br>
+						 <button class="btn hs-primary">SUBMIT</button>
+					 </form>
+
+					 <p class="heading"><span class="hLine left"></span>NEAREST AGENCIES<span class="hLine right"></span></p>
+					 <div id="nearby">
+						 <div class="col-xs-4">
+						 		<a class="agent-profile0">
+						 		<div class="col-xs-12 tradesman-profile">
+						 					<div class="thumb-holder0"></div>
+						 					<p class="agent-name0" style="margin-top: 10px; margin-bottom: 0;"></p>
+											<p class="location0" style="margin: 0; font-style: italic; font-size: 11px;"></p>
+						 		</div>
+						 		<br>
+								<div class="stars rating0">
+
+						 		</div>
+						   </a>
+						 </div>
+						 <div class="col-xs-4">
+						 		<a class="agent-profile1">
+						 		<div class="col-xs-12 tradesman-profile">
+						 					<div class="thumb-holder1"></div>
+						 					<p class="agent-name1" style="margin-top: 10px; margin-bottom: 0;"></p>
+											<p class="location1" style="margin: 0; font-style: italic; font-size: 11px;"></p>
+						 		</div>
+						 		<br>
+								<div class="stars rating1">
+
+						 		</div>
+						   </a>
+						 </div>
+						 <div class="col-xs-4">
+						 		<a class="agent-profile2">
+						 		<div class="col-xs-12 tradesman-profile">
+						 					<div class="thumb-holder2"></div>
+						 					<p class="agent-name2" style="margin-top: 10px; margin-bottom: 0;"></p>
+											<p class="location2" style="margin: 0; font-style: italic; font-size: 11px;"></p>
+						 		</div>
+						 		<br>
+								<div class="stars rating2">
+
+						 		</div>
+						   </a>
+						 </div>
+					 </div>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
 
     <!-- SUBMIT CATEGORY-->
     <div class="modal fade" id="submitCategory" tabindex="-1" role="dialog" aria-labelledby="signup-area">

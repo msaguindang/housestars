@@ -3288,3 +3288,7 @@ button.disabled {
     border-bottom: none;
     border-color: #e0e0e0;
 }
+
+.modal-body #nearby {
+    overflow: auto;
+}

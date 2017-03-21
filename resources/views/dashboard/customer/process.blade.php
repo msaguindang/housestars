@@ -360,7 +360,7 @@
               <div class="col-xs-12 section-title">
                 <h4>AGENTS</h4>
               </div>
-              @if(isset($data['agent']))
+              @if(isset($data['agent']) && isset($data['property'][$a]['agent']))
               <div class="entry">
                 <ul style="border: none">
                   <li>

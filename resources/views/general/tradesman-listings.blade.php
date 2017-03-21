@@ -155,10 +155,13 @@
             </ul>
           </div>
           <div class="row">
-            <div class="col-xs-9">
+            <div class="col-xs-6">
                 <nav aria-label="Page navigation" class="pagination">
                     <ul class="pagination"></ul>
                 </nav>
+            </div>
+            <div class="col-xs-6">
+                <button class="btn hs-primary medium" data-toggle="modal" data-target="#noTradesmen" style="float:right;width: 50%;margin-top: 40px;"><span class="icon icon-arrow-right"></span>Suggest a Tradesman</button>
             </div>
             <!-- <div class="col-xs-3">
               <a class="btn hs-primary medium search-again"><span class="icon icon-arrow-right"></span>Search Again</a>

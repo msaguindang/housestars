@@ -71,7 +71,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
             if(jQuery.inArray(data['cat'][i]['category'], exists) !== -1){
               $('#trades').append('<div class="col-xs-4 item"><a href="/listing/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             } else {
-              $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesman"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
+              $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             }
           }
 
@@ -110,7 +110,24 @@ $(document).on('submit', '#forgotPass' ,function(e){
         data: data,
         type: 'POST',
         success: function(data){
-          $('#noTradesman').modal('hide');
+          $('#noTradesmen').modal('hide');
+          $('#thankYouTrades').modal('show');
+        }
+
+      });
+
+  });
+
+	$(document).on('submit', '#suggestAgency' ,function(e){
+      e.preventDefault();
+      var data = $(this).serialize();
+
+      $.ajax({
+        url: '/send/agency',
+        data: data,
+        type: 'POST',
+        success: function(data){
+          $('#noAgency').modal('hide');
           $('#thankYouTrades').modal('show');
         }
 
