@@ -204,7 +204,8 @@ $(document).on('submit', '#rateTradesmanForm' ,function(e){
     processData: false,
     success: function(data){
       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
-      $('#thankYou').modal('show');
+      $('#rateTradesmanModal').modal('hide');
+      $('#thankYou').modal('show'); 
     }
   });
 });
