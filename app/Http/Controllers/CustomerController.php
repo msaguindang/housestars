@@ -69,6 +69,7 @@ class CustomerController extends Controller
 
         	}else if($key->meta_name == 'agent'){
                 $data['agent'] = $this->find_agent_by_id($key->meta_value);
+                $data['property'][$x][$key->meta_name] = $key->meta_value;
             } else if($property_code == $key->property_code){
         		$data['property'][$x][$key->meta_name] = $key->meta_value;
         		$property_code = $key->property_code;
@@ -464,6 +465,13 @@ class CustomerController extends Controller
 
         return Response::json($data, 200);
 
+    }
+
+    function updateCommission(Request $request){
+
+      $value = preg_replace('/\D/', '', $request->input('content'));
+      DB::table('property_meta')->where('user_id', $request->input('id'))->where('property_code',$request->input('code'))->where('meta_name', 'commission')->update(['meta_value' => $value]);
+      return Response::json('success', 200);
     }
 
     function delete(Request $request){

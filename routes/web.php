@@ -182,6 +182,8 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('tradesman/search-suburb', 'TradesmanController@searchSuburb');
 
+    Route::get('/search-agency', 'SearchController@showResults');
+
     Route::post('/register', 'RegistrationController@postRegister');
 
     Route::post('/delete-item', 'TradesmanController@deleteItem');
@@ -197,6 +199,8 @@ Route::group(['prefix' => ''], function(){
     Route::post('/process-trades', 'CustomerController@spending');
 
     Route::post('/process-spending', 'CustomerController@updateAmount');
+
+      Route::post('/update-commission', 'CustomerController@updateCommission');
 
     Route::post('/upload-receipt', 'CustomerController@uploadReceipt');
 

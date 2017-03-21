@@ -18,8 +18,17 @@ class PotentialCustomerController extends Controller
         $this->payload = $request;
     }
 
-    public function store (Request $request) 
-    {   
+    public function store (Request $request)
+    {
+      $validator = $this->validate($request, [
+          'name' => 'required',
+          'suburb' => 'required',
+          'email' => 'required',
+          'property-type' => 'required',
+          'phone' => 'required',
+          'estimated-price' => 'required',
+      ]);
+
         $customer = PotentialCustomer::firstOrCreate([
             'name' => $request->name,
             'email' => $request->email,
@@ -27,7 +36,9 @@ class PotentialCustomerController extends Controller
         ]);
 
         $this->sendEmail($request);
-        return Response::json('success', 200);      
+        return Response::json('success', 200);
+
+
     }
 
     private function sendEmail($request)
