@@ -267,6 +267,7 @@
 
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
+              <button onClick="openRatingModal()" class="btn hs-primary" style="">+ Review</button>
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
