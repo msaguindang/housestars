@@ -345,7 +345,6 @@
 
     @if(isset($data['reviews']))
       @foreach($data['reviews'] as $review)
-        @if(isset($review['content']) && $review['content'] != '')
 
         <div class="modal fade" id="rateReview{{$review['id']}}" tabindex="-1" role="dialog" aria-labelledby="signup-area">
           <div class="modal-dialog" role="document" style="margin-top: 3%;">
@@ -420,7 +419,6 @@
             </div>
           </div>
         </div>
-        @endif
       @endforeach
     @endif
 

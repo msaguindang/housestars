@@ -14,7 +14,7 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-                    
+
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a> 
+            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
             <!-- <a href="settings" class="btn hs-primary"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a> --><br/><br/>
             <div class="clearfix col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
@@ -174,7 +174,7 @@
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>      
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                           <div class="carousel-inner">
                             <div class="item active">
                                 <div class="row">
@@ -184,7 +184,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -198,7 +198,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -212,7 +212,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -229,7 +229,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -243,21 +243,21 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
                                       </div>
                                     </div>
                                   </div>
-                                  
+
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
                                       <div class="gallery-image">
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -274,7 +274,7 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -288,21 +288,21 @@
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
                                       </div>
                                     </div>
                                   </div>
-                                  
+
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
                                       <div class="gallery-image">
                                       <div class="gallery-label">
                                           <span class="property-name">Property Name</span>
                                           <span class="property-location">New South Wales, Australia</span>
-                                        </div> 
+                                        </div>
                                       </div>
                                       <div class="gallery-desc">
                                         <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
@@ -312,7 +312,7 @@
                                 </div>
                             </div>
 
-                            
+
                         </div>
                     </div>
                 </div>
@@ -325,16 +325,15 @@
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
-                  @if($review['content'] != '')
                   <div class="col-xs-12 review-box">
                     <!-- <b class="left"></b> -->
                     <span class="date right">Posted: {{$review['created']}}</span>
                     <p><b>{{$review['name']}}</b></p>
                     <p class="left rating-p">{{$review['content']}}</p>
                     <button class="btn btn-helpful right" id="helpful" data-id="{{$review['id']}}" data-token="{{csrf_token()}}"><span class="icon icon-helpful"></span> Helpful <span class="small" id="count-{{$review['id']}}">({{$review['helpful']}})</span></button>
-                    
+
                     <div class="stars left">
-                     
+
                         @for($i = 1; $i <= $review['average']; $i++)
                             <span class="icon icon-star"></span>
                         @endfor
@@ -342,13 +341,12 @@
                         @for($i = 1; $i <= $rating; $i++)
                             <span class="icon icon-star-grey"></span>
                         @endfor
-                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a> 
+                       <a href="#" data-toggle="modal" data-target="#rateReview{{$review['id']}}">(View Rate Summary)</a>
                     </div>
                   </div>
-                  @endif
                 @endforeach
               @endif
-             
+
             </div>
           </div>
             <div class="col-xs-3 sidebar">
