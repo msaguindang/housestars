@@ -104,9 +104,6 @@ class LoginController extends Controller
 
 	public function handleProviderCallback ($provider, Request $request) 
 	{
-		//=======================================================
-		// TEST
-		//=======================================================
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
 		$stateIsNumeric = is_numeric($state); 
@@ -138,10 +135,6 @@ class LoginController extends Controller
 			}
 			else {
 				return redirect('/review-agency/'.$state);
-
-				// return redirect()->action('LoginController@test')->send();
-
-				// return redirect('/review-agency');
 			}
 		}
 		else {
