@@ -307,7 +307,14 @@
             </div>
         </div>
       </div>
+      @include("modals.tradesmanrating")
+      @include("modals.thankyou")
     </section>
+     <script>
+      function openRatingModal() {
+        $('#rating').modal('show');
+      }
+    </script>
 
 @endsection
  

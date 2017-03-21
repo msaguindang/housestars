@@ -39,6 +39,7 @@ class ProfileController extends Controller
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
     	$data = array();
+        $data['tradesman-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
