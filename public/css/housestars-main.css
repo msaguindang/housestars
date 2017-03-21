@@ -3268,3 +3268,10 @@ button.disabled {
 #agency-results .profile-info p {
     min-height: 80px;
 }
+
+.ratings button.btn.hs-primary {
+    float: right;
+    padding: 5px 11px;
+    letter-spacing: 1px;
+    line-height: 15px;
+}

@@ -220,8 +220,8 @@
             </div>
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
-              <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a><br>
-              <button onClick="openRatingModal()" class="btn hs-primary" style="">Review This Agency</button>
+              <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
+              <button onClick="openRatingModal()" class="btn hs-primary" style="">+ Review</button>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
                   @if($review['content'] != '')
