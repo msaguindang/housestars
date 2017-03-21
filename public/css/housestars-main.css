@@ -3292,3 +3292,7 @@ button.disabled {
 .modal-body #nearby {
     overflow: auto;
 }
+
+.img-preview img {
+    width: 100%;
+}

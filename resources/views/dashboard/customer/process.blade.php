@@ -309,9 +309,9 @@
                         @endif
                         <label for="c8"><span></span></label>
                       </div>
-                      <div class="amount">
+                      <div class="amount" id="{{$data['property']['user_id']}}" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}">
                         @if(isset($data['property'][$a]['commission']))
-                          <h4>{{$data['property'][$a]['commission']}}%</h4>
+                          <h4 contenteditable="true">{{$data['property'][$a]['commission']}}%</h4>
                         @else
                           <h4>N/A</h4>
                         @endif

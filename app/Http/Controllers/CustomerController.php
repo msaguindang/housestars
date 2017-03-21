@@ -467,6 +467,13 @@ class CustomerController extends Controller
 
     }
 
+    function updateCommission(Request $request){
+
+      $value = preg_replace('/\D/', '', $request->input('content'));
+      DB::table('property_meta')->where('user_id', $request->input('id'))->where('property_code',$request->input('code'))->where('meta_name', 'commission')->update(['meta_value' => $value]);
+      return Response::json('success', 200);
+    }
+
     function delete(Request $request){
 
         $tradesman_id = DB::table('transactions')->where('id', '=', $request->input('id'))->get();

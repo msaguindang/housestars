@@ -119,6 +119,18 @@
     });
   });
 
+  $(document).on('blur','h4[contenteditable=true]', function(){
+      console.log($(this).parent().attr('id'));
+     $.ajax({
+        url: '/update-commission',
+        data: {_token: $(this).parent().data('token'), content: $(this).text(), id: $(this).parent().attr('id'), code: $(this).parent().data('code')},
+        type: 'POST',
+        success: function(data){
+          location.reload();
+        }
+    });
+  });
+
   $(document).on('click', '.remove-transaction' ,function(e){
 
     $(this).parent().parent().parent().parent().remove();

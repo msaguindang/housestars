@@ -200,6 +200,8 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/process-spending', 'CustomerController@updateAmount');
 
+      Route::post('/update-commission', 'CustomerController@updateCommission');
+
     Route::post('/upload-receipt', 'CustomerController@uploadReceipt');
 
     Route::post('/delete-transaction', 'CustomerController@delete');
