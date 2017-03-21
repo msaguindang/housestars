@@ -1,4 +1,5 @@
-<div class="modal fade" id="rateModal" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+<!-- RATE A TRADESMAN -->
+		<div class="modal fade" id="rateModal" tabindex="-1" role="dialog" aria-labelledby="signup-area">
 			<div class="modal-dialog" role="document" style="margin-top: 3%;">
 				<div class="modal-content">
 					<div class="modal-header">

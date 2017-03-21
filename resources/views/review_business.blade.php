@@ -258,7 +258,7 @@
 			$('#rateModal').on('hidden.bs.modal', function () {
 				setTimeout(function() {
 					window.location.replace('/');	
-				}, 3000);
+				}, 4000);
 				
 			});
 		</script>

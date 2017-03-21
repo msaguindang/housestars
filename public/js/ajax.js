@@ -158,41 +158,42 @@ $("#rateInfo").submit(function() {
 });
 
 // submit create review form on homepage
-$(document).on('submit', '#reviewForm' ,function(e){
-    e.preventDefault();
-    var data = $(this).serialize();
-    console.log(data);
-    $.ajax({
-    url: 'create/review',
-    data: data,
-    type: 'POST',
-    processData: false,
-    success: function(data){
-      $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote  trades or services.</p>');
-      $('#rateTradesmanModal').modal('hide');
-      $('#thankYou').modal('show');
-    }
-  });
-});
+// $(document).on('submit', '#reviewForm' ,function(e){
+//     e.preventDefault();
+//     var data = $(this).serialize();
+//     console.log(data);
+//     $.ajax({
+//     url: 'create/review',
+//     data: data,
+//     type: 'POST',
+//     processData: false,
+//     success: function(data){
+//       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote  trades or services.</p>');
+//       $('#rateTradesmanModal').modal('hide');
+//       $('#thankYou').modal('show');
+//     }
+//   });
+// });
 
 // submit create review form on agency/business profile
-$(document).on('submit', '#rateTradesmanForm' ,function(e){
-    e.preventDefault();
-    var data = $(this).serialize();
-    console.log(data);
-    $.ajax({
-    url: '/create/review',
-    data: data,
-    type: 'POST',
-    processData: false,
-    success: function(data){
-      $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
-      $('#rateTradesmanModal').modal('hide');
-      $('#thankYou').modal('show'); 
-    }
-  });
-});
+// $(document).on('submit', '#rateTradesmanForm' ,function(e){
+//     e.preventDefault();
+//     var data = $(this).serialize();
+//     console.log(data);
+//     $.ajax({
+//     url: '/create/review',
+//     data: data,
+//     type: 'POST',
+//     processData: false,
+//     success: function(data){
+//       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
+//       $('#rateTradesmanModal').modal('hide');
+//       $('#thankYou').modal('show'); 
+//     }
+//   });
+// });
 
+// on submit rate form
 $(document).on('submit', '#rateForm' ,function(e){
     e.preventDefault();
     var data = $(this).serialize();

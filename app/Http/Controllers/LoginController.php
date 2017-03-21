@@ -134,7 +134,6 @@ class LoginController extends Controller
 				);
 			}
 			else {
-				// return redirect('/review-agency/'.$state);
 				return redirect('/review/business/'.$state);
 			}
 		}

@@ -282,6 +282,11 @@ Route::group(['prefix' => ''], function(){
     Route::post('/review', 'ReviewController@addAReview');
     Route::post('/create/review', 'ReviewController@create');
 
+     Route::post('/create/potential-customer', 'PotentialCustomerController@store');
+    Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAgency');
+    Route::post('/review-agency/create/review', 'ReviewController@create');
+    Route::get('/review/business/{id}', 'ReviewController@reviewBusiness');
+
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('test', 'AdminController@test');
@@ -380,6 +385,8 @@ Route::group(['prefix' => ''], function(){
 
         });
 
+       
+
     });
 
 });
@@ -387,13 +394,5 @@ Route::group(['prefix' => ''], function(){
 // ===================================================================================================================================================
 // NEW ROUTES
 // ===================================================================================================================================================
-Route::post('/create/potential-customer', 'PotentialCustomerController@store');
-Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAgency');
-Route::get('/review-agency/{id}', 'ReviewController@reviewAgency');
-Route::post('/review-agency/create/review', 'ReviewController@create');
-
-Route::get('/review-tradesman/{id}', 'ReviewController@reviewTradesman');
-
-Route::get('/review/business/{id}', 'ReviewController@reviewBusiness');
 
 // ===================================================================================================================================================

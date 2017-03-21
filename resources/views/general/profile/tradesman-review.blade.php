@@ -1,7 +1,6 @@
 @extends("layouts.main")
 @section("content")
 <header id="header" class="animated desktop">
-        
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -49,7 +48,10 @@
           </div>
     </header>
 
-    <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
+    @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
+      @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
+    @endif
+    <section id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
@@ -57,17 +59,19 @@
           </div>
           <div class="profile">
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
-              @php ($data['profile-photo'] = env('APP_URL').'/'.$data['profile-photo'])
+              @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
             @endif
-            <div class="profile-img" style="background: url({{$data['profile-photo']}}) no-repeat center center;">
+            <div class="profile-img" style="background: url({{$data['profile-photo']}}) 100%">
             </div>
             <div class="profile-info">
-              @if(isset($data['agency-name']))
-              <h1>{{$data['agency-name']}}</h1>
-              @endif
-              @if (isset($data['business-address']))
-              <p>Location: {{$data['business-address']}}</p>
-              @endif
+
+                  @if(isset($data['business-name']))
+                  <h1>{{$data['business-name']}}</h1>
+                  @endif
+                  @if (isset($data['website']))
+                  <p>Website: {{$data['website']}}</p>
+                  @endif
+
             </div>
           </div>
         </div>
@@ -82,11 +86,7 @@
                 @if(isset($data['trade']))
                   <h2 class="trade">{{$data['trade']}}</h2>
                   @endif
-              <!--  -->
-              <div class="status">
-                  <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{ $data['total-listings'] }} {{ str_plural('Listing', $data['total-listings']) }} </span>
-                  <!-- <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold</span> -->
-              </div>
+
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
@@ -98,7 +98,7 @@
                       <span class="icon icon-star-grey"></span>
                   @endfor
                 </div>
-                <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Reviews</span>
+                <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
               </div>
             </div>
 
@@ -113,10 +113,10 @@
           <div class="col-xs-3 profile-details">
            <!--  <h3>More Details</h3> -->
            <div class="info-item">
-              @if(isset($data['phone']))
-              <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
+              @if(isset($data['website']))
+              <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
-                <p> <b> Phone </b></br><span class="detail">{{$data['phone']}}</span></p>
+                <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
               </div>
               @endif
             </div>
@@ -137,19 +137,10 @@
               @endif
             </div>
             <div class="info-item">
-
               @if(isset($data['charge-rate']))
               <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
                 <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
-              </div>
-              @endif
-            </div>
-            <div class="info-item">
-              @if(isset($data['website']))
-              <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-              <div class="col-xs-10 detail">
-                <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
               </div>
               @endif
             </div>
@@ -164,7 +155,7 @@
           <div class="col-xs-9">
 
 
-            <div class="row gallery">
+            <div class="row gallery mobile-hidden">
                 @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
                 @else
@@ -178,10 +169,10 @@
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                         <!-- Carousel Buttons Next/Prev -->
-                        <div class="controller">
+                              <div class="controller">
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                   <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                </div>
+                              </div>
                         <!-- Carousel Slides / Quotes -->
                           <div class="carousel-inner">
                           <!-- Gallery 1 -->
@@ -221,16 +212,70 @@
                     @endif
               </div>
             </div>
+
+            <div class="row gallery mobile">
+                @if(isset($data['gallery']))
+                <h2 class="section-title">Gallery</h2>
+                @else
+                  <div class="spacing"></div>
+                @endif
+
+                <div class="gallery-carousel ">
+                   @if(isset($data['gallery']))
+                                @php($x = 0)
+                  <div class="col-md-12" data-wow-delay="0.2s">
+                      <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
+                        <!-- Carousel Buttons Next/Prev -->
+                              <div class="controller">
+                                  <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                              </div>
+                        <!-- Carousel Slides / Quotes -->
+                          <div class="carousel-inner">
+                          <!-- Gallery 1 -->
+
+
+                                @php($items = count($data['gallery']) - 1)
+
+                                @foreach($data['gallery'] as $item)
+                                  @if ($x == 0 )
+                                    <div class="item active">
+                                      <div class="row">
+                                  @else
+                                  <div class="item">
+                                    <div class="row">
+                                  @endif
+                                  <div class="col-xs-4">
+                                    <div class="gallery-item">
+                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                    </div>
+                                  </div>
+
+                                    </div>
+                                  </div>
+
+
+                                  @php($x++)
+
+                                @endforeach
+                        </div>
+                    </div>
+                </div>
+                    @endif
+              </div>
+            </div>
+
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
-              <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a><br>
+              <button onClick="openRatingModal()" class="btn hs-primary" style="">+ Review</button>
+              <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
                   @if($review['content'] != '')
                   <div class="col-xs-12 review-box">
                     <!-- <b class="left"></b> -->
                     <span class="date right">Posted: {{$review['created']}}</span>
-                    <p><b>{{isset($review['name']) ? $review['name'] : 'anonymous'}}</b></p>
+                    <p><b>{{$review['name']}}</b></p>
                     <p class="left rating-p">{{$review['content']}}</p>
                     <button class="btn btn-helpful right" id="helpful" data-id="{{$review['id']}}" data-token="{{csrf_token()}}"><span class="icon icon-helpful"></span> Helpful <span class="small" id="count-{{$review['id']}}">({{$review['helpful']}})</span></button>
 
@@ -249,9 +294,10 @@
                   @endif
                 @endforeach
               @endif
+
             </div>
           </div>
-            <div class="col-xs-3 sidebar desktop">
+            <div class="col-xs-3 sidebar">
               <div class="advertisement">
                 @if(isset($data['advert']))
                   @foreach($data['advert'] as $ad)
@@ -265,19 +311,20 @@
       @include("modals.ratetradesman")
       @include("modals.thankyou")
     </section>
-    <input type="hidden" id="agencyId" data-agency-id="{{$data['agency-id']}}"></input>
+    <input type="hidden" id="tradesmanId" data-tradesman-id="{{$data['tradesman-id']}}"></input>
     <script>
      	$(document).ready(function() {
         $('#rateModal').modal('show');
       });
       // redirect when review form is closed
       $('#rateModal').on('hidden.bs.modal', function () {
-        var id = $('#agencyId').data("agency-id");
+        var id = $('#tradesmanId').data("tradesman-id");
         setTimeout(function() {
-					window.location.replace('/profile/agency/'+id);
-				}, 4000);
+            window.location.replace('/profile/tradesman/'+id);
+        }, 4000);
       });
 
     </script>
-@endsection
 
+@endsection
+ 
