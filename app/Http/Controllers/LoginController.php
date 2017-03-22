@@ -42,7 +42,7 @@ class LoginController extends Controller
 			    }
 
 			    if($request->exists('rate')) {
-			    	return \Ajax::redirect('/');
+			    	return \Ajax::redirect('/choose-business');
 			    }
 
 				switch (Sentinel::getUser()->roles()->first()->slug){

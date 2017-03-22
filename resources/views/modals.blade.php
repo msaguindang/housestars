@@ -94,7 +94,7 @@
 						<h4>Rate a Trade or Service</h4>
 						<p class="sub-heading">Verify that you are a real customer by signing in below</p>
 						<div class="info-bar" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
-							<form action="login?rate" method="POST" class="ajax">
+							<form action="login?rate" method="POST">
 								{{csrf_field() }}
 								<div id="error"></div>
 								<div id="login-error"></div>
