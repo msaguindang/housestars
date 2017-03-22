@@ -208,8 +208,8 @@ class AgencyController extends Controller
                     $customer->source = $token; // obtained with Stripe.js
                     $customer->save();
                     User::where('id', $user_id)->update(['customer_id' => $customer->id]);
-                }                
-                
+                }
+
                 return redirect()->back();
 
             }catch (\Stripe\Error\Card $e){
@@ -412,5 +412,65 @@ class AgencyController extends Controller
             $error['message'] = array('You are not authorized.');
             return Response::json($error, 422);
         }*/
+    }
+
+
+    public function searchSuburb(Request $request)
+    {
+        $query = $request->input('query');
+
+        $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
+            ->where('availability', '<', 3)
+            ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
+            ->get()
+            ->toArray();
+
+        $response = [
+            'request' => $request->all(),
+            'suburbs' => $suburbs
+        ];
+
+        return Response::json($response, 200);
+    }
+
+    public function validateSuburbAvailability(Request $request)
+    {
+        $id = $request->input('data');
+
+        $suburb = Suburbs::find($id);
+
+        $valid = true;
+
+        if($suburb->availability >= 3){
+            $valid = false;
+        }
+
+        $response = [
+            'request' => $request->all(),
+            'valid' => $valid
+        ];
+
+        return Response::json($response, 200);
+    }
+
+    public function validateAvailability(Request $request)
+    {
+        $id = preg_replace('/\D/', '', $request->input('data'));
+
+        $suburb = Suburbs::find($id);
+        $valid = true;
+
+        // count number of traders per area
+
+        if ($suburb->availability == 3 ) {
+            $valid = false;
+        }
+
+        $response = [
+            'request' => $request->all(),
+            'valid' => $valid
+        ];
+
+        return Response::json($response, 200);
     }
 }

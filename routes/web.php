@@ -182,6 +182,12 @@ Route::group(['prefix' => ''], function(){
 
     Route::get('tradesman/search-suburb', 'TradesmanController@searchSuburb');
 
+    Route::post('agency/validate-suburb-availability', 'AgencyController@validateSuburbAvailability');
+
+    Route::post('agency/validate-availability', 'AgencyController@validateAvailability');
+
+    Route::get('agency/search-suburb', 'AgencyController@searchSuburb');
+
     Route::get('/search-agency', 'SearchController@showResults');
 
     Route::post('/register', 'RegistrationController@postRegister');
@@ -389,7 +395,7 @@ Route::group(['prefix' => ''], function(){
 
         });
 
-       
+
 
     });
 
