@@ -102,12 +102,14 @@ class SearchController extends Controller
         $tradesmen = array();
 
         foreach ($trade as $key) {
+          if(isset($key->user_id)){
             $verifyRole =  RoleUsers::where('user_id', $key->user_id)->first()->role_id;
-            if($verifyRole ==  3) {
+            if($verifyRole == 3) {
               if(!in_array($key->user_id, $tradesmen)){
                   array_push($tradesmen, $key->user_id);
               }
             }
+          }
         }
 
         $data = array();

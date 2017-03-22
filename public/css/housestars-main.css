@@ -3297,3 +3297,13 @@ button.disabled {
 .img-preview img {
     width: 100%;
 }
+
+#cover-container.about-us {
+    background: url(../assets/bg-banner-about.png) center top no-repeat;
+    height: 500px;
+}
+
+#cover-container.about-us .page-info p {
+    width: 63%;
+    margin-top: 12px;
+}

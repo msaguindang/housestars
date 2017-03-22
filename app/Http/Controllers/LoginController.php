@@ -20,7 +20,10 @@ class LoginController extends Controller
 {
 	public function postLogin(Request $request){
 
-
+		if($request->exists('rate')) {
+			return \Ajax::redirect('/choose-business');
+		}
+		
 		$validation = $this->validate($request, [
 			'email' => 'required',
 			'password' => 'required|',
@@ -39,10 +42,6 @@ class LoginController extends Controller
 
 				   $error['message'] = array("Member is currently inactive");
 				   return Response::json($error, 422);
-			    }
-
-			    if($request->exists('rate')) {
-			    	return \Ajax::redirect('/choose-business');
 			    }
 
 				switch (Sentinel::getUser()->roles()->first()->slug){

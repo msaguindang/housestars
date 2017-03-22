@@ -34,6 +34,10 @@ Route::group(['prefix' => ''], function(){
         return view('general.home');
     });
 
+    Route::get('/about-us', function () {
+        return view('general.about-us');
+    });
+
     Route::get('/agency', 'MainController@agency');
 
     Route::get('/trades-services', function () {
