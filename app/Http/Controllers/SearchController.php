@@ -102,9 +102,9 @@ class SearchController extends Controller
         $tradesmen = array();
 
         foreach ($trade as $key) {
-            $suburbExist = UserMeta::where('meta_value', 'LIKE', '%'.Input::get('suburb').'%')->where('user_id', '=', $key->user_id)->first();
-            if(isset($suburbExist)){
-              if($key->user_id == $suburbExist->user_id && !in_array($key->user_id, $tradesmen)){
+            $verifyRole =  RoleUsers::where('user_id', $key->user_id)->first()->role_id;
+            if($verifyRole ==  3) {
+              if(!in_array($key->user_id, $tradesmen)){
                   array_push($tradesmen, $key->user_id);
               }
             }
