@@ -342,7 +342,7 @@ class TradesmanController extends Controller
     {
         $id = $request->input('data');
 
-        $suburb = Suburbs::find($id);
+        $suburb = Suburbs::where(DB::raw("CONCAT(id, name)"), $id)->first();
         $valid = true;
 
         // count number of traders per area
@@ -358,7 +358,7 @@ class TradesmanController extends Controller
                 })
                 ->count();
 
-        if ($tradersCount >= $suburb->availability) {
+        if ($tradersCount >= $suburb->max_tradie) {
             $valid = false;
         }
 
