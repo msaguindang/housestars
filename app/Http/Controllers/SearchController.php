@@ -103,8 +103,8 @@ class SearchController extends Controller
 
         foreach ($trade as $key) {
           if(isset($key->user_id)){
-            $verifyRole =  RoleUsers::where('user_id', $key->user_id)->firstOrfail()->role_id;
-            if(isset($verifyRole) && $verifyRole != null && $verifyRole == 3) {
+            $verifyRole =  RoleUsers::where('user_id', $key->user_id)->first();
+            if($verifyRole['role_id'] ==  3) {
               if(!in_array($key->user_id, $tradesmen)){
                   array_push($tradesmen, $key->user_id);
               }
