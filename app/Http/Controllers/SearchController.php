@@ -148,8 +148,8 @@ class SearchController extends Controller
         $agencies = [];
 
         foreach ($results as $result) {
-          $verifyRole =  RoleUsers::where('user_id', $result->user_id)->first()->role_id;
-            if($verifyRole ==  2) {
+          $verifyRole =  RoleUsers::hasRole($result->user_id, 2);
+            if($verifyRole) {
               if(!in_array($result->user_id, $agencies)) {
                   array_push($agencies, $result->user_id);
               }
