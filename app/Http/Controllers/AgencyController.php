@@ -420,7 +420,6 @@ class AgencyController extends Controller
         $query = $request->input('query');
 
         $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
-            ->where('availability', '<', 3)
             ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
             ->get()
             ->toArray();

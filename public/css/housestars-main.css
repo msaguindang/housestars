@@ -3307,3 +3307,22 @@ button.disabled {
     width: 63%;
     margin-top: 12px;
 }
+
+.about-wrapper {
+    overflow: auto;
+    padding: 29px;
+    background: #fff;
+    border-bottom: 4px solid #0f70b7;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+}
+
+#about-content {
+    height: 0;
+    position: relative;
+    top: -186px;
+}
+
+#partners{
+	position: relative;
+  top: -154px;
+}

@@ -68,7 +68,71 @@
 
     <section id="about-content">
       <div class="container">
-        
+        <div class="row">
+          <div class="col-xs-8">
+            <div class="about-wrapper">
+              <h3>Or kind rest bred with am shed then.</h3>
+              <p>Instrument cultivated alteration any favourable expression law far nor. Both new like tore but year. An from mean on with when sing pain. Oh to as principles devonshire companions unsatiable an delightful. The ourselves suffering the sincerity. Inhabit her manners adapted age certain. Debating offended at branched striking be subjects. </p>
+              <p>Enjoyed minutes related as at on on. Is fanny dried as often me. Goodness as reserved raptures to mistaken steepest oh screened he. Gravity he mr sixteen esteems. Mile home its new way with high told said. Finished no horrible blessing landlord dwelling dissuade if. Rent fond am he in on read. Anxious cordial demands settled entered in do to colonel. </p>
+              <p>She travelling acceptance men unpleasant her especially entreaties law. Law forth but end any arise chief arose. Old her say learn these large. Joy fond many ham high seen this. Few preferred continual sir led incommode neglected. Discovered too old insensible collecting unpleasant but invitation. </p>
+              <p>Prevailed sincerity behaviour to so do principle mr. As departure at no propriety zealously my. On dear rent if girl view. First on smart there he sense. Earnestly enjoyment her you resources. Brother chamber ten old against. Mr be cottage so related minuter is. Delicate say and blessing ladyship exertion few margaret. Delight herself welcome against smiling its for. Suspected discovery by he affection household of principle perfectly he. </p>
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <div class="about-wrapper">
+              <h3>Customer Stories</h3>
+              <hr>
+              <div class="review">
+                <p>Instrument cultivated alteration any favourable expression law far nor. Both new like tore but year.</p>
+                <div class="col-xs-3 thumb">
+                  <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
+                </div>
+                <div class="col-xs-9 details">
+                  <b>Mark Zuckerberg</b></br>
+                  <small>Managing Director</small></br>
+                  <small>Australian Realty, LLC</small>
+                </div>
+              </div>
+              <hr>
+              <div class="review">
+                <p>Instrument cultivated alteration any favourable expression law far nor. Both new like tore but year.</p>
+                <div class="col-xs-3 thumb">
+                  <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
+                </div>
+                <div class="col-xs-9 details">
+                  <b>Mark Zuckerberg</b></br>
+                  <small>Managing Director</small></br>
+                  <small>Australian Realty, LLC</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="partners">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="about-wrapper">
+              <h3>OUR PARTNERS</h3>
+              <hr>
+              <div class="col-xs-3">
+                <img src="{{asset('assets/partner-1.png')}}" alt="">
+              </div>
+              <div class="col-xs-3">
+                <img src="{{asset('assets/partner-2.png')}}" alt="">
+              </div>
+              <div class="col-xs-3">
+                <img src="{{asset('assets/partner-3.png')}}" alt="">
+              </div>
+              <div class="col-xs-3">
+                <img src="{{asset('assets/partner-4.png')}}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

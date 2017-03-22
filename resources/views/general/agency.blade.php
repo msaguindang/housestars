@@ -117,9 +117,6 @@
 			    </div>
 			    <div class="col-xs-6 col-xs-offset-3">
 			    	<select id="select-state" name="positions[]" multiple  class="demo-default">
-            @foreach ($data['suburbs'] as $suburb)
-                <option value="{{ $suburb->availability }},{{ $suburb->name }}">{{ $suburb->name }}</option>
-            @endforeach
           </select>
 			    </div>
     		</div>
@@ -284,12 +281,127 @@
 @endsection
 
 
- @section('scripts')
-     <script type="text/javascript">
-      $(function() {
+@section('scripts')
+    <script type="text/javascript">
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+        });
+
         $('#select-state').selectize({
-            maxItems: 3
-          });
-      });
-  </script>
+            maxItems: 3,
+            valueField: 'value',
+            searchField: ['name', 'id'],
+            labelField: 'name',
+            options: [],
+            create: false,
+            render: {
+                option: function(item, escape) {
+                       return '<div class="option" data-selectable="" data-value="'+item.availability+','+item.id+''+item.name+'">'+item.name+' ('+item.id+')<span class="icn icon-available-'+item.availability+'"></span></div>';
+                }
+            },
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ url('agency/search-suburb') }}',
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    error: function() {
+                        callback();
+                    },
+                    success: function(res) {
+                        console.log('results: ', res);
+                        callback(res.suburbs);
+                        //callback(res.repositories.slice(0, 10));
+                    }
+                });
+            },
+            onChange: function(value) {
+
+                if(typeof value == "undefined" || value == null){
+                    return false;
+                }
+
+                var selectize = $('#select-state').selectize();
+                var length = value.length;
+                var currentValue = value[length-1];
+
+                $.ajax({
+                    method:'POST',
+                    url:'{{ url('agency/validate-availability') }}',
+                    data:{
+                        data:currentValue
+                    },
+                    success: function(res){
+
+                        if(!res.valid){
+                            selectize[0].selectize.removeItem(currentValue);
+                            $('#noPositions').modal();
+                        }
+
+                    }
+                });
+
+            }
+        });
+
+        jQuery.validator.addMethod('positionsRequired', function(value, element){
+
+            if(typeof value == "undefined" || value == null || value == ""){
+
+                $('.selectize-control .selectize-input').addClass('error');
+
+                return false;
+            }
+
+            $('.selectize-control .selectize-input').removeClass('error');
+            return true;
+
+        });
+
+        jQuery.validator.addMethod('tradeRequired', function(value, element){
+
+            if(typeof value == "undefined" || value == null || value == ""){
+
+                console.log('undefined trade');
+                $('#trade-btn-group').addClass('error');
+
+                return false;
+            }
+
+            $('#trade-btn-group').removeClass('error');
+            return true;
+
+        });
+
+        var validator = $('form[name=step_one_form]').validate({
+            errorPlacement: function (error, element) {
+                //console.log('error: ', error);
+                //console.log('element: ', element);
+            },
+            ignore: '',
+            rules:{
+                'positions[]':{
+                    positionsRequired:true
+                },
+                trade: {
+                    tradeRequired:true
+                }
+            }
+            /*submitHandler: function(form) {
+
+
+
+
+
+            }*/
+        });
+
+        console.log('validator', validator);
+
+    </script>
 @stop
