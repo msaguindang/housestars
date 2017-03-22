@@ -40,27 +40,27 @@ class LoginController extends Controller
 				   $error['message'] = array("Member is currently inactive");
 				   return Response::json($error, 422);
 			    }
-			    
+
 			    if($request->exists('rate')) {
 			    	return \Ajax::redirect('/');
 			    }
 
 				switch (Sentinel::getUser()->roles()->first()->slug){
 					case 'agency':
-						return \Ajax::redirect('/dashboard/agency/profile');
+						return \Ajax::redirect(env('APP_URL').'/dashboard/agency/profile');
 						break;
 
 					case 'tradesman':
-						return \Ajax::redirect('/dashboard/tradesman/profile');;
+						return \Ajax::redirect(env('APP_URL').'/dashboard/tradesman/profile');;
 						break;
 					case 'customer':
-						return \Ajax::redirect('/dashboard/customer/profile');
+						return \Ajax::redirect(env('APP_URL').'/dashboard/customer/profile');
 						break;
 					case 'admin':
 					return \Ajax::redirect('/admin');
 						break;
 					case 'agent':
-						return \Ajax::redirect('/dashboard/agent/profile');
+						return \Ajax::redirect(env('APP_URL').'/dashboard/agent/profile');
 						break;
 				}
 			}
@@ -86,7 +86,7 @@ class LoginController extends Controller
 		return Socialite::driver($provider)->redirect();
 	}
 
-	public function verifyToProvider ($provider) 
+	public function verifyToProvider ($provider)
 	{
 		return Socialite::driver($provider)
 			->with(['state' => 'verify'])
@@ -102,14 +102,14 @@ class LoginController extends Controller
 			->redirect();
 	}
 
-	public function handleProviderCallback ($provider, Request $request) 
+	public function handleProviderCallback ($provider, Request $request)
 	{
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
-		$stateIsNumeric = is_numeric($state); 
+		$stateIsNumeric = is_numeric($state);
 		$email = $user->getEmail();
 		$socialId = $user->getId();
-		
+
 		if($state == 'verify' || $stateIsNumeric) {
 			$socialName = $user->getName();
 			$secret = encrypt($socialId);
@@ -212,7 +212,7 @@ class LoginController extends Controller
 		return json_decode($query, true);
 	}
 
-	public function deleteEmptyReview () 
+	public function deleteEmptyReview ()
     {
         $query = DB::table('reviews')->where('reviewee_id', '=', -1)->delete();
     }

@@ -31,8 +31,6 @@ class RegistrationController extends Controller
 	        'password_confirmation' => 'required|min:6'
 	    ]);
 
-
-
         $user = Sentinel::register($request->all());
 
         User::where('email', $user->email)->update(['name' => $request->input('name')]);
@@ -46,8 +44,8 @@ class RegistrationController extends Controller
         $role->users()->attach($user);
 
         $this->sendEmail($user, $activation->code, $request->input('name'), $account);
-        $redirectURL = env('APP_URL').'/activation-sent';
-        return Response::json($redirectURL, 200);
+
+        return \Ajax::redirect(env('APP_URL').'/activation-sent');
 
     }
 

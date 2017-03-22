@@ -273,7 +273,7 @@ $(document).on('submit', '#signupform' ,function(e){
     data: data,
     type: 'POST',
     success: function(data){
-
+			window.location.replace(data['redirect']);
     },
 		error: function(data){
 			var errors = data.responseJSON;
@@ -281,6 +281,31 @@ $(document).on('submit', '#signupform' ,function(e){
 			$.each( errors, function( key, value ) {
 				if(x == 0){
 					$('#errors-signup').append('<span>'+ value[0] + '</span></br></br>');
+				}
+				x = x + 1;
+			});
+
+		}
+  });
+});
+
+$(document).on('submit', '#loginform' ,function(e){
+  e.preventDefault();
+  var data = $(this).serialize();
+	$('#login-error').empty();
+  $.ajax({
+    url: '/login',
+    data: data,
+    type: 'POST',
+    success: function(data){
+			window.location.replace(data['redirect']);
+    },
+		error: function(data){
+			var errors = data.responseJSON;
+			var x = 0;
+			$.each( errors, function( key, value ) {
+				if(x == 0){
+					$('#login-error').append('<span>'+ value[0] + '</span></br></br>');
 				}
 				x = x + 1;
 			});

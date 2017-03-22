@@ -10,10 +10,9 @@
 					<div class="modal-body">
 						<h4>Login to your account</h4>
 						<p class="sub-heading">Access your account and let’s start working</p>
-						<form action="login" method="POST" class="ajax">
+						<form id="loginform">
 							{{csrf_field() }}
-							<div id="error"></div>
-							<div id="login-error"></div>
+							<div class="alert alert-danger"><div id="login-error"></div></div>
 							<input type="text" name="email" placeholder="Email">
 							<input type="password" name="password" placeholder="Password" class="no-top">
 							<button class="btn hs-primary">Login Now</button>
