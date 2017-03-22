@@ -2124,7 +2124,7 @@ input:checked + .slider:before {
 
 .upload-gallery {
     margin: 0 15px;
-    overflow: auto;
+    overflow: hidden;
     background: #f6f7f8;
     border-radius: 5px;
     border: 1px solid #d3d3d3;
@@ -2134,6 +2134,9 @@ input:checked + .slider:before {
     /*top: -165px;*/
 }
 
+.upload-gallery > .col-xs-7 {
+    overflow: hidden;
+}
 
 .btn-holder .hs-primary {
     width: 100%;

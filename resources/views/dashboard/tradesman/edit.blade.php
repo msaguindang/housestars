@@ -346,26 +346,27 @@
               <div class="upload-gallery" style="margin: 35px 0;">
                 <div class="col-xs-7">
                   <label>Gallery Photos</label>
-                    @if(isset($data['gallery']))
-                      <div id="gallery-carousel" class="carousel slide multi-item-carousel">
-                        <div class="carousel-inner">
-                          @include('dashboard.tradesman.partials.gallery_items')
-                        </div>
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev">
-                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next">
-                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                        </a>
+                    <div id="gallery-carousel" class="carousel slide multi-item-carousel">
+                      <div class="carousel-inner">
+                        @include('dashboard.tradesman.partials.gallery_items')
                       </div>
-                    @endif
+                      <!-- Left and right controls -->
+                      <a class="left carousel-control" href="#gallery-carousel" role="button" data-slide="prev" style="display: {{ $data['hasGallery'] ? 'block;' : 'none;'}}">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="right carousel-control" href="#gallery-carousel" role="button" data-slide="next" style="display: {{ $data['hasGallery'] ? 'block;' : 'none;'}}">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </div>
                 </div>
                 <div class="col-xs-5">
                   <label>Upload More Gallery Photos</label>
-                  <span class='error gallery-error-span' style="display: none;"> </span>
+                  <div id='msg'>
+                    <span class='error gallery-error-span' style="display: none;"> </span>
+                    <span class='success gallery-success-span' style="display: none;"> </span>
+                  </div>
                   <div class="upload-media">
                     <div id="tradesman-gallery" class="dropzone">
                       {{ csrf_field() }}
@@ -417,7 +418,6 @@
                     success: function(res) {
                         console.log('results: ', res);
                         callback(res.suburbs);
-                        //callback(res.repositories.slice(0, 10));
                     }
                 });
             },
@@ -508,30 +508,43 @@
 
      <script type="text/javascript">
 
-      $(".item a").click(function() {
-        var token = $(this).data('token');
-        var id = $(this).data('id');
-        $.ajax({
-          url: '/delete-item',
-          data: {'_token': token, 'item-id': id},
-          type: 'POST',
-          success: function(result) {
-            $('.item a[data-id=' + id + ']').parent().addClass('hidden');
-          }
-        });
+      $('body').on('click', '.remove-photo', function (e) {
+        if(confirm("Are you sure you want to delete this photo?")) {
+          $.ajax({
+            method: "POST",
+            url: "{{ route('delete.gallery.photo')  }}",
+            data: {
+              id: $(this).data('id'),
+              filename: $(this).data('filename')
+            },
+            dataType : 'json',
+            success: function(responseData, textStatus, jqXHR) {
+              $('.carousel-inner .item').remove();
+              $('.carousel-inner').append(responseData.html);
+              if($('.carousel-inner .item').get().length == 0) {
+                $('.carousel-control').hide();
+              }
+            }
+          });
+        }
       });
-
+      
       $(document).ready(function () {
           Dropzone.autoDiscover = false;
           $("#tradesman-gallery").dropzone({
               url: "{{ config('app.url') . '/upload' }}",
-              addRemoveLinks: true,
+              acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
                   formData.append("_token", $('[name=_token').val());
               },
               success: function (file, response) {
                   var imgName = response;
                   file.previewElement.classList.add("dz-success");
+                  $('.carousel-inner .item').remove();
+                  $('.carousel-inner').append(response.data.html);
+                  $('.gallery-success-span').show().text('Successfully added to the gallery.').delay(1000).fadeOut('slow');
+                  file.previewElement.remove();
+                  $('.carousel-control').show();
               },
               error: function (file, response) {
                 $('.gallery-error-span').show().text(response.error).delay(1000).fadeOut('slow');

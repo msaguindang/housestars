@@ -13,14 +13,8 @@ class GalleryService
 			$fileName = public_path() . '/' . $data['filename'];
 			unlink($fileName);
 			UserMeta::find($data['id'])->delete();
-			$response = [
-                'html' => view (
-                    'dashboard.agency.partials.gallery_items', [
-                        'data' => $this->getGalleryByUserId(Sentinel::getUser()->id)
-                    ]
-                )->render()
-            ];
-            return $response;
+			
+            return $this->getGalleryItemsPartials();
 		} catch (Exception $e) {
 			return [
 				'error' => $e->getMessage()
@@ -40,6 +34,18 @@ class GalleryService
                 $index ++;
             }            
         }
+
         return $data;
+	}
+
+	public function getGalleryItemsPartials()
+	{
+		return $response = [
+		            'html' => view (
+		                'dashboard.agency.partials.gallery_items', [
+		                    'data' => $this->getGalleryByUserId(Sentinel::getUser()->id)
+		                ]
+		            )->render()
+		        ];
 	}
 }

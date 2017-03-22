@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Services\GalleryService;
 use View;
 use Sentinel;
 use App\User;
@@ -23,7 +24,15 @@ class TradesmanController extends Controller
 {
     const MAX_PHOTO = 10;
 
-    public function dashboard(){
+    private $galleryService;
+
+    public function __construct(GalleryService $galleryService)
+    {
+        $this->galleryService = $galleryService;
+    }
+
+    public function dashboard()
+    {
 
     	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
     	$data = array();
@@ -110,8 +119,7 @@ class TradesmanController extends Controller
 
     	}
 
-    // dd($data);
-
+        $data['hasGallery'] = $y;
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
 
@@ -128,8 +136,7 @@ class TradesmanController extends Controller
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
             array_push($data, $url);
 
-
-	        return Response::json('success', 200);
+	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials()], 200);
         }else {
             $max = self::MAX_PHOTO;
             return Response::json(['error' => "You can only upload up to $max photos!"], 422);
