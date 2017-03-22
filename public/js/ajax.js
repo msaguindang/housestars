@@ -67,7 +67,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
           $('.message').append('<p>Available Trades And Services for location <b class="suburb">'+ suburb +'</b></p>');
 
           for(i = 0; i < data['cat'].length; i++){
-						console.log(exists[0]['trade']);
+
             if(jQuery.inArray(data['cat'][i]['category'], exists) !== -1){
               $('#trades').append('<div class="col-xs-4 item"><a href="/listing/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             } else {
@@ -171,7 +171,7 @@ $(document).on('submit', '#rateForm' ,function(e){
     success: function(data){
       $('#thankYou .modal-body').html('<h1>Thanks For Your Review!</h1><p>We appreciate you for leaving a review! We value your opinion and use your feedback to help promote trades or services.</p>');
       $('#rateModal').modal('hide');
-      $('#thankYou').modal('show'); 
+      $('#thankYou').modal('show');
     }
   });
 });
@@ -261,5 +261,33 @@ $(document).on('submit', '#referral' ,function(e){
     success: function(data){
       $('#referral .error').append(data);
     }
+  });
+});
+
+$(document).on('submit', '#signupform' ,function(e){
+  e.preventDefault();
+  var data = $(this).serialize();
+	$('#errors-signup').empty();
+  $.ajax({
+    url: '/register',
+    data: data,
+    type: 'POST',
+    success: function(data){
+
+    },
+		error: function(data){
+			var errors = data.responseJSON;
+			console.log(errors);
+			if(errors['name'][0] || errors['name']){
+				$('#errors-signup').append(errors['name'][0] + '</br></br>');
+			} else if(errors['email'][0]){
+				$('#errors-signup').append(errors['email'][0] + '</br></br>');
+			} else if(errors['password'][0]){
+				$('#errors-signup').append(errors['password'][0] + '</br></br>');
+			} else if(errors['password_confirmation'][0]){
+				$('#errors-signup').append(errors['password_confirmation'][0] + '</br></br>');
+			}
+
+		}
   });
 });

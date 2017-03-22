@@ -60,9 +60,9 @@
 					<div class="modal-body">
 						<h4>REGISTER NOW</h4>
 						<p class="sub-heading">Already a member? Please login <a href="" data-toggle="modal" data-target="#login" id="open">here</a></p>
-						<form class="ajax" action="/register" method="POST">
+						<form id="signupform">
 							{{csrf_field() }}
-							<div id="errors-signup"></div>
+							<div class="alert alert-danger"><div id="errors-signup"></div></div>
 							<input type="text" name="name" placeholder="Full Name">
 							<input type="text" name="email" placeholder="Your Email Address" class="no-top"> </br></br>
 							<input type="password" name="password" placeholder="Create Password">
