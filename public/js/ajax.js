@@ -277,16 +277,13 @@ $(document).on('submit', '#signupform' ,function(e){
     },
 		error: function(data){
 			var errors = data.responseJSON;
-			console.log(errors);
-			if(errors['name'][0] || errors['name']){
-				$('#errors-signup').append(errors['name'][0] + '</br></br>');
-			} else if(errors['email'][0]){
-				$('#errors-signup').append(errors['email'][0] + '</br></br>');
-			} else if(errors['password'][0]){
-				$('#errors-signup').append(errors['password'][0] + '</br></br>');
-			} else if(errors['password_confirmation'][0]){
-				$('#errors-signup').append(errors['password_confirmation'][0] + '</br></br>');
-			}
+			var x = 0;
+			$.each( errors, function( key, value ) {
+				if(x == 0){
+					$('#errors-signup').append('<span>'+ value[0] + '</span></br></br>');
+				}
+				x = x + 1;
+			});
 
 		}
   });
