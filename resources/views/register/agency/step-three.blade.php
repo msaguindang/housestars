@@ -77,7 +77,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box no-padding payment">
-				<form action="{{env('APP_URL')}}/add-payment" method="POST">
+				<form name ="form" action="{{env('APP_URL')}}/add-payment" method="POST">
 
 					{{csrf_field() }}
 				<div class="col-xs-6 padding-40">
@@ -110,12 +110,12 @@
 					<input type="text" name="address" required>
 					<label>Suburb</label>
 					<div class="btn-group">
-						<select id="select-suburb" name="suburb"  class="demo-default plain"></select>
+						<select id="select-suburb" name="suburb"  class="demo-default plain" required></select>
 
 			        </div>
 					<label>State</label>
 					<div class="btn-group">
-						<select id="select-state" name="state"  class="demo-default plain">
+						<select id="select-state" name="state"  class="demo-default plain" required>
 							<option value="New South Wales">NEW SOUTH WALES</option>
 							<option value="Queensland">QUEENSLAND</option>
 							<option value="South Australia">SOUTH AUSTRALIA</option>
@@ -178,6 +178,60 @@
                  });
              }
          });
+
+         jQuery.validator.addMethod('positionsRequired', function(value, element){
+
+             if(typeof value == "undefined" || value == null || value == ""){
+
+                 $('.selectize-control .selectize-input').addClass('error');
+
+                 return false;
+             }
+
+             $('.selectize-control .selectize-input').removeClass('error');
+             return true;
+
+         });
+
+         jQuery.validator.addMethod('tradeRequired', function(value, element){
+
+             if(typeof value == "undefined" || value == null || value == ""){
+
+                 console.log('undefined trade');
+                 $('#trade-btn-group').addClass('error');
+
+                 return false;
+             }
+
+             $('#trade-btn-group').removeClass('error');
+             return true;
+
+         });
+
+         var validator = $('form[name=form]').validate({
+             errorPlacement: function (error, element) {
+                 //console.log('error: ', error);
+                 //console.log('element: ', element);
+             },
+             ignore: '',
+             rules:{
+                 'positions[]':{
+                     positionsRequired:true
+                 },
+                 trade: {
+                     tradeRequired:true
+                 }
+             }
+             /*submitHandler: function(form) {
+
+
+
+
+
+             }*/
+         });
+
+         console.log('validator', validator);
 
      </script>
 @stop

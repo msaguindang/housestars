@@ -72,7 +72,7 @@
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
 				<h2>Vendors Registration Form</h2>
-				<form action="{{env('APP_URL')}}/add-property" method="POST">
+				<form name="form" action="{{env('APP_URL')}}/add-property" method="POST">
 					@if(session('error'))
 					<div class="alert alert-danger">
 						{{session('error')}}
@@ -83,7 +83,7 @@
 				<div class="col-xs-12">
 					<div class="col-xs-4 no-padding-left">
 						<label>Property Type</label>
-						<div class="btn-group">
+						<div id="trade-btn-group" class="btn-group">
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
 				            <ul class="dropdown-menu">
 				              <li>
@@ -126,15 +126,10 @@
 					<div class="col-xs-4">
 						<label>Suburb</label>
             <select id="select-state" name="suburb" class="demo-default"
-                    class="required-input" required>
-                {{--@foreach ($suburbs as $suburb)
-                    @if($suburb->availability != '3')
-                        <option value="{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }} ({{ $suburb->id}})</option>
-                    @endif
-                @endforeach--}}
+                    class="required-input">
             </select>
 						<label>State</label>
-						<div class="btn-group">
+						<div id="state-btn-group" class="btn-group">
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
 				            <ul class="dropdown-menu">
 				              <li>
@@ -191,14 +186,14 @@
 					</div>
 					<div class="col-xs-4">
 						<label>Address</label>
-						<input type="text" name="address">
+						<input type="text" name="address" required>
 						<!-- <label>Username</label>
 						<input type="text" name="username"> -->
 					</div>
 
 					<div class="col-xs-4 no-padding-right">
 						<label>Phone Number</label>
-						<input type="text" name="phone">
+						<input type="text" name="phone" required>
 						<!-- <label>Password</label>
 						<input type="password" name="password" disabled value="******" class="disabled"> -->
 					</div>
@@ -344,8 +339,7 @@
          if(typeof value == "undefined" || value == null || value == ""){
 
              console.log('undefined trade');
-             $('#trade-btn-group').addClass('error');
-
+            $('#trade-btn-group').addClass('error');
              return false;
          }
 
@@ -354,18 +348,34 @@
 
      });
 
-     var validator = $('form[name=step_one_form]').validate({
+     jQuery.validator.addMethod('stateRequired', function(value, element){
+
+         if(typeof value == "undefined" || value == null || value == ""){
+
+            $('#state-btn-group').addClass('error');
+             return false;
+         }
+
+         $('#state-btn-group').removeClass('error');
+         return true;
+
+     });
+
+     var validator = $('form[name=form]').validate({
          errorPlacement: function (error, element) {
              //console.log('error: ', error);
              //console.log('element: ', element);
          },
          ignore: '',
          rules:{
-             'positions[]':{
+             'suburb':{
                  positionsRequired:true
              },
-             trade: {
+             'property-type': {
                  tradeRequired:true
+             },
+             'state': {
+                stateRequired:true
              }
          }
          /*submitHandler: function(form) {

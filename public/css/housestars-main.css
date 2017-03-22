@@ -3166,9 +3166,10 @@ input.error,
 textarea.error,
 select.error,
 .selectize-input.error,
-#trade-btn-group.error,
+.btn-group.error,
 .selectize-control .selectize-input.error{
     border:1px solid #e74c3c;
+		margin: 0 !important;
 }
 
 .required-symbol{

@@ -169,7 +169,6 @@
 
         <div class="col-xs-12" id="agencyList"></div>
         <div class="col-xs-12" id="nearbyAgencyList"></div>
-        
 				<div class="col-xs-3 col-xs-offset-9">
 					<button class="btn hs-primary" id="submit">ADD PROPERTY <span class="icon icon-arrow-right"></span></button>
 				<div>
