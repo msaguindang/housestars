@@ -140,13 +140,20 @@
                               <td><button type="button" class="btn btn-primary btn-xs disabled" >Contract</button></td>
                               @endif
 
-                              <td style="text-align:center"><p class="bg-info">
+
 
                                 @if(isset($property['process']))
-                                  ${{$property['process']}}
+                                  @if($property['process'] == 'Pending')
+                                  <td style="text-align:center"><p class="bg-info">
+                                    {{$property['process']}}
+                                  </p></td>
+                                  @else
+                                  <td style="text-align:center"><p class="bg-success">
+                                    {{$property['process']}}
+                                  </p></td>
+                                  @endif
                                 @endif
 
-                              </p></td>
                           </tr>
                         @endif
                       @endforeach

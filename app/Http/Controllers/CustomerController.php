@@ -532,7 +532,12 @@ class CustomerController extends Controller
 
                   $rating = $this->getRating($user->user_id);
 
-                  $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $sub);
+                  if(isset($photo)){
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $sub);
+                  } else {
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'rating' => $rating, 'suburb' => $sub);
+                  }
+
 
                   array_push($agents, $agent);
               }
@@ -558,7 +563,11 @@ class CustomerController extends Controller
 
                     $rating = $this->getRating($user->user_id);
 
-                    $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name);
+                    if(isset($photo)){
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name);
+                    } else {
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'rating' => $rating, 'suburb' => $key->name);
+                    }
 
                     array_push($agents, $agent);
                 }

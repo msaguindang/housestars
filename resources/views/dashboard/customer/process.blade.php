@@ -463,7 +463,7 @@
                 {{csrf_field()}}
                 <input type="hidden" name="commission" value="{{$data['commission']['total']}}">
                 <input type="hidden" name="property_code" value="{{$data['property'][$a]['property-code']}}">
-                <button id="process" class="btn hs-primary disabled"></span>SUBMIT <span class="icon icon-arrow-right"></span></button>
+                <button id="process" class="btn hs-primary disabled" disabled="true"></span>SUBMIT <span class="icon icon-arrow-right"></span></button>
               </form>
               <span>Cannot submit until all criteria above met.</span>
             </div>
@@ -501,6 +501,7 @@
       var a = $("input[type='checkbox']");
       if(a.length == a.filter(":checked").length){
           $('#process').removeClass('disabled');
+          $('#process').prop('disabled', false);
           $('.submit span').remove();
       }
     });

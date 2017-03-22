@@ -160,7 +160,7 @@
       success: function(data) {
         var url = window.location.origin + '/',
             photo = data['isPhotoUrl'] ? data['photo'] : url + data['photo'];
-            
+
         $("#reviewForm").trigger("reset");
         $('#tradesmanPic').remove();
         $('.tradesman-profile').append('<img src="'+ photo +'" alt="'+ data['name'] +'" id="tradesmanPic">');
@@ -269,19 +269,19 @@
 
 
     $(document).on('submit', '#processForm' ,function(e){
-      e.preventDefault();
-      var data = $(this).serialize();
-      $('#processSuccess').modal('show');
+        e.preventDefault();
+        var data = $(this).serialize();
+        $('#processSuccess').modal('show');
 
-      $.ajax({
-        url: '/process-form',
-        data: data,
-        type: 'POST',
-        processData: false,
-        success: function(data){
+        $.ajax({
+          url: '/process-form',
+          data: data,
+          type: 'POST',
+          processData: false,
+          success: function(data){
 
-        }
-      });
+          }
+        });
     });
 
     $(document).on('click', '#processSuccess' ,function(){

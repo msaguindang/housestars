@@ -125,7 +125,6 @@ class RegistrationController extends Controller
         $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $user_meta = array('address', 'phone', 'username');
         $property_code = md5(uniqid(rand(), true));
-
         foreach ($property_meta as $meta) {
             if($request->input($meta) != null || $request->input($meta) != '')
             {
@@ -137,9 +136,10 @@ class RegistrationController extends Controller
                     );
             }
 
-            if($meta == 'agent' && $request->input($meta) != null){
+            if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0){
               $propertyInfo = Property::where('property_code', $property_code)->get();
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
+
               foreach ($propertyInfo as $info) {
                 $data[$info->meta_name] = $info->meta_value;
               }
