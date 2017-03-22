@@ -157,9 +157,13 @@ class ProfileController extends Controller
     	$reviews = Reviews::where('reviewee_id', '=', $id)->get();
     	$data = array(); $x = 0; $average = 0;
     	foreach ($reviews as $review) {
-            // if ($user = User::where('id', $review->reviewer_id)->first()) {
+
+        if ($review->name == null) {
+          $data[$x]['name'] = User::where('id', $review->reviewer_id)->first()->name;
+        } else {
             $data[$x]['name'] = $review->name;
-            // }
+        }
+
     		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
     		$data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;

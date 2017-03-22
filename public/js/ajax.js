@@ -313,3 +313,42 @@ $(document).on('submit', '#loginform' ,function(e){
 		}
   });
 });
+
+$(document).on('click', '.addreview' ,function(e){
+
+	var id = $(this).data('id');
+
+	$.ajax({
+		url: '/review-vendor',
+		data: {_token: $(this).data('token'), id: $(this).data('id')},
+		type: 'POST',
+		success: function(data) {
+			var url = window.location.origin + '/',
+					photo = data['isPhotoUrl'] ? data['photo'] : url + data['photo'];
+
+			$("#reviewForm").trigger("reset");
+			$('#tradesmanPic').remove();
+			$('.tradesman-profile').append('<img src="'+ photo +'" alt="'+ data['name'] +'" id="tradesmanPic">');
+			$('#tradesmanName').remove();
+			$('.tradesman-name').append('<h4 id="tradesmanName">'+ data['name'] +'</h4>');
+			$('#tradesmanID').val(id);
+			$('#rateTradesman').modal('show');
+		}
+	});
+});
+
+$(document).on('submit', '#reviewForm' ,function(e){
+		e.preventDefault();
+		var data = $(this).serialize();
+
+		$.ajax({
+		url: '/add-review',
+		data: data,
+		type: 'POST',
+		processData: false,
+		success: function(data){
+			$('#rateTradesman').modal('hide');
+			location.reload();
+		}
+	});
+});

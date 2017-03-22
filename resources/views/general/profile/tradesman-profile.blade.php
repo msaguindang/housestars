@@ -267,7 +267,11 @@
 
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
+              @if(Sentinel::check())
+              <button class="addreview btn hs-primary" data-id="{{$data['tradesman-id']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$data['tradesman-id']}}">+ Review</button>
+              @else
               <button onClick="openRatingModal()" class="btn hs-primary" style="">+ Review</button>
+              @endif
               <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
               @if(isset($data['reviews']))
                 @foreach($data['reviews'] as $review)
