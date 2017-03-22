@@ -162,8 +162,8 @@
                                 <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
                               </div>
                               <div class="col-xs-4 bubble-left">
-                                <b class="left">{{$comment['name']}}</b>
-                                <span class="date right">Posted: January 2015</span>
+                                <b class="left">{{ isset($comment['name']) ? $comment['name'] : '' }}</b>
+                                <span class="date right">Posted: {{ $comment['post_date']->format('F Y') }}</span>
                                 <p class="left">{{$comment['content']}}</p>
                                 <!-- <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful ({{$comment['helpful']}})</button> -->
                                 <div class="stars left">
@@ -186,8 +186,8 @@
                                   <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
                                 </div>
                                 <div class="col-xs-4 bubble-left">
-                                  <b class="left">{{$comment['name']}}</b>
-                                  <span class="date right">Posted: January 2015</span>
+                                  <b class="left">{{ isset($comment['name']) ? $comment['name'] : '' }}</b>
+                                  <span class="date right">Posted: {{ $comment['post_date']->format('F Y') }}</span>
                                   <p class="left">{{$comment['content']}}</p>
                                   <!-- <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful ({{$comment['helpful']}})</button> -->
                                   <div class="stars left">
@@ -207,8 +207,8 @@
                               <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
                             </div>
                             <div class="col-xs-4 bubble-left">
-                              <b class="left">{{$comment['name']}}</b>
-                              <span class="date right">Posted: January 2015</span>
+                              <b class="left">{{ isset($comment['name']) ? $comment['name'] : '' }}</b>
+                              <span class="date right">Posted: {{ $comment['post_date']->format('F Y') }}</span>
                               <p class="left">{{$comment['content']}}</p>
                               <!-- <button class="btn btn-helpful left"><span class="icon icon-helpful"></span> Helpful ({{$comment['helpful']}})</button> -->
                               <div class="stars left">

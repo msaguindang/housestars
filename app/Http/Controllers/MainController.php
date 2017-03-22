@@ -103,6 +103,7 @@ class MainController extends Controller
                     $review_details['title'] = $review->title;
                     $review_details['content'] = $review->content;
                     $review_details['helpful'] = $review->helpful;
+                    $review_details['post_date'] = $review->created_at;
                     // get reviewer details
                     $user = UserMeta::where('user_id', '=', $review->reviewer_id)->get();
                     foreach ($user as $key) {
