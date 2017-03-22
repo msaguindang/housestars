@@ -27,7 +27,14 @@ $(function () {
 
     $("#postcode").autocomplete({
         minLength: 0,
-        source: projects,
+        // source: projects,
+        source: function( request, response ) {
+          $.getJSON( "/tradesman/search-suburb", {
+            query: request.term
+          }, function(responseData) {
+            response(responseData.suburbs);
+          });
+        },
         focus: function (event, ui) {
             $("#postcode").val(ui.item.label);
             return false;

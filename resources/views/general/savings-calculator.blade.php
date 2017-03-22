@@ -63,7 +63,7 @@
               <label>Name</label>
               <input type="text" name="name">
               <label>Suburb</label>
-              <input type="text" name="suburb">
+              <input type="text" name="suburb" id="postcode">
             </div>
             <div class="col-xs-4">
               <label>Email Address</label>
@@ -157,5 +157,5 @@
 @endsection
 
 @section('scripts')
-     <script src="js/autocomplete.js"></script>
+  <script src="js/autocomplete.js"></script>
 @stop
