@@ -94,9 +94,9 @@
 					<div class="col-xs-6 no-padding-left">
 						<label>Expiry Date</label>
 						<div class="btn-group" style="width: 40%">
-			           <input type="text" size="2" name="exp_month" required>
+			           <input type="text"  name="exp_month" maxlength="2" required>
 			        </div> / <div class="btn-group" style="width: 50%">
-			            <input type="text" size="2" name="exp_year" required>
+			            <input type="text" name="exp_year" maxlength="4" required>
 			        </div>
 					</div>
 					<div class="col-xs-6 no-padding-right">
@@ -113,12 +113,7 @@
 					<input type="text" name="address" required>
 					<label>Suburb</label>
 					<div class="btn-group">
-						<select id="select-suburb" name="suburb"  class="demo-default plain">
-							@foreach ($suburbs as $suburb)
-							    <option value="{{ $suburb->name }}">{{ $suburb->name }}</option>
-							@endforeach
-
-							</select>
+						<select id="select-suburb" name="suburb"  class="demo-default plain"></select>
 
 			        </div>
 					<label>State</label>
@@ -144,10 +139,49 @@
 
 
  @section('scripts')
-     <script type="text/javascript">
-     $(function() {
-     	$('#select-suburb').selectize();
-     	$('#select-state').selectize();
-     	});
-     </script>
+ <script type="text/javascript">
+ $(function() {
+    $('#select-state').selectize();
+ });
+ </script>
+ <script type="text/javascript">
+     $.ajaxSetup({
+         headers: {
+             'X-CSRF-TOKEN': '{{ csrf_token() }}'
+         },
+     });
+
+     $('#select-suburb').selectize({
+         maxItems: 1,
+         valueField: 'value',
+         searchField: ['name', 'id'],
+         labelField: 'name',
+         sortField: 'text',
+         create: false,
+         render: {
+             option: function(item, escape) {
+                 return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+             }
+         },
+         load: function(query, callback) {
+             if (!query.length) return callback();
+             $.ajax({
+                 url: '{{ url('tradesman/search-suburb') }}',
+                 type: 'GET',
+                 data: {
+                     query: query
+                 },
+                 error: function() {
+                     callback();
+                 },
+                 success: function(res) {
+                     console.log('results: ', res);
+                     callback(res.suburbs);
+                     //callback(res.repositories.slice(0, 10));
+                 }
+             });
+         }
+     });
+
+ </script>
 @stop
