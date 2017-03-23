@@ -17,6 +17,6 @@ class RoleUsers extends Model
 
     public function scopeHasRole($query, $user_id, $role_id)
     {
-    	return $query->where('user_id', $user_id)->where('role_id', $role_id)->exists();
+    	return $query->where('user_id', $user_id)->where('role_id', $role_id);
     }
 }

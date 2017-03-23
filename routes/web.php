@@ -133,6 +133,10 @@ Route::group(['prefix' => ''], function(){
         return view('general.search-agency');
     });
 
+    Route::post('/search-agency', [
+        'as'    => 'post_search_agency',
+        'uses'  => 'SearchController@postSearchAgency'
+    ]);
 
     Route::get('/savings-calculator', function () {
         return view('general.savings-calculator');
