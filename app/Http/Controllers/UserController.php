@@ -38,6 +38,21 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
+        $role = Sentinel::getUser()->roles()->first()->slug;
+        $roleSql = "";
+
+        switch($role){
+            case 'admin':
+                $roleSql = " AND roles.slug NOT IN('admin','superadmin') ";
+                break;
+            case 'superadmin':
+                $roleSql = " AND roles.slug != 'superadmin' ";
+                break;
+            default:
+                $roleSql = " AND roles.slug NOT IN('admin','superadmin') ";
+                break;
+        }
+
         $payload = $this->payload->all();
         $pageNo = 1;
         $limit = 10;
@@ -69,7 +84,7 @@ class UserController extends Controller
             INNER JOIN role_users ON role_users.user_id = users.id 
             INNER JOIN roles ON roles.id = role_users.role_id
             WHERE users.name IS NOT NULL
-            AND roles.slug != 'admin'
+            {$roleSql}
             {$slugSql}
             LIMIT {$limit} OFFSET {$offset}";
 
@@ -217,13 +232,16 @@ class UserController extends Controller
 
         switch($currentRole){
             case 'admin':
-                $roles = Role::whereNotIn('slug', ['admin','agent'])->get()->toArray();
+                $roles = Role::whereNotIn('slug', ['superadmin', 'admin','agent'])->get()->toArray();
+                break;
+            case 'superadmin':
+                $roles = Role::whereNotIn('slug', ['superadmin','agent'])->get()->toArray();
                 break;
             case 'staff':
-                $roles = Role::whereNotIn('slug', ['admin','agent','staff'])->get()->toArray();
+                $roles = Role::whereNotIn('slug', ['superadmin', 'admin','agent','staff'])->get()->toArray();
                 break;
             default:
-                $roles = Role::whereNotIn('slug', ['admin','agent','staff'])->get()->toArray();
+                $roles = Role::whereNotIn('slug', ['superadmin', 'admin','agent','staff'])->get()->toArray();
                 break;
         }
 

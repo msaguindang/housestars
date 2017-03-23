@@ -54,7 +54,7 @@ class AdminController extends Controller
 
                 $role = Sentinel::getUser()->roles()->first()->slug;
 
-                if($role == "admin" || $role == "staff"){
+                if($role == "admin" || $role == "staff" || $role == "superadmin"){
                     return \Ajax::redirect(env('APP_URL').'/admin');
                 }else{
                     
