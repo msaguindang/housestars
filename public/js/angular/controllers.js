@@ -188,6 +188,15 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
+    $scope.exportToExcel = function () {
+
+        http.exportMembers().then(function(response){
+            console.log('response export: ', response);
+            window.location.href=$baseUrl+'/exports/members.xlsx';
+        });
+
+    };
+
 
     // initialize
     $scope.getAllUsers();

@@ -332,6 +332,7 @@ Route::group(['prefix' => ''], function(){
             Route::post('delete', 'UserController@deleteUser');
             Route::post('insert', 'UserController@createUser');
             Route::post('update', 'UserController@updateUser');
+            Route::get('export', 'UserController@exportUsers');
 
             Route::group(['prefix' => 'subscription'], function () {
 

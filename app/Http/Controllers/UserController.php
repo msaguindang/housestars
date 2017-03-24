@@ -24,6 +24,7 @@ use Sentinel;
 use Hash;
 use Response;
 use Validator;
+use Excel;
 
 class UserController extends Controller
 {
@@ -333,6 +334,33 @@ class UserController extends Controller
         return Response::json([
             'user' => $user
         ], 200);
+    }
+
+    public function exportUsers()
+    {
+        $excel = Excel::create('members', function($excel) {
+            $excel->sheet('Members', function(\PHPExcel_Worksheet $sheet) {
+
+                $members = User::where('users.id','!=',null)
+                    ->join('role_users', 'role_users.user_id','=','users.id')
+                    ->join('roles','roles.id','=','role_users.role_id')
+                    ->whereNotIn('roles.slug', ['admin','superadmin'])
+                    ->select('users.name','users.email','roles.name as role')
+                    ->orderBy('roles.name')
+                    ->get()
+                    ->toArray();
+
+
+                $sheet->fromArray($members);
+
+            });
+        })->store('xlsx', public_path('exports'));
+
+        $response = [
+            'excel' => $excel
+        ];
+
+        return Response::json($response, 200);
     }
 
 }
