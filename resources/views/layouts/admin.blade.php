@@ -192,6 +192,12 @@
                         <p>Mailing Lists</p>
                     </a>
                 </li>
+                <li>
+                    <a href="#/report"> <!-- #/report -->
+                        <i class="pe-7s-graph1"></i>
+                        <p>Report</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

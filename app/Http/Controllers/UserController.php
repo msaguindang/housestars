@@ -363,4 +363,26 @@ class UserController extends Controller
         return Response::json($response, 200);
     }
 
+    public function getTotalCountByRole()
+    {
+        $payload = $this->payload->all();
+
+        $role = $payload['role'];
+
+        $members = User::where('users.id','!=',null)
+            ->join('role_users', 'role_users.user_id','=','users.id')
+            ->join('roles','roles.id','=','role_users.role_id')
+            ->whereIn('roles.slug', [$role])
+            ->select('users.name','users.email','roles.name as role')
+            ->orderBy('roles.name')
+            ->get()
+            ->toArray();
+
+        $membersCount = count($members);
+
+        return Response::json([
+            'count' => $membersCount
+        ]);
+    }
+
 }

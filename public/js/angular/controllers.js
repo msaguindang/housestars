@@ -1363,3 +1363,131 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
 
 
 }]);
+
+housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($scope, http, validator) {
+
+    console.log('ReportCtrl', 'initialized');
+
+    $scope.sortType     = 'tradesman_id'; // set the default sort type
+    $scope.sortReverse  = false;  // set the default sort order
+    $scope.searchFish   = '';     // set the default search/filter term
+
+    $scope.reports = [];
+    $scope._reports = angular.copy($scope.reports);
+
+    $scope.totalAgencyCount = 0;
+    $scope.totalTradesmanCount = 0;
+    $scope.totalTransactions = 0;
+    $scope.totalCustomerCount = 0;
+    $scope.averageAgentCommission = 0;
+
+    $scope.years = [];
+
+    $scope.currentYear = new Date().getFullYear();
+
+    $scope.totalItems = 0;
+    $scope.currentPage = 1;
+    $scope.limit = 10;
+
+    $scope.changePage = function (newPage) {
+        console.log('new page: ', newPage);
+        $scope.currentPage = newPage;
+        $scope.getAllPotentialCustomers();
+    };
+
+    $scope.getReport = function () {
+
+        http.getTradesmanEarningsReport({
+            year: $scope.currentYear
+        }).then(function(response){
+            console.log('get tradesman earnings: ', response);
+            $scope.reports = response.data.report;
+            $scope._reports = angular.copy($scope.reports);
+        });
+
+    };
+
+    $scope.generateReportByYear = function () {
+
+        $scope.currentYear = $scope.year;
+
+        if($scope.currentYear == "" || $scope.currentYear == null){
+            $scope.currentYear = new Date().getFullYear();
+        }
+
+        $scope.getReport();
+
+    };
+
+    $scope.getYears = function () {
+
+        http.getTransactionYears().then(function(response){
+            console.log('transaction years: ', response);
+            $scope.years = response.data.years;
+        });
+
+    };
+
+    $scope.getTotalAgency = function () {
+
+        http.getUserCountByRole({
+            role: 'agency'
+        }).then(function(response){
+            console.log('agency count: ', response);
+            $scope.totalAgencyCount = response.data.count;
+        });
+
+    };
+
+    $scope.getTotalTradesman = function () {
+
+        http.getUserCountByRole({
+            role: 'tradesman'
+        }).then(function(response){
+            console.log('tradesman count: ', response);
+            $scope.totalTradesmanCount = response.data.count;
+        });
+
+    };
+
+    $scope.getTotalCustomer = function () {
+
+        http.getUserCountByRole({
+            role: 'customer'
+        }).then(function(response){
+            console.log('customer count: ', response);
+            $scope.totalCustomerCount = response.data.count;
+        });
+
+    };
+
+    $scope.getTotalTransactions = function () {
+
+        http.getTotalTransactions().then(function(response){
+            console.log('transaction count: ', response);
+            $scope.totalTransactions = response.data.total;
+        });
+
+    };
+
+    $scope.getAverageAgentCommission = function () {
+
+        http.getAverageAgentCommission().then(function(response){
+            console.log('average agent commission: ', response);
+            $scope.averageAgentCommission = response.data.average+"%";
+        });
+
+    };
+
+    // initialize
+    $scope.getReport();
+    $scope.getYears();
+    $scope.getTotalAgency();
+    $scope.getTotalTradesman();
+    $scope.getTotalAgency();
+    $scope.getTotalCustomer();
+    $scope.getTotalTransactions();
+    $scope.getAverageAgentCommission();
+
+
+}]);
