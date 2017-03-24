@@ -126,17 +126,17 @@ Route::group(['prefix' => ''], function(){
     });
 
     Route::get('/tradesman-listings', function () {
-        $data['cat'] = App\Category::all();
-        $data['suburb'] = "";
-        $data['item'] = app()->make('App\Http\Controllers\SearchController')->hasResults($data['suburb']);
-
-        return view('general.tradesman-listings')->with('data', $data);
+        return view('general.tradesman-listings')->with('data', []);
     });
 
     Route::get('/search-agency', function () {
         return view('general.search-agency');
     });
 
+    Route::post('/search-agency', [
+        'as'    => 'post_search_agency',
+        'uses'  => 'SearchController@postSearchAgency'
+    ]);
 
     Route::get('/savings-calculator', function () {
         return view('general.savings-calculator');
@@ -262,20 +262,7 @@ Route::group(['prefix' => ''], function(){
     Route::post('/send/{type}', 'SearchController@send');
 
     Route::get('/agency-listings', function () {
-        $data = [];
-        foreach (App\UserMeta::businesses() as $index => $agency) {
-            $userId = $agency->user_id;
-            $agencyData = App\UserMeta::where('user_id', '=', $userId)->get();
-            foreach ($agencyData as $value) {
-                if ($value->meta_name == 'summary') {
-                    $data[$index][$value->meta_name] = substr($value->meta_value, 0, 150);
-                } else {
-                    $data[$index][$value->meta_name] = $value->meta_value;
-                }
-            }
-            $data[$index]['id'] = $userId;
-        }
-        return view('general.agency-listings')->with('data', $data);
+        return view('general.agency-listings');
     });
 
     Route::post('/order-business-card', 'TradesmanController@orderBC');

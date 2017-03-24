@@ -146,10 +146,8 @@ class SearchController extends Controller
         }
         //process result
         $agencies = [];
-
         foreach ($results as $result) {
-          $verifyRole =  RoleUsers::hasRole($result->user_id, 2);
-            if($verifyRole) {
+            if(!is_null(RoleUsers::hasRole($result->user_id,2)->first())) {
               if(!in_array($result->user_id, $agencies)) {
                   array_push($agencies, $result->user_id);
               }
@@ -169,7 +167,6 @@ class SearchController extends Controller
                 }
 
                 }
-                // $data[$x]['rating'] = $this->getRating($id);
                 $data[$x]['id'] = $value->user_id;
                 $x++;
            }
@@ -226,7 +223,6 @@ class SearchController extends Controller
 
       $suburb = preg_replace('/[0-9]+/', '', $sub);
       $postcode = preg_replace('/\D/', '', $sub);
-    //  dd($postcode);
 
       $suburbInfo =  Suburbs::where('name', $suburb)->first();
 
@@ -246,7 +242,6 @@ class SearchController extends Controller
               limit 5";
 
         $nearby = DB::select($qry);
-      //  dd($nearby);
         $agencies = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
@@ -276,8 +271,17 @@ class SearchController extends Controller
           }
         }
 
-        //dd($data);
-            return $nearbySearch;
+        return $nearbySearch;
 
+    }
+
+    public function postSearchAgency(Request $request)
+    {
+        $term = $request->get('term', '');
+        $data = $this->agencyListing($term);
+        if(count($data) <= 1) {
+            return redirect()->back()->with('error', 'No result found for '. $request->get('term', ''));
+        }
+        return view('general.agency-listings')->with('data', $data);
     }
 }

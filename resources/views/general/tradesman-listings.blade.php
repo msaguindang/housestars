@@ -72,11 +72,12 @@
         <div class="container">
           <div class="row">
             <div class="col-xs-12">
-                <form action="{{ route('search.item', ['item' => 'category']) }}" method="POST">
+              <input type="text" class="search" placeholder="Enter Tradesman Name Or Business Name" style="margin: 0">
+              <!-- <form action="{{ route('search.item', ['item' => 'category']) }}" method="POST">
                   {{csrf_field()}}
                 <input type="text" name="suburb" class="search" placeholder="Enter Tradesman Name Or Business Name" style="margin: 0">
                 <button class="btn btn-primary">Search</button>
-              </form>
+              </form> -->
             </div>
           </div>
         </div>
