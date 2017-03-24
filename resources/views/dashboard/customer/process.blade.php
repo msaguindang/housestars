@@ -164,15 +164,17 @@
                             <div class="label"><h4>{{$transaction['name']}}</h4> <button class="remove-transaction" data-token="{{ csrf_token()}}" data-id="{{$transaction['id']}}">REMOVE TRANSACTION</button></div>
                             <div class="value">
                               <div class="action">
+                                @php ($unChecked = 'no')
                                 @foreach($data['reviews'] as $review)
                                   @if($review['id'] == $transaction['tid'] && $review['transaction_id'] == $transaction['id'])
                                     <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled checked/>
-
-                                  @else
-                                    <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled/>
+                                    @php ($unChecked = 'yes')
                                   @endif
                                 @endforeach
 
+                                @if($unChecked == 'no')
+                                  <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled/>
+                                @endif
                                 <label for="r{{$transaction['id']}}"><span></span></label>
                               </div>
                               @php ($x = 0)
