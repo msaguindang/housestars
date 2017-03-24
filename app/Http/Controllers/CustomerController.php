@@ -132,6 +132,12 @@ class CustomerController extends Controller
             $data['reviews'][$i]['id'] = $review->reviewee_id;
             $data['reviews'][$i]['rate'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
             $data['reviews'][$i]['transaction_id'] = $review->transaction;
+            $data['reviews'][$i]['communication'] = (int)$review->communication;
+            $data['reviews'][$i]['work_quality'] = (int)$review->work_quality;
+            $data['reviews'][$i]['price'] = (int)$review->price;
+            $data['reviews'][$i]['punctuality'] = (int)$review->punctuality;
+            $data['reviews'][$i]['attitude'] = (int)$review->attitude;
+            $data['reviews'][$i]['title'] = $review->title;
             $i++;
         }
 
@@ -184,7 +190,7 @@ class CustomerController extends Controller
 
        // Check of the last property added was proccessed
 
-      // dd($data);
+      //  dd($data);
 
         return View::make('dashboard/customer/process')->with('data', $data);
     }

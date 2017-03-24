@@ -343,7 +343,10 @@
       </div>
     </div>
 
+
+
     @if(isset($data['reviews']))
+
       @foreach($data['reviews'] as $review)
 
         <div class="modal fade" id="rateReview{{$review['id']}}" tabindex="-1" role="dialog" aria-labelledby="signup-area">

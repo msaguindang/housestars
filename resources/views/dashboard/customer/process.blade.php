@@ -180,7 +180,7 @@
                               @php ($x = 0)
                               @foreach($data['reviews'] as $review)
                                   @if($review['id'] == $transaction['tid'] && $review['transaction_id'] ==$transaction['id'])
-                                    <div class="stars">
+                                    <a href="#" data-toggle="modal" data-target="#transactionReview{{$review['transaction_id']}}"><div class="stars">
                                         @if($review['rate'] == 0)
                                           <span class="icon icon-star-grey"></span>
                                           <span class="icon icon-star-grey"></span>
@@ -199,7 +199,91 @@
                                           @endfor
 
                                         @endif
-                                    </div>
+                                    </div></a>
+
+                                    <div class="modal fade" id="transactionReview{{$review['transaction_id']}}" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+                            					<div class="modal-dialog" role="document" style="margin-top: 3%;">
+                            						<div class="modal-content">
+                            							<div class="modal-header">
+                            								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            							</div>
+                            							<div class="modal-body">
+                            								<h4>Rate Summary</h4></br>
+                            									<input type="hidden" name="tradesman_id" id="tradesmanID">
+                            									<div class="rating-stars">
+                            										@if(isset($review['communication']))
+                            										<p class="rating-label">Communication</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['communication']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['communication'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars">
+                            										@if(isset($review['work_quality']))
+                            										<p class="rating-label">Work Quality</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['work_quality']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['work_quality'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars">
+                            										@if(isset($review['price']))
+                            										<p class="rating-label">Price</p>
+                            									 <div class="stars">
+                            											@for($i = 1; $i <= $review['price']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['price'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars">
+                            										@if(isset($review['punctuality']))
+                            										<p class="rating-label">Punctuality</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['punctuality']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['punctuality'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars no-border">
+                            										@if(isset($review['attitude']))
+                            										<p class="rating-label">Attitude</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['attitude']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['attitude'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            							</div>
+                            						</div>
+                            					</div>
+                            				</div>
                                   @php ($x = 1)
                                  @break
                                 @endif
