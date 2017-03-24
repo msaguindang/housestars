@@ -9,6 +9,7 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Availability</th>
+                    <th>Max Tradie</th>
 
                     <th>Action</th>
                     </thead>
@@ -18,17 +19,29 @@
                         <td>{{ suburb.id }}</td>
                         <td>{{ suburb.name }}</td>
                         <td>
-                            <a class="btn" ng-class="{'btn-default':(suburb.availability==0), 'btn-success':(suburb.availability>0)}" href="" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
+                            <a class="btn"
+                               ng-class="{'btn-default':(suburb.availability==0), 'btn-success':(suburb.availability>0)}"
+                               href="" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
+                        </td>
+                        <td>
+                            <div class="form-inline form-horizontal">
+                                <input type="text" class="form-control" ng-model="suburb.max_tradie" style="width:80px;" ng-change="saveMaxTradie(suburb)" ng-model-options='{ debounce: 1000 }'>
+                                <!--<i class="fa fa-close text-danger" ng-click="cancelMaxTradie(suburb)"></i>
+                                <i class="fa fa-save text-success" ng-click="saveMaxTradie(suburb)"></i>-->
+                            </div>
+
                         </td>
 
                         <td class="btn-actions">
 
-                            <a uib-tooltip="Disable Suburb" href="" ng-click="toggleStatus(suburb, $index)" class="disable">
+                            <a uib-tooltip="Disable Suburb" href="" ng-click="toggleStatus(suburb, $index)"
+                               class="disable">
                                 <i ng-if="suburb.status == 1" class="pe-7s-check text-success"></i>
                                 <i ng-if="suburb.status == 0" class="pe-7s-close-circle text-danger"></i>
                             </a>
 
-                            <a uib-tooltip="Delete Suburb" href="" ng-click="deleteSuburb(suburb, $index)" class="delete">
+                            <a uib-tooltip="Delete Suburb" href="" ng-click="deleteSuburb(suburb, $index)"
+                               class="delete">
                                 <i class="pe-7s-trash text-danger"></i>
                             </a>
 
@@ -60,7 +73,6 @@
         </div>
     </div>
 </div>
-
 
 
 <script type="text/ng-template" id="suburb-availability-modal.html">

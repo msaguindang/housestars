@@ -369,6 +369,7 @@ Route::group(['prefix' => ''], function(){
             Route::get('', 'SuburbController@getAllSuburbs');
             Route::post('delete', 'SuburbController@deleteSuburb');
             Route::post('availability/update', 'SuburbController@updateSuburbAvailability');
+            Route::post('save-max-tradie', 'SuburbController@saveMaxTradie');
 
             Route::group(['prefix' => 'agent'], function () {
 

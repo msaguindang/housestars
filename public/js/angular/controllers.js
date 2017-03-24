@@ -934,6 +934,14 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
+    $scope.saveMaxTradie = function (suburb) {
+
+        http.saveMaxTradie(suburb).then(function(response){
+            console.log('save max tradie: ', response);
+        });
+
+    };
+
 
     // initialize
     $scope.getAllSuburbs();
