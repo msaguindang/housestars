@@ -163,6 +163,7 @@
 						<form id="reviewForm" enctype="multipart/form-data" method="post" action="/create">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID">
+							<input type="hidden" name="transaction_id" id="transactionID">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">

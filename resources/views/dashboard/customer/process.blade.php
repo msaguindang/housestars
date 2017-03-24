@@ -74,7 +74,10 @@
             </div>
             <div class="col-xs-4 agency-info">
               <label>Listed Under Agency:</label>
-               @if(isset($data['agent']))
+              @if(isset($data['recent']))
+                @php ($a = $data['recent'])
+              @endif
+               @if(isset($data['property'][$a]['agent']))
                 <h2 class="agency-name">{{$data['agent']['name']}}</h2>
                 <div class="stars left">
                     @if($data['agent']['rating'] == 0)
@@ -162,20 +165,19 @@
                             <div class="value">
                               <div class="action">
                                 @foreach($data['reviews'] as $review)
-                                  @if($review['id'] == $transaction['tid'])
+                                  @if($review['id'] == $transaction['tid'] && $review['transaction_id'] == $transaction['id'])
                                     <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled checked/>
-                                    @php ($unChecked = 'no')
+
+                                  @else
+                                    <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled/>
                                   @endif
                                 @endforeach
 
-                                @if(!isset($unChecked))
-                                  <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled/>
-                                @endif
                                 <label for="r{{$transaction['id']}}"><span></span></label>
                               </div>
                               @php ($x = 0)
                               @foreach($data['reviews'] as $review)
-                                  @if($review['id'] == $transaction['tid'])
+                                  @if($review['id'] == $transaction['tid'] && $review['transaction_id'] ==$transaction['id'])
                                     <div class="stars">
                                         @if($review['rate'] == 0)
                                           <span class="icon icon-star-grey"></span>
@@ -202,7 +204,7 @@
                               @endforeach
 
                               @if($x == 0)
-                                <button class="add-review" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
+                                <button class="add-review" data-tid="{{$transaction['id']}}" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
                               @endif
 
                             </div>

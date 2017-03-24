@@ -152,6 +152,7 @@
   $(document).on('click', '.add-review' ,function(e){
 
     var id = $(this).data('id');
+    var tid = $(this).data('tid');
 
     $.ajax({
       url: '/review-vendor',
@@ -167,6 +168,7 @@
         $('#tradesmanName').remove();
         $('.tradesman-name').append('<h4 id="tradesmanName">'+ data['name'] +'</h4>');
         $('#tradesmanID').val(id);
+        $('#transactionID').val(tid);
         $('#rateTradesman').modal('show');
       }
     });
