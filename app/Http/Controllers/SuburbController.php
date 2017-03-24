@@ -159,4 +159,22 @@ class SuburbController extends Controller
         $currentUserMeta->meta_value = implode(',',$newMetaValues);
         $currentUserMeta->save();
     }
+
+    public function saveMaxTradie()
+    {
+        $payload = $this->payload->all();
+
+        $suburb = Suburbs::find($payload['id']);
+
+        $suburb->update([
+            'max_tradie' => $payload['max_tradie']
+        ]);
+
+        return Response::json([
+            'type' => 'success',
+            'msg' => 'Max Tradie successfully updated.',
+            'suburb' => $suburb,
+        ], 200);
+
+    }
 }

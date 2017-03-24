@@ -74,7 +74,7 @@
     						{{session('error')}}
     					</div>
     					@endif
-                <form action="{{env('APP_URL')}}/search/agency" method="POST">
+                <form action="{{ route('post_search_agency') }}" method="POST">
                   {{csrf_field()}}
                   <input type="text" class="search" name="term" placeholder="Enter Agency Name or Suburb" style="margin: 0">
                   <button class="btn btn-primary">Search</button>

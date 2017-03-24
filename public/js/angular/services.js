@@ -399,6 +399,21 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
                 });
             });
         },
+        saveMaxTradie: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/suburb/save-max-tradie', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
 
         createMember: function (data) {
             var self = this;
@@ -742,6 +757,21 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             var self = this;
             return $q(function(resolve, reject) {
                 self.get('admin/potential-customer/export', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        exportMembers: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/user/export', data).then(function(response) {
 
                     resolve({
                         data:response.data,

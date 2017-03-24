@@ -188,6 +188,15 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
+    $scope.exportToExcel = function () {
+
+        http.exportMembers().then(function(response){
+            console.log('response export: ', response);
+            window.location.href=$baseUrl+'/exports/members.xlsx';
+        });
+
+    };
+
 
     // initialize
     $scope.getAllUsers();
@@ -922,6 +931,14 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
             console.log('status toggled');
             $scope._suburbs[index].status = response.data.status;
         })
+
+    };
+
+    $scope.saveMaxTradie = function (suburb) {
+
+        http.saveMaxTradie(suburb).then(function(response){
+            console.log('save max tradie: ', response);
+        });
 
     };
 
