@@ -7,6 +7,7 @@ use App\UserMeta;
 use App\User;
 use Stripe\Subscription;
 use Mail;
+use Carbon\Carbon;
 
 class Referral extends Command
 {

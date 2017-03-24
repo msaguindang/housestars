@@ -70,7 +70,7 @@ class CustomerController extends Controller
         	}else if($key->meta_name == 'agent'){
                 $data['agent'] = $this->find_agent_by_id($key->meta_value);
                 $data['property'][$x][$key->meta_name] = $key->meta_value;
-            } else if($property_code == $key->property_code){
+          } else if($property_code == $key->property_code){
         		$data['property'][$x][$key->meta_name] = $key->meta_value;
         		$property_code = $key->property_code;
         	} else if($property_code != $key->property_code){
@@ -131,6 +131,13 @@ class CustomerController extends Controller
         foreach ($reviews as $review ) {
             $data['reviews'][$i]['id'] = $review->reviewee_id;
             $data['reviews'][$i]['rate'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $data['reviews'][$i]['transaction_id'] = $review->transaction;
+            $data['reviews'][$i]['communication'] = (int)$review->communication;
+            $data['reviews'][$i]['work_quality'] = (int)$review->work_quality;
+            $data['reviews'][$i]['price'] = (int)$review->price;
+            $data['reviews'][$i]['punctuality'] = (int)$review->punctuality;
+            $data['reviews'][$i]['attitude'] = (int)$review->attitude;
+            $data['reviews'][$i]['title'] = $review->title;
             $i++;
         }
 
@@ -183,7 +190,7 @@ class CustomerController extends Controller
 
        // Check of the last property added was proccessed
 
-       //dd($data);
+      //  dd($data);
 
         return View::make('dashboard/customer/process')->with('data', $data);
     }
@@ -479,7 +486,7 @@ class CustomerController extends Controller
         $tradesman_id = DB::table('transactions')->where('id', '=', $request->input('id'))->get();
         $tid = $tradesman_id[0]->tradesman_id;
         DB::table('transactions')->where('id', '=', $request->input('id'))->delete();
-        DB::table('reviews')->where('reviewee_id', '=', $tid)->delete();
+        DB::table('reviews')->where('reviewee_id', '=', $tid)->where('transaction', '=', $request->input('id'))->delete();
 
         $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
         $total = 0;

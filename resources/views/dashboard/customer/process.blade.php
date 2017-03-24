@@ -74,7 +74,10 @@
             </div>
             <div class="col-xs-4 agency-info">
               <label>Listed Under Agency:</label>
-               @if(isset($data['agent']))
+              @if(isset($data['recent']))
+                @php ($a = $data['recent'])
+              @endif
+               @if(isset($data['property'][$a]['agent']))
                 <h2 class="agency-name">{{$data['agent']['name']}}</h2>
                 <div class="stars left">
                     @if($data['agent']['rating'] == 0)
@@ -161,22 +164,23 @@
                             <div class="label"><h4>{{$transaction['name']}}</h4> <button class="remove-transaction" data-token="{{ csrf_token()}}" data-id="{{$transaction['id']}}">REMOVE TRANSACTION</button></div>
                             <div class="value">
                               <div class="action">
+                                @php ($unChecked = 'no')
                                 @foreach($data['reviews'] as $review)
-                                  @if($review['id'] == $transaction['tid'])
+                                  @if($review['id'] == $transaction['tid'] && $review['transaction_id'] == $transaction['id'])
                                     <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled checked/>
-                                    @php ($unChecked = 'no')
+                                    @php ($unChecked = 'yes')
                                   @endif
                                 @endforeach
 
-                                @if(!isset($unChecked))
+                                @if($unChecked == 'no')
                                   <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled/>
                                 @endif
                                 <label for="r{{$transaction['id']}}"><span></span></label>
                               </div>
                               @php ($x = 0)
                               @foreach($data['reviews'] as $review)
-                                  @if($review['id'] == $transaction['tid'])
-                                    <div class="stars">
+                                  @if($review['id'] == $transaction['tid'] && $review['transaction_id'] ==$transaction['id'])
+                                    <a href="#" data-toggle="modal" data-target="#transactionReview{{$review['transaction_id']}}"><div class="stars">
                                         @if($review['rate'] == 0)
                                           <span class="icon icon-star-grey"></span>
                                           <span class="icon icon-star-grey"></span>
@@ -195,14 +199,98 @@
                                           @endfor
 
                                         @endif
-                                    </div>
+                                    </div></a>
+
+                                    <div class="modal fade" id="transactionReview{{$review['transaction_id']}}" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+                            					<div class="modal-dialog" role="document" style="margin-top: 3%;">
+                            						<div class="modal-content">
+                            							<div class="modal-header">
+                            								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            							</div>
+                            							<div class="modal-body">
+                            								<h4>Rate Summary</h4></br>
+                            									<input type="hidden" name="tradesman_id" id="tradesmanID">
+                            									<div class="rating-stars">
+                            										@if(isset($review['communication']))
+                            										<p class="rating-label">Communication</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['communication']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['communication'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars">
+                            										@if(isset($review['work_quality']))
+                            										<p class="rating-label">Work Quality</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['work_quality']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['work_quality'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars">
+                            										@if(isset($review['price']))
+                            										<p class="rating-label">Price</p>
+                            									 <div class="stars">
+                            											@for($i = 1; $i <= $review['price']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['price'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars">
+                            										@if(isset($review['punctuality']))
+                            										<p class="rating-label">Punctuality</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['punctuality']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['punctuality'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            									<div class="rating-stars no-border">
+                            										@if(isset($review['attitude']))
+                            										<p class="rating-label">Attitude</p>
+                            										<div class="stars">
+                            											@for($i = 1; $i <= $review['attitude']; $i++)
+                            												<span class="icon icon-star"></span>
+                            											@endfor
+                            											@php ($rating = 5 - $review['attitude'])
+                            											@for($i = 1; $i <= $rating; $i++)
+                            												<span class="icon icon-star-grey"></span>
+                            											@endfor
+                            										</div>
+                            										@endif
+                            									</div>
+                            							</div>
+                            						</div>
+                            					</div>
+                            				</div>
                                   @php ($x = 1)
                                  @break
                                 @endif
                               @endforeach
 
                               @if($x == 0)
-                                <button class="add-review" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
+                                <button class="add-review" data-tid="{{$transaction['id']}}" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
                               @endif
 
                             </div>

@@ -64,12 +64,18 @@ class ReviewController extends Controller
         $request = $this->payload;
 
         $user_id = Sentinel::getUser()->id;
+        if($request->input('transaction_id') != null || $request->input('transaction_id') != ''){
+          DB::table('reviews')->insert(
+              ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id')]
+          );
+        } else{
+          DB::table('reviews')->insert(
+              ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
+          );
+        }
 
-        DB::table('reviews')->insert(
-            ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
-        );
 
-    	$data['id'] = $request->input('tradesman_id');
+    	  $data['id'] = $request->input('tradesman_id');
 
     	return Response::json($data, 200);
     }
@@ -129,15 +135,15 @@ class ReviewController extends Controller
 
         $payload = $this->payload->all();
 
-        $sql = "SELECT DISTINCT 
+        $sql = "SELECT DISTINCT
 				  (reviews.reviewee_id),
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
-				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name 
+					users
+				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name
 				FROM
-				  reviews 
+				  reviews
 				WHERE reviewee_id != '-1' ";
 
         $reviewees = json_decode(json_encode(DB::select($sql)), TRUE);
@@ -200,18 +206,18 @@ class ReviewController extends Controller
                 break;
         }
 
-        $sql = "SELECT 
+        $sql = "SELECT
 				  reviews.*,
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
+					users
 				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
-				  (SELECT 
-					users.`name` 
+				  (SELECT
+					users.`name`
 				  FROM
-					users 
-				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name 
+					users
+				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
 				FROM
 				  reviews
 				  WHERE reviews.id IS NOT NULL
@@ -231,7 +237,7 @@ class ReviewController extends Controller
 
     }
 
-	public function addAReview (Request $request) 
+	public function addAReview (Request $request)
     {
 		$params = $request->all();
         $businessId = $params['businessId'];
@@ -243,11 +249,11 @@ class ReviewController extends Controller
 			'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
 			'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL
 		);
-        
+
 		return view('review_business')->with(compact('businessInfo'));
 	}
 
-    public function reviewBusiness ($id) 
+    public function reviewBusiness ($id)
     {
         $role = $this->checkRole($id);
         if ($role == 'agency') {
@@ -256,7 +262,7 @@ class ReviewController extends Controller
         elseif ($role == 'tradesman') {
             $data = $this->tradesman($id);
         }
-        
+
         $listings = $this->property_listing($id);
         $data['property-listings'] = $listings;
         $data['total-listings'] = count($listings);
@@ -267,7 +273,7 @@ class ReviewController extends Controller
         elseif ($role == 'tradesman') {
             return view('general.profile.tradesman-review')->with('data', $data)->with('category', $role);
         }
-        
+
     }
 
     public function checkRole ($id)
@@ -280,7 +286,7 @@ class ReviewController extends Controller
         }
         elseif(count($tradesman) > 0) {
             return 'tradesman';
-        }   
+        }
 
     }
 
@@ -294,7 +300,7 @@ class ReviewController extends Controller
         return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
     }
 
-    public function agency($id) 
+    public function agency($id)
     {
         $user = User::where('id', $id)->get();
         $meta = UserMeta::where('user_id', $id)->get();
@@ -343,7 +349,7 @@ class ReviewController extends Controller
         return $data;
     }
 
-    public function tradesman($id) 
+    public function tradesman($id)
     {
     	$meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
@@ -395,7 +401,7 @@ class ReviewController extends Controller
     	return $data;
     }
 
-    public function property_listing($id) 
+    public function property_listing($id)
     {
         $property_meta = Property::where('meta_name', '=', 'agent')->where('user_id', '=', $id)->get();
         $x = 0;
@@ -421,7 +427,7 @@ class ReviewController extends Controller
         return $properties;
     }
 
-    public function getRating($id) 
+    public function getRating($id)
     {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
@@ -465,7 +471,7 @@ class ReviewController extends Controller
         return $data;
     }
 
-	public function create (Request $request) 
+	public function create (Request $request)
     {
 		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
 		$params = $request->all();
@@ -485,7 +491,7 @@ class ReviewController extends Controller
 		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
 		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
 		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
-		
+
 		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
 			->update(array(
 				'reviewee_id' => $businessId,

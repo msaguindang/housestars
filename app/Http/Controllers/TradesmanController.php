@@ -19,6 +19,7 @@ use App\Advertisement;
 use Response;
 use Mail;
 use App\Reviews;
+use App\RoleUsers;
 
 class TradesmanController extends Controller
 {
@@ -346,18 +347,20 @@ class TradesmanController extends Controller
         $valid = true;
 
         // count number of traders per area
-        $tradersCount = DB::table('users')
-                ->join('role_users', function ($join) {
-                    $join->on('users.id', '=', 'role_users.user_id')
-                         ->where('role_users.role_id', '=', '3');
-                })
-                ->join('property_meta', function ($join) use ($suburb) {
-                    $join->on('users.id', '=', 'property_meta.user_id')
-                         ->where('property_meta.meta_name', '=', 'suburb')
-                         ->where('property_meta.meta_value', '=', $suburb->name);
-                })
-                ->count();
+        // $tradersCount = DB::table('users')
+        //         ->join('role_users', function ($join) {
+        //             $join->on('users.id', '=', 'role_users.user_id')
+        //                  ->where('role_users.role_id', '=', '3');
+        //         })->get();
 
+        $tradesPerArea= UserMeta::where('meta_value', 'LIKE', '%'.$suburb->name.'%')->get();
+        $tradersCount = 0;
+        foreach ($tradesPerArea as $key) {
+            if(!is_null(RoleUsers::hasRole($key->user_id,3)->first())) {
+              $tradersCount++;
+            }
+        }
+        
         if ($tradersCount >= $suburb->max_tradie) {
             $valid = false;
         }

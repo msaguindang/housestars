@@ -163,6 +163,7 @@
 						<form id="reviewForm" enctype="multipart/form-data" method="post" action="/create">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID">
+							<input type="hidden" name="transaction_id" id="transactionID">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">
@@ -342,7 +343,10 @@
       </div>
     </div>
 
+
+
     @if(isset($data['reviews']))
+
       @foreach($data['reviews'] as $review)
 
         <div class="modal fade" id="rateReview{{$review['id']}}" tabindex="-1" role="dialog" aria-labelledby="signup-area">
