@@ -320,6 +320,7 @@ Route::group(['prefix' => ''], function(){
             Route::post('insert', 'UserController@createUser');
             Route::post('update', 'UserController@updateUser');
             Route::get('export', 'UserController@exportUsers');
+            Route::get('count-by-role', 'UserController@getTotalCountByRole');
 
             Route::group(['prefix' => 'subscription'], function () {
 
@@ -385,6 +386,15 @@ Route::group(['prefix' => ''], function(){
             Route::get('', 'PotentialCustomerController@getAllPotentialCustomers');
             Route::post('delete', 'PotentialCustomerController@deletePotentialCustomer');
             Route::get('export', 'PotentialCustomerController@exportPotentialCustomers');
+
+        });
+
+        Route::group(['prefix' => 'report'], function () {
+
+            Route::get('tradesman/earnings', 'ReportController@getTradesmanEarningsReport');
+            Route::get('transaction/years', 'ReportController@getAllTransactionYears');
+            Route::get('transaction/total', 'ReportController@getTotalTransactions');
+            Route::get('avg-agent-commission', 'ReportController@getAverageAgentCommission');
 
         });
 

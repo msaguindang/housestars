@@ -147,7 +147,8 @@
  @endsection
 
  @section('scripts')
-     <script type="text/javascript">
+    <script type="text/javascript" src="{{ config('app.url').'/js/number.js' }}"></script>
+    <script type="text/javascript">
          var checker = document.getElementById('terms');
          var btn = document.getElementById('submit');
 
@@ -158,12 +159,13 @@
 
          };
 
-         $(function() {
-           $('#base-commission, #marketing-budget').bind('input', function(e) {
-             val = $(this).val();
-                 $(this).val(Math.abs(val));
-             });
-           });
+        $(function() {
+            $('#base-commission, #marketing-budget').bind('input', function(e) {
+                if(!Money.isValidMoney(e.target.value)) {
+                    $(this).val('');
+                }
+            });
+        });
 
          $.ajaxSetup({
              headers: {

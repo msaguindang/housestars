@@ -568,6 +568,82 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             });
         },
 
+        getTradesmanEarningsReport: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/report/tradesman/earnings', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getTransactionYears: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/report/transaction/years', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getUserCountByRole: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/user/count-by-role', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getTotalTransactions: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/report/transaction/total', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+        getAverageAgentCommission: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/report/avg-agent-commission', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
         deleteProperty: function (data) {
             var self = this;
             return $q(function(resolve, reject) {
