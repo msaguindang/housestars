@@ -167,7 +167,7 @@
 
 					</div>
 
-					<div class="col-xs-4 no-padding-right">
+					<div class="col-xs-4 no-padding-right price">
 						<label>Value of the Property</label>
 						<input type="text" name="value-from" placeholder="$" style="width: 47%" required> to <input type="text" name="value-to" placeholder="$" style="width: 47%" required>
 						<label>Anything Specific we need to know?</label>

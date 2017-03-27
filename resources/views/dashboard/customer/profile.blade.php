@@ -107,7 +107,7 @@
               </div>
             </div>
 
-            <div class="row property-info">
+            <div class="row property-info mobile-hidden">
               <div class="col-xs-12">
                 <label>Processed Property</label>
                 <table class="table table-striped">
@@ -164,6 +164,50 @@
               <div class="col-xs-12">
               </div>
             </div>
+
+            <div class="row property-info mobile">
+              <div class="col-xs-12">
+                <label>Processed Property</label>
+                    @if(isset($data['property']))
+                      @foreach($data['property'] as $property)
+                        @if(isset($property['property-type']))
+                          <hr>
+                          <p><b>Property: </b>{{$property['suburb']}}, {{$property['state']}}</p>
+                          <p><b>Type: </b>{{$property['property-type']}}</p>
+                          <p><b>Price: </b>${{$property['value-from']}} - ${{$property['value-to']}}</p>
+                          <p><b>Commission: </b>
+                              @if(isset($property['discount']))
+                                ${{$property['discount']}}
+                              @endif
+                              </p>
+                              @if(isset($property['contract']))
+
+                          <b>Contract: </b><button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#{{$property['property-code']}}">Contract</button>
+                              @else
+                              <b>Contract: </b><button type="button" class="btn btn-primary btn-xs disabled" >Contract</button>
+                              @endif
+
+
+
+                                @if(isset($property['process']))
+                                  @if($property['process'] == 'Pending')
+                                <p><b>Status: </b>
+                                    {{$property['process']}}
+                                  </p>
+                                  @else
+                                  <p><b>Status: </b>
+                                    {{$property['process']}}
+                                  </p>
+                                  @endif
+                                @endif
+                        @endif
+                      @endforeach
+                    @endif
+              </div>
+              <div class="col-xs-12">
+              </div>
+            </div>
+
           </div>
 
           <div class="col-xs-3 sidebar">

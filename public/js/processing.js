@@ -151,12 +151,12 @@
 
   $(document).on('click', '.add-review' ,function(e){
 
-    var id = $(this).data('id');
+    var tradesmanID = $(this).data('trade');
     var tid = $(this).data('tid');
 
     $.ajax({
       url: '/review-vendor',
-      data: {_token: $(this).data('token'), id: $(this).data('id')},
+      data: {_token: $(this).data('token'), id: $(this).data('trade')},
       type: 'POST',
       success: function(data) {
         var url = window.location.origin + '/',
@@ -167,7 +167,7 @@
         $('.tradesman-profile').append('<img src="'+ photo +'" alt="'+ data['name'] +'" id="tradesmanPic">');
         $('#tradesmanName').remove();
         $('.tradesman-name').append('<h4 id="tradesmanName">'+ data['name'] +'</h4>');
-        $('#tradesmanID').val(id);
+        $('#tradesmanID').val(tradesmanID);
         $('#transactionID').val(tid);
         $('#rateTradesman').modal('show');
       }

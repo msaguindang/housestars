@@ -488,4 +488,44 @@
         text-align: center;
         padding: 50px 40px;
     }
+
+    .form-box .col-xs-4 {
+        padding: 0 !important;
+    }
+
+    .price input {
+        width: 45% !important;
+    }
+
+    .form-box .col-xs-3.col-xs-offset-9 {
+        width: 100%;
+        margin: 0 !important;
+    }
+
+    #user-info.customer div {
+        margin-bottom: 15px;
+    }
+
+    .processing-form h3 {
+        text-align: left;
+    }
+
+    button.remove-transaction {
+        position: absolute;
+        float: none;
+        margin-top: 35px;
+        left: 6px;
+    }
+
+    .processing-form .entry .value {
+        width: 100% !important;
+    }
+
+    .processing-form .entry .amount, .processing-form .stars {
+        float: left;
+    }
+
+    .processing-form .transactions .entry .value {
+        width: auto !important;
+    }
 }

@@ -209,7 +209,6 @@
                             							</div>
                             							<div class="modal-body">
                             								<h4>Rate Summary</h4></br>
-                            									<input type="hidden" name="tradesman_id" id="tradesmanID">
                             									<div class="rating-stars">
                             										@if(isset($review['communication']))
                             										<p class="rating-label">Communication</p>
@@ -290,7 +289,7 @@
                               @endforeach
 
                               @if($x == 0)
-                                <button class="add-review" data-tid="{{$transaction['id']}}" data-id="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
+                                <button class="add-review" data-tid="{{$transaction['id']}}" data-trade="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
                               @endif
 
                             </div>
