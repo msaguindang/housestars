@@ -47,8 +47,8 @@
             </div>
           </div>
     </header>
-
-    <section id="cover-container" class="header-margin" style="background: url({{url($data['cover-photo'])}})">
+    @php ($coverPhoto = (isset($data['cover-photo']) ? $data['cover-photo'] : ''))
+    <section id="cover-container" class="header-margin" style="background: url({{ url($coverPhoto) }})">
 
         {{csrf_field() }}
       <div class="cover-img">
