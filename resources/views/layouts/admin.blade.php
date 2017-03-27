@@ -247,11 +247,11 @@
 
         <footer class="footer">
             <div class="container-fluid">
-                <p class="copyright pull-right">
+                <!-- <p class="copyright pull-right">
                     &copy;
                     <script>document.write(new Date().getFullYear())</script>
                     <a href="http://webforest.solutions">Webforest Digital Solutions</a>
-                </p>
+                </p> -->
             </div>
         </footer>
 
