@@ -299,6 +299,7 @@ $(document).on('submit', '#loginform' ,function(e){
     type: 'POST',
     success: function(data){
 			window.location.replace(data['redirect']);
+			console.log(data['redirect']);
     },
 		error: function(data){
 			var errors = data.responseJSON;

@@ -152,8 +152,7 @@ class LoginController extends Controller
 
 				return redirect('/');
 
-			}
-			else {
+			} else {
 				$credentials = [
 					'email'    => $social_user->email,
 					'password' => $social_user->token
