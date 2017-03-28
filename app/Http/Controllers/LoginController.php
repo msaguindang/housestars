@@ -56,7 +56,8 @@ class LoginController extends Controller
 						return \Ajax::redirect(env('APP_URL').'/dashboard/customer/profile');
 						break;
 					case 'admin':
-					return \Ajax::redirect(env('APP_URL').'/admin');
+						$data['redirect'] = env('APP_URL').'/admin';
+						return Response::json($data, 200);
 						break;
 					case 'agent':
 						return \Ajax::redirect(env('APP_URL').'/dashboard/agent/profile');
