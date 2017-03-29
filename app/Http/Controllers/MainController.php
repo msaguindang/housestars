@@ -14,12 +14,17 @@ use App\Advertisement;
 use Response;
 use Mail;
 use View;
+use Ajax;
+use Session;
+use App\PotentialCustomer;
+use App\Services\PotentialCustomerService;
 
 class MainController extends Controller
 {
-    function dashboard(){
-        if(Sentinel::check()){
-            switch (Sentinel::getUser()->roles()->first()->slug){
+    public function dashboard()
+    {
+        if (Sentinel::check()) {
+            switch (Sentinel::getUser()->roles()->first()->slug) {
                 case 'agency':
                     return redirect(env('APP_URL').'/dashboard/agency/profile');
                     break;
@@ -42,8 +47,8 @@ class MainController extends Controller
         }
     }
 
-    function home(Request $request) {
-
+    public function home(Request $request)
+    {
         $ads = Advertisement::get();
         // $numAds =  count($ads['728x90'] );
         // $index = rand(0, $numAds);
@@ -72,12 +77,12 @@ class MainController extends Controller
 
         $data = array();
 
-        if(isset($advert['141x117'])){
+        if (isset($advert['141x117'])) {
             $numAds =  count($advert['141x117']) - 1;
             $index = rand(0, $numAds);
             $data['141x117'] = $advert['141x117'][$index ];
 
-        } else if(isset($advert['728x90'])){
+        } else if (isset($advert['728x90'])) {
             $numAds =  count($advert['728x90']) - 1;
             $index = rand(0, $numAds);
             $data['728x90'] = $advert['728x90'][$index ];
@@ -86,7 +91,8 @@ class MainController extends Controller
         return view('home')->with('advert', $data);
     }
 
-    function agency(){
+    public function agency()
+    {
         $data['suburbs'] = Suburbs::all();
         $reviews = Reviews::all();
         $data['comments'] = array();
@@ -109,7 +115,7 @@ class MainController extends Controller
                     foreach ($user as $key) {
                         if ($key->meta_name == 'agency-name') {
                             $review_details['name'] = $key->meta_value;
-                        } else if($key->meta_name == 'profile-photo'){
+                        } else if ($key->meta_name == 'profile-photo') {
                             $review_details['img'] = $key->meta_value;
                         }
                     }
@@ -123,7 +129,8 @@ class MainController extends Controller
         return view('general.agency')->with('data', $data);
     }
 
-    public function unpaid(){
+    public function unpaid()
+    {
         $suburbs = Suburbs::all();
         \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
@@ -131,14 +138,40 @@ class MainController extends Controller
         return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
     }
 
-    public function contact(Request $request){
+    public function contact(Request $request)
+    {
+        $this->sendInquiry($request);
+        return Response::json('success', 200);
+    }
 
-       $this->sendInquiry($request);
+    public function verifyPotentialUser(Request $request)
+    {
+        $email = $request->get('email');
+        $potentialCustomer = PotentialCustomer::where('email', $email)->first();
 
-       return Response::json('success', 200);
-   }
+        if (!is_null($potentialCustomer) && $potentialCustomer->status == 1) {
+            session()->flash('email', $email);
+            return response()->json(['url' => url('/choose-business'), 200]);
+        }
 
-     private function sendInquiry($data){
+        Mail::send(['html' => 'emails.customer-rate-verification'], [
+                    'subject'  => 'Email Verification',
+                    'email'    => $email
+                ], function ($message) use ($email) {
+                    $message->from('info@housestars.com.au', 'Housestars');
+                    $message->to($email, 'Housestars');
+                    $message->subject('Email Verification');
+                });
+
+        app(PotentialCustomerService::class)->save([
+            'email'  => $email
+        ], $potentialCustomer);
+
+        return response()->json(['verifying' => true], 200);
+    }
+
+    private function sendInquiry($data)
+    {
         $subject = $data->input('subject');
         $topic = $data->input('topic');
         Mail::send(['html' => 'emails.contact-us'], [
@@ -152,5 +185,4 @@ class MainController extends Controller
                 $message->subject($topic.': ' . $subject);
             });
     }
-
 }

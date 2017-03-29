@@ -271,3 +271,37 @@
     </section>
 
     @endsection
+
+@section('scripts')
+  @parent
+  <script type="text/javascript">
+    $('#verify_to_rate').on('submit', function (event) {
+        event.preventDefault();
+        $sendBtn = $(this).find('button');
+        $fbBtn = $(this).siblings('a');
+        
+        $.ajax({
+          type: $(this).attr('method'),
+          url: $(this).attr('action'),
+          data: $(this).serialize(),
+          dataType: "json",
+          beforeSend: function() {
+            $sendBtn.prop('disabled', true);
+            $fbBtn.attr('href', "javascript:void(0);");
+            $sendBtn.html("Verifying <span class='fa fa-spin fa-spinner' />");
+          },
+          success: function(data) {
+            if(data.url) {
+              window.location.href = data.url;
+            } else if (data.verifying) {
+              $('#rating').modal('hide');
+              $("#verify-customer").modal('show');
+              $sendBtn.prop('disabled', false)
+              $sendBtn.html($sendBtn.data('text'));
+              $fbBtn.attr('href', $fbBtn.data('href'));
+            }
+          }
+        });
+    });
+  </script>
+@endsection

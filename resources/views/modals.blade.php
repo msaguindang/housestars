@@ -92,19 +92,37 @@
 					</div>
 					<div class="modal-body">
 						<h4>Rate a Trade or Service</h4>
-						<p class="sub-heading">Verify that you are a real customer by signing in below</p>
+						<p class="sub-heading">
+							Verify you are a real customer by authenticating with an email address or facebook
+						</p>
 						<div class="info-bar" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
-							<form action="login?rate" method="POST">
+							<form action="{{ route('verify_to_rate') }}" method="POST" id='verify_to_rate'>
 								{{csrf_field() }}
 								<div id="error"></div>
 								<div id="login-error"></div>
-								<input type="text" name="email" placeholder="Email">
-								<input type="password" name="password" placeholder="Password" class="no-top">
-								<button class="btn hs-primary"> Login </button>
+								<input type="text" name="email" placeholder="Email" required>
+								<!-- <input type="password" name="password" placeholder="Password" class="no-top"> -->
+								<button class="btn hs-primary" data-text="Proceed"> Proceed </button>
 							</form>
 							</br><p>OR</p>
-							<a href="/verify/facebook" class="btn social-button hs-facebook"><span class="icon icon-fb-white">Sign in Using Facebook </span> </a>
-							<a href="/verify/google" class="btn social-button hs-google-plus"><span class="icon icon-g-white">Sign in Using GOOGLE PLUS</span> </a>
+							<a href="/verify/facebook" data-href="/verify/facebook" class="btn social-button hs-facebook"><span class="icon icon-fb-white">Proceed Using Facebook </span> </a>
+							<!-- <a href="/verify/google" class="btn social-button hs-google-plus"><span class="icon icon-g-white">Sign in Using GOOGLE PLUS</span> </a> -->
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- POTENTIAL CUSTOMER VERIFY MODAL -->
+		<div class="modal fade" id="verify-customer" tabindex="-1" role="dialog" aria-labelledby="rating-area">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+					<div class="modal-body">
+						<p>
+							Please check your email and click the validation link. You will be automatically redirected to Rate A Trade Or Service
+						</p>
 					</div>
 				</div>
 			</div>

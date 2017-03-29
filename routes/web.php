@@ -14,25 +14,37 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => ''], function(){
-
+Route::group(['prefix' => ''], function () {
 
     Route::get('/profile', 'MainController@dashboard');
 
 
-    Route::get('/', 'MainController@home');
+    Route::get('/', [
+        'as'    => 'homepage',
+        'uses'  => 'MainController@home'
+    ]);
 
     Route::post('/delete-gallery-photo', [
         'as' => 'delete.gallery.photo',
-        function(Request $request) {
+        function (Request $request) {
             $galleryService = app()->make(App\Services\GalleryService::class);
             return $galleryService->delete($request->all());
         }
     ]);
 
+    Route::get('/verify-customer/{email}', [
+       'as'   => 'verify_potential_customer',
+       'uses' => 'ActivationController@verifiedPotentialCustomer'
+    ]);
+
     Route::get('/home', function () {
         return view('general.home');
     });
+
+    Route::post('/verify-user-to-rate', [
+        'as'   => 'verify_to_rate',
+        'uses' => 'MainController@verifyPotentialUser'
+    ]);
 
     Route::get('/about-us', function () {
         return view('general.about-us');
@@ -276,14 +288,20 @@ Route::group(['prefix' => ''], function(){
 
     Route::post('/referral', 'TradesmanController@referral');
     Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
-    Route::get('/reviewer','LoginController@chooseBusiness');
-    Route::get('/choose-business', function() {
-        return view('choose_business');
+    Route::get('/reviewer', 'LoginController@chooseBusiness');
+    
+    Route::get('/choose-business', function () {
+        if (session()->exists('email')) {
+            return view('choose_business');
+        }
+        return redirect('/');
     });
+
     Route::post('/review', 'ReviewController@addAReview');
     Route::post('/create/review', 'ReviewController@create');
 
-     Route::post('/create/potential-customer', 'PotentialCustomerController@store');
+    Route::post('/create/potential-customer', 'PotentialCustomerController@store');
+
     Route::get('/verify/{provider}/agency/{id}', 'LoginController@verifyToProviderAgency');
     Route::post('/review-agency/create/review', 'ReviewController@create');
     Route::get('/review/business/{id}', 'ReviewController@reviewBusiness');
