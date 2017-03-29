@@ -150,8 +150,10 @@ class MainController extends Controller
         $potentialCustomer = PotentialCustomer::where('email', $email)->first();
 
         if (!is_null($potentialCustomer) && $potentialCustomer->status == 1) {
-            session()->flash('email', $email);
-            return response()->json(['url' => url('/choose-business'), 200]);
+            session()->forget('email');
+            session()->put('email', $email);
+            $hasReachedLimit = app(PotentialCustomerService::class)->validateCustomerReviews($potentialCustomer);
+            return response()->json(['error' => 'You have reached the limit to rate a trade or service for a year!', 'url' => url('/choose-business')], 200);
         }
 
         Mail::send(['html' => 'emails.customer-rate-verification'], [
@@ -164,10 +166,11 @@ class MainController extends Controller
                 });
 
         app(PotentialCustomerService::class)->save([
-            'email'  => $email
+            'email'  => $email,
+            'status' => 0
         ], $potentialCustomer);
 
-        return response()->json(['verifying' => true], 200);
+        return response()->json(['error' => '', 'verifying' => true], 200);
     }
 
     private function sendInquiry($data)

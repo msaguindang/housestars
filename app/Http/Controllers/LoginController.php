@@ -15,6 +15,8 @@ use DB;
 use Session;
 use Illuminate\View;
 use Illuminate\Support\Facades\Redirect;
+use App\Services\PotentialCustomerService;
+use App\PotentialCustomer;
 
 class LoginController extends Controller
 {
@@ -81,7 +83,7 @@ class LoginController extends Controller
 	public function logout(){
 		Sentinel::removeCheckpoint('throttle');
 		Sentinel::logout();
-
+		session()->flush();
 		return redirect('/');
 	}
 
@@ -116,11 +118,20 @@ class LoginController extends Controller
 
 		if($state == 'verify' || $stateIsNumeric) {
 			$socialName = $user->getName();
+
+			// save potential customer
+			$potentialCustomer = PotentialCustomer::where('email', $email)->first();
+			app(PotentialCustomerService::class)->save([
+				'email'  => $email,
+				'status' => 1,
+				'name'   => $socialName
+			], $potentialCustomer);
+
+			$hasReachedLimit = app(PotentialCustomerService::class)->validateCustomerReviews($potentialCustomer);
+
 			$secret = encrypt($socialId);
-			// $query = DB::table('reviews')->where('reviewer_id', '=', $socialId)->get();
-			$secret = encrypt($socialId);
-			// if(count($query) == 0) {
 			$this->deleteEmptyReview();
+
 			DB::table('reviews')->insert(array(
 				'reviewee_id' => -1,
 				'reviewer_id' => $socialId,
@@ -129,15 +140,16 @@ class LoginController extends Controller
 				'updated_at' => Carbon::now()
 			));
 
-			$reviewId = DB::table('reviews')->select('id')->where('reviewer_id', '=', $socialId)->get();
-			// }
-
-			if ($state == 'verify') {
+			if($hasReachedLimit) {
+				session()->flash('rate-error', 'You have reached the limit to rate a trade or service for a year!');
+				return redirect('/');
+			} else if ($state == 'verify') {
+				session()->forget('email');
+				session()->put('email', $email);
 				return redirect()->action(
 					'LoginController@chooseBusiness', ['secret' => $secret]
 				);
-			}
-			else {
+			} else {
 				return redirect('/review/business/'.$state);
 			}
 		}

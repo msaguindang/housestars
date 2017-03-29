@@ -275,6 +275,12 @@
 @section('scripts')
   @parent
   <script type="text/javascript">
+    $error = "{{ session()->get('rate-error') }}";
+    
+    if ($error.length != 0) {
+      alert($error);
+    }
+
     $('#verify_to_rate').on('submit', function (event) {
         event.preventDefault();
         $sendBtn = $(this).find('button');
@@ -291,14 +297,17 @@
             $sendBtn.html("Verifying <span class='fa fa-spin fa-spinner' />");
           },
           success: function(data) {
-            if(data.url) {
+            $sendBtn.prop('disabled', false)
+            $sendBtn.html($sendBtn.data('text'));
+            $fbBtn.attr('href', $fbBtn.data('href'));
+
+            if(data.error && data.error.length != 0) {
+              alert(data.error);
+            } else if(data.url) {
               window.location.href = data.url;
-            } else if (data.verifying) {
-              $('#rating').modal('hide');
+            } else if(data.verifying) {
               $("#verify-customer").modal('show');
-              $sendBtn.prop('disabled', false)
-              $sendBtn.html($sendBtn.data('text'));
-              $fbBtn.attr('href', $fbBtn.data('href'));
+              $('#rating').modal('hide');
             }
           }
         });

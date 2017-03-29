@@ -44,6 +44,7 @@ class ActivationController extends Controller
             app(PotentialCustomerService::class)->save([
                 'status' => 1
             ], $customer);
+            session()->forget('email');
             session()->put('email', $email);
             return redirect('/choose-business');
         }

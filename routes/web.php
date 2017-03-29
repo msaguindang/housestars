@@ -18,7 +18,6 @@ Route::group(['prefix' => ''], function () {
 
     Route::get('/profile', 'MainController@dashboard');
 
-
     Route::get('/', [
         'as'    => 'homepage',
         'uses'  => 'MainController@home'

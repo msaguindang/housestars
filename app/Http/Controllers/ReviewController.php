@@ -18,6 +18,8 @@ use App\Advertisement;
 use App\Property;
 use Response;
 use Socialite;
+use App\PotentialCustomer;
+use App\Services\ReviewService;
 
 class ReviewController extends Controller
 {
@@ -472,17 +474,9 @@ class ReviewController extends Controller
     }
 
 	public function create (Request $request)
-    {
-		$latestRow = DB::table('reviews')->select('id', 'reviewer_id')->orderBy('id', 'desc')->first();
-		$params = $request->all();
-		$reviewId = $latestRow->id;
-		$reviewerId = $latestRow->reviewer_id;
-		$businessId = $params['tradesman_id'];
-
-        $reviewExists = DB::table('reviews')->where('reviewee_id', '=', $businessId)->where('reviewer_id', '=', $reviewerId)->first();
-        if(count($reviewExists) > 0) {
-            $reviewId = $reviewExists->id;
-        }
+    {   
+        $params = $request->all();
+        $businessId = $params['tradesman_id'];		
 		$communication = isset($params['communication']) ? $params['communication'] : NULL;
 		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
 		$price = isset($params['price']) ? $params['price'] : NULL;
@@ -491,22 +485,39 @@ class ReviewController extends Controller
 		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
 		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
 		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
+        
+        $data = [
+            'reviewee_id'   => $businessId,
+            'communication' => $communication,
+            'work_quality'  => $workQuality,
+            'price'         => $price,
+            'punctuality'   => $punctuality,
+            'attitude'      => $attitude,
+            'title'         => $reviewTitle,
+            'content'       => $reviewText,
+            'helpful'       => $helpful,
+            'updated_at'    => Carbon::now()
+        ];
 
-		$query = DB::table('reviews')->where('id', '=', $reviewId)->where('reviewer_id', '=', $reviewerId)
-			->update(array(
-				'reviewee_id' => $businessId,
-				'communication' => $communication,
-				'work_quality' => $workQuality,
-				'price' => $price,
-				'punctuality' => $punctuality,
-				'attitude' => $attitude,
-				'title' => $reviewTitle,
-				'content' => $reviewText,
-				'helpful' => $helpful,
-				'updated_at' => Carbon::now()
-		));
+        if (session()->has('email')) {
+            if ($potentialCustomer = PotentialCustomer::where('email', session()->get('email'))->first()) {
+                $data['reviewer_id'] = $potentialCustomer->id;
+                app(ReviewService::class)->save($data);
+            }
+            session()->forget('email');
+        } else if ($user = Sentinel::getUser()) {
+            $data['reviewer_id'] = $user->id;
+            app(ReviewService::class)->save($data);
+        } else if($latestRow = DB::table('reviews')->select('id', 'reviewer_id')->where('reviewee_id', -1)->orderBy('id', 'desc')->first()) {
+            $reviewId = $latestRow->id;
+            $reviewerId = $latestRow->reviewer_id;
+            $review = DB::table('reviews')->where('reviewee_id', '=', $businessId)->where('reviewer_id', '=', $reviewerId)->first();
+            if (!is_null($review)) {
+                $reviewId = $review->id;
+            }
+            app(ReviewService::class)->save($data, Reviews::where('id', $reviewId)->where('reviewer_id', $reviewerId)->first());
+        }
 
 		return redirect('/');
-
 	}
 }
