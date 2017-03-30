@@ -102,3 +102,13 @@
 
 
 @endsection
+
+@section('scripts')
+  @parent
+  <script type="text/javascript">
+    $('body').on('click', "a[data-target='#noTradesmen'], button[data-target='#noTradesmen']", function (e) {
+      $suburb = $('#suburb').val();
+      $('#search-suburb').val($suburb);
+    });
+  </script>
+@endsection

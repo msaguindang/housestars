@@ -464,12 +464,16 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <h4>There are currently no </br>listed tradesman in your area</h4>
+            <h4>
+            	<!-- There are currently no </br>listed tradesman in your area -->
+            	Do you know a great Tradie?
+            </h4>
             </br><p class="sub-heading">If you know a tradesman that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
               {{csrf_field() }}
-              <input type="text" name="name" placeholder="Tradesman Name"></br>
-              <input type="text" name="contact" placeholder="Tradesman Contact No." class="no-top"></br>
+              <input type="hidden" id="search-suburb" name="suburb" />
+              <input type="text" name="name" placeholder="Tradesman or Business Name"></br>
+              <input type="text" name="contact" placeholder="Business Phone No. (not essential)" class="no-top"></br>
               <button class="btn hs-primary">SUBMIT</button>
             </form>
           </div>
@@ -660,6 +664,22 @@
           <div class="modal-body">
             <h4>Thank You!</h4>
             </br><p class="sub-heading">We will contact them regarding signing up to be a partner. Thank you!</p>
+            <button class="btn hs-primary" data-dismiss="modal" aria-label="Close">Got it</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thank You Note / Tradesman Submission-->
+    <div class="modal fade" id="thankYouCategory" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>Thank You!</h4>
+            </br><p class="sub-heading">Your suggestion has been noted.</p>
             <button class="btn hs-primary" data-dismiss="modal" aria-label="Close">Got it</button>
           </div>
         </div>

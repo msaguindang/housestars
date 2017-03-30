@@ -145,7 +145,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
         type: 'POST',
         success: function(data){
           $('#submitCategory').modal('hide');
-          $('#thankYouTrades').modal('show');
+          $('#thankYouCategory').modal('show');
         }
 
       });

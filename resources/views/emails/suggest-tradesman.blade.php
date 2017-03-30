@@ -313,6 +313,9 @@
                         <p>Here's the details:<p/>
                         <p><b>Tradesman Name:</b> {{$name}}</p>
                         <p><b>Tradesman Contact:</b> {{$contact}}</p>
+                        @if(!is_null($suburb))
+                          <p><b>Suburb:</b> {{$suburb}} </p>
+                        @endif
                        </td>
                     </tr>
                   </table>

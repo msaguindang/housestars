@@ -193,25 +193,26 @@ class SearchController extends Controller
 
         switch ($type) {
             case 'tradesman':
-                $this->sendEmail($request->input('name'), $request->input('contact'), 'emails.suggest-tradesman', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $request->get('suburb', ''), 'emails.suggest-tradesman', null);
                 return Response::json('success', 200);
                 break;
             case 'agency':
-                $this->sendEmail($request->input('name'), $request->input('contact'), 'emails.suggest-agency', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), null, 'emails.suggest-agency', null);
                 return Response::json('success', 200);
                 break;
             case 'category':
-                $this->sendEmail($request->input('name'), $request->input('trade'), 'emails.suggest-category', $request->input('email'));
+                $this->sendEmail($request->input('name'), $request->input('trade'), null, 'emails.suggest-category', $request->input('email'));
                 return Response::json('success', 200);
                 break;
         }
     }
 
-    private function sendEmail($name, $contact, $template, $from){
+    private function sendEmail($name, $contact, $suburb = null, $template, $from){
         Mail::send(['html' => $template], [
-                'name' => $name,
+                'name'    => $name,
                 'contact' => $contact,
-                'from' => $from
+                'suburb'  => $suburb,
+                'from'    => $from
             ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to('info@housestars.com.au', 'Housestars');
