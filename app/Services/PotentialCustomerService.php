@@ -22,7 +22,7 @@ class PotentialCustomerService
     public function validateCustomerReviews($customer)
     {
     	$reviews = $customer->reviews;
-        if ($firstReview = $reviews->first()) {
+        if (!is_null($reviews) && $firstReview = $reviews->first()) {
         	$diffInYears = Carbon::now()->diffInYears($firstReview->created_at);
         	$now = $firstReview->created_at->copy()->addYear($diffInYears);
 
