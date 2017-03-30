@@ -71,11 +71,16 @@
         <div class="row">
           <form id="categorySearch">
             {{csrf_field() }}
-            <div class="col-xs-10">
+            <!-- <div class="col-xs-10">
               <input type="text" name="suburb" placeholder="Suburb" required id="suburb">
+            </div> -->
+            <div class="col-xs-10">
+              <input class="" type="text" name="suburb" placeholder="Suburb" required id="suburb">
             </div>
             <div class="col-xs-2">
-              <button class="btn hs-primary full-width search"><span class="icon icon-search"></span>SEARCH</button>
+              <button class="btn hs-primary full-width search">
+                <span class="icon icon-search"></span>SEARCH
+              </button>
             </div>
           </form>
         </div>
@@ -111,4 +116,49 @@
       $('#search-suburb').val($suburb);
     });
   </script>
+  <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+        });
+        $defSearch = "<span class='icon icon-search'></span>SEARCH";
+        $searchBtn = $('button.search');
+
+        $('#suburb').selectize({
+            maxItems: 1,
+            valueField: 'value',
+            searchField: ['name', 'id'],
+            labelField: 'name',
+            create: false,
+            render: {
+                option: function(item, escape) {
+                  return '<div class="option" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+                }
+            },
+            load: function(query, callback) {
+                if (!query.length) return callback();
+                $.ajax({
+                    url: '{{ url('tradesman/search-suburb') }}',
+                    type: 'GET',
+                    data: {
+                        query: query
+                    },
+                    error: function() {
+                      $searchBtn.html($defSearch);
+                      callback();
+                    },
+                    beforeSend: function() {
+                      $searchBtn.html("<span class='fa fa-spinner fa-spin fa-2x' /> SEARCH");
+                    },
+                    success: function(res) {
+                      $searchBtn.html($defSearch);
+                      callback(res.suburbs);
+                    }
+                });
+            }
+        });
+        $('.selectized').siblings('div').removeClass('selectize-control');
+        $('.selectize-input').css('border', '0px');
+    </script>
 @endsection
