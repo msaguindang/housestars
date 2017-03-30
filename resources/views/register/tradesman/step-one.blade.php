@@ -129,7 +129,13 @@
                                     <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li>
+                                    @foreach($categories as $index => $cat)
+                                        <li>
+                                            <input type="radio" id="t{{$index+1}}" name="trade" value="{{ $cat->category }}">
+                                            <label for="t{{$index+1}}">{{ $cat->category }}</label>
+                                        </li>
+                                    @endforeach
+                                    <!-- <li>
                                         <input type="radio" id="t1" name="trade"
                                                value="Architectural Glass and Metal Technician">
                                         <label for="t1">Architectural Glass and Metal Technician</label>
@@ -321,7 +327,7 @@
                                         <input type="radio" id="t42" name="trade"
                                                value="Terrazzo, Tile and Marble Setter">
                                         <label for="t42">Terrazzo, Tile and Marble Setter</label>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                             <label>Promotion Code</label>
@@ -382,7 +388,6 @@
                         callback();
                     },
                     success: function(res) {
-                        console.log('results: ', res);
                         callback(res.suburbs);
                         //callback(res.repositories.slice(0, 10));
                     }

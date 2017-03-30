@@ -21,7 +21,7 @@ class SearchController extends Controller
     {
     	switch ($item) {
     		case 'category':
-    			     $data['cat'] = Category::all();
+    			$data['cat'] = Category::whereStatus(1)->get();
                 $data['suburb'] = $request->get('suburb', '');
                 $data['item'] = $this->hasResults($data['suburb']);
     			      return Response::json($data, 200);
