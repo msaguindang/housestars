@@ -183,7 +183,7 @@ return [
         App\Services\Ajax\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        Laravel\Tinker\TinkerServiceProvider::class
     ],
 
     /*

@@ -18,6 +18,8 @@ use Ajax;
 use Session;
 use App\PotentialCustomer;
 use App\Services\PotentialCustomerService;
+use App\Services\ReviewService;
+use App\User;
 
 class MainController extends Controller
 {
@@ -147,15 +149,20 @@ class MainController extends Controller
     public function verifyPotentialUser(Request $request)
     {
         $email = $request->get('email');
+        session()->forget('email');
+        session()->forget('user_type');
         $potentialCustomer = PotentialCustomer::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
 
         if (!is_null($potentialCustomer) && $potentialCustomer->status == 1) {
-            session()->forget('email');
             session()->put('email', $email);
-            $hasReachedLimit = app(PotentialCustomerService::class)->validateCustomerReviews($potentialCustomer);
-            return response()->json(['error' => 'You have reached the limit to rate a trade or service for a year!', 'url' => url('/choose-business')], 200);
+            session()->put('user_type', 'potential_customer');
+            return response()->json(['url' => url('/choose-business')], 200);
+        } else if(!is_null($user) && $user->status == 1) {
+            session()->put('email', $email);
+            session()->put('user_type', 'user');
+            return response()->json(['url' => url('/choose-business')], 200);
         }
-
         Mail::send(['html' => 'emails.customer-rate-verification'], [
                     'subject'  => 'Email Verification',
                     'email'    => $email

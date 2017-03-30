@@ -147,7 +147,7 @@
 									@foreach($businesses as $business)
 									<li>
 										<label for="{{$business->user_id}}">{{$business->meta_value}}</label>
-										<input type="radio" id="{{$business->user_id}}" name="businessId" value="{{$business->user_id}}">
+										<input type="radio" id="{{$business->user_id}}" name="businessId" value="{{$business->user_id}}" required>
 									</li>
 									@endforeach
 								</ul>

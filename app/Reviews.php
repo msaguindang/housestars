@@ -10,8 +10,7 @@ class Reviews extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'reviewee_id', 'reviewer_id', 'communication', 'work_quality', 'price', 'punctuality', 'attitude', 'title', 'content', 'helpful',
-
+        'reviewee_id', 'reviewer_id', 'communication', 'work_quality', 'price', 'punctuality', 'attitude', 'title', 'content', 'helpful', 'user_type'
     ];
 
 }

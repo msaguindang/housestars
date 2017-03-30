@@ -35,8 +35,6 @@ class ReviewController extends Controller
     {
 
         $request = $this->payload;
-
-        //dd($request->all());
         $user_id = Sentinel::getUser()->id;
         $id = $request->input('id');
 
@@ -243,6 +241,17 @@ class ReviewController extends Controller
     {
 		$params = $request->all();
         $businessId = $params['businessId'];
+        
+        if(session()->has('email') && session()->has('user_type')) {
+            $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
+            $user = app($type)->where('email', session()->get('email'))->first();
+            $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
+            if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
+                session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
+                return redirect('/');
+            }
+        }
+
 		$businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
 		$agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
         $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
@@ -496,17 +505,23 @@ class ReviewController extends Controller
             'title'         => $reviewTitle,
             'content'       => $reviewText,
             'helpful'       => $helpful,
+            'status'        => 0,
             'updated_at'    => Carbon::now()
         ];
 
-        if (session()->has('email')) {
-            if ($potentialCustomer = PotentialCustomer::where('email', session()->get('email'))->first()) {
-                $data['reviewer_id'] = $potentialCustomer->id;
-                app(ReviewService::class)->save($data);
-            }
+        if (session()->has('email') && session()->has('user_type')) {
+            $email = session()->get('email');
+            $userType = session()->get('user_type');
+            $type = "App\\".ucfirst(camel_case($userType));
+            $user = app($type)->where('email', $email)->first();
+            $data['reviewer_id'] = $user->id;
+            $data['user_type']  = $userType;
+            app(ReviewService::class)->save($data);
             session()->forget('email');
+            session()->forget('user_type');
         } else if ($user = Sentinel::getUser()) {
             $data['reviewer_id'] = $user->id;
+            $data['user_type']   = 'user';
             app(ReviewService::class)->save($data);
         } else if($latestRow = DB::table('reviews')->select('id', 'reviewer_id')->where('reviewee_id', -1)->orderBy('id', 'desc')->first()) {
             $reviewId = $latestRow->id;

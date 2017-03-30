@@ -19,4 +19,9 @@ class RoleUsers extends Model
     {
     	return $query->where('user_id', $user_id)->where('role_id', $role_id);
     }
+
+    public function definition()
+    {
+    	return $this->hasOne(Role::class, 'id', 'role_id');
+    }
 }

@@ -16,6 +16,7 @@ use Session;
 use Illuminate\View;
 use Illuminate\Support\Facades\Redirect;
 use App\Services\PotentialCustomerService;
+use App\Services\ReviewService;
 use App\PotentialCustomer;
 
 class LoginController extends Controller
@@ -118,34 +119,41 @@ class LoginController extends Controller
 
 		if($state == 'verify' || $stateIsNumeric) {
 			$socialName = $user->getName();
+			$user = User::where('email', $email)->first();
+			session()->forget('email');
+	        session()->forget('user_type');
+	        session()->put('email', $email);
 
-			// save potential customer
-			$potentialCustomer = PotentialCustomer::where('email', $email)->first();
-			app(PotentialCustomerService::class)->save([
-				'email'  => $email,
-				'status' => 1,
-				'name'   => $socialName
-			], $potentialCustomer);
-
-			$hasReachedLimit = app(PotentialCustomerService::class)->validateCustomerReviews($potentialCustomer);
+			if(!is_null($user)) {
+	            session()->put('user_type', 'user');
+			} else {
+				// save potential customer
+				$potentialCustomer = PotentialCustomer::where('email', $email)->first();
+				app(PotentialCustomerService::class)->save([
+					'email'  => $email,
+					'status' => 1,
+					'name'   => $socialName
+				], $potentialCustomer);
+	            session()->put('user_type', 'potential_customer');
+			}
+			// $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($potentialCustomer);
 
 			$secret = encrypt($socialId);
-			$this->deleteEmptyReview();
+			// $this->deleteEmptyReview();
 
-			DB::table('reviews')->insert(array(
-				'reviewee_id' => -1,
-				'reviewer_id' => $socialId,
-				'name' => $socialName,
-				'created_at' => Carbon::now(),
-				'updated_at' => Carbon::now()
-			));
+			// DB::table('reviews')->insert(array(
+			// 	'reviewee_id' => -1,
+			// 	'reviewer_id' => $socialId,
+			// 	'name' => $socialName,
+			// 	'created_at' => Carbon::now(),
+			// 	'updated_at' => Carbon::now()
+			// ));
 
-			if($hasReachedLimit) {
-				session()->flash('rate-error', 'You have reached the limit to rate a trade or service for a year!');
-				return redirect('/');
-			} else if ($state == 'verify') {
-				session()->forget('email');
-				session()->put('email', $email);
+			// if($hasReachedLimit) {
+			// 	session()->flash('rate-error', 'You have reached the limit to rate a trade or service for a year!');
+			// 	return redirect('/');
+			// } 
+			if ($state == 'verify') {
 				return redirect()->action(
 					'LoginController@chooseBusiness', ['secret' => $secret]
 				);
@@ -194,10 +202,11 @@ class LoginController extends Controller
 	public function chooseBusiness(Request $request) {
 		$params = $request->all();
 		$socialId = decrypt($params['secret']);
-		$reviewer = DB::table('reviews')->where('reviewer_id', $socialId)->get();
-		if(count($reviewer) > 0) {
-			return redirect('/choose-business');
-		}
+		// $reviewer = DB::table('reviews')->where('reviewer_id', $socialId)->get();
+		// if(count($reviewer) > 0) {
+		// 	return redirect('/choose-business');
+		// }
+		return redirect('/choose-business');
 	}
 
 	public function assignRole($account){
