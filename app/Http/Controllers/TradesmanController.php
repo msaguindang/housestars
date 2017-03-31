@@ -97,8 +97,8 @@ class TradesmanController extends Controller
     			$positions = explode(",", $key->meta_value);
 
     			foreach ($positions as $position) {
-    				$code[$x] = substr($position, 0, 4);
-    				$suburb[$x] = substr($position, 4);
+    				$code[$x] = preg_replace('/\D+/', '', $position);
+    				$suburb[$x] = preg_replace('/[0-9]/', '', $position);
     				$data['suburbs'][$x] = array('code' => $code[$x], 'name' => $suburb[$x]);
   					$x = $x + 1;
     			}
@@ -119,7 +119,7 @@ class TradesmanController extends Controller
     		}
 
     	}
-
+      //dd($data);
         $data['hasGallery'] = $y;
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
@@ -360,7 +360,7 @@ class TradesmanController extends Controller
               $tradersCount++;
             }
         }
-        
+
         if ($tradersCount >= $suburb->max_tradie) {
             $valid = false;
         }

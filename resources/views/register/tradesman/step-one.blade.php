@@ -365,10 +365,10 @@
         });
 
         $('#select-state').selectize({
-            maxItems: 3,
+            maxItems: 10000,
             valueField: 'value',
             searchField: ['name', 'id'],
-            labelField: 'name',
+            labelField: 'id',
             options: [],
             create: false,
             render: {

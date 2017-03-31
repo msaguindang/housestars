@@ -317,7 +317,7 @@
                       class="required-input" required>
                       @if(isset($data['suburbs']))
                         @foreach ($data['suburbs'] as $suburb)
-                          <option value="{{ $suburb['code']}}{{ $suburb['name'] }}" selected>{{ $suburb['name'] }}</option>
+                          <option value="{{ $suburb['code']}}{{ $suburb['name'] }}" selected>{{ $suburb['code'] }}</option>
                         @endforeach
                       @endif
               </select>
@@ -393,10 +393,10 @@
         });
 
         $('#select-state').selectize({
-            maxItems: 3,
+            maxItems: 10000,
             valueField: 'value',
             searchField: ['name', 'id'],
-            labelField: 'name',
+            labelField: 'id',
             options: [],
             create: false,
             render: {
@@ -528,7 +528,7 @@
           });
         }
       });
-      
+
       $(document).ready(function () {
           Dropzone.autoDiscover = false;
           $("#tradesman-gallery").dropzone({
