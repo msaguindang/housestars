@@ -6,13 +6,17 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h4 class="title">Reviews</h4>
+        <h4 class="title">Reviews</h4>        
         <div class="pull-right">
             <div class="reviews-filter form-inline">
                 <label>Reviewee: </label>
                 <select ng-change="filterReviews()" name="reviewee" class="form-control" ng-options="user.reviewee_id as user.reviewee_name for user in reviewees" ng-model="revieweeFilter">
                     <option value="">All Reviews</option>
                 </select>
+                <label> Search: </label>
+                <input name="search" class="form-control" ng-model="query" />
+                <button ng-click="search()" class="btn btn-success"> Go </button>
+                <button class="btn btn-warning" ng-click="refresh()"> Reset </button>
             </div>
         </div>
         <div class="card">
@@ -20,23 +24,34 @@
                 <table class="table table-hover table-striped">
                     <thead>
 
-                    <th>Reviewee</th>
-                    <th>Reviewer</th>
+                        <th>Reviewee
+                            <span ng-click="sort('reviewee_name')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
+                        <th>Reviewer
+                            <span ng-click="sort('reviewer_name')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
 
-                    <th>Title</th>
-                    <th style="width:351px;">Content</th>
+                        <th>Title
+                            <span ng-click="sort('title')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
 
-                    <th>Communication</th>
-                    <th>Work Quality</th>
-                    <th>Price</th>
-                    <th>Punctuality</th>
-                    <th>Attitude</th>
-                    <th>Helpful</th>
+                        <th style="width: 151px;">Content
+                            <span ng-click="sort('content')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
 
-                    <th>Action</th>
+                        <th>Communication</th>
+                        <th>Work Quality</th>
+                        <th>Price</th>
+                        <th>Punctuality</th>
+                        <th>Attitude</th>
+                        <th>Helpful</th>
+                        <th>Date Created
+                            <span ng-click="sort('created_at')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="review in _reviews">
+                    <tr ng-repeat="review in _reviews | filter:query">
 
                         <td>{{ review.reviewee_name }}</td>
                         <td>{{ review.reviewer_name }}</td>
@@ -50,7 +65,7 @@
                         <td>{{ review.punctuality }}/5</td>
                         <td>{{ review.attitude }}/5</td>
                         <td>{{ review.helpful }}/5</td>
-
+                        <td> {{ toJsDate(review.created_at) | date : 'mediumDate' }} </td>
                         <td class="btn-actions">
 
                             <a uib-tooltip="Disable Review" href="" ng-click="toggleStatus(review, $index)" class="disable">

@@ -541,7 +541,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     console.log('reviewsCtrl');
 
     $scope.reviewees = [];
-
+    $scope.isAscending = true;
     $scope.reviews = [];
     $scope._reviews = angular.copy($scope.reviews);
 
@@ -550,6 +550,13 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.limit = 10;
 
     $scope.currentFilter = 'all';
+
+    $scope.toJsDate = function(str){
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
+    }
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -614,12 +621,27 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
             $scope.reviewees = response.data.reviewees;
         });
     };
+    
+    $scope.search = function () {
+        var query = $scope.query;
+
+        http.searchReviews({
+            query: $scope.query,
+            page_no: $scope.currentPage,
+            limit: $scope.limit
+        }).then(function(response) {
+            $scope.reviews = response.data.reviews;
+            $scope._reviews = angular.copy($scope.reviews);
+            $scope.totalItems = response.data.length;
+        });
+    };
+
 
     $scope.filterReviews = function () {
 
         console.log('filter reviews: ', $scope.revieweeFilter);
 
-        if($scope.revieweeFilter == "" || $scope.revieweeFilter == null){
+        if ($scope.revieweeFilter == "" || $scope.revieweeFilter == null) {
             $scope.getAllReviews();
             return false;
         }
@@ -637,6 +659,36 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
             $scope.currentFilter = 'reviewee';
         });
     };
+
+    $scope.direction = function() {
+        if ($scope.isAscending) {
+            return 'fa fa-caret-up';
+        }
+        return 'fa fa-caret-down';
+    };
+
+    $scope.sort = function (field) {
+        $scope.isAscending = !$scope.isAscending;
+        
+        http.searchReviews({
+            query: '',
+            page_no: $scope.currentPage,
+            limit: $scope.limit,
+            sort: ($scope.isAscending ? 'asc' : 'desc'),
+            field: field
+        }).then(function(response) {
+            $scope.reviews = response.data.reviews;
+            $scope._reviews = angular.copy($scope.reviews);
+            $scope.totalItems = response.data.length;
+        });
+    };
+
+    $scope.refresh = function () {
+        $scope.query = '';
+        $scope.isAscending = true;
+        $scope.getAllReviews();
+        $scope.getAllReviewees();
+    }
 
     // initialize
     $scope.getAllReviews();

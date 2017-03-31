@@ -164,10 +164,13 @@ class ReviewController extends Controller
                 WHERE reviewee_id != '-1' ";
 
         $reviewees = json_decode(json_encode(DB::select($sql)), TRUE);
+        $reviewees = array_where($reviewees, function ($value, $key) {
+                        return (!is_null($value['reviewee_name']) && !empty($value['reviewee_name']));
+                    });
 
         $response = [
             'reviewees' => $reviewees,
-            'payload' => $payload
+            'payload'   => $payload
         ];
 
         return Response::json($response, 200);
@@ -608,6 +611,24 @@ class ReviewController extends Controller
         return redirect('/');
     }
 
+    public function searchReviews(Request $request)
+    {
+        $query = $request->get('query', '');
+        $sort  = $request->get('sort', 'asc');
+        $field  = $request->get('field', null);
 
+        $reviews = Reviews::searchReview($query, $sort)->get();
 
+        if(!is_null($field)) {
+            $reviews = $reviews->sortBy($field, SORT_REGULAR, ($sort=='desc'));
+            $reviews = $reviews->values()->all();
+        }
+
+        $response = [
+            'reviews' => (is_array($reviews) ? $reviews : $reviews->toArray()),
+            'length'  => count($reviews)
+        ];
+
+        return Response::json($response, 200);
+    }
 }

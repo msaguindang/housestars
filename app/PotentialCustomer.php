@@ -15,4 +15,11 @@ class PotentialCustomer extends Model
     {
     	return $this->hasMany(Reviews::class, 'reviewer_id', 'id');
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query
+                    ->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+    }
 }

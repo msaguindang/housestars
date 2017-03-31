@@ -352,8 +352,9 @@ Route::group(['prefix' => ''], function () {
         Route::group(['prefix' => 'review'], function () {
 
             Route::get('', 'ReviewController@getAllReviews');
-            Route::post('delete', 'ReviewController@deleteReview');
-            Route::get('filter', 'ReviewController@getReviewsByFilter');
+            Route::post('/delete', 'ReviewController@deleteReview');
+            Route::get('/filter', 'ReviewController@getReviewsByFilter');
+            Route::get('/search', 'ReviewController@searchReviews');
 
             Route::group(['prefix' => 'reviewees'], function () {
 

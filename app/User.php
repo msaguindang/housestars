@@ -31,4 +31,11 @@ class User extends Model
     {
         return $this->hasMany(UserMeta::class);
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query
+                    ->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('email', 'LIKE', '%'.$search.'%');
+    }
 }

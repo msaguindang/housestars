@@ -10,4 +10,9 @@ class Category extends Model
     public $timestamps = true;
 
     protected $fillable = ['category', 'status'];
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('category', 'LIKE', '%'.$search.'%');
+    }
 }
