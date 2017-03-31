@@ -310,7 +310,7 @@
                     <tr>
                       <td style="padding: 20px; background: #fff;">
                         <p>Hi {{$name}}!</p>
-                        <p>Your estimated savings using housestars is <b>${{$estimate}}</b>. Please keep in mind this is just an estimate.</p>
+                        <p>Your estimated savings using housestars is <b>${{$estimate}}</b>. This is only an estimate, based on a 3% commission rate. As these rates vary depending on location, please take this as a guide only.</p>
                         <p>Here's the property details you submitted:</p>
                           <div style="width: 464px; border: 1px dashed #a9a9a9; margin: 20px auto; padding: 20px">
                             <table>

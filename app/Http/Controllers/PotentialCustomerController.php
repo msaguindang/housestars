@@ -39,20 +39,7 @@ class PotentialCustomerController extends Controller
         $this->sendEmail($request, 'admin', null);
 
         $price = explode(" - ", $request->input('estimated-price'));
-        $commission = 0; $x = 0;
-        $commissions = UserMeta::where('meta_name', 'base-commission')->get();
-
-        foreach ($commissions as $key ) {
-          $comm = (int)preg_match_all('!\d+!', $key->meta_value);
-          if($comm && $comm <= 10){
-            $x++;
-            $commission = $commission + $comm;
-          }
-        }
-
-        $avg_comm = number_format(($commission / $x) / 100, 3);
-
-        $estimate = (int)preg_replace('/\D+/', '', $price[1]) * $avg_comm * 0.2;
+        $estimate = (int)preg_replace('/\D+/', '', $price[1]) * 0.03 * 0.2;
         $this->sendEmail($request, 'client', $estimate);
         return Response::json('success', 200);
 
