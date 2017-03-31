@@ -266,6 +266,15 @@ class ReviewController extends Controller
             $user = app($type)->where('email', session()->get('email'))->first();
             $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
             if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
+                $ip = $request->ip();
+                Mail::send(['html' => 'emails.review-redflag'], [
+                        'ip' => $ip,
+                        'email' => session()->get('email')
+                    ], function ($message) use ($ip) {
+                        $message->from('info@housestars.com.au', 'Housestars');
+                        $message->to('info@housestars.com.au', 'Housestars');
+                        $message->subject('Rating Red Flag: '. $ip);
+                    });
                 session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
                 return redirect('/');
             }
