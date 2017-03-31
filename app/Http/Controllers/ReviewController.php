@@ -92,9 +92,9 @@ class ReviewController extends Controller
 
 
 
-    	  $data['id'] = $request->input('tradesman_id');
+          $data['id'] = $request->input('tradesman_id');
 
-    	return Response::json($data, 200);
+        return Response::json($data, 200);
     }
 
     public function getAllReviews()
@@ -119,22 +119,22 @@ class ReviewController extends Controller
             ->first()
             ->length;
 
-		$sql = "SELECT
-				  reviews.*,
-				  (SELECT
-					users.`name`
-				  FROM
-					users
-				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
-				  (SELECT
-					users.`name`
-				  FROM
-					users
-				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
-				FROM
-				  reviews
-				LIMIT {$limit}
-				OFFSET {$offset}";
+        $sql = "SELECT
+                  reviews.*,
+                  (SELECT
+                    users.`name`
+                  FROM
+                    users
+                  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
+                  (SELECT
+                    users.`name`
+                  FROM
+                    users
+                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
+                FROM
+                  reviews
+                LIMIT {$limit}
+                OFFSET {$offset}";
 
 
         $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
@@ -153,15 +153,15 @@ class ReviewController extends Controller
         $payload = $this->payload->all();
 
         $sql = "SELECT DISTINCT
-				  (reviews.reviewee_id),
-				  (SELECT
-					users.`name`
-				  FROM
-					users
-				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name
-				FROM
-				  reviews
-				WHERE reviewee_id != '-1' ";
+                  (reviews.reviewee_id),
+                  (SELECT
+                    users.`name`
+                  FROM
+                    users
+                  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name
+                FROM
+                  reviews
+                WHERE reviewee_id != '-1' ";
 
         $reviewees = json_decode(json_encode(DB::select($sql)), TRUE);
 
@@ -224,23 +224,23 @@ class ReviewController extends Controller
         }
 
         $sql = "SELECT
-				  reviews.*,
-				  (SELECT
-					users.`name`
-				  FROM
-					users
-				  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
-				  (SELECT
-					users.`name`
-				  FROM
-					users
-				  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
-				FROM
-				  reviews
-				  WHERE reviews.id IS NOT NULL
-				  {$filterSql}
-				LIMIT {$limit}
-				OFFSET {$offset}";
+                  reviews.*,
+                  (SELECT
+                    users.`name`
+                  FROM
+                    users
+                  WHERE users.id = reviews.`reviewee_id`) AS reviewee_name,
+                  (SELECT
+                    users.`name`
+                  FROM
+                    users
+                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
+                FROM
+                  reviews
+                  WHERE reviews.id IS NOT NULL
+                  {$filterSql}
+                LIMIT {$limit}
+                OFFSET {$offset}";
 
         $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
 
@@ -254,42 +254,44 @@ class ReviewController extends Controller
 
     }
 
-	public function addAReview (Request $request)
+    public function addAReview (Request $request)
     {
-		    $params = $request->all();
+        $params = $request->all();
         $businessId = $params['businessId'];
+        $hasReachedLimit = false;
 
         if(session()->has('email') && session()->has('user_type')) {
             $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
             $user = app($type)->where('email', session()->get('email'))->first();
             $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-            if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
-                $ip = $request->ip();
-                Mail::send(['html' => 'emails.review-redflag'], [
-                        'ip' => $ip,
-                        'email' => session()->get('email')
-                    ], function ($message) use ($ip) {
-                        $message->from('info@housestars.com.au', 'Housestars');
-                        $message->to('info@housestars.com.au', 'Housestars');
-                        $message->subject('Oops!');
-                    });
-                session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
-                return redirect('/');
-            }
+        } else if($user = Sentinel::getUser()) {
+            $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
         }
 
+        if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
+            $ip = $request->ip();
+            Mail::send(['html' => 'emails.review-redflag'], [
+                    'ip' => $ip,
+                    'email' => session()->get('email')
+                ], function ($message) use ($ip) {
+                    $message->from('info@housestars.com.au', 'Housestars');
+                    $message->to('info@housestars.com.au', 'Housestars');
+                    $message->subject('Oops!');
+                });
+            session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
+            return redirect('/');
+        }
 
-
-      		$businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
-      		$agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
-              $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
-      		$businessInfo = array(
-      			'id' => $businessId,
-      			'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
-      			'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL
-      		);
-		return view('review_business')->with(compact('businessInfo'));
-	}
+        $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
+        $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
+        $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
+        $businessInfo = array(
+            'id' => $businessId,
+            'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
+            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL
+        );
+        return view('review_business')->with(compact('businessInfo'));
+    }
 
     public function reviewBusiness ($id)
     {
@@ -389,9 +391,9 @@ class ReviewController extends Controller
 
     public function tradesman($id)
     {
-    	$meta = UserMeta::where('user_id', $id)->get();
+        $meta = UserMeta::where('user_id', $id)->get();
         $user = User::where('id', $id)->get();
-    	$data = array();
+        $data = array();
         $data['tradesman-id'] = $id;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
@@ -399,19 +401,19 @@ class ReviewController extends Controller
         $data['email'] = $user[0]['email'];
         $x = 0; $y = 0;
 
-    	foreach ($meta as $key) {
-    		if($key->meta_name == 'gallery'){
-    			$data[$key->meta_name][$y] = $key->meta_value;
-    			$y = $y + 1;
+        foreach ($meta as $key) {
+            if($key->meta_name == 'gallery'){
+                $data[$key->meta_name][$y] = $key->meta_value;
+                $y = $y + 1;
 
-    		} else {
+            } else {
 
-    			$data[$key->meta_name] = $key->meta_value;
+                $data[$key->meta_name] = $key->meta_value;
 
-    		}
+            }
 
-    	}
-    	$data['rating'] = $this->getRating($id);
+        }
+        $data['rating'] = $this->getRating($id);
         $data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
 
@@ -436,7 +438,7 @@ class ReviewController extends Controller
 
         }
         //dd($data);
-    	return $data;
+        return $data;
     }
 
     public function property_listing($id)
@@ -483,44 +485,44 @@ class ReviewController extends Controller
     public function getReviews($id)
     {
 
-    	$reviews = Reviews::where('reviewee_id', '=', $id)->get();
-    	$data = array(); $x = 0; $average = 0;
-    	foreach ($reviews as $review) {
+        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
+        $data = array(); $x = 0; $average = 0;
+        foreach ($reviews as $review) {
             if ($user = User::where('id', $review->reviewer_id)->first()) {
                 $data[$x]['name'] = $user->name;
             }
             else {
                 $data[$x]['name'] = $review->name;
             }
-    		$data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
-    		$data[$x]['communication'] = (int)$review->communication;
+            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $data[$x]['communication'] = (int)$review->communication;
             $data[$x]['work_quality'] = (int)$review->work_quality;
             $data[$x]['price'] = (int)$review->price;
             $data[$x]['punctuality'] = (int)$review->punctuality;
             $data[$x]['attitude'] = (int)$review->attitude;
             $data[$x]['title'] = $review->title;
-    		$data[$x]['content'] = $review->content;
-    		$data[$x]['created'] = $review->created_at->format('M d, Y');
+            $data[$x]['content'] = $review->content;
+            $data[$x]['created'] = $review->created_at->format('M d, Y');
             $data[$x]['helpful'] = $review->helpful;
             $data[$x]['id'] = $review->id;
             $x++;
-    	}
+        }
 
         return $data;
     }
 
-	public function create (Request $request)
+    public function create (Request $request)
     {
         $params = $request->all();
         $businessId = $params['tradesman_id'];
-		$communication = isset($params['communication']) ? $params['communication'] : NULL;
-		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
-		$price = isset($params['price']) ? $params['price'] : NULL;
-		$punctuality = isset($params['punctuality']) ? $params['punctuality'] : NULL;
-		$attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
-		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
-		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
-		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
+        $communication = isset($params['communication']) ? $params['communication'] : NULL;
+        $workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
+        $price = isset($params['price']) ? $params['price'] : NULL;
+        $punctuality = isset($params['punctuality']) ? $params['punctuality'] : NULL;
+        $attitude = isset($params['attitude']) ? $params['attitude'] : NULL;
+        $reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
+        $reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
+        $helpful = isset($params['helpful']) ? $params['helpful'] : 0;
 
         $data = [
             'reviewee_id'   => $businessId,
@@ -603,8 +605,8 @@ class ReviewController extends Controller
             }
         }
 
-		return redirect('/');
-	}
+        return redirect('/');
+    }
 
 
 
