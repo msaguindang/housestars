@@ -349,7 +349,7 @@ $(document).on('submit', '#reviewForm' ,function(e){
 		processData: false,
 		success: function(data){
 			$('#rateTradesman').modal('hide');
-			//location.reload();
+			location.reload();
 		}
 	});
 });
