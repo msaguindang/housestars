@@ -39,12 +39,16 @@
                             <span ng-click="sort('content')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
                         </th>
 
-                        <th>Communication</th>
-                        <th>Work Quality</th>
-                        <th>Price</th>
-                        <th>Punctuality</th>
-                        <th>Attitude</th>
-                        <th>Helpful</th>
+                        <th>Communication
+                            <span ng-click="sort('communication')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
+                        <th>Work Quality
+                            <span ng-click="sort('work_quality')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
+                        </th>
+                        <th>Price <span ng-click="sort('price')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span></th>
+                        <th>Punctuality <span ng-click="sort('punctuality')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span></th>
+                        <th>Attitude <span ng-click="sort('attitude')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span></th>
+                        <th>Helpful <span ng-click="sort('helpful')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span></th>
                         <th>Date Created
                             <span ng-click="sort('created_at')" ng-class="direction()" aria-hidden="true" style="cursor:pointer;"></span>
                         </th>
