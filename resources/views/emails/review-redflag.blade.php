@@ -310,7 +310,7 @@
                     <tr>
                       <td style="padding: 20px; background: #fff;">
                         <p>Hi Admin,</p>
-                        <p>This user IP: {{$ip}} // email: {{$email}} has attempt to rate more than 5 times for a service. Please see details in the admin section.<p/>
+                        <p>The user with email address <{{$email}}> and IP <{{$ip}}> has attempted to exceed the maximum number of ratings for a category. Please check the Reviews section of the admin tool <http://housestars.com.au/admin>.<p/>
 
                         <p>Cheers,</p>
                         <img src="https://trello-attachments.s3.amazonaws.com/58abe1cd025a65a1e39f2205/200x50/d55d597a4311edbdbc9789d1ac05744f/signature.png">

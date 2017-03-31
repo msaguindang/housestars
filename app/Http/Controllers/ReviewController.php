@@ -273,7 +273,7 @@ class ReviewController extends Controller
                     ], function ($message) use ($ip) {
                         $message->from('info@housestars.com.au', 'Housestars');
                         $message->to('info@housestars.com.au', 'Housestars');
-                        $message->subject('Rating Red Flag: '. $ip);
+                        $message->subject('Oops!');
                     });
                 session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
                 return redirect('/');
