@@ -63,7 +63,7 @@
               <label>Name</label>
               <input type="text" name="name">
               <label>Suburb</label>
-              <input type="text" name="suburb" id="postcode">
+              <select id="select-state" name="suburb"  class="demo-default"></select>
             </div>
             <div class="col-xs-4">
               <label>Email Address</label>
@@ -120,55 +120,55 @@
                     </li>
                     <li>
                       <input type="radio" id="b2" name="estimated-price" value="$100,000 - $200,000">
-                      <label for="b1">$100,000 - $200,000</label>
+                      <label for="b2">$100,000 - $200,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b3" name="estimated-price" value="$200,000 - $300,000">
-                      <label for="b1">$200,000 - $300,000</label>
+                      <label for="b3">$200,000 - $300,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b4" name="estimated-price" value="$300,000 - $400,000">
-                      <label for="b1">$300,000 - $400,000</label>
+                      <label for="b4">$300,000 - $400,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b5" name="estimated-price" value="$400,000 - $500,000">
-                      <label for="b1">$400,000 - $500,000</label>
+                      <label for="b5">$400,000 - $500,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b6" name="estimated-price" value="$500,000 - $600,000">
-                      <label for="b1">$500,000 - $600,000</label>
+                      <label for="b6">$500,000 - $600,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b7" name="estimated-price" value="$600,000 - $700,000">
-                      <label for="b1">$600,000 - $700,000</label>
+                      <label for="b7">$600,000 - $700,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b8" name="estimated-price" value="$700,000 - $800,000">
-                      <label for="b1">$700,000 - $800,000</label>
+                      <label for="b8">$700,000 - $800,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b9" name="estimated-price" value="$800,000 - $900,000">
-                      <label for="b2">$800,000 - $900,000</label>
+                      <label for="b9">$800,000 - $900,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b10" name="estimated-price" value="$1,000,000 - $1,100,000">
-                      <label for="b3">$1,000,000 - $1,100,000</label>
+                      <label for="b10">$1,000,000 - $1,100,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b11" name="estimated-price" value="$1,200,000 - $1,300,000">
-                      <label for="b4">$1,200,000 - $1,300,000</label>
+                      <label for="b11">$1,200,000 - $1,300,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b12" name="estimated-price" value="$1,400,000 - $1,500,000">
-                      <label for="b5">$1,400,000 - $1,500,000</label>
+                      <label for="b12">$1,400,000 - $1,500,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b13" name="estimated-price" value="$1,600,000 - $1,800,000">
-                      <label for="b6">$1,600,000 - $1,800,000</label>
+                      <label for="b13">$1,600,000 - $1,800,000</label>
                     </li>
                     <li>
                       <input type="radio" id="b14" name="estimated-price" value="$1,900,000 - $2,000,000">
-                      <label for="b7">$1,900,000 - $2,000,000</label>
+                      <label for="b14">$1,900,000 - $2,000,000</label>
                     </li>
 
                   </ul>
@@ -185,5 +185,98 @@
 @endsection
 
 @section('scripts')
-  <script src="js/autocomplete.js"></script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+    });
+
+    $('#select-state').selectize({
+        maxItems: 1,
+        valueField: 'value',
+        searchField: ['name', 'id'],
+        labelField: 'name',
+        sortField: 'text',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+            }
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '{{ url('tradesman/search-suburb') }}',
+                type: 'GET',
+                data: {
+                    query: query
+                },
+                error: function() {
+                    callback();
+                },
+                success: function(res) {
+                    console.log('results: ', res);
+                    callback(res.suburbs);
+                    //callback(res.repositories.slice(0, 10));
+                }
+            });
+        }
+    });
+
+    jQuery.validator.addMethod('positionsRequired', function(value, element){
+
+        if(typeof value == "undefined" || value == null || value == ""){
+
+            $('.selectize-control .selectize-input').addClass('error');
+
+            return false;
+        }
+
+        $('.selectize-control .selectize-input').removeClass('error');
+        return true;
+
+    });
+
+    jQuery.validator.addMethod('tradeRequired', function(value, element){
+
+        if(typeof value == "undefined" || value == null || value == ""){
+
+            console.log('undefined trade');
+            $('#trade-btn-group').addClass('error');
+
+            return false;
+        }
+
+        $('#trade-btn-group').removeClass('error');
+        return true;
+
+    });
+
+    var validator = $('form[name=form]').validate({
+        errorPlacement: function (error, element) {
+            //console.log('error: ', error);
+            //console.log('element: ', element);
+        },
+        ignore: '',
+        rules:{
+            'positions[]':{
+                positionsRequired:true
+            },
+            trade: {
+                tradeRequired:true
+            }
+        }
+        /*submitHandler: function(form) {
+
+
+
+
+
+        }*/
+    });
+
+    console.log('validator', validator);
+
+</script>
 @stop

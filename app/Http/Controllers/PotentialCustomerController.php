@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\PotentialCustomer;
+use App\UserMeta;
 use Illuminate\Support\Facades\DB;
 use Response;
 use Mail;
@@ -35,28 +36,68 @@ class PotentialCustomerController extends Controller
             'phone' => $request->phone
         ]);
 
-        $this->sendEmail($request);
+        $this->sendEmail($request, 'admin', null);
+
+        $price = explode(" - ", $request->input('estimated-price'));
+        $commission = 0; $x = 0;
+        $commissions = UserMeta::where('meta_name', 'base-commission')->get();
+
+        foreach ($commissions as $key ) {
+          $comm = (int)preg_match_all('!\d+!', $key->meta_value);
+          if($comm && $comm <= 10){
+            $x++;
+            $commission = $commission + $comm;
+          }
+        }
+
+        $avg_comm = number_format(($commission / $x) / 100, 3);
+
+        $estimate = (int)preg_replace('/\D+/', '', $price[1]) * $avg_comm * 0.2;
+        $this->sendEmail($request, 'client', $estimate);
         return Response::json('success', 200);
 
 
     }
 
-    private function sendEmail($request)
+    private function sendEmail($request, $to, $estimate)
     {
-        $email = $request->input('email');
-        $name = $request->input('name');
-        Mail::send(['html' => 'emails.savings-calculator'], [
+      $email = $request->input('email');
+      $name = $request->input('name');
+
+      switch ($to) {
+        case 'admin':
+          Mail::send(['html' => 'emails.savings-calculator'], [
+                  'name' => $request->input('name'),
+                  'phone' => $request->input('phone'),
+                  'email' => $request->input('email'),
+                  'suburb' => $request->input('suburb'),
+                  'type' => $request->input('property-type'),
+                  'price' => $request->input('estimated-price')
+              ], function ($message) use ($name) {
+                  $message->from('info@housestars.com.au', 'Housestars');
+                  $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
+                  $message->subject('Savings Estimation Calculator: '. $name);
+              });
+          break;
+
+        default:
+        Mail::send(['html' => 'emails.savings-calculator-client'], [
                 'name' => $request->input('name'),
                 'email' => $request->input('phone'),
                 'phone' => $request->input('email'),
                 'suburb' => $request->input('suburb'),
                 'type' => $request->input('property-type'),
-                'price' => $request->input('estimated-price')
-            ], function ($message) use ($name) {
+                'price' => $request->input('estimated-price'),
+                'estimate' => $estimate
+            ], function ($message) use ($name, $email) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to('info@housestars.com.au', 'Savings Estimation Calculator');
-                $message->subject('Savings Estimation Calculator: '. $name);
+                $message->to($email, $name);
+                $message->subject('Savings Estimation Calculator! ');
             });
+          break;
+      }
+
+
     }
 
     public function getAllPotentialCustomers()
