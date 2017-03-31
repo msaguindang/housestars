@@ -548,6 +548,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.sortedField = '';
 
     $scope.currentFilter = 'all';
 
@@ -660,16 +661,23 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         });
     };
 
-    $scope.direction = function() {
-        if ($scope.isAscending) {
-            return 'fa fa-caret-up';
+    $scope.direction = function(field) {
+        var c = '';
+
+        if ($scope.sortedField == field) {
+            c = 'text-primary';
         }
-        return 'fa fa-caret-down';
+
+        if ($scope.isAscending) {
+            return 'fa fa-caret-up ' + c;
+        }
+        return 'fa fa-caret-down ' + c;
     };
 
     $scope.sort = function (field) {
         $scope.isAscending = !$scope.isAscending;
-        
+        $scope.sortedField = field;
+
         http.searchReviews({
             query: '',
             page_no: $scope.currentPage,
@@ -685,6 +693,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     $scope.refresh = function () {
         $scope.query = '';
+        $scope.sortedField = '';
         $scope.isAscending = true;
         $scope.getAllReviews();
         $scope.getAllReviewees();
