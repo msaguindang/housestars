@@ -1237,7 +1237,7 @@ housestars.controller('EditAdvertisementModalCtrl', ['$scope', 'advertisementDat
 
     $scope.advertisementData = advertisementData;
     $scope.advertisementData.priority = $scope.advertisementData.priority + '';
-    $scope.adFileSrc = $baseUrl + $scope.advertisementData.image_path;
+    $scope.adFileSrc =  $baseUrl +  '/' + $scope.advertisementData.image_path;
 
     $scope.cancel = function () {
         $uibModalInstance.dismiss("cancel");

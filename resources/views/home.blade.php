@@ -127,7 +127,7 @@
         </div>
         <div class="banner-ad desktop">
           @if(isset($advert['141x117']))
-            <img src="{{$advert['141x117']['url']}}" alt="Banner Ad">
+            <img src="assets/{{$advert['141x117']['url']}}" alt="Banner Ad">
           @else
             <img src="assets/banner-ad.png" alt="Banner Ad">
           @endif
@@ -147,7 +147,9 @@
     <div class="horizontal-bg desktop"></div>
     <section id="advertisement-banner">
       @if(isset($advert['728x90']))
-        <img src="{{$advert['728x90']['url']}}" alt="Banner Ad">
+        <img src="{{env('APP_URL')}}/{{$advert['728x90']['url']}}" alt="Banner Ad">
+      @else
+        <img src="assets/banner-test.png" alt="Banner Ad">
       @endif
     </section>
 
@@ -276,7 +278,7 @@
   @parent
   <script type="text/javascript">
     $error = "{{ session()->get('rate-error') }}";
-    
+
     if ($error.length != 0) {
       alert($error);
     }
@@ -285,7 +287,7 @@
         event.preventDefault();
         $sendBtn = $(this).find('button');
         $fbBtn = $(this).siblings('a');
-        
+
         $.ajax({
           type: $(this).attr('method'),
           url: $(this).attr('action'),

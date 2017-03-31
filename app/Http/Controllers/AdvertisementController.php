@@ -48,10 +48,10 @@ class AdvertisementController extends Controller
             ->first()
             ->length;
 
-        $sql = "SELECT 
+        $sql = "SELECT
 				  *
 				FROM
-				  advertisements 
+				  advertisements
 				LIMIT {$limit}
 				OFFSET {$offset}";
 
@@ -127,7 +127,7 @@ class AdvertisementController extends Controller
             $filename = $filename . '_' . time() . '.' . $extension;
 
             $this->payload->adFile->move(public_path($uploadPath), $filename);
-            $path = $uploadPath . $filename;
+            $path = $uploadPath .'/'. $filename;
             $advertisement->image_path = $path;
             $advertisement->save();
         }
