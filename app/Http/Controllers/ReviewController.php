@@ -20,6 +20,7 @@ use Response;
 use Socialite;
 use App\PotentialCustomer;
 use App\Services\ReviewService;
+use Mail;
 
 class ReviewController extends Controller
 {
@@ -64,15 +65,33 @@ class ReviewController extends Controller
         $request = $this->payload;
 
         $user_id = Sentinel::getUser()->id;
-        if($request->input('transaction_id') != null || $request->input('transaction_id') != ''){
-          DB::table('reviews')->insert(
-              ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id')]
-          );
-        } else{
-          DB::table('reviews')->insert(
-              ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
-          );
+        $startDate = date('Y').'-01-01';
+        $endDate = date('Y').'-12-31';
+        $userReviews = Reviews::where('reviewer_id', $user_id)->where('reviewee_id', $request->input('tradesman_id'))->whereYear('created_at', '=', date('Y'))->count();
+
+        if($userReviews >= 5 ){
+          $ip = $request->ip();
+          Mail::send(['html' => 'emails.review-redflag'], [
+                  'ip' => $ip,
+                  'email' => Sentinel::getUser()->email
+              ], function ($message) use ($ip) {
+                  $message->from('info@housestars.com.au', 'Housestars');
+                  $message->to('info@housestars.com.au', 'Housestars');
+                  $message->subject('Rating Red Flag: '. $ip);
+              });
+        } else {
+
+                  if($request->input('transaction_id') != null || $request->input('transaction_id') != ''){
+                    DB::table('reviews')->insert(
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id')]
+                    );
+                  } else{
+                    DB::table('reviews')->insert(
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
+                    );
+                  }
         }
+
 
 
     	  $data['id'] = $request->input('tradesman_id');
@@ -241,7 +260,7 @@ class ReviewController extends Controller
     {
 		$params = $request->all();
         $businessId = $params['businessId'];
-        
+
         if(session()->has('email') && session()->has('user_type')) {
             $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
             $user = app($type)->where('email', session()->get('email'))->first();
@@ -483,9 +502,9 @@ class ReviewController extends Controller
     }
 
 	public function create (Request $request)
-    {   
+    {
         $params = $request->all();
-        $businessId = $params['tradesman_id'];		
+        $businessId = $params['tradesman_id'];
 		$communication = isset($params['communication']) ? $params['communication'] : NULL;
 		$workQuality = isset($params['work-quality']) ? $params['work-quality'] : NULL;
 		$price = isset($params['price']) ? $params['price'] : NULL;
@@ -494,7 +513,7 @@ class ReviewController extends Controller
 		$reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
 		$reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
 		$helpful = isset($params['helpful']) ? $params['helpful'] : 0;
-        
+
         $data = [
             'reviewee_id'   => $businessId,
             'communication' => $communication,
@@ -535,4 +554,5 @@ class ReviewController extends Controller
 
 		return redirect('/');
 	}
+
 }
