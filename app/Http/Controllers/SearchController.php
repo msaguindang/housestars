@@ -96,9 +96,9 @@ class SearchController extends Controller
     	return $data;
     }
 
-    public function tradesmenListing()
+    public function tradesmenListing($category, $suburb)
     {
-        $trade = UserMeta::where('meta_value', 'LIKE', '%'.Input::get('category').'%')->get();
+        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
         $tradesmen = array();
 
         foreach ($trade as $key) {
@@ -112,25 +112,32 @@ class SearchController extends Controller
           }
         }
 
+
+
         $data = array();
         $x = 0;
         foreach ($tradesmen as $id) {
            $activeUser = User::where('id', '=', $id)->get();
            if(count($activeUser) > 0){
 
-                $tradesmanData = UserMeta::where('user_id', '=', $id)->get();
-                foreach ($tradesmanData as $value) {
-                   $data[$x][$value->meta_name] = $value->meta_value;
-                }
-                $data[$x]['rating'] = $this->getRating($id);
-                $data[$x]['id'] = $value->user_id;
-                $x++;
+                 $tradesmenArray = UserMeta::where('user_id', $id)->get();
+                 foreach ($tradesmenArray as $tradie) {
+
+                   if($tradie->meta_name == 'trade' && $tradie->meta_value == $category){
+                     $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
+                     foreach ($tradesmanData as $value) {
+                         $data[$x][$value->meta_name] = $value->meta_value;
+                     }
+                     $data[$x]['rating'] = $this->getRating($id);
+                     $data[$x]['id'] = $value->user_id;
+                     $x++;
+                   }
+                 }
            }
         }
 
-        $data['cat'] = Input::get('category');
-        $data['suburb'] = Input::get('suburb');
-
+        $data['cat'] = $category;
+        $data['suburb'] = preg_replace('/[0-9]/', '', $suburb). ' (' . preg_replace('/\D+/', '', $suburb) . ')';
        return view('general.tradesman-listings')->with('data', $data);
     }
 
