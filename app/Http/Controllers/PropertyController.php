@@ -110,8 +110,8 @@ class PropertyController extends Controller
 
         $response = [
             'properties' => $properties,
-            'length' => $length,
-            'query'  => $query
+            // 'length'     => $length,
+            'length'     => (empty($paginationQuery) ? count($properties) : $length)
         ];
 
         return Response::json($response, 200);

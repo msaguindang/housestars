@@ -153,7 +153,7 @@ class UserController extends Controller
 
         return Response::json([
             'users'  => $members,
-            'length' => (empty($paginateQuery) ? count($members) : $length)
+            'length' => (empty($searchQuery) ? $length : count($members)),
         ], 200);
     }
 
