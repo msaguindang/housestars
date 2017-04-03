@@ -24,27 +24,39 @@ class SuburbController extends Controller
     public function getAllSuburbs()
     {
         $pageNo = $this->payload->input('page_no');
-
-        if(!$pageNo){
+        $query = $this->payload->get('query', '');
+        $field = $this->payload->get('sort', '');
+        $direction = $this->payload->get('direction', '');
+        $sortQuery = '';
+        
+        if (!$pageNo) {
             $pageNo = 1;
         }
 
         $limit = $this->payload->input('limit');
 
-        if(!$limit){
+        if (!$limit) {
             $limit = 10;
         }
 
         $offset = $limit*($pageNo-1);
 
         $suburbsLength = DB::table('suburbs')->selectRaw('count(*) as length')->first()->length;
+        
+        if (!empty($field)) {
+            $sortQuery = " ORDER BY {$field} {$direction}";
+        }
 
-        $suburbsSql = "SELECT * FROM suburbs LIMIT {$limit} OFFSET {$offset}";
-        $suburbs = json_decode(json_encode(DB::select($suburbsSql)),TRUE);
+        if (!empty($query)) {
+            $query = " WHERE (id LIKE '%$query%' OR name LIKE '%$query%' OR max_tradie LIKE '%$query%' OR availability LIKE '%$query%') ";
+        }
+
+        $suburbsSql = "SELECT * FROM suburbs {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
+        $suburbs = json_decode(json_encode(DB::select($suburbsSql)), TRUE);
 
         $response = [
             'suburbs' => $suburbs,
-            'length' => $suburbsLength
+            'length'     => (empty($query) ? $suburbsLength : count($suburbs))
         ];
 
         return Response::json($response, 200);

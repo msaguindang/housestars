@@ -29,14 +29,19 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
-
+    $scope.query = '';
+    $scope.direction = '';
+    $scope.sortField = '';
+    
     $scope.getAllUsers = function () {
 
         http.getAllUsers({
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            query: $scope.query,
+            sort: $scope.sortField,
+            direction: $scope.direction
         }).then(function (response) {
-            console.log('all users: ', response);
             $scope.users = response.data.users;
             $scope._users = angular.copy($scope.users);
             $scope.totalItems = response.data.length;
@@ -45,6 +50,32 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
 
     $scope.editUser = function (user, index) {
 
+    };
+
+    $scope.search = function() {
+        if ($scope.query != '') {
+            $scope.getAllUsers();
+        }
+    };
+
+    $scope.sort = function(field, direction) {
+        if ($scope.sortField != field) {
+            $scope.currentPage = 1;
+            $scope.limit = 10;
+        }
+
+        $scope.sortField = field;
+        $scope.direction = direction;
+        $scope.getAllUsers();
+    };
+
+    $scope.reset = function() {
+        $scope.getAllUsers();
+        $scope.currentPage = 1;
+        $scope.limit = 10;
+        $scope.query = '';
+        $scope.direction = '';
+        $scope.sortField = '';
     };
 
     $scope.deleteUser = function (user, index) {
@@ -329,12 +360,18 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.sortfield = '';
+    $scope.direction = '';
+    $scope.query = '';
 
     $scope.getAllProperties = function () {
 
         http.getAllProperties({
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            query: $scope.query,
+            sort: $scope.sortfield,
+            direction: $scope.direction
         }).then(function (response) {
 
             console.log('properties', response);
@@ -344,6 +381,29 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
 
         });
 
+    };
+
+    $scope.sort = function(field, direction) {
+        if ($scope.sortfield != field) {
+            $scope.currentPage = 1;
+            $scope.limit = 10;
+        }
+        $scope.sortfield = field;
+        $scope.direction = direction;
+        $scope.getAllProperties();
+    };
+
+    $scope.search = function() {
+        $scope.getAllProperties();
+    };
+
+    $scope.reset = function() {
+        $scope.currentPage = 1;
+        $scope.limit = 10;
+        $scope.sortfield = '';
+        $scope.direction = '';
+        $scope.query = '';
+        $scope.getAllProperties();
     };
 
     $scope.deleteProperty = function (property, index) {
@@ -549,6 +609,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.currentPage = 1;
     $scope.limit = 10;
     $scope.sortedField = '';
+    $scope.direction = '';
 
     $scope.currentFilter = 'all';
 
@@ -618,7 +679,6 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     $scope.getAllReviewees = function () {
         http.getAllReviewees().then(function (response) {
-            console.log('reviewees: ', response);
             $scope.reviewees = response.data.reviewees;
         });
     };
@@ -661,28 +721,28 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         });
     };
 
-    $scope.direction = function(field) {
-        var c = '';
+    // $scope.direction = function(field) {
+    //     var c = '';
 
-        if ($scope.sortedField == field) {
-            c = 'text-primary';
-        }
+    //     if ($scope.sortedField == field) {
+    //         c = 'text-primary';
+    //     }
 
-        if ($scope.isAscending) {
-            return 'fa fa-caret-up ' + c;
-        }
-        return 'fa fa-caret-down ' + c;
-    };
+    //     if ($scope.isAscending) {
+    //         return 'fa fa-caret-up ' + c;
+    //     }
+    //     return 'fa fa-caret-down ' + c;
+    // };
 
-    $scope.sort = function (field) {
-        $scope.isAscending = !$scope.isAscending;
+    $scope.sort = function (field, direction) {
         $scope.sortedField = field;
+        $scope.direction = direction;
 
         http.searchReviews({
-            query: '',
+            query: $scope.query,
             page_no: $scope.currentPage,
             limit: $scope.limit,
-            sort: ($scope.isAscending ? 'asc' : 'desc'),
+            sort: direction,
             field: field
         }).then(function(response) {
             $scope.reviews = response.data.reviews;
@@ -694,6 +754,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.refresh = function () {
         $scope.query = '';
         $scope.sortedField = '';
+        $scope.direction = '';
         $scope.isAscending = true;
         $scope.getAllReviews();
         $scope.getAllReviewees();
@@ -715,6 +776,9 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.query = '';
+    $scope.sortField = '';
+    $scope.direction = '';
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -725,7 +789,10 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
     $scope.getAllCategories = function () {
         http.getAllCategories({
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            query: $scope.query,
+            sort: $scope.sortField,
+            direction: $scope.direction
         }).then(function (response) {
             console.log('all categories: ', response);
             $scope.categories = response.data.categories;
@@ -770,6 +837,29 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
 
         $scope.openCategoryModal();
 
+    };
+    
+    $scope.reset = function () {
+        $scope.query = '';
+        $scope.direction = '';
+        $scope.sortField = '';
+        $scope.currentPage = 1;
+        $scope.limit = 10;
+        $scope.getAllCategories();
+    };
+
+    $scope.search = function () {
+        $scope.getAllCategories();
+    };
+
+    $scope.sort = function (field, direction) {
+        if (field != $scope.sortField) {
+            $scope.currentPage = 1;
+            $scope.limit = 10;
+        }
+        $scope.direction = direction;
+        $scope.sortField = field;
+        $scope.getAllCategories();
     };
 
     $scope.editCategory = function (category, index) {
@@ -914,6 +1004,9 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.suburbsLength = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.direction = '';
+    $scope.query = '';
+    $scope.sortField = '';
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -924,7 +1017,10 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.getAllSuburbs = function () {
         http.getAllSuburbs({
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            query: $scope.query,
+            sort: $scope.sortField,
+            direction: $scope.direction
         }).then(function (response) {
             console.log('all suburbs: ', response);
             $scope.suburbs = response.data.suburbs;
@@ -1003,6 +1099,29 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
+
+    $scope.search = function() {
+        $scope.getAllSuburbs();
+    };
+
+    $scope.sort = function(field, direction) {
+        if (field != $scope.sortField) {
+            $scope.currentPage = 1;
+            $scope.limit = 10;
+        }
+        $scope.sortField = field;
+        $scope.direction = direction;
+        $scope.getAllSuburbs();
+    };
+
+    $scope.reset = function () {
+        $scope.currentPage = 1;
+        $scope.limit = 10;
+        $scope.direction = '';
+        $scope.query = '';
+        $scope.sortField = '';
+        $scope.getAllSuburbs();
+    };
 
     // initialize
     $scope.getAllSuburbs();
@@ -1088,9 +1207,11 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.query = '';
+    $scope.sortField = '';
+    $scope.direction = '';
 
     $scope.changePage = function (newPage) {
-        console.log('new page: ', newPage);
         $scope.currentPage = newPage;
         $scope.getAllAdvertisements();
     };
@@ -1098,9 +1219,11 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
     $scope.getAllAdvertisements = function () {
         http.getAllAdvertisements({
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            query: $scope.query,
+            sort: $scope.sortField,
+            direction: $scope.direction
         }).then(function (response) {
-            console.log('advertisements: ', response);
             $scope.advertisements = response.data.advertisements;
             $scope._advertisements = angular.copy($scope.advertisements);
             $scope.totalItems = response.data.length;
@@ -1206,6 +1329,29 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
 
         });
 
+    };
+
+    $scope.search = function() {
+        $scope.getAllAdvertisements();
+    };
+
+    $scope.sort = function(field, direction) {
+        if (field != $scope.sortField) {
+            $scope.currentPage = 1;
+            $scope.limit = 10;
+        }
+        $scope.sortField = field;
+        $scope.direction = direction;
+        $scope.getAllAdvertisements();
+    };
+
+    $scope.reset = function () {
+        $scope.currentPage = 1;
+        $scope.limit = 10;
+        $scope.direction = '';
+        $scope.query = '';
+        $scope.sortField = '';
+        $scope.getAllAdvertisements();
     };
 
     // initialize
@@ -1363,6 +1509,9 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.direction = '';
+    $scope.query = '';
+    $scope.sortField = '';
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -1373,7 +1522,10 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
     $scope.getAllPotentialCustomers = function () {
         http.getAllPotentialCustomers({
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            direction: $scope.direction,
+            query: $scope.query,
+            sort: $scope.sortField
         }).then(function (response) {
             console.log('all potential customers: ', response);
             $scope.customers = response.data.potential_customers;
@@ -1418,6 +1570,28 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
 
     };
 
+    $scope.search = function() {
+        $scope.getAllPotentialCustomers();
+    };
+
+    $scope.sort = function(field, direction) {
+        if (field != $scope.sortField) {
+            $scope.currentPage = 1;
+            $scope.limit = 10;
+        }
+        $scope.sortField = field;
+        $scope.direction = direction;
+        $scope.getAllPotentialCustomers();
+    };
+
+    $scope.reset = function () {
+        $scope.currentPage = 1;
+        $scope.limit = 10;
+        $scope.direction = '';
+        $scope.query = '';
+        $scope.sortField = '';
+        $scope.getAllPotentialCustomers();
+    };
 
     // initialize
     $scope.getAllPotentialCustomers();

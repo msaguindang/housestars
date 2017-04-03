@@ -90,6 +90,10 @@ class PotentialCustomerController extends Controller
     public function getAllPotentialCustomers()
     {
         $payload = $this->payload->all();
+        $query = $this->payload->get('query', '');
+        $field = $this->payload->get('sort', '');
+        $direction = $this->payload->get('direction', '');
+        $sortQuery = '';
         $pageNo = 1;
         $limit = 10;
 
@@ -108,19 +112,27 @@ class PotentialCustomerController extends Controller
             ->first()
             ->length;
 
-        $sql = "SELECT
-				  *
-				FROM
-				  potential_customers
-				LIMIT {$limit}
-				OFFSET {$offset}";
+        if (!empty($field)) {
+            $sortQuery = " ORDER BY {$field} {$direction}";
+        }
+
+        if (!empty($query)) {
+            $query = " WHERE (id LIKE '%$query%' OR name LIKE '%$query%' OR email LIKE '%$query%') ";
+        }
+
+        $sql = "SELECT * FROM 
+        				potential_customers 
+                {$query} 
+                {$sortQuery} 
+        				LIMIT {$limit} 
+        				OFFSET {$offset}";
 
 
         $potential_customers = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
             'potential_customers' => $potential_customers,
-            'length' => $length
+            'length'              => (empty($query) ? $length : count($potential_customers))
         ];
 
         return Response::json($response, 200);

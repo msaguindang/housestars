@@ -123,6 +123,9 @@
         .pull-right .add-btn{
             margin-top: -75px;
         }
+        .clickable span {
+            cursor: pointer;
+        }
     </style>
 
 

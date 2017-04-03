@@ -21,18 +21,21 @@ class PropertyController extends Controller
         $this->payload = $request;
     }
 
-    public function getAllProperties()
+    public function getAllProperties(Request $request)
     {
 
         $payload = $this->payload->all();
         $pageNo = 1;
         $limit = 10;
+        $field = $request->get('sort', '');
+        $direction = $request->get('direction', 'asc');
+        $query = $request->get('query', '');
 
-        if(isset($payload['page_no'])){
+        if (isset($payload['page_no'])) {
             $pageNo = $payload['page_no'];
         }
 
-        if(isset($payload['limit'])){
+        if (isset($payload['limit'])) {
             $limit = $payload['limit'];
         }
 
@@ -42,8 +45,13 @@ class PropertyController extends Controller
 
         $lengthSql = "SELECT COUNT(*) AS length FROM (SELECT count(*) FROM property_meta GROUP BY property_code) AS property_query";
         $length = DB::select($lengthSql)[0]->length;
-
-        $propertyCodesSql = "SELECT property_code FROM property_meta WHERE user_id IS NOT NULL GROUP BY property_code LIMIT {$limit} OFFSET {$offset}";
+        $paginationQuery = "LIMIT {$limit} OFFSET {$offset}";
+        
+        if (!empty($field) || !empty($query)) {
+            $paginationQuery = '';
+        }
+        
+        $propertyCodesSql = "SELECT property_code FROM property_meta WHERE user_id IS NOT NULL GROUP BY property_code {$paginationQuery}";
         $propertyCodes = json_decode(json_encode(DB::select($propertyCodesSql)), TRUE);
 
         foreach ($propertyCodes as $propertyCode) {
@@ -79,12 +87,31 @@ class PropertyController extends Controller
             }
 
             $properties[] = $singleRow;
+        }
 
+        if (!empty($query)) {
+            $properties = collect($properties)
+                                ->filter(function ($value, $key) use ($query) {
+                                    $query = strtolower($query);
+                                    $val = strtolower(implode(' ', $value));
+                                    return (strpos($val, $query) !== false);
+                                })
+                                ->values()->all();
+        }
+
+        if (!empty($field)) {
+            $properties = collect($properties)->sortBy($field, SORT_REGULAR, ($direction=='desc'));
+            $properties = $properties->values()->all();
+        }
+
+        if (empty($paginationQuery)) {
+            $properties = collect($properties)->forPage($pageNo, $limit)->toArray();
         }
 
         $response = [
             'properties' => $properties,
-            'length' => $length
+            'length' => $length,
+            'query'  => $query
         ];
 
         return Response::json($response, 200);

@@ -20,18 +20,22 @@ class CategoryController extends Controller
         $this->payload = $request;
     }
 
-    public function getAllCategories()
+    public function getAllCategories(Request $request)
     {
 
         $pageNo = $this->payload->input('page_no');
+        $query = $request->get('query', '');
+        $field = $request->get('sort', '');
+        $direction = $request->get('direction', 'asc');
+        $sortQuery = '';
 
-        if(!$pageNo){
+        if (!$pageNo) {
             $pageNo = 1;
         }
 
         $limit = $this->payload->input('limit');
 
-        if(!$limit){
+        if (!$limit) {
             $limit = 10;
         }
 
@@ -39,12 +43,20 @@ class CategoryController extends Controller
 
         $length = DB::table('categories')->selectRaw('count(*) as length')->first()->length;
 
-        $suburbsSql = "SELECT * FROM categories LIMIT {$limit} OFFSET {$offset}";
-        $categories = json_decode(json_encode(DB::select($suburbsSql)),TRUE);
+        if (!empty($field)) {
+            $sortQuery = " ORDER BY {$field} {$direction}";
+        }
+
+        if (!empty($query)) {
+            $query = " WHERE (id LIKE '%$query%' OR category LIKE '%$query%') ";
+        }
+
+        $suburbsSql = "SELECT * FROM categories {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
+        $categories = json_decode(json_encode(DB::select($suburbsSql)), TRUE);
 
         $response = [
             'categories' => $categories,
-            'length' => $length
+            'length'     => (empty($query) ? $length : count($categories))
         ];
 
         return Response::json($response, 200);

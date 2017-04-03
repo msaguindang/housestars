@@ -37,12 +37,16 @@ class UserController extends Controller
         $this->stripeKey = "sk_test_qaq6Jp8wUtydPSmIeyJpFKI1";
     }
 
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
         $role = Sentinel::getUser()->roles()->first()->slug;
         $roleSql = "";
+        $searchQuery = "";
+        $sortQuery = "";
+        $field = $request->get('sort', '');
+        $direction = $request->get('direction', 'asc');
 
-        switch($role){
+        switch ($role) {
             case 'admin':
                 $roleSql = " AND roles.slug NOT IN('admin','superadmin') ";
                 break;
@@ -58,17 +62,17 @@ class UserController extends Controller
         $pageNo = 1;
         $limit = 10;
 
-        if(isset($payload['page_no'])){
+        if (isset($payload['page_no'])) {
             $pageNo = $payload['page_no'];
         }
 
-        if(isset($payload['limit'])){
+        if (isset($payload['limit'])) {
             $limit = $payload['limit'];
         }
 
-        if(isset($payload['slug'])){
+        if (isset($payload['slug'])) {
             $slugSql = " AND roles.slug = {$payload['slug']} ";
-        }else{
+        } else {
             $slugSql = "";
         }
 
@@ -76,26 +80,43 @@ class UserController extends Controller
 
         $length = DB::table('users')
             ->selectRaw('count(*) as length')
-            ->where('name','!=',null)
+            ->where('name', '!=', null)
             ->first()
             ->length;
+
+        $paginateQuery = " LIMIT {$limit} OFFSET {$offset} ";
+
+        if ($request->has('query') && !empty($request->get('query', ''))) {
+            $query = "'%" . $request->get('query') . "%'";
+            $searchQuery = " AND (users.name LIKE {$query} OR users.email LIKE {$query} OR roles.name LIKE {$query}) ";
+        }
+
+        if (!empty($field)) {
+            if (in_array($field, ['name', 'email', 'role_name'])) {
+                $sortQuery = " ORDER BY {$field} {$direction} ";
+            } else {
+                $paginateQuery = '';
+            }
+        }
 
         $userSql = "SELECT users.*, roles.name as role_name, roles.id as role
             FROM users 
             INNER JOIN role_users ON role_users.user_id = users.id 
             INNER JOIN roles ON roles.id = role_users.role_id
             WHERE users.name IS NOT NULL
+            {$searchQuery}            
             {$roleSql}
             {$slugSql}
-            LIMIT {$limit} OFFSET {$offset}";
+            {$sortQuery}
+            {$paginateQuery}";
 
-        $users = json_decode(json_encode(DB::select($userSql)),TRUE);
+        $users = json_decode(json_encode(DB::select($userSql)), TRUE);
 
         Stripe::setApiKey($this->stripeKey);
 
         $members = [];
 
-        foreach($users as $user){
+        foreach ($users as $user) {
 
             $customerId = $user['customer_id'];
 
@@ -105,13 +126,13 @@ class UserController extends Controller
             $user['sub_start_raw'] = '';
             $user['sub_end_raw'] = '';
 
-            if($customerId != null && $customerId != ""){
+            if ($customerId != null && $customerId != "") {
 
                 $customer = Customer::retrieve($customerId);
 
-                if($customer){
+                if ($customer) {
                     $subscriptions = $customer->subscriptions->data;
-                    if(count($subscriptions)>0){
+                    if (count($subscriptions) > 0) {
                         $plan = $subscriptions[0]->plan->name;
                         $user['subscription_type'] = $plan;
                         $user['sub_start_raw'] = $subscriptions[0]->current_period_start;
@@ -120,17 +141,19 @@ class UserController extends Controller
                         $user['sub_end'] = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F d, Y');
                     }
                 }
-
-
             }
-
             $members[] = $user;
-
+        }
+        
+        if (!empty($field) && empty($paginateQuery)) {
+            $members = collect($members)->sortBy($field, SORT_REGULAR, ($direction=='desc'));
+            $members = $members->values()->all();
+            $members = collect($members)->forPage($pageNo, $limit)->toArray();
         }
 
         return Response::json([
-            'users' => $members,
-            'length' => $length
+            'users'  => $members,
+            'length' => (empty($paginateQuery) ? count($members) : $length)
         ], 200);
     }
 

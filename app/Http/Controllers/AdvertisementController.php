@@ -30,6 +30,11 @@ class AdvertisementController extends Controller
     {
 
         $payload = $this->payload->all();
+
+        $query = $this->payload->get('query', '');
+        $field = $this->payload->get('sort', '');
+        $direction = $this->payload->get('direction', '');
+        $sortQuery = '';
         $pageNo = 1;
         $limit = 10;
 
@@ -48,18 +53,28 @@ class AdvertisementController extends Controller
             ->first()
             ->length;
 
+        if (!empty($field)) {
+            $sortQuery = " ORDER BY {$field} {$direction}";
+        }
+
+        if (!empty($query)) {
+            $query = " WHERE (name LIKE '%$query%' OR type LIKE '%$query%') ";
+        }
+
         $sql = "SELECT
 				  *
 				FROM
 				  advertisements
+                {$query}
+                {$sortQuery}
 				LIMIT {$limit}
 				OFFSET {$offset}";
 
-        $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
+        $ads = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
-            'advertisements' => $reviews,
-            'length' => $length
+            'advertisements' => $ads,
+            'length'         => (empty($query) ? $length : count($ads))
         ];
 
         return Response::json($response, 200);

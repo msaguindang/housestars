@@ -18,7 +18,8 @@ class User extends Model
         'password', 'remember_token',
     ];
 
-    function socialProviders() {
+    public function socialProviders()
+    {
         return $this->hasMany(SocialProvider::class);
     }
 

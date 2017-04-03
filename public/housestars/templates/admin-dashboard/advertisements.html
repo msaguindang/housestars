@@ -1,3 +1,9 @@
+<style>
+    .pull-right .search-component {
+        margin-top: -70px;
+        margin-left: 150px;
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
         <h4 class="title">Advertisements</h4>
@@ -6,20 +12,36 @@
                 <i class="pe-7s-plus"></i>
                 Add Advertisement
             </a>
+            <div class="form-inline">
+                <div class=" search-component">
+                    <label> Search: </label>
+                    <input name="search" class="form-control" ng-model='query' />
+                    <button class="btn btn-success" ng-click="search()"> <i class="fa fa-search"></i>Submit </button>
+                    <button class="btn btn-warning" ng-click="reset()"> <i class="fa fa-refresh"></i> Reset </button>
+                </div>
+            </div>
         </div>
         <div class="card">
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
-
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Priority</th>
+                    <th class="clickable">Name
+                        <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
+                    <th class="clickable">Type
+                        <!-- <span ng-click="sort('type', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('type', 'desc')" class="fa fa-caret-down"></span> -->
+                    </th>
+                    <th class="clickable">Priority
+                        <span ng-click="sort('priority', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('priority', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
 
                     <th>Action</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="advertisement in _advertisements">
+                    <tr ng-repeat="advertisement in _advertisements | filter : query">
 
                         <td>{{ advertisement.name }}</td>
                         <td>{{ advertisement.type }}</td>

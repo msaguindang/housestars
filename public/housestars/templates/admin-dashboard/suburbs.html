@@ -1,20 +1,47 @@
+<style>
+    .pull-right .search-component {
+        margin-top: -70px;
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
         <h4 class="title">Suburbs</h4>
+        <div class="pull-right">
+            <div class="form-inline">
+                <div class=" search-component">
+                    <label> Search: </label>
+                    <input name="search" class="form-control" ng-model='query' />
+                    <button class="btn btn-success" ng-click="search()"> <i class="fa fa-search"></i>Submit </button>
+                    <button class="btn btn-warning" ng-click="reset()"> <i class="fa fa-refresh"></i> Reset </button>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
 
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Availability</th>
-                    <th>Max Tradie</th>
+                    <th class="clickable">Id
+                        <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('id', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
+                    <th class="clickable">Name
+                        <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
+                    <th class="clickable">Availability
+                        <span ng-click="sort('availability', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('availability', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
+                    <th class="clickable">Max Tradie
+                        <span ng-click="sort('max_tradie', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('max_tradie', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
 
                     <th>Action</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="suburb in _suburbs">
+                    <tr ng-repeat="suburb in _suburbs | filter : query">
 
                         <td>{{ suburb.id }}</td>
                         <td>{{ suburb.name }}</td>
