@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-// use Carbon\Carbon;
+use Carbon\Carbon;
 use DateTime;
 
 class Reviews extends Model
@@ -32,26 +32,35 @@ class Reviews extends Model
     	return $this->belongsTo(User::class, 'reviewee_id', 'id');
     }
 
-    public function scopeSearchReview($query, $search)
+    public function scopeSearchReview($query, $search, $fromDate, $toDate)
     {
         if (!empty($search)) {
             $search = '%' . $search . '%';
-            return $query
-                    ->leftJoin('potential_customers as pc', 'reviews.reviewer_id', '=', 'pc.id')
-                    ->leftJoin('users as u1', 'reviews.reviewer_id', '=', 'u1.id')
-                    ->leftJoin('users as u2', 'reviews.reviewee_id', '=', 'u2.id')
-                    ->orWhere('reviews.title', 'LIKE', $search)
-                    ->orWhere('reviews.content', 'LIKE', $search)
-                    ->orWhere('u1.name', 'LIKE', $search)
-                    ->orWhere('u1.email', 'LIKE', $search)
-                    ->orWhere('u2.name', 'LIKE', $search)
-                    ->orWhere('u2.email', 'LIKE', $search)
-                    ->where(function ($sub) {
-                        $sub
-                            ->whereNotNull('u1.id')
-                            ->whereNotNull('u2.id');
-                    });
+            $query
+                ->leftJoin('potential_customers as pc', 'reviews.reviewer_id', '=', 'pc.id')
+                ->leftJoin('users as u1', 'reviews.reviewer_id', '=', 'u1.id')
+                ->leftJoin('users as u2', 'reviews.reviewee_id', '=', 'u2.id')
+                ->orWhere('reviews.title', 'LIKE', $search)
+                ->orWhere('reviews.content', 'LIKE', $search)
+                ->orWhere('u1.name', 'LIKE', $search)
+                ->orWhere('u1.email', 'LIKE', $search)
+                ->orWhere('u2.name', 'LIKE', $search)
+                ->orWhere('u2.email', 'LIKE', $search)
+                ->where(function ($sub) {
+                    $sub
+                        ->whereNotNull('u1.id')
+                        ->whereNotNull('u2.id');
+                });
         }
+        
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            
+            $query->whereBetween('reviews.created_at', [$fromDate, $toDate]);
+        }
+        
+        return $query;
     }
 
     public function getRevieweeNameAttribute()

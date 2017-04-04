@@ -2,17 +2,47 @@
     .reviews-filter{
         margin-top:-60px;
     }
+    .daterange-label {
+        line-height: 40px;
+        float: left;
+    }
+    .input-group {
+        float: left;
+        width: 30%;
+        margin: 0px 5px 0px 5px;
+    }
 </style>
 
 <div class="row">
     <div class="col-md-12">
         <h4 class="title">Reviews</h4>        
         <div class="pull-right">
-            <div class="reviews-filter form-inline">
-                <label>Reviewee: </label>
+            <div class="reviews-filter">
+                <!-- <label>Reviewee: </label>
                 <select ng-change="filterReviews()" name="reviewee" class="form-control" ng-options="user.reviewee_id as user.reviewee_name for user in reviewees" ng-model="revieweeFilter">
                     <option value="">All Reviews</option>
-                </select>
+                </select> -->
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-7">
+                <label class="daterange-label"> Date Range: </label>
+                <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                    <input class="form-control" ng-model="fromDate" placeholder="Date From"/>
+                    <span class="input-group-addon" style="cursor: pointer">
+                    <i class="fa fa-lg fa-calendar"></i>
+                    </span>
+                </div>
+                <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                    <input class="form-control" ng-model="toDate" placeholder="Date To"/>
+                    <span class="input-group-addon" style="cursor: pointer">
+                    <i class="fa fa-lg fa-calendar"></i>
+                    </span>
+                </div>
+                <button class="btn btn-success" ng-click="search()"> <i class="fa fa-calendar"></i> Search </button>    
+            </div>
+            <div class="col-xs-5 form-inline">
                 <label> Search: </label>
                 <input name="search" class="form-control" ng-model="query" />
                 <button ng-click="search()" class="btn btn-success"> <i class="fa fa-search"></i> Submit </button>

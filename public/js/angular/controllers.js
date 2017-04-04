@@ -5,7 +5,7 @@
  TODO: suburb - availability edit popup
  */
 
-var housestars = angular.module('houseStarsControllers', []);
+var housestars = angular.module('houseStarsControllers', ['720kb.datepicker']);
 
 housestars.controller('MainCtrl', ['$scope', function ($scope) {
 
@@ -32,7 +32,9 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.query = '';
     $scope.direction = '';
     $scope.sortField = '';
-    
+    $scope.fromDate = '';
+    $scope.toDate = '';
+
     $scope.getAllUsers = function () {
 
         http.getAllUsers({
@@ -40,7 +42,9 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
             limit: $scope.limit,
             query: $scope.query,
             sort: $scope.sortField,
-            direction: $scope.direction
+            direction: $scope.direction,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function (response) {
             $scope.users = response.data.users;
             $scope._users = angular.copy($scope.users);
@@ -70,12 +74,14 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     };
 
     $scope.reset = function() {
-        $scope.getAllUsers();
         $scope.currentPage = 1;
         $scope.limit = 10;
         $scope.query = '';
         $scope.direction = '';
         $scope.sortField = '';
+        $scope.fromDate = '';
+        $scope.toDate = '';
+        $scope.getAllUsers();
     };
 
     $scope.deleteUser = function (user, index) {
@@ -228,6 +234,9 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
+    $scope.searchDate = function () {
+        $scope.getAllUsers();
+    };
 
     // initialize
     $scope.getAllUsers();
@@ -610,7 +619,8 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.limit = 10;
     $scope.sortedField = '';
     $scope.direction = '';
-
+    $scope.fromDate = '';
+    $scope.toDate = '';
     $scope.currentFilter = 'all';
 
     $scope.toJsDate = function(str){
@@ -638,8 +648,11 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
 
     $scope.getAllReviews = function () {
         http.getAllReviews({
+            query: $scope.query,
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function (response) {
             console.log('reviews: ', response);
             $scope.reviews = response.data.reviews;
@@ -685,11 +698,13 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     
     $scope.search = function () {
         var query = $scope.query;
-
+        
         http.searchReviews({
             query: $scope.query,
             page_no: $scope.currentPage,
-            limit: $scope.limit
+            limit: $scope.limit,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function(response) {
             $scope.reviews = response.data.reviews;
             $scope._reviews = angular.copy($scope.reviews);
@@ -721,19 +736,6 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         });
     };
 
-    // $scope.direction = function(field) {
-    //     var c = '';
-
-    //     if ($scope.sortedField == field) {
-    //         c = 'text-primary';
-    //     }
-
-    //     if ($scope.isAscending) {
-    //         return 'fa fa-caret-up ' + c;
-    //     }
-    //     return 'fa fa-caret-down ' + c;
-    // };
-
     $scope.sort = function (field, direction) {
         $scope.sortedField = field;
         $scope.direction = direction;
@@ -755,6 +757,8 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         $scope.query = '';
         $scope.sortedField = '';
         $scope.direction = '';
+        $scope.fromDate = '';
+        $scope.toDate = '';
         $scope.isAscending = true;
         $scope.getAllReviews();
         $scope.getAllReviewees();

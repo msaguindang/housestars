@@ -34,6 +34,8 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
     <link href="{{ $appUrl.'css/pe-icon-7-stroke.css' }}" rel="stylesheet">
 
+    <!--  Light Bootstrap Table core CSS    -->
+    <link href="{{ $appUrl.'css/bootstrap-datepicker.min.css' }}" rel="stylesheet">
 
     <style>
         /* temporary styles */
@@ -316,6 +318,8 @@
         src="{{ $appUrl.'housestars/bower_components/angular-bootstrap/ui-bootstrap.min.js' }}"></script>
 <script type="text/javascript"
         src="{{ $appUrl.'housestars/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js' }}"></script>
+
+<script type="text/javascript" src="{{ $appUrl.'js/bootstrap-datepicker.min.js' }}"></script>
 
 <script type="text/javascript" src="{{ $appUrl.'js/angular/app.js' }}"></script>
 

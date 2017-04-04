@@ -44,7 +44,10 @@ class UserController extends Controller
         $searchQuery = "";
         $sortQuery = "";
         $field = $request->get('sort', '');
+        $fromDate = $request->get('from', '');
+        $toDate = $request->get('to', '');
         $direction = $request->get('direction', 'asc');
+        $hasRangeDate = (!empty($fromDate) && !empty($toDate));
 
         switch ($role) {
             case 'admin':
@@ -132,7 +135,13 @@ class UserController extends Controller
 
                 if ($customer) {
                     $subscriptions = $customer->subscriptions->data;
-                    if (count($subscriptions) > 0) {
+                    if ($hasRangeDate && count($subscriptions) > 0) {
+                        $subscriptionStartDate = $subscriptions[0]->current_period_start;
+                        $subscriptionEndDate   = $subscriptions[0]->current_period_end;
+                        if(($subscriptionStartDate < strtotime($fromDate) || $subscriptionStartDate > strtotime($toDate))) {
+                            continue;
+                        }
+                    } if (count($subscriptions) > 0) {
                         $plan = $subscriptions[0]->plan->name;
                         $user['subscription_type'] = $plan;
                         $user['sub_start_raw'] = $subscriptions[0]->current_period_start;
@@ -145,6 +154,12 @@ class UserController extends Controller
             $members[] = $user;
         }
         
+        if ($hasRangeDate) {
+            $members = collect($members)->filter(function ($value, $key) {
+                return (!is_null($value['sub_start']) && !empty($value['sub_start']));
+            })->values()->all();
+        }
+
         if (!empty($field) && empty($paginateQuery)) {
             $members = collect($members)->sortBy($field, SORT_REGULAR, ($direction=='desc'));
             $members = $members->values()->all();
@@ -153,7 +168,7 @@ class UserController extends Controller
 
         return Response::json([
             'users'  => $members,
-            'length' => (empty($searchQuery) ? $length : count($members)),
+            'length' => (empty($searchQuery) && empty($fromDate) ? $length : count($members)),
         ], 200);
     }
 

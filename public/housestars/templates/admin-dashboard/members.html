@@ -1,15 +1,26 @@
 <style>
-    .pull-right .search-component {
-        margin-top: -70px;
-        margin-left: 300px;
+    .search-component {
+        margin-bottom: 20px;
+    }
+    .search-component .form-group:first-child {
+        margin-top: 20px;    
+    }
+    .daterange-label {
+        line-height: 40px;
+        float: left;
+    }
+    .input-group {
+        float: left;
+        width: 30%;
+        margin: 0px 5px 0px 5px;
     }
 </style>
 <div class="row">
     <div class="col-md-12">
         <h4 class="title">Members</h4>
-        <div class="pull-right">
+        <div class="clearfix">
             <div class="form-inline">
-                <div class="export">
+                <div class="export  pull-right">
                     <a class="btn btn-success btn-sm add-btn" ng-click="exportToExcel()">
                         <i class="pe-7s-file"></i>
                         Export to Excel
@@ -19,14 +30,33 @@
                         Add Member
                     </a>
                 </div>
-                <div class="search-component">
-                    <label> Search: </label>
-                    <input name="search" class="form-control" ng-model="query" />
-                    <button class="btn btn-success" ng-click="search()"> <i class="fa fa-search"></i>Submit </button>
-                    <button class="btn btn-warning" ng-click="reset()"> <i class="fa fa-refresh"></i> Reset </button>
+                <div class="search-component row">
+                    <div class="form-group col-xs-7">
+                        <label class="daterange-label"> Date Range: </label>
+                        <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                            <input class="form-control" ng-model="fromDate" placeholder="Date From"/>
+                            <span class="input-group-addon" style="cursor: pointer">
+                            <i class="fa fa-lg fa-calendar"></i>
+                            </span>
+                        </div>
+                        <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                            <input class="form-control" ng-model="toDate" placeholder="Date To"/>
+                            <span class="input-group-addon" style="cursor: pointer">
+                            <i class="fa fa-lg fa-calendar"></i>
+                            </span>
+                        </div>
+                        <button class="btn btn-success" ng-click="searchDate()"> <i class="fa fa-calendar"></i> Search </button>
+                    </div>
+                    <div class="form-group col-xs-5">
+                        <label> Search: </label>
+                        <input name="search" class="form-control" ng-model="query" />
+                        <button class="btn btn-success" ng-click="search()"> <i class="fa fa-search"></i>Submit </button>
+                        <button class="btn btn-warning" ng-click="reset()"> <i class="fa fa-refresh"></i> Reset </button>
+                    </div>
                 </div>
             </div>
         </div>
+        
         <div class="card">
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
@@ -119,9 +149,6 @@
         </div>
     </div>
 </div>
-
-
-
 
 <script type="text/ng-template" id="extend-member-subscription-modal.html">
 

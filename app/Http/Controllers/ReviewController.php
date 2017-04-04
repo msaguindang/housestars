@@ -97,10 +97,14 @@ class ReviewController extends Controller
         return Response::json($data, 200);
     }
 
-    public function getAllReviews()
+    public function getAllReviews(Request $request)
     {
 
         $payload = $this->payload->all();
+        $fromDate = $request->get('from', '');
+        $toDate = $request->get('to', '');
+        $dateRangeQuery = '';
+
         $pageNo = 1;
         $limit = 10;
 
@@ -119,6 +123,10 @@ class ReviewController extends Controller
             ->first()
             ->length;
 
+        if (!empty($fromDate) && !empty($toDate)) {
+            $dateRangeQuery = " WHERE reviews.created_at between '{$fromDate}' AND '{$toDate}' ";
+        }
+
         $sql = "SELECT
                   reviews.*,
                   (SELECT
@@ -133,6 +141,7 @@ class ReviewController extends Controller
                   WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
                 FROM
                   reviews
+                {$dateRangeQuery}
                 LIMIT {$limit}
                 OFFSET {$offset}";
 
@@ -616,9 +625,26 @@ class ReviewController extends Controller
         $query = $request->get('query', '');
         $sort  = $request->get('sort', 'asc');
         $field  = $request->get('field', null);
+        $fromDate = $request->get('from', '');
+        $toDate = $request->get('to', '');
+        $length = 0;
+        $pageNo = 1;
+        $limit = 10;
 
-        $reviews = Reviews::searchReview($query, $sort)->get();
+        if ($request->has('page_no')) {
+            $pageNo = $request->get('page_no');
+        }
 
+        if ($request->has('limit')) {
+            $limit = $request->get('limit');
+        }
+
+        $offset = $limit * ($pageNo - 1);
+
+        $reviews = Reviews::searchReview($query, $fromDate, $toDate);
+        $length = $reviews->count();
+        $reviews = $reviews->take($limit)->skip($offset)->get();
+        
         if(!is_null($field)) {
             $reviews = $reviews->sortBy($field, SORT_REGULAR, ($sort=='desc'));
             $reviews = $reviews->values()->all();
@@ -626,7 +652,7 @@ class ReviewController extends Controller
 
         $response = [
             'reviews' => (is_array($reviews) ? $reviews : $reviews->toArray()),
-            'length'  => count($reviews)
+            'length'  => $length
         ];
 
         return Response::json($response, 200);
