@@ -65,7 +65,7 @@
         </div>
         <div class="row widget">
           <div class="col-xs-4 animated">
-            <h3>Build A Personalize Page</h3>
+            <h3>BUILD A PERSONALIZED PAGE</h3>
             <p>Populate your page with your logo, as well as pictures and details of what you do. The page is easily edited so you can update it as often as you like.</p>
             <div class="featured-img mobile-hidden">
               <img src="assets/img-square-agent.png" alt="Want to sell a property?">
