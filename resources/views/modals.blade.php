@@ -1023,3 +1023,18 @@
         </div>
       </div>
     </div>
+
+		<!-- Become Part of Our Team-->
+	<div class="modal fade" id="team" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<h4>WANT TO DO SOMETHING DIFFERENT?</h4>
+				</br><p class="sub-heading">At Houststars, we are always looking for partners, affiliates, leaders and staff to help us move foward. If you have something of value that you could give to the site, send us an email outlining your talent and what you want to achieve. Mark the heading of the email with the title "Where do I sign?" and we will contact you as soon as we can. Thanks for your interest. We look foward to you joining us and creating something amazing!</p>
+				</div>
+			</div>
+		</div>
+	</div>

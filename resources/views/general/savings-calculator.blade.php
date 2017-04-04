@@ -69,7 +69,17 @@
               <label>Email Address</label>
               <input type="text" name="email">
               <label>Property Type</label>
-              <div class="btn-group">
+              <select id="select-type" name="property-type"  class="demo-default" placeholder="Select or Type in Property">
+                <option value=""></option>
+                <option value="Condominium">Condominium</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Foreclosures">Foreclosures</option>
+                <option value="Development">Development</option>
+                <option value="House">House</option>
+                <option value="Land">Land</option>
+              </select>
+              <!-- <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                     <ul class="dropdown-menu">
                       <li>
@@ -101,7 +111,7 @@
                         <label for="a7">Land</label>
                       </li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <div class="col-xs-4">
               <label>Phone Number</label>
@@ -182,6 +192,11 @@
 
 @section('scripts')
 <script type="text/javascript">
+$('#select-type').selectize({
+    create: true,
+    sortField: 'text'
+});
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'

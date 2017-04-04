@@ -129,39 +129,16 @@
         			<label>Email Address</label>
         			<input type="text" name="email">
         			<label>Property Type</label>
-              <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <input type="radio" id="a1" name="property-type" value="Condominium">
-                        <label for="a1">Condominium</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a2" name="property-type" value="Commercial">
-                        <label for="a2">Commercial</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a3" name="property-type" value="Apartment">
-                        <label for="a3">Apartment</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a4" name="property-type" value="Foreclosures">
-                        <label for="a4">Foreclosures</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a5" name="property-type" value="Development">
-                        <label for="a5">Development</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a6" name="property-type" value="House">
-                        <label for="a6">House</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a7" name="property-type" value="Land">
-                        <label for="a7">Land</label>
-                      </li>
-                    </ul>
-                </div>
+              <select id="select-type" name="property-type"  class="demo-default" placeholder="Select or Type in Property">
+                <option value=""></option>
+                <option value="Condominium">Condominium</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Foreclosures">Foreclosures</option>
+                <option value="Development">Development</option>
+                <option value="House">House</option>
+                <option value="Land">Land</option>
+              </select>
         		</div>
         		<div class="col-xs-4">
         			<label>Phone Number</label>
@@ -257,6 +234,10 @@
 
 @section('scripts')
 <script type="text/javascript">
+$('#select-type').selectize({
+    create: true,
+    sortField: 'text'
+});
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
