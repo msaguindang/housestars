@@ -148,6 +148,14 @@
         width: 95%;
     }
 
+    #advertisement-banner {
+        top: -120px;
+    }
+
+    #advertisement-banner img {
+        width: 73%;
+    }
+
     .section-title p {
         width: 95%;
     }
