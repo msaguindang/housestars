@@ -844,9 +844,9 @@ header .main-nav li.active {
     border: 1px solid #b3b3b3;
 }
 
-.pricing li:last-child {
+/*.pricing li:last-child {
     border-top: none;
-}
+}*/
 
 .pricing li p{
     margin: 0;

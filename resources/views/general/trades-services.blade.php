@@ -62,7 +62,7 @@
         <div class="row section-title">
           <h2 class="narrower"><span class="icon icon-left-bar"></span>OUR EASY PROCESS <span class="icon icon-right-bar"></span></h2>
           <span class="separator"></span>
-          <p>Signing up with Housestars.com.au is the best decision you will make all year. It's cheap, easy and will help you get more customers and more money! </br> Here's how:</p>
+          <p>Signing up with Housestars is the best decision you will make all year. It's cheap, easy and will help you get more customers and more money! </br> Here's how:</p>
         </div>
         <div class="row steps">
           <div class="left">
@@ -129,7 +129,7 @@
         <div class="row widget">
           <div class="col-xs-4 animated">
             <h3>Access to great new clients</h3>
-            <p>We all know that there are some clients out there that you just don't want to work for. House Stars targets a unique section of the community who have all the right signs that they are going to be great customers for years to come. They have money, they have a time frame, AND they are less critical about the price because they know they will get that money back when they sell.</p>
+            <p>We all know that there are some clients out there that you just don't want to work for. Housestars targets a unique section of the community who have all the right signs that they are going to be great customers for years to come. They have money, they have a time frame, AND they are less critical about the price because they know they will get that money back when they sell.</p>
             <div class="featured-img mobile-hidden">
               <img src="assets/img-square-agent.png" alt="Want to sell a property?">
             </div>
@@ -161,10 +161,11 @@
           </div>
           <div class="col-xs-8 col-xs-offset-2">
             <ul class="pricing">
-              <li><p><span class="icon icon-price"></span><b>1 listing</b> = $50 per month direct debited from your account (Total of $600 per year)</p></li>
-              <li><p><span class="icon icon-price"></span><b>1 listing</b> = $550 paid in full at the start of your annual subscription </p></br>
-                <b class="indent">PLUS</b></br></br>
-                <p class="indent">If 3 other trade/service businesses sign up using yourABN as a promotion code, and you paid in full at the beginning of your subscription, your subscription will increase by 12 months (Total of $550 for 24 months) </p>
+              <li><p><span class="icon icon-price"></span><b>1 listing</b> = $50 per month direct debited from your account (Total of $600 per year)</p>
+                  </br><b class="indent" style="text-align: center">OR</b></br> </br>
+                  <p><span class="icon icon-price"></span><b>1 listing</b> = $550 paid in full at the start of your annual subscription </p></br>
+                  <b class="indent">PLUS</b></br></br>
+                  <p class="indent">   If 2 other trade/service businesses sign up using your ABN as a promotion code, and you paid in full at the beginning of your subscription, your subscription will increase by 12 months (Total of $550 for 24 months)</p>
               </li>
             </ul>
             </div>
