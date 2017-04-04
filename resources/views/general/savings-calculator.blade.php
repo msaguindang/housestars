@@ -111,10 +111,6 @@
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                     <ul class="dropdown-menu">
                     <li>
-                      <input type="radio" id="any" name="estimated-price" value="any">
-                      <label for="any">Any Price</label>
-                    </li>
-                    <li>
                       <input type="radio" id="b1" name="estimated-price" value="$0 - $100,000">
                       <label for="b1">$0 - $100,000</label>
                     </li>

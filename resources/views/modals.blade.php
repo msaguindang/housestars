@@ -490,7 +490,7 @@
 				 </div>
 				 <div class="modal-body">
 					 <h4>There are no agents currently</br>listed in your suburb</h4>
-				 </br><p class="sub-heading">If you know an agent/agency that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+				 </br><p class="sub-heading">If you know an agent or agency that could benifit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (you will remain anonymous) Thank you!</p>
 					 <form id="suggestAgency">
 						 {{csrf_field() }}
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
@@ -1018,7 +1018,7 @@
           <div class="modal-body">
             <h4>Thank You!</h4>
             </br><p class="sub-heading">An email is now being sent to your inbox with your estimated savings and explanation.</p>
-          </br><p class="sub-heading">Please see our customer FAQ for more information regarding teh savings estimation calculator and how these estimates are calculated.</p>
+          </br><p class="sub-heading">Please see our customer FAQ for more information regarding the savings estimation calculator and how these estimates are calculated.</p>
           </div>
         </div>
       </div>
