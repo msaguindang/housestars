@@ -490,7 +490,7 @@
 				 </div>
 				 <div class="modal-body">
 					 <h4>There are no agents currently</br>listed in your suburb</h4>
-				 </br><p class="sub-heading">If you know an agent/agency that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+				 </br><p class="sub-heading">If you know an agent or agency that could benifit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (you will remain anonymous) Thank you!</p>
 					 <form id="suggestAgency">
 						 {{csrf_field() }}
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
@@ -1018,8 +1018,23 @@
           <div class="modal-body">
             <h4>Thank You!</h4>
             </br><p class="sub-heading">An email is now being sent to your inbox with your estimated savings and explanation.</p>
-          </br><p class="sub-heading">Please see our customer FAQ for more information regarding teh savings estimation calculator and how these estimates are calculated.</p>
+          </br><p class="sub-heading">Please see our customer FAQ for more information regarding the savings estimation calculator and how these estimates are calculated.</p>
           </div>
         </div>
       </div>
     </div>
+
+		<!-- Become Part of Our Team-->
+	<div class="modal fade" id="team" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<h4>WANT TO DO SOMETHING DIFFERENT?</h4>
+				</br><p class="sub-heading">At Houststars, we are always looking for partners, affiliates, leaders and staff to help us move foward. If you have something of value that you could give to the site, send us an email outlining your talent and what you want to achieve. Mark the heading of the email with the title "Where do I sign?" and we will contact you as soon as we can. Thanks for your interest. We look foward to you joining us and creating something amazing!</p>
+				</div>
+			</div>
+		</div>
+	</div>

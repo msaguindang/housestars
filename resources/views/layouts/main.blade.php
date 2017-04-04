@@ -127,9 +127,9 @@
           <div class="col-xs-3 company-identity">
               <img src="{{asset('assets/logo-footer.png')}}" alt="HouseStars" class="logo">
               <p class="label">Office Address</p>
-              <p>100th Floor and Ground Floor, Commerce </br> Somewhere Avenue corner Somewhere Avenue, </br>Somewhere Disterict, Sydney</br>New South Wales, Australia</p>
-              <p>Tel No: (000) 888-8888  |   Fax No: ((000) 888-8888 </p>
-              <a href="#" class="hs-transparent-dark">Become Our Partner Agency</a>
+              <p>21 Mian Street Alstonville, </br>New South Wales 2477</p>
+              <p>Tel No: 0404045597 </p>
+              <a href="#" data-toggle="modal" data-target="#team" class="hs-transparent-dark">BECOME PART OF THE TEAM</a>
           </div>
           <div class="col-xs-8 col-xs-offset-1 links">
             <div class="row footer-nav">
@@ -146,7 +146,6 @@
                 <ul>
                   <li><a href="#">Our Agent Philosophy</a></li>
                   <li><a href="#">Agent FAQ</a></li>
-                  <li><a href="#">Be an Agency</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
@@ -154,7 +153,6 @@
                 <ul>
                   <li><a href="#">Our Service Philosophy</a></li>
                   <li><a href="#">Service FAQ</a></li>
-                  <li><a href="#">Provide a Service</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
@@ -162,7 +160,7 @@
                 <ul>
                   <li><a href="#">Customer FAQ</a></li>
                   <li><a href="#">Review Guidelines</a></li>
-                  <li><a href="#">Processing Page</a></li>
+                  <li><a href="#">Process Page</a></li>
                 </ul>
               </div>
             </div>

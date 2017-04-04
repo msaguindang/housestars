@@ -565,7 +565,7 @@ header .main-nav li.active {
 #advertisement-banner {
     text-align: center;
     position: relative;
-    top: -190px;
+    top: -240px;
     margin-bottom: -110px;
 }
 
@@ -844,9 +844,9 @@ header .main-nav li.active {
     border: 1px solid #b3b3b3;
 }
 
-.pricing li:last-child {
+/*.pricing li:last-child {
     border-top: none;
-}
+}*/
 
 .pricing li p{
     margin: 0;

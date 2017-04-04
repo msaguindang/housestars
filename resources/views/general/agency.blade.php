@@ -65,8 +65,8 @@
         </div>
         <div class="row widget">
           <div class="col-xs-4 animated">
-            <h3>Build A Personalize Page</h3>
-            <p>Populate your page with your logo, as well as pictures and details of what you do. The page is easily edited so you can update it as often as you like.</p>
+            <h3>BUILD A PERSONALIZED PAGE</h3>
+            <p>Populate your page with your logo, as well as pictures and details of what you do. The page is easily edited so you can update it as often as you like. You can also easily link to other sites such as Rate My Agent to showcase your profile and win more listings.</p>
             <div class="featured-img mobile-hidden">
               <img src="assets/img-square-agent.png" alt="Want to sell a property?">
             </div>
@@ -98,8 +98,8 @@
 			    </div>
     			<div class="col-xs-6 col-xs-offset-3">
     				<ul class="pricing">
-    					<li><p><span class="icon icon-price"></span><b>1 position</b> = $2000 per year + 25% of commission price</p></li>
-    					<li><p><span class="icon icon-price"></span><b>3 position</b> = $5000 per year + 25% of commission price</p></li>
+    					<li><p><span class="icon icon-price"></span><b>1 position</b> = FREE per year + 25% of commission price</p></li>
+    					<li><p><span class="icon icon-price"></span><b>Each additional Position</b> =  $1000 per Annum plus 25% </br>of commission price</p></li>
     				</ul>
     				</br></br>
     				<p>Each time you are invited to list a property, you will have the ability to either accept or decline the sale. Some listings will be charged at a lower commission rate, and you will never be charged at more than 25%.</p>

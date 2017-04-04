@@ -102,7 +102,7 @@
           			</div>
           			<div class="col-xs-8">
           				<h3>The Biggest Discounts Around</h3>
-          				<p>"The money you spend preparing your house for sale is returned to you once the sale is complete. It's the best decision you can make when selling your home. The best Agents, the best trades, the highest sell price and the biggest discounts.... Four reasons to sell your property with House Stars. <a href="#" class="content-hyperlink">See Terms and Conditions.</a></p>
+          				<p>"The money spent on trades and services is returned to you once the house is sold. It's the best decision you can make when selling your home. You can claim work up to 7 years after it was done, so the next time you need a trade or service, make sure they are a Housestars partner. </br><a href="#" class="content-hyperlink">See Terms and Conditions.</a></p>
           			</div>
           		</div>
           	</div>
@@ -123,45 +123,22 @@
         			<label>Name</label>
         			<input type="text" name="name">
         			<label>Suburb</label>
-        			<input type="text" name="suburb">
+        			<select id="select-state" name="suburb"  class="demo-default"></select>
         		</div>
         		<div class="col-xs-4">
         			<label>Email Address</label>
         			<input type="text" name="email">
         			<label>Property Type</label>
-              <div class="btn-group">
-                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <input type="radio" id="a1" name="property-type" value="Condominium">
-                        <label for="a1">Condominium</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a2" name="property-type" value="Commercial">
-                        <label for="a2">Commercial</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a3" name="property-type" value="Apartment">
-                        <label for="a3">Apartment</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a4" name="property-type" value="Foreclosures">
-                        <label for="a4">Foreclosures</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a5" name="property-type" value="Development">
-                        <label for="a5">Development</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a6" name="property-type" value="House">
-                        <label for="a6">House</label>
-                      </li>
-                      <li>
-                        <input type="radio" id="a7" name="property-type" value="Land">
-                        <label for="a7">Land</label>
-                      </li>
-                    </ul>
-                </div>
+              <select id="select-type" name="property-type"  class="demo-default" placeholder="Select or Type in Property">
+                <option value=""></option>
+                <option value="Condominium">Condominium</option>
+                <option value="Commercial">Commercial</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Foreclosures">Foreclosures</option>
+                <option value="Development">Development</option>
+                <option value="House">House</option>
+                <option value="Land">Land</option>
+              </select>
         		</div>
         		<div class="col-xs-4">
         			<label>Phone Number</label>
@@ -170,66 +147,62 @@
                <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                     <ul class="dropdown-menu">
-                    <li>
-                      <input type="radio" id="any" name="estimated-price" value="any">
-                      <label for="any">Any Price</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b1" name="estimated-price" value="$0 - $100,000">
-                      <label for="b1">$0 - $100,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b2" name="estimated-price" value="$100,000 - $200,000">
-                      <label for="b1">$100,000 - $200,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b3" name="estimated-price" value="$200,000 - $300,000">
-                      <label for="b1">$200,000 - $300,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b4" name="estimated-price" value="$300,000 - $400,000">
-                      <label for="b1">$300,000 - $400,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b5" name="estimated-price" value="$400,000 - $500,000">
-                      <label for="b1">$400,000 - $500,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b6" name="estimated-price" value="$500,000 - $600,000">
-                      <label for="b1">$500,000 - $600,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b7" name="estimated-price" value="$600,000 - $700,000">
-                      <label for="b1">$600,000 - $700,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b8" name="estimated-price" value="$700,000 - $800,000">
-                      <label for="b1">$700,000 - $800,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b9" name="estimated-price" value="$800,000 - $900,000">
-                      <label for="b2">$800,000 - $900,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b10" name="estimated-price" value="$1,000,000 - $1,100,000">
-                      <label for="b3">$1,000,000 - $1,100,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b11" name="estimated-price" value="$1,200,000 - $1,300,000">
-                      <label for="b4">$1,200,000 - $1,300,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b12" name="estimated-price" value="$1,400,000 - $1,500,000">
-                      <label for="b5">$1,400,000 - $1,500,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b13" name="estimated-price" value="$1,600,000 - $1,800,000">
-                      <label for="b6">$1,600,000 - $1,800,000</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b14" name="estimated-price" value="$1,900,000 - $2,000,000">
-                      <label for="b7">$1,900,000 - $2,000,000</label>
-                    </li>
+                      <li>
+                        <input type="radio" id="b1" name="estimated-price" value="$0 - $100,000">
+                        <label for="b1">$0 - $100,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b2" name="estimated-price" value="$100,000 - $200,000">
+                        <label for="b2">$100,000 - $200,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b3" name="estimated-price" value="$200,000 - $300,000">
+                        <label for="b3">$200,000 - $300,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b4" name="estimated-price" value="$300,000 - $400,000">
+                        <label for="b4">$300,000 - $400,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b5" name="estimated-price" value="$400,000 - $500,000">
+                        <label for="b5">$400,000 - $500,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b6" name="estimated-price" value="$500,000 - $600,000">
+                        <label for="b6">$500,000 - $600,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b7" name="estimated-price" value="$600,000 - $700,000">
+                        <label for="b7">$600,000 - $700,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b8" name="estimated-price" value="$700,000 - $800,000">
+                        <label for="b8">$700,000 - $800,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b9" name="estimated-price" value="$800,000 - $900,000">
+                        <label for="b9">$800,000 - $900,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b10" name="estimated-price" value="$1,000,000 - $1,100,000">
+                        <label for="b10">$1,000,000 - $1,100,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b11" name="estimated-price" value="$1,200,000 - $1,300,000">
+                        <label for="b11">$1,200,000 - $1,300,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b12" name="estimated-price" value="$1,400,000 - $1,500,000">
+                        <label for="b12">$1,400,000 - $1,500,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b13" name="estimated-price" value="$1,600,000 - $1,800,000">
+                        <label for="b13">$1,600,000 - $1,800,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b14" name="estimated-price" value="$1,900,000 - $2,000,000">
+                        <label for="b14">$1,900,000 - $2,000,000</label>
+                      </li>
                   </ul>
               </div>
         		</div>
@@ -260,8 +233,11 @@
 @endsection
 
 @section('scripts')
-
 <script type="text/javascript">
+$('#select-type').selectize({
+    create: true,
+    sortField: 'text'
+});
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -297,61 +273,6 @@
                     //callback(res.repositories.slice(0, 10));
                 }
             });
-        },
-        onChange: function(value) {
-
-            if(typeof value == "undefined" || value == null){
-                return false;
-            }
-
-            var selectize = $('#select-state').selectize();
-            var length = value.length;
-
-            $.ajax({
-                method:'POST',
-                url:'{{ url('/search/agency') }}',
-                data:{
-                    term:value
-                },
-                success: function(term){
-
-
-                 $('.thumb-holder0').empty();
-                 $('.thumb-holder1').empty();
-                 $('.thumb-holder2').empty();
-
-                 $('.agent-name0').empty();
-                 $('.agent-name1').empty();
-                 $('.agent-name2').empty();
-
-                 $('.location0').empty();
-                 $('.location1').empty();
-                 $('.location2').empty();
-
-                 if(term == 'redirect'){
-                   window.location.href = "/search-agency";
-                 }
-
-                  if(term.length < 1000 && term != 'error' && term != 'redirect'){
-                    $('#noAgency').modal('show');
-                    for(i = 0; term.length - 1; i++){
-                      if(term[i]['photo'] == null){
-                        $('.thumb-holder'+i).append('<img src="/assets/default.png" alt="">');
-                      } else {
-                        $('.thumb-holder'+i).append('<img src="'+term[i]['photo']+'" alt="">');
-                      }
-                      $('.agent-profile'+i).attr("href", "/profile/agency/"+term[i]['id'])
-                      $('.agent-name'+i).append(term[i]['name']);
-                      $('.location'+i).append('('+term[i]['suburb']+')');
-                    }
-                  } else if(term != 'error' && term != 'redirect'){
-                      $('#noAgency').modal('show');
-                  }
-
-
-               }
-            });
-
         }
     });
 
@@ -384,7 +305,7 @@
 
     });
 
-    var validator = $('form[name=step_one_form]').validate({
+    var validator = $('form[name=form]').validate({
         errorPlacement: function (error, element) {
             //console.log('error: ', error);
             //console.log('element: ', element);

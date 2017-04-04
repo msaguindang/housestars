@@ -107,6 +107,14 @@
         margin-top: 150px;
     }
 
+    #advertisement-banner {
+        top: -100px;
+    }
+
+    #advertisement-banner img {
+        width: 50%;
+    }
+
     .tooltip-items ul li {
         width: 100%;
         padding: 0 !important;
