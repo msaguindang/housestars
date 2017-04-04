@@ -307,7 +307,8 @@ class TradesmanController extends Controller
         $query = $request->input('query');
 
         $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
-            ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
+            ->select(DB::raw("DISTINCT(suburbs.id)"), "suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
+            ->groupBy("suburbs.id")
             ->get()
             ->toArray();
 
