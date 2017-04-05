@@ -3,6 +3,12 @@
         margin-top: -70px;
         margin-left: 300px;
     }
+    thead th {
+        text-align: center;
+    }
+    .column-search {
+        margin-bottom: 20px;
+    }
 </style>
 <div class="row" xmlns="http://www.w3.org/1999/html">
     <div class="col-md-12">
@@ -21,34 +27,45 @@
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
-
-                    <th class="clickable">Vendor Name
-                        <span ng-click="sort('vendor-name', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('vendor-name', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">Type
-                        <span ng-click="sort('property-type', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('property-type', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">No. of Rooms
-                        <span ng-click="sort('number-rooms', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('number-rooms', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">Location
-                        <span ng-click="sort('suburb', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('suburb', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">Currently Leased?</th>
-                    <th class="clickable">Property Value
-                        <span ng-click="sort('value-to', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('value-to', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">Agent
-                        <span ng-click="sort('agent-name', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('agent-name', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">Process Status</th>
-                    <th>Action</th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
+                            Name
+                            <span ng-click="sort('vendor-name', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('vendor-name', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
+                            Type
+                            <span ng-click="sort('property-type', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('property-type', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'rooms')" />
+                            # Rooms
+                            <span ng-click="sort('number-rooms', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('number-rooms', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'suburb')" />
+                            Location
+                            <span ng-click="sort('suburb', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('suburb', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">Currently Leased?</th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'value')" />
+                            Value
+                            <span ng-click="sort('value-to', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('value-to', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'agent')" />
+                            Agent
+                            <span ng-click="sort('agent-name', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('agent-name', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">Process Status</th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="property in _properties | filter : query">

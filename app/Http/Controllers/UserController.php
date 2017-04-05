@@ -169,15 +169,11 @@ class UserController extends Controller
         }
 
         $members = collect($members)->filter(function ($value, $key) use ($searchType, $searchStart, $searchEnd) {
-            $hasType = $hasStart = $hasEnd = true;
-            if (!empty($searchType)) {
-                $hasType = (strpos($value['subscription_type'], $searchType) !== false);
-            } if (!empty($searchStart)) {
-                $hasStart = (strpos($value['sub_start'], ucfirst($searchStart)) !== false);
-            } if (!empty($searchEnd)) {
-                $hasEnd = (strpos($value['sub_end'], ucfirst($searchEnd)) !== false);
-            }
-            return ($hasType && $hasStart && $hasEnd);
+            $valids = [];
+            array_push($valids, array_contains($searchType, $value, 'subscription_type'));
+            array_push($valids, array_contains($searchStart, $value, 'sub_start'));
+            array_push($valids, array_contains($searchEnd, $value, 'sub_end'));
+            return !in_array(false, $valids);
         })->values()->all();
 
         if (!empty($field) && empty($paginateQuery)) {

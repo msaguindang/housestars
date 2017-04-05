@@ -388,6 +388,7 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
     $scope.sortfield = '';
     $scope.direction = '';
     $scope.query = '';
+    $scope.searchField = {name: '', type: '', rooms: '', suburb: '', value:'', agent: ''};
 
     $scope.getAllProperties = function () {
 
@@ -396,7 +397,13 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
             limit: $scope.limit,
             query: $scope.query,
             sort: $scope.sortfield,
-            direction: $scope.direction
+            direction: $scope.direction,
+            name: $scope.searchField.name,
+            type: $scope.searchField.type,
+            rooms: $scope.searchField.rooms,
+            suburb: $scope.searchField.suburb,
+            value: $scope.searchField.value,
+            agent: $scope.searchField.agent
         }).then(function (response) {
 
             console.log('properties', response);
@@ -428,6 +435,8 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
         $scope.sortfield = '';
         $scope.direction = '';
         $scope.query = '';
+        jQuery("th > input").val("");
+        $scope.searchField = {name: '', type: '', rooms: '', suburb: '', value:'', agent: ''};
         $scope.getAllProperties();
     };
 
@@ -547,6 +556,12 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
         $scope.getAllProperties();
     };
 
+    $scope.searchByField = function (event, model) {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getAllProperties();
+        }
+    };
 
     // initialize
     $scope.getAllProperties();

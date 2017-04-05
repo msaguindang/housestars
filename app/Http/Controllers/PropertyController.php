@@ -23,13 +23,21 @@ class PropertyController extends Controller
 
     public function getAllProperties(Request $request)
     {
-
         $payload = $this->payload->all();
         $pageNo = 1;
         $limit = 10;
         $field = $request->get('sort', '');
         $direction = $request->get('direction', 'asc');
         $query = $request->get('query', '');
+        $hasSearch = (!empty($query));
+        $searchName = $request->get('name', '');
+        $searchType = $request->get('type', '');
+        $searchRooms = $request->get('rooms', '');
+        $searchSuburb = $request->get('suburb', '');
+        $searchValue = $request->get('value', '');
+        $searchAgent = $request->get('agent', '');
+        // $hasSearch = (!empty($searchName) || !empty($searchType) || !empty($searchRooms) ||
+        //             !empty($searchSuburb) || !empty($searchValue) || !empty($searchAgent));
 
         if (isset($payload['page_no'])) {
             $pageNo = $payload['page_no'];
@@ -89,15 +97,19 @@ class PropertyController extends Controller
             $properties[] = $singleRow;
         }
 
-        if (!empty($query)) {
-            $properties = collect($properties)
-                                ->filter(function ($value, $key) use ($query) {
-                                    $query = strtolower($query);
-                                    $val = strtolower(implode(' ', $value));
-                                    return (strpos($val, $query) !== false);
-                                })
-                                ->values()->all();
-        }
+        $properties = collect($properties)
+                        ->filter(function ($value, $key) use ($query, $searchName, $searchType, $searchRooms, $searchSuburb, $searchValue, $searchAgent) {
+                            $valids = [];
+                            array_push($valids, empty($query) ? : (strpos(strtolower(implode(' ', $value)), strtolower($query)) !== false));
+                            array_push($valids, array_contains($searchName, $value, 'vendor-name'));
+                            array_push($valids, array_contains($searchType, $value, 'property-type'));
+                            array_push($valids, array_contains($searchRooms, $value, 'number-rooms'));
+                            array_push($valids, array_contains($searchSuburb, $value, 'suburb') || array_contains($searchSuburb, $value, 'state') || array_contains($searchSuburb, $value, 'post-code'));
+                            array_push($valids, array_contains($searchValue, $value, 'value-to'));
+                            array_push($valids, array_contains($searchAgent, $value, 'agent-name'));
+                            return !in_array(false, $valids);
+                        })
+                        ->values()->all();
 
         if (!empty($field)) {
             $properties = collect($properties)->sortBy($field, SORT_REGULAR, ($direction=='desc'));
@@ -110,7 +122,6 @@ class PropertyController extends Controller
 
         $response = [
             'properties' => $properties,
-            // 'length'     => $length,
             'length'     => (empty($paginationQuery) ? count($properties) : $length)
         ];
 
