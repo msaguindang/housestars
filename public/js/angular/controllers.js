@@ -34,9 +34,10 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.sortField = '';
     $scope.fromDate = '';
     $scope.toDate = '';
+    $scope.searchField = {name: '', email: '', role: '', type: '', start: '', end: ''};
 
     $scope.getAllUsers = function () {
-
+        
         http.getAllUsers({
             page_no: $scope.currentPage,
             limit: $scope.limit,
@@ -44,7 +45,13 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
             sort: $scope.sortField,
             direction: $scope.direction,
             from: $scope.fromDate,
-            to: $scope.toDate
+            to: $scope.toDate,
+            name: $scope.searchField.name,
+            email: $scope.searchField.email,
+            role: $scope.searchField.role,
+            type: $scope.searchField.type,
+            start: $scope.searchField.start,
+            end: $scope.searchField.end,
         }).then(function (response) {
             $scope.users = response.data.users;
             $scope._users = angular.copy($scope.users);
@@ -81,6 +88,8 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
         $scope.sortField = '';
         $scope.fromDate = '';
         $scope.toDate = '';
+        jQuery('th > input').val('');
+        $scope.searchField = {name: '', email: '', role: '', type: '', start: '', end: ''};
         $scope.getAllUsers();
     };
 
@@ -236,6 +245,13 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
 
     $scope.searchDate = function () {
         $scope.getAllUsers();
+    };
+
+    $scope.searchByField = function (event, model) {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getAllUsers();
+        }
     };
 
     // initialize

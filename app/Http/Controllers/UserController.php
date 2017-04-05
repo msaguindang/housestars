@@ -25,6 +25,7 @@ use Hash;
 use Response;
 use Validator;
 use Excel;
+use App\Utilities\UserQueryBuilder;
 
 class UserController extends Controller
 {
@@ -40,6 +41,8 @@ class UserController extends Controller
     public function getAllUsers(Request $request)
     {
         $role = Sentinel::getUser()->roles()->first()->slug;
+        $userQueryBuilder = app(UserQueryBuilder::class);
+
         $roleSql = "";
         $searchQuery = "";
         $sortQuery = "";
@@ -48,6 +51,14 @@ class UserController extends Controller
         $toDate = $request->get('to', '');
         $direction = $request->get('direction', 'asc');
         $hasRangeDate = (!empty($fromDate) && !empty($toDate));
+        $searchName = $request->get('name', '');
+        $searchEmail = $request->get('email', '');
+        $searchRole = $request->get('role', '');
+        $searchType = $request->get('type', '');
+        $searchStart = $request->get('start', '');
+        $searchEnd = $request->get('end', '');
+        $query = $request->get('query', '');
+        $hasSearch = (!empty($query) || !empty($searchName) || !empty($searchEmail) || !empty($searchRole) || !empty($searchStart) || !empty($searchEnd));
 
         switch ($role) {
             case 'admin':
@@ -89,10 +100,7 @@ class UserController extends Controller
 
         $paginateQuery = " LIMIT {$limit} OFFSET {$offset} ";
 
-        if ($request->has('query') && !empty($request->get('query', ''))) {
-            $query = "'%" . $request->get('query') . "%'";
-            $searchQuery = " AND (users.name LIKE {$query} OR users.email LIKE {$query} OR roles.name LIKE {$query}) ";
-        }
+        $searchQuery = $userQueryBuilder->searchQueryBuilder($query, $searchName, $searchEmail, $searchRole);
 
         if (!empty($field)) {
             if (in_array($field, ['name', 'email', 'role_name'])) {
@@ -154,11 +162,23 @@ class UserController extends Controller
             $members[] = $user;
         }
         
-        if ($hasRangeDate) {
+        if ($hasRangeDate || $hasSearch) {
             $members = collect($members)->filter(function ($value, $key) {
                 return (!is_null($value['sub_start']) && !empty($value['sub_start']));
             })->values()->all();
         }
+
+        $members = collect($members)->filter(function ($value, $key) use ($searchType, $searchStart, $searchEnd) {
+            $hasType = $hasStart = $hasEnd = true;
+            if (!empty($searchType)) {
+                $hasType = (strpos($value['subscription_type'], $searchType) !== false);
+            } if (!empty($searchStart)) {
+                $hasStart = (strpos($value['sub_start'], ucfirst($searchStart)) !== false);
+            } if (!empty($searchEnd)) {
+                $hasEnd = (strpos($value['sub_end'], ucfirst($searchEnd)) !== false);
+            }
+            return ($hasType && $hasStart && $hasEnd);
+        })->values()->all();
 
         if (!empty($field) && empty($paginateQuery)) {
             $members = collect($members)->sortBy($field, SORT_REGULAR, ($direction=='desc'));
@@ -168,7 +188,8 @@ class UserController extends Controller
 
         return Response::json([
             'users'  => $members,
-            'length' => (empty($searchQuery) && empty($fromDate) ? $length : count($members)),
+            'q'      => $userSql,
+            'length' => (($hasRangeDate || $hasSearch) ? count($members) : $length)
         ], 200);
     }
 

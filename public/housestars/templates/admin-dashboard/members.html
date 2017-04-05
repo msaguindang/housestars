@@ -14,6 +14,15 @@
         width: 30%;
         margin: 0px 5px 0px 5px;
     }
+    .column-search {
+        margin-bottom: 10px;
+    }
+    .header-action {
+        margin-top: 20px;
+    }
+    thead th {
+        text-align: center;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -62,36 +71,42 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <th class='clickable'>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
                             Name
                             <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class='clickable'>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'email')"/>
                             Email
                             <span ng-click="sort('email', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('email', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class='clickable'>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'role')"/>
                             Role
                             <span ng-click="sort('role_name', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('role_name', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class='clickable'>
-                            Subscription Type
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
+                            Subs Type
                             <span ng-click="sort('subscription_type', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('subscription_type', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class='clickable'>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'start')"/>
                             Subs Start
                             <span ng-click="sort('sub_start_raw', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('sub_start_raw', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class='clickable'>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'end')"/>
                             Subs End
                             <span ng-click="sort('sub_end_raw', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('sub_end_raw', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-                        <th>Action</th>
+                        <th class="header-action">Action</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in _users | filter:query">
