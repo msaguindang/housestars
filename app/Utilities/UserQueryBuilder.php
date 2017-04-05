@@ -18,7 +18,7 @@ class UserQueryBuilder
 			$searchQuery = " AND (users.name LIKE {$query} OR users.email LIKE {$query} OR roles.name LIKE {$query}) ";
 		}
 		
-		$searchQuery .= " AND (users.name LIKE {$name} AND users.email LIKE {$email} AND roles.name LIKE {$role})";
+		$searchQuery .= " AND (users.name LIKE {$name} AND users.email LIKE {$email} AND roles.name LIKE {$role}) ";
 		
 		return $searchQuery;
 	}
