@@ -3,6 +3,9 @@
         margin-top: -70px;
         margin-left: 150px;
     }
+    .column-search {
+        margin-bottom: 20px;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -26,11 +29,15 @@
                 <table class="table table-hover table-striped">
                     <thead>
 
-                    <th class="clickable">Id
+                    <th class="clickable">
+                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'id')" />
+                        Id
                         <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('id', 'desc')" class="fa fa-caret-down"></span>
                     </th>
-                    <th class="clickable">Category
+                    <th class="clickable">
+                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'category')" />
+                        Category
                         <span ng-click="sort('category', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('category', 'desc')" class="fa fa-caret-down"></span>
                     </th>

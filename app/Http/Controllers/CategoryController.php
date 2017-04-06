@@ -24,8 +24,10 @@ class CategoryController extends Controller
     {
 
         $pageNo = $this->payload->input('page_no');
-        $query = $request->get('query', '');
+        $searchQuery = $request->get('query', '');
         $field = $request->get('sort', '');
+        $searchId = $request->get('id', '');
+        $searchCat = $request->get('category', '');
         $direction = $request->get('direction', 'asc');
         $sortQuery = '';
 
@@ -47,8 +49,10 @@ class CategoryController extends Controller
             $sortQuery = " ORDER BY {$field} {$direction}";
         }
 
-        if (!empty($query)) {
-            $query = " WHERE (id LIKE '%$query%' OR category LIKE '%$query%') ";
+        $query = " WHERE (id LIKE '%$searchId%' AND category LIKE '%$searchCat%') "; 
+
+        if(!empty($searchQuery)) {
+            $query .= " OR (id LIKE '%$searchQuery%' OR category LIKE '%$searchQuery%') ";
         }
 
         $suburbsSql = "SELECT * FROM categories {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";

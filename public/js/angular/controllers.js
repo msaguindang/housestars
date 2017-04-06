@@ -845,6 +845,7 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
     $scope.query = '';
     $scope.sortField = '';
     $scope.direction = '';
+    $scope.searchField = {id:'', category: ''};
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -858,7 +859,9 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
             limit: $scope.limit,
             query: $scope.query,
             sort: $scope.sortField,
-            direction: $scope.direction
+            direction: $scope.direction,
+            id: $scope.searchField.id,
+            category: $scope.searchField.category
         }).then(function (response) {
             console.log('all categories: ', response);
             $scope.categories = response.data.categories;
@@ -967,6 +970,13 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
 
     };
 
+    $scope.searchByField = function (event, model)
+    {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getAllCategories();
+        }
+    };
 
     // initialize
     $scope.getAllCategories();
