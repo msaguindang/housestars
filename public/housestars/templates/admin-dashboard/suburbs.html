@@ -2,6 +2,9 @@
     .pull-right .search-component {
         margin-top: -70px;
     }
+    .column-search {
+        margin-bottom: 20px;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -21,19 +24,27 @@
                 <table class="table table-hover table-striped">
                     <thead>
 
-                    <th class="clickable">Id
+                    <th class="clickable">
+                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'id')" />
+                        Id
                         <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('id', 'desc')" class="fa fa-caret-down"></span>
                     </th>
-                    <th class="clickable">Name
+                    <th class="clickable">
+                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
+                        Name
                         <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
                     </th>
-                    <th class="clickable">Availability
+                    <th class="clickable">
+                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'availability')" />
+                        Availability
                         <span ng-click="sort('availability', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('availability', 'desc')" class="fa fa-caret-down"></span>
                     </th>
-                    <th class="clickable">Max Tradie
+                    <th class="clickable">
+                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'max_tradie')" />
+                        Max Tradie
                         <span ng-click="sort('max_tradie', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('max_tradie', 'desc')" class="fa fa-caret-down"></span>
                     </th>

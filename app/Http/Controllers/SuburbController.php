@@ -24,9 +24,14 @@ class SuburbController extends Controller
     public function getAllSuburbs()
     {
         $pageNo = $this->payload->input('page_no');
-        $query = $this->payload->get('query', '');
+        $searchQuery = $this->payload->get('query', '');
         $field = $this->payload->get('sort', '');
         $direction = $this->payload->get('direction', '');
+        $searchId = $this->payload->get('id', '');
+        $searchName = $this->payload->get('name', '');
+        $searchAvail = $this->payload->get('availability', '');
+        $searchMax = $this->payload->get('max_tradie', '');
+
         $sortQuery = '';
         
         if (!$pageNo) {
@@ -42,13 +47,15 @@ class SuburbController extends Controller
         $offset = $limit*($pageNo-1);
 
         $suburbsLength = DB::table('suburbs')->selectRaw('count(*) as length')->first()->length;
-        
+
         if (!empty($field)) {
             $sortQuery = " ORDER BY {$field} {$direction}";
         }
 
-        if (!empty($query)) {
-            $query = " WHERE (id LIKE '%$query%' OR name LIKE '%$query%' OR max_tradie LIKE '%$query%' OR availability LIKE '%$query%') ";
+        $query = " WHERE (id LIKE '%$searchId%' AND name LIKE '%$searchName%' AND max_tradie LIKE '%$searchMax%' AND availability LIKE '%$searchAvail%') "; 
+
+        if (!empty($searchQuery)) {
+            $query .= " OR (id LIKE '%$searchQuery%' OR name LIKE '%$searchQuery%' OR max_tradie LIKE '%$searchQuery%' OR availability LIKE '%$searchQuery%') ";
         }
 
         $suburbsSql = "SELECT * FROM suburbs {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";

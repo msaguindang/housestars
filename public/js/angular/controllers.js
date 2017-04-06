@@ -914,6 +914,8 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
         $scope.sortField = '';
         $scope.currentPage = 1;
         $scope.limit = 10;
+        jQuery("th > input").val("");
+        $scope.searchField = {id:'', category: ''};
         $scope.getAllCategories();
     };
 
@@ -1083,6 +1085,7 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.direction = '';
     $scope.query = '';
     $scope.sortField = '';
+    $scope.searchField = {id: '', name: '', availability: '', max_tradie: ''};
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -1096,7 +1099,11 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
             limit: $scope.limit,
             query: $scope.query,
             sort: $scope.sortField,
-            direction: $scope.direction
+            direction: $scope.direction,
+            id: $scope.searchField.id,
+            name: $scope.searchField.name,
+            availability: $scope.searchField.availability,
+            max_tradie: $scope.searchField.max_tradie
         }).then(function (response) {
             console.log('all suburbs: ', response);
             $scope.suburbs = response.data.suburbs;
@@ -1175,7 +1182,6 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
 
     };
 
-
     $scope.search = function() {
         $scope.getAllSuburbs();
     };
@@ -1196,7 +1202,17 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
         $scope.direction = '';
         $scope.query = '';
         $scope.sortField = '';
+        jQuery("th > input").val("");
+        $scope.searchField = {id: '', name: '', availability: '', max_tradie: ''};
         $scope.getAllSuburbs();
+    };
+
+    $scope.searchByField = function(event, model)
+    {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getAllSuburbs();
+        }
     };
 
     // initialize
