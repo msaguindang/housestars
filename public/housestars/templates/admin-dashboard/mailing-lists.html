@@ -3,6 +3,9 @@
         margin-top: -70px;
         margin-left: 150px;
     }
+    .column-search {
+        margin-bottom: 20px;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -25,19 +28,28 @@
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
-                        <th class="clickable">Id
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'id')" />
+                            Id
                             <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('id', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-                        <th class="clickable">Name
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
+                            Name
                             <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-                        <th class="clickable">Email
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'email')" />
+                            Email
                             <span ng-click="sort('email', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('email', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-                        <th>Phone</th>
+                        <th>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'phone')" />
+                            Phone
+                        </th>
 
                         <th>Action</th>
                     </thead>

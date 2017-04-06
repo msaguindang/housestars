@@ -90,9 +90,13 @@ class PotentialCustomerController extends Controller
     public function getAllPotentialCustomers()
     {
         $payload = $this->payload->all();
-        $query = $this->payload->get('query', '');
+        $searchQuery = $this->payload->get('query', '');
         $field = $this->payload->get('sort', '');
         $direction = $this->payload->get('direction', '');
+        $searchId = $this->payload->get('id', '');
+        $searchName = $this->payload->get('name', '');
+        $searchEmail = $this->payload->get('email', '');
+        $searchPhone = $this->payload->get('phone', '');
         $sortQuery = '';
         $pageNo = 1;
         $limit = 10;
@@ -115,26 +119,28 @@ class PotentialCustomerController extends Controller
         if (!empty($field)) {
             $sortQuery = " ORDER BY {$field} {$direction}";
         }
+        
+        $query = "WHERE (id LIKE '%$searchId%' AND name LIKE '%$searchName%' AND email LIKE '%$searchEmail%' AND phone LIKE '%$searchPhone%') ";
 
-        if (!empty($query)) {
-            $query = " WHERE (id LIKE '%$query%' OR name LIKE '%$query%' OR email LIKE '%$query%') ";
+        if (!empty($searchQuery)) {
+            $query .= " OR (id LIKE '%$searchQuery%' OR name LIKE '%$searchQuery%' OR email LIKE '%$searchQuery%') ";
         }
 
-        $sql = "SELECT * FROM 
-        				potential_customers 
-                {$query} 
-                {$sortQuery} 
-        				LIMIT {$limit} 
-        				OFFSET {$offset}";
-
-
+        $sql = "SELECT 
+                    * FROM 
+        			potential_customers 
+                    {$query} 
+                    {$sortQuery} 
+        			LIMIT {$limit} 
+        			OFFSET {$offset}";
+        
         $potential_customers = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
             'potential_customers' => $potential_customers,
             'length'              => (empty($query) ? $length : count($potential_customers))
         ];
-
+        
         return Response::json($response, 200);
     }
 

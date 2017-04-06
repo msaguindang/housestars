@@ -1617,6 +1617,7 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
     $scope.direction = '';
     $scope.query = '';
     $scope.sortField = '';
+    $scope.searchField = {id: '', name: '', email: '', phone: ''};
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -1630,7 +1631,11 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
             limit: $scope.limit,
             direction: $scope.direction,
             query: $scope.query,
-            sort: $scope.sortField
+            sort: $scope.sortField,
+            id: $scope.searchField.id,
+            name: $scope.searchField.name,
+            email: $scope.searchField.email,
+            phone: $scope.searchField.phone
         }).then(function (response) {
             console.log('all potential customers: ', response);
             $scope.customers = response.data.potential_customers;
@@ -1695,13 +1700,21 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
         $scope.direction = '';
         $scope.query = '';
         $scope.sortField = '';
+        jQuery("th > input").val("");
+        $scope.searchField = {id: '', name: '', email: '', phone: ''};
         $scope.getAllPotentialCustomers();
+    };
+
+    $scope.searchByField = function (event, model) 
+    {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getAllPotentialCustomers();
+        }
     };
 
     // initialize
     $scope.getAllPotentialCustomers();
-
-
 }]);
 
 housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($scope, http, validator) {
