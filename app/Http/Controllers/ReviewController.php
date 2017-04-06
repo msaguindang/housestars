@@ -627,6 +627,12 @@ class ReviewController extends Controller
         $field  = $request->get('field', null);
         $fromDate = $request->get('from', '');
         $toDate = $request->get('to', '');
+        $searchReviewee = $request->get('reviewee', '');
+        $searchReviewer = $request->get('reviewer', '');
+        $searchTitle = $request->get('title', '');
+        $searchContent = $request->get('content', '');
+        $searchCreatedAt = $request->get('created_at', '');
+
         $length = 0;
         $pageNo = 1;
         $limit = 10;
@@ -641,7 +647,8 @@ class ReviewController extends Controller
 
         $offset = $limit * ($pageNo - 1);
 
-        $reviews = Reviews::searchReview($query, $fromDate, $toDate);
+        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt);
+        $queryStr = $reviews->toSql();
         $length = $reviews->count();
         $reviews = $reviews->take($limit)->skip($offset)->get();
         
@@ -651,6 +658,7 @@ class ReviewController extends Controller
         }
 
         $response = [
+            'query'   => $queryStr,
             'reviews' => (is_array($reviews) ? $reviews : $reviews->toArray()),
             'length'  => $length
         ];

@@ -81,3 +81,14 @@ if (! function_exists('array_contains')) {
         return (strpos(strtolower($array[$key]), $query) !== false);
     }
 }
+
+if (! function_exists('is_query_empty')) {
+    /**
+     *
+     * @return boolean
+     */
+    function is_query_empty($query)
+    {
+        return (empty($query) || (trim($query) == "'%%'") || (trim($query) == "%%"));
+    }
+}

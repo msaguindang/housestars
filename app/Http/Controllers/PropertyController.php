@@ -36,8 +36,6 @@ class PropertyController extends Controller
         $searchSuburb = $request->get('suburb', '');
         $searchValue = $request->get('value', '');
         $searchAgent = $request->get('agent', '');
-        // $hasSearch = (!empty($searchName) || !empty($searchType) || !empty($searchRooms) ||
-        //             !empty($searchSuburb) || !empty($searchValue) || !empty($searchAgent));
 
         if (isset($payload['page_no'])) {
             $pageNo = $payload['page_no'];
