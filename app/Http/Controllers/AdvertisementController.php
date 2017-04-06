@@ -31,9 +31,12 @@ class AdvertisementController extends Controller
 
         $payload = $this->payload->all();
 
-        $query = $this->payload->get('query', '');
+        $searchQuery = $this->payload->get('query', '');
         $field = $this->payload->get('sort', '');
         $direction = $this->payload->get('direction', '');
+        $searchName = $this->payload->get('name', '');
+        $searchType = $this->payload->get('type', '');
+        $searchPriority = $this->payload->get('priority', '');
         $sortQuery = '';
         $pageNo = 1;
         $limit = 10;
@@ -56,9 +59,11 @@ class AdvertisementController extends Controller
         if (!empty($field)) {
             $sortQuery = " ORDER BY {$field} {$direction}";
         }
+        
+        $query = " WHERE (name LIKE '%$searchName%' AND type LIKE '%$searchType%' AND priority LIKE '%$searchPriority%')";
 
-        if (!empty($query)) {
-            $query = " WHERE (name LIKE '%$query%' OR type LIKE '%$query%') ";
+        if (!empty($searchQuery)) {
+            $query .= " OR (name LIKE '%$searchQuery%' OR type LIKE '%$searchQuery%') ";
         }
 
         $sql = "SELECT

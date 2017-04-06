@@ -1302,6 +1302,7 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
     $scope.query = '';
     $scope.sortField = '';
     $scope.direction = '';
+    $scope.searchField = {name: '', type: '', priority: ''};
 
     $scope.changePage = function (newPage) {
         $scope.currentPage = newPage;
@@ -1314,7 +1315,10 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
             limit: $scope.limit,
             query: $scope.query,
             sort: $scope.sortField,
-            direction: $scope.direction
+            direction: $scope.direction,
+            name: $scope.searchField.name,
+            type: $scope.searchField.type,
+            priority: $scope.searchField.priority
         }).then(function (response) {
             $scope.advertisements = response.data.advertisements;
             $scope._advertisements = angular.copy($scope.advertisements);
@@ -1443,7 +1447,16 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
         $scope.direction = '';
         $scope.query = '';
         $scope.sortField = '';
+        jQuery("th > input").val("");
+        $scope.searchField = {name: '', type: '', priority: ''};
         $scope.getAllAdvertisements();
+    };
+
+    $scope.searchByField = function (event, model) {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getAllAdvertisements();
+        }
     };
 
     // initialize
