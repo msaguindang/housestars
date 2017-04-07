@@ -3303,7 +3303,12 @@ button.disabled {
 
 #cover-container.about-us {
     background: url(../assets/bg-banner-about.png) center top no-repeat;
-    height: 500px;
+    min-height: 500px;
+}
+
+.default-page {
+    background: url(../assets/default-banner.jpg) center top no-repeat;
+		margin-bottom: 60px;
 }
 
 #cover-container.about-us .page-info p {
@@ -3328,4 +3333,22 @@ button.disabled {
 #partners{
 	position: relative;
   top: -154px;
+}
+
+.page {
+    margin-top: 60px;
+    padding: 30px 60px 45px;
+}
+
+.panel-default>.panel-heading {
+    background: transparent;
+    border-color: transparent;
+}
+
+.panel-default {
+    border: none;
+}
+
+.panel-default a, .panel-default a:focus {
+    color: #343f51;
 }

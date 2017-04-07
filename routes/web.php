@@ -40,6 +40,22 @@ Route::group(['prefix' => ''], function () {
         return view('general.home');
     });
 
+    Route::get('/our-agent-philosophy', function () {
+        return view('general.agent-philosophy');
+    });
+
+    Route::get('/our-service-philosophy', function () {
+        return view('general.service-philosophy');
+    });
+
+    Route::get('/guidelines', function () {
+        return view('general.guidelines');
+    });
+
+    Route::get('/process-page', function () {
+        return view('general.process');
+    });
+
     Route::post('/verify-user-to-rate', [
         'as'   => 'verify_to_rate',
         'uses' => 'MainController@verifyPotentialUser'
@@ -288,7 +304,7 @@ Route::group(['prefix' => ''], function () {
     Route::post('/referral', 'TradesmanController@referral');
     Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
     Route::get('/reviewer', 'LoginController@chooseBusiness');
-    
+
     Route::get('/choose-business', function () {
         if (session()->exists('email')) {
             return view('choose_business');
