@@ -41,7 +41,12 @@
                         <span ng-click="sort('category', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('category', 'desc')" class="fa fa-caret-down"></span>
                     </th>
-
+                    <th>
+                        Enlisted (Total)
+                    </th>
+                    <th>
+                        Enlisted (Last Week)
+                    </th>
                     <th>Action</th>
                     </thead>
                     <tbody>
@@ -49,7 +54,8 @@
 
                         <td>{{ category.id }}</td>
                         <td>{{ category.category }}</td>
-
+                        <td> {{ category.total_enlisted }} </td>
+                        <td> {{ category.last_week_enlisted }} </td>
                         <td class="btn-actions">
 
                             <a uib-tooltip="Edit Category" href="" ng-click="editCategory(category, $index)" class="edit">

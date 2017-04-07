@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Sentinel;
 use Response;
+use Carbon\Carbon;
 
 class CategoryController extends Controller
 {
@@ -55,7 +56,24 @@ class CategoryController extends Controller
             $query .= " OR (id LIKE '%$searchQuery%' OR category LIKE '%$searchQuery%') ";
         }
 
-        $suburbsSql = "SELECT * FROM categories {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
+        $lastWeek = Carbon::now()->subWeek()->toDateString();
+        $suburbsSql = "SELECT categories.*,
+                        (SELECT 
+                            COUNT(um.id)
+                            FROM
+                                user_meta um
+                            WHERE 
+                                um.meta_name = 'trade'
+                            AND um.meta_value = categories.`category`) AS total_enlisted,
+                        (SELECT 
+                            COUNT(um1.id)
+                            FROM
+                                user_meta um1
+                            WHERE 
+                                um1.meta_name = 'trade' AND 
+                                um1.meta_value = categories.`category` AND 
+                                um1.created_at >= '{$lastWeek}') AS last_week_enlisted
+                        FROM categories {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
         $categories = json_decode(json_encode(DB::select($suburbsSql)), TRUE);
 
         $response = [
