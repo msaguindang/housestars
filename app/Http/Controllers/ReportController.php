@@ -26,6 +26,11 @@ class ReportController extends Controller
         $payload = $this->payload->all();
 
         $year = $payload['year'];
+        $searchQuery = $this->payload->get('query', '');
+        $searchTradesmanId = "'%" . $this->payload->get('tradesman_id', '') . "%'";
+        $searchTradesman   = $this->payload->get('tradesman', '');
+        $searchTrade       = $this->payload->get('trade', '');
+        $hasSearchByField  = (!is_query_empty($searchTradesman) || !is_query_empty($searchTrade));
 
         $sql = "SELECT 
                   maint.tradesman_id,
@@ -33,14 +38,14 @@ class ReportController extends Controller
                   (SELECT 
                     meta_value 
                   FROM
-                    user_meta 
-                  WHERE meta_name = 'trading-name' 
+                    user_meta
+                  WHERE meta_name = 'trading-name'
                     AND user_id = maint.`tradesman_id`) AS tradesman,
                   (SELECT 
                     meta_value 
                   FROM
                     user_meta 
-                  WHERE meta_name = 'trade' 
+                  WHERE meta_name = 'trade'
                     AND user_id = maint.`tradesman_id`) AS trade,
                   YEAR(maint.created_at) AS created_at_year,
                   MONTH(maint.created_at) AS created_at_month,
@@ -58,15 +63,27 @@ class ReportController extends Controller
                     transactions subt 
                   WHERE subt.tradesman_id = maint.`tradesman_id`) AS total_earnings 
                 FROM
-                  transactions maint 
+                  transactions maint
                   JOIN users 
-                    ON users.`id` = maint.`tradesman_id` 
+                    ON users.`id` = maint.`tradesman_id`
                 WHERE YEAR(maint.created_at) = {$year}
+                AND maint.`tradesman_id` LIKE $searchTradesmanId
                 GROUP BY tradesman_id ";
 
         $reportJson = DB::select($sql);
 
-        $report = json_decode(json_encode($reportJson), TRUE);
+        if (!empty($searchQuery) || $hasSearchByField) {
+          $report = collect($reportJson)->filter(function($value, $key) use ($searchQuery, $searchTradesman, $searchTrade) {
+            $valids = [];
+            $value = (array) $value;
+            array_push($valids, empty($searchQuery) ? : (strpos(strtolower(implode(' ', $value)), strtolower($searchQuery)) !== false));
+            array_push($valids, array_contains($searchTradesman, $value, 'tradesman'));
+            array_push($valids, array_contains($searchTrade, $value, 'trade'));
+            return !in_array(false, $valids);
+          })->values()->all();
+        } else {
+          $report = json_decode(json_encode($reportJson), TRUE);
+        }
 
         return Response::json([
             'report' => $report,

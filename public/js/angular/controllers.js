@@ -1738,6 +1738,8 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
 
     $scope.currentYear = new Date().getFullYear();
 
+    $scope.query = '';
+    $scope.searchField = {tradesman_id: '', tradesman: '', trade: ''}
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
@@ -1751,7 +1753,11 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getReport = function () {
 
         http.getTradesmanEarningsReport({
-            year: $scope.currentYear
+            year: $scope.currentYear,
+            query: $scope.query,
+            tradesman_id: $scope.searchField.tradesman_id,
+            tradesman: $scope.searchField.tradesman,
+            trade: $scope.searchField.trade
         }).then(function(response){
             console.log('get tradesman earnings: ', response);
             $scope.reports = response.data.report;
@@ -1832,6 +1838,19 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
 
     };
 
+    $scope.submitSearch = function()
+    {
+        $scope.getReport();
+    };
+
+    $scope.searchByField = function(event, model)
+    {
+        $scope.searchField[model] = event.target.value;
+        if (event.keyCode == 13) {
+            $scope.getReport();
+        }
+    };
+    
     // initialize
     $scope.getReport();
     $scope.getYears();
