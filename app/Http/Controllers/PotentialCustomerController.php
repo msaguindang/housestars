@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\PotentialCustomer;
 use App\UserMeta;
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Response;
 use Mail;
@@ -147,12 +148,17 @@ class PotentialCustomerController extends Controller
     public function deletePotentialCustomer()
     {
         $id = $this->payload->input('id');
+        $isPotentialUser = $this->payload->get('isPotentialUser', true);
 
         try {
-
-            PotentialCustomer::find($id)->delete();
+            if (!filter_var($isPotentialUser, FILTER_VALIDATE_BOOLEAN) === false) {
+                PotentialCustomer::find($id)->delete();
+            } else {
+                User::find($id)->delete();
+            }
+            
             $response['success'] = [
-                'message' => "Potential Customer successfully deleted."
+                'message' => "User successfully deleted."
             ];
             return Response::json($response, 200);
         } catch (Exception $e) {
@@ -166,10 +172,18 @@ class PotentialCustomerController extends Controller
     public function exportPotentialCustomers()
     {
         $excel = Excel::create('mailing-list', function($excel) {
-            $excel->sheet('Potential Customers', function(\PHPExcel_Worksheet $sheet) {
+            $excel->sheet('Users', function(\PHPExcel_Worksheet $sheet) {
 
-                $potentialCustomers = PotentialCustomer::where('id','!=',null)->select('name','email','phone')->get()->toArray();
-                $sheet->fromArray($potentialCustomers);
+                $users = User::whereNotNull('users.id')
+                                ->leftJoin('user_meta', function($join) {
+                                    $join
+                                        ->on('users.id', '=', 'user_meta.user_id')
+                                        ->where('meta_name', '=', 'phone');
+                                })
+                                ->select('users.name', 'users.email', 'user_meta.meta_value as phone')
+                                ->get()->toArray();
+                $potentialCustomers = PotentialCustomer::whereNotNull('id')->select('name','email','phone')->get()->toArray();
+                $sheet->fromArray(array_merge($users, $potentialCustomers));
 
             });
         })->store('xlsx', public_path('exports'));

@@ -362,7 +362,7 @@ Route::group(['prefix' => ''], function () {
             });
 
             Route::get('role', 'UserController@getAllRoles');
-
+            Route::get('mailing-list', 'UserController@getUsersMailingList');
         });
 
         Route::group(['prefix' => 'review'], function () {

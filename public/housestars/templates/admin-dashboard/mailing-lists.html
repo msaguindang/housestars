@@ -6,17 +6,20 @@
     .column-search {
         margin-bottom: 20px;
     }
+    .filter-type {
+        margin-bottom: 15px;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
-        <h4 class="title">Potential Customer Mailing Lists</h4>
+        <h4 class="title">Mailing Lists</h4>
         <div class="pull-right">
             <a class="btn btn-success btn-sm add-btn" ng-click="exportToExcel()">
                 <i class="pe-7s-file"></i>
-                Export to Excel
+                Export All to Excel
             </a>
             <div class="form-inline">
-                <div class=" search-component">
+                <div class="search-component">
                     <label> Search: </label>
                     <input name="search" class="form-control" ng-model='query' />
                     <button class="btn btn-success" ng-click="search()"> <i class="fa fa-search"></i>Submit </button>
@@ -24,6 +27,17 @@
                 </div>
             </div>
         </div>
+        <div class="form-inline filter-type">
+            <label> User Type: </label>
+            <select class="form-control" ng-model="filterType" ng-change="getAllPotentialCustomers()">
+                <option value="potential-customer"> Potential Customer </option>
+                <option value="agency"> Agency </option>
+                <option value="tradesman"> Tradesman </option>
+                <option value="customer"> Customer </option>
+                <option value="agent"> Agent </option>
+            </select>
+        </div>
+        <div class="clearfix"></div>
         <div class="card">
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">

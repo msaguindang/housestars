@@ -184,7 +184,6 @@ class UserController extends Controller
 
         return Response::json([
             'users'  => $members,
-            'q'      => $userSql,
             'length' => (($hasRangeDate || $hasSearch) ? count($members) : $length)
         ], 200);
     }
@@ -440,4 +439,49 @@ class UserController extends Controller
         ]);
     }
 
+    public function getUsersMailingList()
+    {
+        $role = $this->payload->get('filter_type', 'agency');
+        $searchQuery = $this->payload->get('query', '');
+        $field = $this->payload->get('sort', '');
+        $direction = $this->payload->get('direction', '');
+        $searchId = $this->payload->get('id', '');
+        $searchName = $this->payload->get('name', '');
+        $searchEmail = $this->payload->get('email', '');
+        $searchPhone = $this->payload->get('phone', '');
+        $pageNo = $this->payload->get('page_no', 1);
+        $limit = $this->payload->get('limit', 10);
+        $offset = $limit * ($pageNo - 1);
+
+        $mailingList = User::whereNotNull('users.id')
+            ->leftJoin('user_meta', function($join) {
+                $join
+                    ->on('users.id', '=', 'user_meta.user_id')
+                    ->where('meta_name', '=', 'phone');
+            })
+            ->join('role_users', 'role_users.user_id','=','users.id')
+            ->join('roles','roles.id','=','role_users.role_id')
+            ->whereIn('roles.slug', [$role])
+            ->select('users.id', 'users.name', 'users.email', 'roles.name as role', 'user_meta.meta_value as phone')
+            ->where('users.id', 'LIKE', '%'. $searchId.'%')
+            ->where('users.name', 'LIKE', '%'. $searchName.'%')
+            ->where('users.email', 'LIKE', '%'. $searchEmail.'%')
+            ->where('user_meta.meta_value', 'LIKE', '%'. $searchPhone.'%');
+        
+        $mailingListCount = $mailingList->newQuery()->count();
+
+        if (!empty($field)) {
+            $mailingList = $mailingList->orderBy("users.$field", $direction);
+        }
+
+        $mailingList = $mailingList
+                        ->take($limit)
+                        ->skip($offset)
+                        ->get();
+
+        return Response::json([
+            'length' => $mailingListCount,
+            'users'  => $mailingList
+        ]);
+    }
 }

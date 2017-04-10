@@ -1617,6 +1617,7 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
     $scope.direction = '';
     $scope.query = '';
     $scope.sortField = '';
+    $scope.filterType = 'potential-customer';
     $scope.searchField = {id: '', name: '', email: '', phone: ''};
 
     $scope.changePage = function (newPage) {
@@ -1626,7 +1627,9 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
     };
 
     $scope.getAllPotentialCustomers = function () {
-        http.getAllPotentialCustomers({
+        var filter = $scope.filterType;
+
+        var data = {
             page_no: $scope.currentPage,
             limit: $scope.limit,
             direction: $scope.direction,
@@ -1635,22 +1638,37 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
             id: $scope.searchField.id,
             name: $scope.searchField.name,
             email: $scope.searchField.email,
-            phone: $scope.searchField.phone
-        }).then(function (response) {
-            console.log('all potential customers: ', response);
-            $scope.customers = response.data.potential_customers;
-            $scope._customers = angular.copy($scope.customers);
-            $scope.totalItems = response.data.length;
-        });
+            phone: $scope.searchField.phone,
+            filter_type: $scope.filterType
+        };
+
+        if(filter.indexOf('potential-customer') > -1) {            
+            http
+            .getAllPotentialCustomers(data)
+            .then(function (response) {
+                $scope.customers = response.data.potential_customers;
+                $scope._customers = angular.copy($scope.customers);
+                $scope.totalItems = response.data.length;
+            });
+        } else {
+            http
+            .getUsersMailingList(data)
+            .then(function (response) {
+                $scope.customers = response.data.users;
+                $scope._customers = angular.copy($scope.customers);
+                $scope.totalItems = response.data.length;
+            });
+        }
     };
 
     $scope.deleteCustomer = function (customer, index) {
-
-        var confirmation = confirm("Are you sure you want to delete?");
+        var confirmation = confirm("Are you sure you want to delete this?");
+        var filter = $scope.filterType;
 
         if (confirmation) {
             http.deletePotentialCustomer({
-                id: customer.id
+                id: customer.id,
+                isPotentialUser: (filter.indexOf('potential-customer') > -1)
             }).then(function (response) {
                 console.log('potential customer deleted: ', response);
                 $scope._customers.splice(index, 1);
@@ -1673,7 +1691,7 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
 
     $scope.exportToExcel = function () {
 
-        http.exportPotentialCustomers().then(function(response){
+        http.exportPotentialCustomers().then(function(response) {
             console.log('response export: ', response);
             window.location.href=$baseUrl+'/exports/mailing-list.xlsx';
         });
