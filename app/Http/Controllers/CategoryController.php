@@ -30,7 +30,9 @@ class CategoryController extends Controller
         $searchId = $request->get('id', '');
         $searchCat = $request->get('category', '');
         $direction = $request->get('direction', 'asc');
-        $sortQuery = '';
+        $fromDate = $request->get('from', '');
+        $toDate = $request->get('to', '');
+        $sortQuery = $searchDateQuery = '';
 
         if (!$pageNo) {
             $pageNo = 1;
@@ -55,6 +57,12 @@ class CategoryController extends Controller
         if(!empty($searchQuery)) {
             $query .= " OR (id LIKE '%$searchQuery%' OR category LIKE '%$searchQuery%') ";
         }
+        
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $searchDateQuery = " AND (categories.created_at BETWEEN '{$fromDate}' AND '{$toDate}') ";
+        }
 
         $lastWeek = Carbon::now()->subWeek()->toDateString();
         $suburbsSql = "SELECT categories.*,
@@ -73,12 +81,12 @@ class CategoryController extends Controller
                                 um1.meta_name = 'trade' AND 
                                 um1.meta_value = categories.`category` AND 
                                 um1.created_at >= '{$lastWeek}') AS last_week_enlisted
-                        FROM categories {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
+                        FROM categories {$query} {$searchDateQuery} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
         $categories = json_decode(json_encode(DB::select($suburbsSql)), TRUE);
 
         $response = [
             'categories' => $categories,
-            'length'     => (empty($query) ? $length : count($categories))
+            'length'     => (!empty($searchQuery) || !empty($searchDateQuery) ? count($categories) : $length)
         ];
 
         return Response::json($response, 200);

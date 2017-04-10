@@ -865,12 +865,21 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
     $scope.sortField = '';
     $scope.direction = '';
     $scope.searchField = {id:'', category: ''};
+    $scope.fromDate = '';
+    $scope.toDate = '';
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
         $scope.currentPage = newPage;
         $scope.getAllCategories();
     };
+    
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
+    }
 
     $scope.getAllCategories = function () {
         http.getAllCategories({
@@ -880,7 +889,9 @@ housestars.controller('CategoriesCtrl', ['$scope', 'http', '$uibModal', function
             sort: $scope.sortField,
             direction: $scope.direction,
             id: $scope.searchField.id,
-            category: $scope.searchField.category
+            category: $scope.searchField.category,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function (response) {
             console.log('all categories: ', response);
             $scope.categories = response.data.categories;
