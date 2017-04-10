@@ -413,7 +413,9 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
             rooms: $scope.searchField.rooms,
             suburb: $scope.searchField.suburb,
             value: $scope.searchField.value,
-            agent: $scope.searchField.agent
+            agent: $scope.searchField.agent,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function (response) {
 
             console.log('properties', response);
@@ -424,6 +426,13 @@ housestars.controller('PropertiesCtrl', ['$scope', 'http', '$uibModal', function
         });
 
     };
+    
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
+    }
 
     $scope.sort = function(field, direction) {
         if ($scope.sortfield != field) {

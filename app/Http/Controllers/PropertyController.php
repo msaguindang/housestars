@@ -11,6 +11,7 @@ use Sentinel;
 use App\UserMeta;
 use Hash;
 use Response;
+use Carbon\Carbon;
 
 class PropertyController extends Controller
 {
@@ -36,6 +37,9 @@ class PropertyController extends Controller
         $searchSuburb = $request->get('suburb', '');
         $searchValue = $request->get('value', '');
         $searchAgent = $request->get('agent', '');
+        $fromDate = $request->get('from', '');
+        $toDate = $request->get('to', '');
+        $searchDateQuery = '';
 
         if (isset($payload['page_no'])) {
             $pageNo = $payload['page_no'];
@@ -57,12 +61,19 @@ class PropertyController extends Controller
             $paginationQuery = '';
         }
         
-        $propertyCodesSql = "SELECT property_code FROM property_meta WHERE user_id IS NOT NULL GROUP BY property_code {$paginationQuery}";
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $searchDateQuery = " AND (property_meta.created_at BETWEEN '{$fromDate}' AND '{$toDate}') ";
+        }
+
+        $propertyCodesSql = "SELECT property_code FROM property_meta WHERE user_id IS NOT NULL {$searchDateQuery} GROUP BY property_code {$paginationQuery}";
         $propertyCodes = json_decode(json_encode(DB::select($propertyCodesSql)), TRUE);
 
         foreach ($propertyCodes as $propertyCode) {
 
             $propertyMetas = Property::where('property_code', $propertyCode)
+                ->selectRaw('users.name, property_meta.*')
                 ->join('users', 'users.id', '=', 'property_meta.user_id')
                 ->get()
                 ->toArray();
@@ -70,16 +81,16 @@ class PropertyController extends Controller
             $singleRow = [];
 
             foreach ($propertyMetas as $propertyMeta) {
-
                 $vendorName = $propertyMeta['name'];
                 $singleRow[$propertyMeta['meta_name']] = $propertyMeta['meta_value'];
-
+                $created_at = $propertyMeta['created_at'];
             }
 
             $singleRow['vendor-name'] = $vendorName;
             $singleRow['vendor-user-id'] = $propertyMeta['user_id'];
             $singleRow['property-code'] = $propertyMeta['property_code'];
             $singleRow['agent-name'] = '';
+            $singleRow['created_at'] = $created_at;
             $agentUserMeta = null;
 
             if (isset($singleRow['agent'])) {
