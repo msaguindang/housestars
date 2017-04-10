@@ -452,6 +452,8 @@ class UserController extends Controller
         $searchName = $this->payload->get('name', '');
         $searchEmail = $this->payload->get('email', '');
         $searchPhone = $this->payload->get('phone', '');
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
         $pageNo = $this->payload->get('page_no', 1);
         $limit = $this->payload->get('limit', 10);
         $offset = $limit * ($pageNo - 1);
@@ -465,12 +467,19 @@ class UserController extends Controller
             ->join('role_users', 'role_users.user_id','=','users.id')
             ->join('roles','roles.id','=','role_users.role_id')
             ->whereIn('roles.slug', [$role])
-            ->select('users.id', 'users.name', 'users.email', 'roles.name as role', 'user_meta.meta_value as phone')
+            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'roles.name as role', 'user_meta.meta_value as phone')
             ->where('users.id', 'LIKE', '%'. $searchId.'%')
             ->where('users.name', 'LIKE', '%'. $searchName.'%')
             ->where('users.email', 'LIKE', '%'. $searchEmail.'%')
             ->where('user_meta.meta_value', 'LIKE', '%'. $searchPhone.'%');
         
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            
+            $mailingList->whereBetween('users.created_at', [$fromDate, $toDate]);
+        }
+
         $mailingListCount = $mailingList->newQuery()->count();
 
         if (!empty($field)) {

@@ -1343,6 +1343,8 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
     $scope.query = '';
     $scope.sortField = '';
     $scope.direction = '';
+    $scope.fromDate = '';
+    $scope.toDate = '';
     $scope.searchField = {name: '', type: '', priority: ''};
 
     $scope.changePage = function (newPage) {
@@ -1359,7 +1361,9 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
             direction: $scope.direction,
             name: $scope.searchField.name,
             type: $scope.searchField.type,
-            priority: $scope.searchField.priority
+            priority: $scope.searchField.priority,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function (response) {
             $scope.advertisements = response.data.advertisements;
             $scope._advertisements = angular.copy($scope.advertisements);
@@ -1378,6 +1382,13 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
             $scope._advertisements[index].status = response.data.status;
         })
 
+    };
+
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
     };
 
     $scope.deleteAdvertisement = function (advertisement, index) {
@@ -1489,6 +1500,8 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
         $scope.query = '';
         $scope.sortField = '';
         jQuery("th > input").val("");
+        $scope.fromDate = '';
+        $scope.toDate = '';
         $scope.searchField = {name: '', type: '', priority: ''};
         $scope.getAllAdvertisements();
     };
@@ -1659,6 +1672,8 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
     $scope.query = '';
     $scope.sortField = '';
     $scope.filterType = 'potential-customer';
+    $scope.fromDate = '';
+    $scope.toDate = '';
     $scope.searchField = {id: '', name: '', email: '', phone: ''};
 
     $scope.changePage = function (newPage) {
@@ -1680,7 +1695,9 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
             name: $scope.searchField.name,
             email: $scope.searchField.email,
             phone: $scope.searchField.phone,
-            filter_type: $scope.filterType
+            filter_type: $scope.filterType,
+            from: $scope.fromDate,
+            to: $scope.toDate
         };
 
         if(filter.indexOf('potential-customer') > -1) {            
@@ -1701,6 +1718,14 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
             });
         }
     };
+    
+    $scope.changeUserType = function()
+    {
+        $scope.fromDate = '';
+        $scope.toDate = '';
+        $scope.query = '';
+        $scope.getAllPotentialCustomers();
+    };
 
     $scope.deleteCustomer = function (customer, index) {
         var confirmation = confirm("Are you sure you want to delete this?");
@@ -1715,6 +1740,13 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
                 $scope._customers.splice(index, 1);
             });
         }
+    };
+
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
     };
 
     $scope.toggleStatus = function (item, index) {
@@ -1759,6 +1791,8 @@ housestars.controller('MailingListsCtrl', ['$scope', 'http', 'validator', functi
         $scope.direction = '';
         $scope.query = '';
         $scope.sortField = '';
+        $scope.fromDate = '';
+        $scope.toDate = '';
         jQuery("th > input").val("");
         $scope.searchField = {id: '', name: '', email: '', phone: ''};
         $scope.getAllPotentialCustomers();

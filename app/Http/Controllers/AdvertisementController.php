@@ -37,7 +37,9 @@ class AdvertisementController extends Controller
         $searchName = $this->payload->get('name', '');
         $searchType = $this->payload->get('type', '');
         $searchPriority = $this->payload->get('priority', '');
-        $sortQuery = '';
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
+        $sortQuery = $searchDateQuery = '';
         $pageNo = 1;
         $limit = 10;
 
@@ -65,12 +67,19 @@ class AdvertisementController extends Controller
         if (!empty($searchQuery)) {
             $query .= " OR (name LIKE '%$searchQuery%' OR type LIKE '%$searchQuery%') ";
         }
+        
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $searchDateQuery = " AND (created_at BETWEEN '{$fromDate}' AND '{$toDate}') ";
+        }
 
         $sql = "SELECT
 				  *
 				FROM
 				  advertisements
                 {$query}
+                {$searchDateQuery}
                 {$sortQuery}
 				LIMIT {$limit}
 				OFFSET {$offset}";
@@ -79,7 +88,7 @@ class AdvertisementController extends Controller
 
         $response = [
             'advertisements' => $ads,
-            'length'         => (empty($query) ? $length : count($ads))
+            'length'         => (!empty($searchQuery) || !empty($searchDateQuery) ? count($ads) : $length)
         ];
 
         return Response::json($response, 200);

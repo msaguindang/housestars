@@ -2,9 +2,23 @@
     .column-search {
         margin-bottom: 20px;
     }
-    .search-component-wrapper {
-        margin: 10px 0 20px 0;
-
+    .daterange-label {
+        line-height: 40px;
+        float: left;
+    }
+    .input-group {
+        float: left;
+        width: 30%;
+        margin: 0px 5px 0px 5px;
+    }
+    .column-search {
+        margin-bottom: 10px;
+    }
+    .header-action {
+        margin-top: 20px;
+    }
+    thead th {
+        text-align: center;
     }
 </style>
 <div class="row">
@@ -17,8 +31,24 @@
             </a>
         </div>
         <div class="clearfix"></div>
-        <div class="clearfix form-inline search-component-wrapper">
-            <div class="search-component pull-right">
+        <div class="clearfix form-inline">
+            <div class="form-inline col-xs-7">
+                <label class="daterange-label"> Date created range: </label>
+                <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                    <input class="form-control" ng-model="fromDate" placeholder="Search Date From"/>
+                    <span class="input-group-addon" style="cursor: pointer">
+                    <i class="fa fa-lg fa-calendar"></i>
+                    </span>
+                </div>
+                <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                    <input class="form-control" ng-model="toDate" placeholder="Search Date To"/>
+                    <span class="input-group-addon" style="cursor: pointer">
+                    <i class="fa fa-lg fa-calendar"></i>
+                    </span>
+                </div>
+                <button class="btn btn-success" ng-click="getAllAdvertisements()"> <i class="fa fa-calendar"></i> Search </button>
+            </div>
+            <div class="search-component col-xs-5">
                 <label> Search: </label>
                 <input name="search" class="form-control" ng-model='query' />
                 <button class="btn btn-success" ng-click="search()"> <i class="fa fa-search"></i>Submit </button>
@@ -47,7 +77,12 @@
                         <span ng-click="sort('priority', 'asc')" class="fa fa-caret-up"></span>
                         <span ng-click="sort('priority', 'desc')" class="fa fa-caret-down"></span>
                     </th>
-
+                    <th class="clickable">
+                        <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'priority')" /> -->
+                        Date Created
+                        <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
+                        <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
+                    </th>
                     <th>Action</th>
                     </thead>
                     <tbody>
@@ -56,7 +91,7 @@
                         <td>{{ advertisement.name }}</td>
                         <td>{{ advertisement.type }}</td>
                         <td>{{ advertisement.priority }}</td>
-
+                        <td> {{ toJsDate(advertisement.created_at) | date : 'mediumDate' }} </td>
                         <td class="btn-actions">
                             <a uib-tooltip="Edit Advertisement" href="" ng-click="editAdvertisement(advertisement, $index)" class="edit">
                                 <i class="pe-7s-note"></i>

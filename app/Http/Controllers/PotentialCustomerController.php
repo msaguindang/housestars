@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\PotentialCustomer;
 use App\UserMeta;
+use Carbon\Carbon;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Response;
@@ -98,7 +99,9 @@ class PotentialCustomerController extends Controller
         $searchName = $this->payload->get('name', '');
         $searchEmail = $this->payload->get('email', '');
         $searchPhone = $this->payload->get('phone', '');
-        $sortQuery = '';
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
+        $sortQuery = $searchDateQuery = '';
         $pageNo = 1;
         $limit = 10;
 
@@ -126,11 +129,18 @@ class PotentialCustomerController extends Controller
         if (!empty($searchQuery)) {
             $query .= " OR (id LIKE '%$searchQuery%' OR name LIKE '%$searchQuery%' OR email LIKE '%$searchQuery%') ";
         }
+        
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $searchDateQuery = " AND (created_at BETWEEN '{$fromDate}' AND '{$toDate}') ";
+        }
 
         $sql = "SELECT 
                     * FROM 
         			potential_customers 
                     {$query} 
+                    {$searchDateQuery} 
                     {$sortQuery} 
         			LIMIT {$limit} 
         			OFFSET {$offset}";
@@ -139,7 +149,7 @@ class PotentialCustomerController extends Controller
 
         $response = [
             'potential_customers' => $potential_customers,
-            'length'              => (empty($query) ? $length : count($potential_customers))
+            'length'              => (!empty($searchQuery) || !empty($searchDateQuery) ? count($potential_customers) : $length)
         ];
         
         return Response::json($response, 200);
