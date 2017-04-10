@@ -1115,6 +1115,8 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.direction = '';
     $scope.query = '';
     $scope.sortField = '';
+    $scope.fromDate = '';
+    $scope.toDate = '';
     $scope.searchField = {id: '', name: '', availability: '', max_tradie: ''};
 
     $scope.changePage = function (newPage) {
@@ -1133,7 +1135,9 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
             id: $scope.searchField.id,
             name: $scope.searchField.name,
             availability: $scope.searchField.availability,
-            max_tradie: $scope.searchField.max_tradie
+            max_tradie: $scope.searchField.max_tradie,
+            from: $scope.fromDate,
+            to: $scope.toDate
         }).then(function (response) {
             console.log('all suburbs: ', response);
             $scope.suburbs = response.data.suburbs;
@@ -1236,6 +1240,13 @@ housestars.controller('SuburbsCtrl', ['$scope', 'http', '$uibModal', function ($
         $scope.searchField = {id: '', name: '', availability: '', max_tradie: ''};
         $scope.getAllSuburbs();
     };
+
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
+    }
 
     $scope.searchByField = function(event, model)
     {

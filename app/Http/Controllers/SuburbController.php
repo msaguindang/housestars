@@ -7,10 +7,12 @@ use App\Property;
 use App\Suburbs;
 use App\User;
 use App\UserMeta;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Sentinel;
 use Response;
+
 
 class SuburbController extends Controller
 {
@@ -31,8 +33,9 @@ class SuburbController extends Controller
         $searchName = $this->payload->get('name', '');
         $searchAvail = $this->payload->get('availability', '');
         $searchMax = $this->payload->get('max_tradie', '');
-
-        $sortQuery = '';
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
+        $sortQuery = $searchDateQuery = '';
         
         if (!$pageNo) {
             $pageNo = 1;
@@ -58,12 +61,18 @@ class SuburbController extends Controller
             $query .= " OR (id LIKE '%$searchQuery%' OR name LIKE '%$searchQuery%' OR max_tradie LIKE '%$searchQuery%' OR availability LIKE '%$searchQuery%') ";
         }
 
-        $suburbsSql = "SELECT * FROM suburbs {$query} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
+        if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $searchDateQuery = " AND (suburbs.created_at BETWEEN '{$fromDate}' AND '{$toDate}') ";
+        }
+
+        $suburbsSql = "SELECT * FROM suburbs {$query} {$searchDateQuery} {$sortQuery} LIMIT {$limit} OFFSET {$offset}";
         $suburbs = json_decode(json_encode(DB::select($suburbsSql)), TRUE);
 
         $response = [
             'suburbs' => $suburbs,
-            'length'     => (empty($query) ? $suburbsLength : count($suburbs))
+            'length'     => (!empty($searchQuery) || !empty($searchDateQuery) ?  count($suburbs) : $suburbsLength)
         ];
 
         return Response::json($response, 200);
