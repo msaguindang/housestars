@@ -34,7 +34,8 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.sortField = '';
     $scope.fromDate = '';
     $scope.toDate = '';
-    $scope.searchField = {name: '', email: '', role: '', type: '', start: '', end: ''};
+    $scope.searchField = {name: '', email: '', role: '', type: '', start: '', end: '', created_at: ''};
+    $scope.dateField = 'created_at';
 
     $scope.getAllUsers = function () {
         
@@ -52,12 +53,21 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
             type: $scope.searchField.type,
             start: $scope.searchField.start,
             end: $scope.searchField.end,
+            created_at: $scope.searchField.created_at,
+            date_field: $scope.dateField
         }).then(function (response) {
             $scope.users = response.data.users;
             $scope._users = angular.copy($scope.users);
             $scope.totalItems = response.data.length;
         });
     };
+
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
+    }
 
     $scope.editUser = function (user, index) {
 

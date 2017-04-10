@@ -57,7 +57,10 @@ class UserController extends Controller
         $searchType = $request->get('type', '');
         $searchStart = $request->get('start', '');
         $searchEnd = $request->get('end', '');
+        $searchCreatedAt = $request->get('created_at', '');
         $query = $request->get('query', '');
+        $searchDateField = $request->get('date_field', '');
+        $isSearchCreatedAt = ($searchDateField == 'created_at');
         $hasSearch = (!empty($query) || !empty($searchName) || !empty($searchEmail) || !empty($searchRole) || !empty($searchStart) || !empty($searchEnd));
 
         switch ($role) {
@@ -100,7 +103,7 @@ class UserController extends Controller
 
         $paginateQuery = " LIMIT {$limit} OFFSET {$offset} ";
 
-        $searchQuery = $userQueryBuilder->searchQueryBuilder($query, $searchName, $searchEmail, $searchRole);
+        $searchQuery = $userQueryBuilder->searchQueryBuilder($query, $searchName, $searchEmail, $searchRole, $searchCreatedAt, $isSearchCreatedAt, $fromDate, $toDate);
 
         if (!empty($field)) {
             if (in_array($field, ['name', 'email', 'role_name'])) {
@@ -143,10 +146,10 @@ class UserController extends Controller
 
                 if ($customer) {
                     $subscriptions = $customer->subscriptions->data;
-                    if ($hasRangeDate && count($subscriptions) > 0) {
-                        $subscriptionStartDate = $subscriptions[0]->current_period_start;
-                        $subscriptionEndDate   = $subscriptions[0]->current_period_end;
-                        if(($subscriptionStartDate < strtotime($fromDate) || $subscriptionStartDate > strtotime($toDate))) {
+                    if ($hasRangeDate && count($subscriptions) > 0 && !$isSearchCreatedAt) {
+                        $subscriptionDate = $subscriptions[0]->{$searchDateField}; //$subscriptions[0]->current_period_start;
+                        // $subscriptionEndDate   = $subscriptions[0]->current_period_end;
+                        if(($subscriptionDate < strtotime($fromDate) || $subscriptionDate > strtotime($toDate))) {
                             continue;
                         }
                     } if (count($subscriptions) > 0) {
@@ -162,7 +165,7 @@ class UserController extends Controller
             $members[] = $user;
         }
         
-        if ($hasRangeDate || $hasSearch) {
+        if (($hasRangeDate || $hasSearch) && !$isSearchCreatedAt) {
             $members = collect($members)->filter(function ($value, $key) {
                 return (!is_null($value['sub_start']) && !empty($value['sub_start']));
             })->values()->all();
