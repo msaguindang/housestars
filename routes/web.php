@@ -354,11 +354,10 @@ Route::group(['prefix' => ''], function () {
             Route::post('update', 'UserController@updateUser');
             Route::get('export', 'UserController@exportUsers');
             Route::get('count-by-role', 'UserController@getTotalCountByRole');
+            Route::get('total-billed', 'UserController@getTotalBilledPayment');
 
             Route::group(['prefix' => 'subscription'], function () {
-
                 Route::post('extend', 'UserController@extendUserSubscription');
-
             });
 
             Route::get('role', 'UserController@getAllRoles');

@@ -43,6 +43,34 @@
         }
     }
 
+    /**/
+    .daterange-label {
+        line-height: 40px;
+        float: left;
+    }
+    .input-group {
+        float: left;
+        width: 30%;
+        margin: 0px 5px 0px 5px;
+    }
+    .column-search {
+        margin-bottom: 10px;
+    }
+    .header-action {
+        margin-top: 20px;
+    }
+    thead th {
+        text-align: center;
+    }
+    .search-payments > div {
+        margin-bottom: 10px;
+    }
+    .total-billed-search-wrapper {
+       /* border: 1px solid #E0E0E0;
+        border-radius: 10px;
+        padding: 5px;
+        margin-left: 10px;*/
+    }
 </style>
 
 <div class="row">
@@ -50,10 +78,20 @@
         <h4 class="title">Report</h4>
     </div>
 </div>
-
+<div class="clearfix">
+    <div class="row form-inline search-payments">
+        <div class="col-xs-12">
+            <label> Report cards filter: </label>
+            <select class="form-control" ng-change="changeReportCards()" ng-model="reportDate">
+                <option value="all"> All </option>
+                <option value="subWeek"> This time last week </option>
+                <option value="subYear"> This time last year </option>
+            </select>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12">
-
         <div class="report-item-panel panel">
             <div class="panel-heading">
                 <h4 class="panel-title">Total Agency</h4>
@@ -89,7 +127,7 @@
 
         <div class="report-item-panel panel">
             <div class="panel-heading">
-                <h4 class="panel-title">Averate Agent Commission</h4>
+                <h4 class="panel-title">Avg Agent Commission</h4>
             </div>
             <div class="panel-body">
                 <p class="total">
@@ -110,6 +148,36 @@
         </div>
 
     </div>
+</div>
+
+<div class="row" ng-init="showDate=false">
+    <div ng-show="showDate" class="col-xs-12">
+        <div class="form-group total-billed-search-wrapper">
+            <div class="report-item-panel panel">
+                <div class="panel-heading">
+                    <h4 class="panel-title">Total Billed: 
+                        <span ng-hide="fetchingPayments"> {{ totalBilled }} </span>
+                        <i ng-class="{'fa fa-spin fa-spinner' : fetchingPayments }"></i>
+                    </h4>
+                </div>
+            </div>
+            <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                <input class="form-control" ng-model="fromDate" placeholder="Search Date From"/>
+                <span class="input-group-addon" style="cursor: pointer">
+                    <i class="fa fa-lg fa-calendar"></i>
+                </span>
+            </div>
+            <div class="input-group" datepicker date-format="yyyy-MM-dd">
+                <input class="form-control" ng-model="toDate" placeholder="Search Date To"/>
+                <span class="input-group-addon" style="cursor: pointer">
+                    <i class="fa fa-lg fa-calendar"></i>
+                </span>
+            </div>
+            <button class="btn btn-success" ng-click="fetchTotalBilled()"> <i class="fa fa-calendar"></i> Payments </button>
+            <button class="btn btn-warning" ng-click="showDate=!showDate"> Cancel </button>
+        </div>
+    </div>
+    <button class="btn btn-info" ng-click="showDate=!showDate" ng-hide="showDate"> Payments </button>
 </div>
 
 <div class="row">

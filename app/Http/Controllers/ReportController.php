@@ -116,33 +116,63 @@ class ReportController extends Controller
     {
 
         $payload = $this->payload->all();
+        $reportDate = $this->payload->get('reportDate', 'all');
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
+        $transactionsCount = 0;
+        $subDate = '';
 
-        $totalTransactions = Transactions::all()->count();
+        if($reportDate != 'all') {
+            $subDate = Carbon::now()->{$reportDate}()->toDateString();
+            $transactionsCount = Transactions::where(DB::raw("DATE_FORMAT(transactions.created_at, '%Y-%m-%d')"), '<', $subDate)->count();
+        } else if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $transactionsCount = Transactions::whereBetween('transactions.created_at', [$fromDate, $toDate])->count();
+        }else {
+            $transactionsCount = Transactions::count();
+        }
 
         return Response::json([
-            'total' => $totalTransactions
+            'total'  => $transactionsCount,
+            'subDate'=> $reportDate
         ], 200);
-
     }
 
     public function getAverageAgentCommission()
     {
-        $sql = "SELECT 
-                  TRUNCATE(AVG(user_meta.meta_value),2) AS average_agent_commission
-                FROM
-                  user_meta 
-                  INNER JOIN users ON users.id = user_meta.user_id
-                  INNER JOIN role_users ON role_users.`user_id` = user_meta.user_id
-                  INNER JOIN roles ON role_users.`role_id` = roles.`id`
-                WHERE meta_name = 'base-commission' 
-                AND meta_value REGEXP '^[0-9]+$'";
+
+      $reportDate = $this->payload->get('reportDate', 'all');
+      $fromDate = $this->payload->get('from', '');
+      $toDate = $this->payload->get('to', '');
+      $searchDateQuery = '';
+
+      if($reportDate != 'all') {
+        $subDate = Carbon::now()->{$reportDate}()->toDateString();
+        $searchDateQuery = " AND DATE_FORMAT(user_meta.created_at, '%Y-%m-%d') < '{$subDate}' ";
+      } else if(!empty($fromDate) && !empty($toDate)) {
+          $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+          $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+          $searchDateQuery = " AND (user_meta.created_at BETWEEN '{$fromDate}' AND '{$toDate}') ";
+      }
+
+      $sql = "SELECT 
+                TRUNCATE(AVG(user_meta.meta_value),2) AS average_agent_commission
+              FROM
+                user_meta 
+                INNER JOIN users ON users.id = user_meta.user_id
+                INNER JOIN role_users ON role_users.`user_id` = user_meta.user_id
+                INNER JOIN roles ON role_users.`role_id` = roles.`id`
+              WHERE meta_name = 'base-commission'
+              {$searchDateQuery}
+              AND meta_value REGEXP '^[0-9]+$'";
 
         $avgAgentCommissionObject = DB::select($sql);
 
         $avgAgentCommssion = $avgAgentCommissionObject[0]->average_agent_commission;
 
         return Response::json([
-            'average' => $avgAgentCommssion
+            'average' => (is_null($avgAgentCommssion) ? 0 : $avgAgentCommssion)
         ], 200);
     }
 }

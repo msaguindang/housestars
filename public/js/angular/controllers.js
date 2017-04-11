@@ -1826,6 +1826,7 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.totalTransactions = 0;
     $scope.totalCustomerCount = 0;
     $scope.averageAgentCommission = 0;
+    $scope.totalBilled = 0;
 
     $scope.years = [];
 
@@ -1836,6 +1837,10 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.totalItems = 0;
     $scope.currentPage = 1;
     $scope.limit = 10;
+    $scope.reportDate = 'all';
+    $scope.fetchingPayments = false;
+    $scope.fromDate = '';
+    $scope.toDate = '';
 
     $scope.changePage = function (newPage) {
         console.log('new page: ', newPage);
@@ -1883,7 +1888,10 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getTotalAgency = function () {
 
         http.getUserCountByRole({
-            role: 'agency'
+            role: 'agency',
+            reportDate: $scope.reportDate,
+            // from: $scope.fromDate,
+            // to: $scope.toDate
         }).then(function(response){
             console.log('agency count: ', response);
             $scope.totalAgencyCount = response.data.count;
@@ -1894,18 +1902,23 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getTotalTradesman = function () {
 
         http.getUserCountByRole({
-            role: 'tradesman'
+            role: 'tradesman',
+            reportDate: $scope.reportDate,
+            // from: $scope.fromDate,
+            // to: $scope.toDate
         }).then(function(response){
             console.log('tradesman count: ', response);
             $scope.totalTradesmanCount = response.data.count;
         });
-
     };
 
     $scope.getTotalCustomer = function () {
 
         http.getUserCountByRole({
-            role: 'customer'
+            role: 'customer',
+            reportDate: $scope.reportDate,
+            // from: $scope.fromDate,
+            // to: $scope.toDate
         }).then(function(response){
             console.log('customer count: ', response);
             $scope.totalCustomerCount = response.data.count;
@@ -1915,7 +1928,11 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
 
     $scope.getTotalTransactions = function () {
 
-        http.getTotalTransactions().then(function(response){
+        http.getTotalTransactions({
+            reportDate: $scope.reportDate,
+            // from: $scope.fromDate,
+            // to: $scope.toDate
+        }).then(function(response){
             console.log('transaction count: ', response);
             $scope.totalTransactions = response.data.total;
         });
@@ -1924,7 +1941,11 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
 
     $scope.getAverageAgentCommission = function () {
 
-        http.getAverageAgentCommission().then(function(response){
+        http.getAverageAgentCommission({
+            reportDate: $scope.reportDate,
+            // from: $scope.fromDate,
+            // to: $scope.toDate
+        }).then(function(response){
             console.log('average agent commission: ', response);
             $scope.averageAgentCommission = response.data.average+"%";
         });
@@ -1943,16 +1964,45 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
             $scope.getReport();
         }
     };
-    
+
+    $scope.changeReportCards = function()
+    {
+        $scope.getTotalAgency();
+        $scope.getTotalTradesman();
+        $scope.getTotalCustomer();
+        $scope.getTotalTransactions();
+        $scope.getAverageAgentCommission();
+    };
+
+    $scope.fetchTotalBilled = function()
+    {
+        var startDate = $scope.fromDate,
+            endDate   = $scope.toDate;
+
+        if (startDate && endDate) {
+            $scope.getTotalBilled();
+        }
+    };
+
+    $scope.getTotalBilled = function () {
+        $scope.fetchingPayments = true;
+        http.getTotalBilledPayment({
+            from: $scope.fromDate,
+            to: $scope.toDate
+        }).then(function(response) {
+            $scope.totalBilled = response.data.totalBilled
+            $scope.fetchingPayments = false;
+        });
+    };
+
     // initialize
     $scope.getReport();
     $scope.getYears();
-    $scope.getTotalAgency();
     $scope.getTotalTradesman();
     $scope.getTotalAgency();
     $scope.getTotalCustomer();
     $scope.getTotalTransactions();
     $scope.getAverageAgentCommission();
-
+    $scope.getTotalBilled();
 
 }]);

@@ -147,8 +147,7 @@ class UserController extends Controller
                 if ($customer) {
                     $subscriptions = $customer->subscriptions->data;
                     if ($hasRangeDate && count($subscriptions) > 0 && !$isSearchCreatedAt) {
-                        $subscriptionDate = $subscriptions[0]->{$searchDateField}; //$subscriptions[0]->current_period_start;
-                        // $subscriptionEndDate   = $subscriptions[0]->current_period_end;
+                        $subscriptionDate = $subscriptions[0]->{$searchDateField}; 
                         if(($subscriptionDate < strtotime($fromDate) || $subscriptionDate > strtotime($toDate))) {
                             continue;
                         }
@@ -423,22 +422,28 @@ class UserController extends Controller
     public function getTotalCountByRole()
     {
         $payload = $this->payload->all();
-
+        $reportDate = $this->payload->get('reportDate', 'all');
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
         $role = $payload['role'];
 
         $members = User::where('users.id','!=',null)
             ->join('role_users', 'role_users.user_id','=','users.id')
             ->join('roles','roles.id','=','role_users.role_id')
             ->whereIn('roles.slug', [$role])
-            ->select('users.name','users.email','roles.name as role')
-            ->orderBy('roles.name')
-            ->get()
-            ->toArray();
+            ->select('users.name','users.email','roles.name as role');
 
-        $membersCount = count($members);
+        if($reportDate != 'all') {
+            $subDate = Carbon::now()->{$reportDate}()->toDateString();
+            $members->where(DB::raw("DATE_FORMAT(users.created_at, '%Y-%m-%d')"), '<', $subDate);
+        } else if(!empty($fromDate) && !empty($toDate)) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
+            $members->whereBetween('users.created_at', [$fromDate, $toDate]);
+        }
 
         return Response::json([
-            'count' => $membersCount
+            'count' => $members->count()
         ]);
     }
 
@@ -494,6 +499,34 @@ class UserController extends Controller
         return Response::json([
             'length' => $mailingListCount,
             'users'  => $mailingList
+        ]);
+    }
+
+    public function getTotalBilledPayment()
+    {
+        $fromDate = $this->payload->get('from', '');
+        $toDate = $this->payload->get('to', '');
+        $users = User::whereNotNull('customer_id')->where('customer_id', '<>', '');
+        $totalBilled = 0;
+        $hasDateRange = (!empty($fromDate) && !empty($toDate));
+        Stripe::setApiKey($this->stripeKey);
+        
+        foreach($users->get() as $user)
+        {
+            if ($customer = Customer::retrieve($user->customer_id)) {
+                $charges = $customer->charges();
+                foreach ($charges->data as $data) {
+                    if( $data->paid && $hasDateRange && ($data->created >= strtotime($fromDate) && $data->created <= strtotime($toDate)) ) {
+                        $totalBilled = $totalBilled + ($data->amount/100);
+                    }else if($data->paid) {
+                        $totalBilled = $totalBilled + ($data->amount/100);
+                    }
+                }
+            }
+        }
+
+        return Response::json([
+            'totalBilled' => $totalBilled
         ]);
     }
 }
