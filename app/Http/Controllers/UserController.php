@@ -507,8 +507,14 @@ class UserController extends Controller
         $fromDate = $this->payload->get('from', '');
         $toDate = $this->payload->get('to', '');
         $users = User::whereNotNull('customer_id')->where('customer_id', '<>', '');
-        $totalBilled = 0;
         $hasDateRange = (!empty($fromDate) && !empty($toDate));
+        $totalBilled = 0;
+
+        if($hasDateRange) {
+            $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00');
+            $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00');
+        }
+
         Stripe::setApiKey($this->stripeKey);
         
         foreach($users->get() as $user)
@@ -516,9 +522,10 @@ class UserController extends Controller
             if ($customer = Customer::retrieve($user->customer_id)) {
                 $charges = $customer->charges();
                 foreach ($charges->data as $data) {
-                    if( $data->paid && $hasDateRange && ($data->created >= strtotime($fromDate) && $data->created <= strtotime($toDate)) ) {
+                    $dateCreated = Carbon::createFromTimestamp($data->created);
+                    if( $data->paid && $hasDateRange && ($dateCreated->gte($fromDate) && $dateCreated->lt($toDate)) ) {
                         $totalBilled = $totalBilled + ($data->amount/100);
-                    }else if($data->paid) {
+                    }else if($data->paid && !$hasDateRange) {
                         $totalBilled = $totalBilled + ($data->amount/100);
                     }
                 }
