@@ -76,6 +76,12 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <th class='clickable'>
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'created_at')"/>
+                            Date Created
+                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class='clickable'>
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
                             Name
                             <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
@@ -92,12 +98,6 @@
                             Role
                             <span ng-click="sort('role_name', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('role_name', 'desc')" class="fa fa-caret-down"></span>
-                        </th>
-                        <th class='clickable'>
-                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'created_at')"/>
-                            Date Created
-                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
-                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class='clickable'>
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
@@ -121,11 +121,11 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="user in _users | filter:query">
-
+                        
+                        <td> {{ toJsDate(user.created_at) | date : 'mediumDate' }} </td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.role_name }}</td>
-                        <td> {{ toJsDate(user.created_at) | date : 'mediumDate' }} </td>
                         <td>{{ user.subscription_type }}</td>
                         <td>{{ user.sub_start }}</td>
                         <td>{{ user.sub_end }}</td>

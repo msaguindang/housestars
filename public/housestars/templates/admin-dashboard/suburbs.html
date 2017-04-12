@@ -57,6 +57,12 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <th class="clickable">
+                            <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'max_tradie')" /> -->
+                            Date Created
+                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'id')" />
                             Id
                             <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
@@ -80,17 +86,13 @@
                             <span ng-click="sort('max_tradie', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('max_tradie', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-                        <th class="clickable">
-                            <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'max_tradie')" /> -->
-                            Date Created
-                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
-                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
-                        </th>
                         <th>Action</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="suburb in _suburbs | filter : query">
-
+                        <td>
+                            {{ toJsDate(suburb.created_at) | date: 'mediumDate' }}
+                        </td>
                         <td>{{ suburb.id }}</td>
                         <td>{{ suburb.name }}</td>
                         <td>
@@ -105,9 +107,6 @@
                                 <i class="fa fa-save text-success" ng-click="saveMaxTradie(suburb)"></i>-->
                             </div>
 
-                        </td>
-                        <td>
-                            {{ toJsDate(suburb.created_at) | date: 'mediumDate' }}
                         </td>
                         <td class="btn-actions">
 

@@ -59,39 +59,39 @@
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
-                    <th class="clickable">
-                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
-                        Name
-                        <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">
-                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
-                        Type
-                        <!-- <span ng-click="sort('type', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('type', 'desc')" class="fa fa-caret-down"></span> -->
-                    </th>
-                    <th class="clickable">
-                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'priority')" />
-                        Priority
-                        <span ng-click="sort('priority', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('priority', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">
-                        <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'priority')" /> -->
-                        Date Created
-                        <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th>Action</th>
+                        <th class="clickable">
+                            <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'priority')" /> -->
+                            Date Created
+                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
+                            Name
+                            <span ng-click="sort('name', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
+                            Type
+                            <!-- <span ng-click="sort('type', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('type', 'desc')" class="fa fa-caret-down"></span> -->
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'priority')" />
+                            Priority
+                            <span ng-click="sort('priority', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('priority', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="advertisement in _advertisements | filter : query">
-
+                        
+                        <td> {{ toJsDate(advertisement.created_at) | date : 'mediumDate' }} </td>
                         <td>{{ advertisement.name }}</td>
                         <td>{{ advertisement.type }}</td>
                         <td>{{ advertisement.priority }}</td>
-                        <td> {{ toJsDate(advertisement.created_at) | date : 'mediumDate' }} </td>
                         <td class="btn-actions">
                             <a uib-tooltip="Edit Advertisement" href="" ng-click="editAdvertisement(advertisement, $index)" class="edit">
                                 <i class="pe-7s-note"></i>

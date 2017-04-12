@@ -59,56 +59,55 @@
             <div class="content table-responsive table-full-width">
                 <table class="table table-hover table-striped">
                     <thead>
-
-                    <th class="clickable">
-                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'id')" />
-                        Id
-                        <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('id', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">
-                        <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'category')" />
-                        Category
-                        <span ng-click="sort('category', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('category', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th class="clickable">
-                        <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'category')" /> -->
-                        Date Creadted
-                        <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
-                        <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
-                    </th>
-                    <th>
-                        Enlisted (Total)
-                    </th>
-                    <th>
-                        Enlisted (Last Week)
-                    </th>
-                    <th>Action</th>
+                        <th class="clickable">
+                            <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'category')" /> -->
+                            Date Creadted
+                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'id')" />
+                            Id
+                            <span ng-click="sort('id', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('id', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'category')" />
+                            Category
+                            <span ng-click="sort('category', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('category', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th>
+                            Enlisted (Total)
+                        </th>
+                        <th>
+                            Enlisted (Last Week)
+                        </th>
+                        <th>Action</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="category in _categories | filter : query">
+                        <tr ng-repeat="category in _categories | filter : query">
 
-                        <td>{{ category.id }}</td>
-                        <td>{{ category.category }}</td>
-                        <td> {{ toJsDate(category.created_at) | date : 'mediumDate' }} </td>
-                        <td> {{ category.total_enlisted }} </td>
-                        <td> {{ category.last_week_enlisted }} </td>
-                        <td class="btn-actions">
+                            <td> {{ toJsDate(category.created_at) | date : 'mediumDate' }} </td>
+                            <td>{{ category.id }}</td>
+                            <td>{{ category.category }}</td>
+                            <td> {{ category.total_enlisted }} </td>
+                            <td> {{ category.last_week_enlisted }} </td>
+                            <td class="btn-actions">
 
-                            <a uib-tooltip="Edit Category" href="" ng-click="editCategory(category, $index)" class="edit">
-                                <i class="pe-7s-note"></i>
-                            </a>
+                                <a uib-tooltip="Edit Category" href="" ng-click="editCategory(category, $index)" class="edit">
+                                    <i class="pe-7s-note"></i>
+                                </a>
 
-                            <a uib-tooltip="Disable Category" href="" ng-click="toggleStatus(category, $index)" class="disable">
-                                <i ng-if="category.status == 1" class="pe-7s-check text-success"></i>
-                                <i ng-if="category.status == 0" class="pe-7s-close-circle text-danger"></i>
-                            </a>
-                            <a uib-tooltip="Delete Category" href="" ng-click="deleteCategory(category, $index)" class="delete">
-                                <i class="pe-7s-trash text-danger"></i>
-                            </a>
-                        </td>
-                    </tr>
+                                <a uib-tooltip="Disable Category" href="" ng-click="toggleStatus(category, $index)" class="disable">
+                                    <i ng-if="category.status == 1" class="pe-7s-check text-success"></i>
+                                    <i ng-if="category.status == 0" class="pe-7s-close-circle text-danger"></i>
+                                </a>
+                                <a uib-tooltip="Delete Category" href="" ng-click="deleteCategory(category, $index)" class="delete">
+                                    <i class="pe-7s-trash text-danger"></i>
+                                </a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 

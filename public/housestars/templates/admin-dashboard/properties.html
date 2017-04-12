@@ -60,6 +60,12 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <th class="clickable">
+                            <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'created_at')" /> -->
+                            Date Created
+                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'name')" />
                             Name
                             <span ng-click="sort('vendor-name', 'asc')" class="fa fa-caret-up"></span>
@@ -96,18 +102,13 @@
                             <span ng-click="sort('agent-name', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('agent-name', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-                        <th class="clickable">
-                            <!-- <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'created_at')" /> -->
-                            Date Created
-                            <span ng-click="sort('created_at', 'asc')" class="fa fa-caret-up"></span>
-                            <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
-                        </th>
                         <th class="clickable">Process Status</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
                     <tr ng-repeat="property in _properties | filter : query">
 
+                        <td> {{ toJsDate(property['created_at']) | date : 'mediumDate' }} </td>
                         <td>{{ property['vendor-name'] }}</td> <!-- vendor-name -->
                         <td>{{ property['property-type'] }}</td> <!-- property-type -->
                         <td>{{ property['number-rooms'] }}</td> <!-- number-rooms -->
@@ -120,7 +121,6 @@
                                 {{ property['agent-name'] }}
                             </a>
                         </td>
-                        <td> {{ toJsDate(property['created_at']) | date : 'mediumDate' }} </td>
                         <td><a class="btn btn-sm" ng-click="updateProcessStatus(property, $index)" ng-class="{ 'btn-success':(property['process']=='Completed') }">{{ (property['process']==null||property['process']=='')?'N/A':property['process'] }}</a></td>
                         <td class="btn-actions">
                             <a uib-tooltip="Edit Listing" href="" ng-click="editProperty(property, $index)" class="edit-property">
