@@ -71,7 +71,7 @@ class EndingSubscription extends Command
       $subscriptions = $customer->subscriptions->data;
       if (count($subscriptions)) {
         $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
-        if ($nextMonth < $endDate) {
+        if ($nextMonth == $endDate) {
           $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
           $this->sendEmail($user->name, $user->email, $formattedEndDate);
           echo "*";
