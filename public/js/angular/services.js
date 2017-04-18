@@ -843,6 +843,54 @@ housestars.factory('http', ['$http', '$q', '$rootScope' , function($http, $q, $r
             });
         },
 
+        getAllVideos: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.get('admin/videos', data).then(function(response) {
+
+                    resolve({
+                        data: response.data,
+                        status: 200,
+                        statusText: "OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        saveVideo: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.postUpload('admin/videos/save', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
+        deleteVideo: function (data) {
+            var self = this;
+            return $q(function(resolve, reject) {
+                self.post('admin/videos/delete', data).then(function(response) {
+
+                    resolve({
+                        data:response.data,
+                        status:200,
+                        statusText:"OK"
+                    });
+                }, function (data) {
+                    reject(data);
+                });
+            });
+        },
+
         extendUserSubscription: function (data) {
             var self = this;
             return $q(function(resolve, reject) {

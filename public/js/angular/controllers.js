@@ -9,19 +9,13 @@ var housestars = angular.module('houseStarsControllers', ['720kb.datepicker']);
 
 housestars.controller('MainCtrl', ['$scope', function ($scope) {
 
-    console.log('mainCtrl');
-
 }]);
 
 housestars.controller('DashboardCtrl', ['$scope', function ($scope) {
 
-    console.log('dashboardCtrl');
-
 }]);
 
 housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
-
-    console.log('membersCtrl');
 
     $scope.users = [];
     $scope._users = angular.copy($scope.users);
@@ -110,7 +104,6 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
         if (deleteSingleUser) {
 
             http.deleteUser(user).then(function (response) {
-                console.log('user deleted: ', response);
                 $scope._users.splice(index, 1);
                 $scope.users.splice(index, 1);
             });
@@ -162,7 +155,6 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     };
 
     $scope.changePage = function (newPage) {
-        console.log('new page: ', newPage);
         $scope.currentPage = newPage;
         $scope.getAllUsers();
     };
@@ -2005,4 +1997,246 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getAverageAgentCommission();
     $scope.getTotalBilled();
 
+}]);
+
+housestars.controller('VideosCtrl', ['$scope', 'http', 'validator', '$uibModal', function ($scope, http, validator, $uibModal) {
+    $scope.fromDate = '';
+    $scope.toDate = '';
+    $scope.videos = [];
+    $scope._videos = angular.copy($scope.reports);
+
+    $scope.query = '';
+    $scope.direction = 'asc';
+    $scope.sortField = 'id';
+    $scope.filter = '';
+    $scope.currentPage = 1;
+    $scope.videoAction = 'add';
+    $scope.videoData = {};
+    $scope.searchField = {url: '', page: '', created_at: ''};
+
+
+    $scope.getAllVideos = function()
+    {
+        http.getAllVideos({
+            from: $scope.fromDate,
+            to: $scope.toDate,
+            query: $scope.query,
+            page: $scope.searchField.page,
+            url: $scope.searchField.url,
+            created_at: $scope.searchField.created_at,
+            sort: $scope.sortField,
+            direction: $scope.direction,
+            filter: $scope.filter
+        }).then(function(response) {
+            $scope.videos = response.data.videos;
+            $scope._videos = angular.copy($scope.videos);
+        });
+    };
+
+    $scope.changePage = function (newPage) {
+        $scope.currentPage = newPage;
+        $scope.getAllVideos();
+    };
+
+    $scope.searchByField = function(event, model)
+    {
+        $scope.searchField[model] = event.target.value;
+
+        if (event.keyCode == 13) {
+            $scope.getAllVideos();
+        }
+    };
+
+    $scope.toJsDate = function(str) {
+        if (!str) {
+            return null;
+        }
+        return new Date(str);
+    }
+
+    $scope.sort = function(column, direction)
+    {
+        $scope.direction = direction;
+        $scope.sortField = column;
+        $scope.getAllVideos();
+    };
+
+    $scope.reset = function()
+    {
+        $scope.fromDate = '';
+        $scope.toDate = '';
+        $scope.query = '';
+        $scope.direction = 'asc';
+        $scope.sort = 'id';
+        $scope.filter = '';
+        $scope.videoAction = 'add';
+        $scope.videoData = {};
+        jQuery('th > input').val('');
+        $scope.searchField = {url: '', page: '', created_at: ''};
+        $scope.getAllVideos();
+    };
+
+    $scope.toggleStatus = function(item, index) {
+        http.toggleStatus({
+            value: item.id,
+            status: item.status,
+            table: 'videos'
+        }).then(function (response) {
+            $scope._videos[index].status = response.data.status;
+        });
+    };
+
+    $scope.deleteVideo = function(video, index) {
+        var deleteSingleVideo = confirm('Are you sure you want to remove this video?');
+
+        if (deleteSingleVideo) {
+
+            http.deleteVideo(video).then(function (response) {
+                $scope._videos.splice(index, 1);
+                $scope.videos.splice(index, 1);
+            });
+            
+        }
+    };
+
+    $scope.openVideoModal = function () {
+        $scope.videoAction = 'add';
+        $scope.videoData = {};
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'video-modal.html',
+            controller: 'VideoModalCtrl',
+            // size: 'lg',
+            resolve: {
+                videoData: function () {
+                    return $scope.videoData;
+                },
+                videoAction: function() {
+                    return $scope.videoAction;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (response) {
+
+            switch (response.status) {
+                case 'success':
+                    $scope.changePage($scope.currentPage);
+                    break;
+            }
+
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+
+        });
+
+    };
+
+    $scope.openEditVideoModal = function (item, index) {
+        item.status = item.status + '';
+        $scope.videoAction = 'edit';
+        $scope.videoData = item;
+
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'edit-video-modal.html',
+            controller: 'VideoModalCtrl',
+            // size: 'lg',
+            resolve: {
+                videoData: function () {
+                    return $scope.videoData;
+                },
+                videoAction: function() {
+                    return $scope.videoAction;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (response) {
+
+            switch (response.status) {
+                case 'success':
+                    $scope.changePage($scope.currentPage);
+                    break;
+            }
+
+            console.log('Success Modal dismissed at: ' + new Date());
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+
+    $scope.getAllVideos();
+}]);
+
+housestars.controller('VideoModalCtrl', ['$scope', 'videoData', 'videoAction', '$uibModalInstance', 'http', 'validator', function ($scope, videoData, videoAction, $uibModalInstance, http, validator) {
+
+    $scope.errors = {};
+    $scope.$watch('errors', function (errors) {
+        if (errors !== undefined) {
+            validator.errors = errors;
+        }
+    });
+
+    $scope.hasError = validator.hasError;
+    $scope.showErrorBlock = validator.showErrorBlock;
+
+    // if (typeof $scope.videoAction == "undefined") {
+    //     $scope.videoAction = 'add';
+    // }
+    
+    console.log('action: ', $scope.videoAction, $scope.videoData);
+
+    $scope.videoData = videoData;
+
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss("cancel");
+    };
+
+    $scope.close = function (response) {
+
+        var response = response || {};
+
+        $uibModalInstance.close(response);
+    };
+
+
+    $scope.saveVideo = function (action, videoId) {
+
+        if (typeof $scope.videoData == "undefined") {
+            $scope.videoData = {
+                url: '',
+                page: '',
+                status: ''
+            }
+        }
+
+        if (typeof $scope.videoData.url == "undefined") {
+            $scope.videoData.url = '';
+        }
+
+        if (typeof $scope.videoData.page == "undefined") {
+            $scope.videoData.page = '';
+        }
+
+        var formData = new FormData();
+        
+        if(typeof action != "undefined" && action.indexOf('edit') > -1) {
+            formData.append('id', videoId);
+        }
+
+        formData.append('url', $scope.videoData.url);
+        formData.append('page', $scope.videoData.page);
+        formData.append('status', $scope.videoData.status);
+        
+        http.saveVideo(formData).then(function (response) {
+            $scope.errors = {};
+            $scope.close({
+                status: 'success'
+            });
+        }, function (errResponse) {
+            $scope.errors = errResponse.validator;
+        });
+    };
 }]);

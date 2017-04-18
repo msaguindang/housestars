@@ -422,6 +422,12 @@ Route::group(['prefix' => ''], function () {
 
         });
 
+        Route::group(['prefix' => 'videos'], function () {
+            Route::get('/', 'VideoController@getAllVideos');
+            Route::post('/delete', 'VideoController@deleteVideo');
+            Route::post('/save', 'VideoController@saveVideo');
+        });
+
         Route::group(['prefix' => 'report'], function () {
 
             Route::get('tradesman/earnings', 'ReportController@getTradesmanEarningsReport');

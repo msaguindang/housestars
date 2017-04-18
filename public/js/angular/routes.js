@@ -30,7 +30,8 @@
                     'test',
                     'advertisements',
                     'mailing-lists',
-                    'report'
+                    'report',
+                    'videos'
                 ];
 
                 setRoutes = function (route) {

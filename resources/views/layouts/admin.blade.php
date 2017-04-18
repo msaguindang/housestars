@@ -198,6 +198,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#/videos"> <!-- #/mailing-lists -->
+                        <i class="pe-7s-video"></i>
+                        <p>Videos</p>
+                    </a>
+                </li>
+                <li>
                     <a href="#/report"> <!-- #/report -->
                         <i class="pe-7s-graph1"></i>
                         <p>Report</p>
