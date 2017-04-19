@@ -168,7 +168,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>Rate a Trade or Service</h4>
+						<h4>Review Page</h4>
 						<div class="col-xs-8  col-xs-offset-2 tradesman-info">
 							<div class="col-xs-4 tradesman-profile">
 								<img src="assets/thumb-profile.jpg" alt="Tradesman Name" id="tradesmanPic">
@@ -177,7 +177,7 @@
 								<h4 id="tradesmanName">John Joe Smith</h4>
 							</div>
 						</div>
-						<p class="bordered-desc">Your Honest answers really help other customers</p>
+						<p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 						<form id="reviewForm" enctype="multipart/form-data" method="post" action="/create">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID">
@@ -239,7 +239,7 @@
 								<p class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tips for writing a great review </br> </br> <b>DO</b> </br> - Describe your overall experience</br> - Tell us if you would recommended the business to others</br>-Talk about the strengths and weaknesses of the experience </br></br> <b>DON'T</b></br>-Lie. Be as honest as possible</br>-Use bad language or personal insults</br>-Be racist, sexist or vulgar" data-html="true">Tips for writing a good review</p>
 							 </br></br>
 							</div>
-							<button type="submit" class="btn hs-primary">Submit Reviews</button>
+							<button type="submit" class="btn hs-primary">Submit Review</button>
 						</form>
 					</div>
 				</div>
@@ -292,7 +292,7 @@
           </div>
           <div class="modal-body">
             <h4>Review Us!</h4>
-            <p class="bordered-desc">Your Honest answers really help other customers</p>
+            <p class="bordered-desc">Your honest answers really help other customers</p>
 
             <form id="reviewForm" enctype="multipart/form-data">
               {{csrf_field() }}
