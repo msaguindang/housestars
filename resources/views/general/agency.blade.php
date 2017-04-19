@@ -52,7 +52,8 @@
     <section id="featured-video">
     	<div class="container">
     		<div class="row">
-    			<iframe width="100%" height="530" src="https://www.youtube.com/embed/2nRhVpc9F3I" frameborder="0" allowfullscreen></iframe>
+          @php ($url = isset($data['video']) ? $data['video'] : 'https://www.youtube.com/embed/2nRhVpc9F3I')
+    			<iframe width="100%" height="530" src="{{ $url }}" frameborder="0" allowfullscreen></iframe>
     		</div>
     	</div>
     </section>

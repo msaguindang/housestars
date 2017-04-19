@@ -20,6 +20,7 @@ use App\PotentialCustomer;
 use App\Services\PotentialCustomerService;
 use App\Services\ReviewService;
 use App\User;
+use App\Video;
 
 class MainController extends Controller
 {
@@ -126,6 +127,10 @@ class MainController extends Controller
 
                 }
             }
+        }
+
+        if($video = Video::active('agency')->first()) {
+            $data['video'] = $video->url;
         }
 
         return view('general.agency')->with('data', $data);
