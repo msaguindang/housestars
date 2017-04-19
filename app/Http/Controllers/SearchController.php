@@ -12,6 +12,7 @@ use App\UserMeta;
 use App\User;
 use App\Role;
 use App\Category;
+use App\Advertisement;
 use Response;
 use Mail;
 
@@ -102,7 +103,7 @@ class SearchController extends Controller
         $tradesmen = array();
 
         foreach ($trade as $key) {
-          if(isset($key->user_id)){
+          if(isset($key->user_id)) {
             $verifyRole =  RoleUsers::where('user_id', $key->user_id)->first();
             if($verifyRole['role_id'] ==  3) {
               if(!in_array($key->user_id, $tradesmen)){
@@ -138,7 +139,14 @@ class SearchController extends Controller
 
         $data['cat'] = $category;
         $data['suburb'] = preg_replace('/[0-9]/', '', $suburb). ' (' . preg_replace('/\D+/', '', $suburb) . ')';
-       return view('general.tradesman-listings')->with('data', $data);
+
+        $hasPriority = (Advertisement::hasPriority(0)->exists() && Advertisement::hasPriority(1)->exists());
+        
+        if ($ads = Advertisement::getByPage('tradies')->randomPriority($hasPriority)->inRandomOrder()->first()) {
+          $data['ads'] = $ads;
+        }
+                
+        return view('general.tradesman-listings')->with('data', $data);
     }
 
 

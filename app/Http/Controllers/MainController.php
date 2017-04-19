@@ -52,14 +52,11 @@ class MainController extends Controller
 
     public function home(Request $request)
     {
-        $ads = Advertisement::get();
+        $ads = Advertisement::getByPage('home')->get();
         // $numAds =  count($ads['728x90'] );
         // $index = rand(0, $numAds);
         $x = 0; $z = 0; $y = 0;
-
-        if($request->has('rate'))
-            dd($request->all());
-
+        
         foreach ($ads  as $ad) {
             switch ($ad->type) {
                 case '728x90':
