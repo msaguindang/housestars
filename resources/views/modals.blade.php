@@ -466,9 +466,9 @@
           <div class="modal-body">
             <h4>
             	<!-- There are currently no </br>listed tradesman in your area -->
-            	Do you know a great Tradie?
+            	THERE ARE CURRENTLY NO BUSINESSES LISTED IN THIS CATEGORY FOR YOUR SUBURB
             </h4>
-            </br><p class="sub-heading">If you know a tradesman that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+            </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
               {{csrf_field() }}
               <input type="hidden" id="search-suburb" name="suburb" />
