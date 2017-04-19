@@ -91,7 +91,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>Rate a Trade or Service</h4>
+						<h4>RATE A TRADE, SERVICE, OR AGENT</h4>
 						<p class="sub-heading">
 							Verify you are a real customer by authenticating with an email address or facebook
 						</p>
