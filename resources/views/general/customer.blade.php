@@ -202,6 +202,10 @@
                         <input type="radio" id="b14" name="estimated-price" value="$1,900,000 - $2,000,000">
                         <label for="b14">$1,900,000 - $2,000,000</label>
                       </li>
+                      <li>
+                        <input type="radio" id="b15" name="estimated-price" value="$2,000,000 +">
+                        <label for="b15">$2,000,000 +</label>
+                      </li>
                   </ul>
               </div>
         		</div>
