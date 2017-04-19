@@ -131,13 +131,12 @@
         			<label>Property Type</label>
               <select id="select-type" name="property-type"  class="demo-default" placeholder="Select or Type in Property">
                 <option value=""></option>
-                <option value="Condominium">Condominium</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Foreclosures">Foreclosures</option>
-                <option value="Development">Development</option>
                 <option value="House">House</option>
+                <option value="Unit">Unit</option>
+                <option value="Apartment">Apartment</option>
                 <option value="Land">Land</option>
+                <option value="Townhouse">Townhouse</option>
+                <option value="Other">Other</option>
               </select>
         		</div>
         		<div class="col-xs-4">
