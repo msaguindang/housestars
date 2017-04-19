@@ -1963,7 +1963,7 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
         $scope.getTotalTradesman();
         $scope.getTotalCustomer();
         $scope.getTotalTransactions();
-        $scope.getAverageAgentCommission();
+        // $scope.getAverageAgentCommission();
     };
 
     $scope.fetchTotalBilled = function()
@@ -1994,7 +1994,7 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getTotalAgency();
     $scope.getTotalCustomer();
     $scope.getTotalTransactions();
-    $scope.getAverageAgentCommission();
+    // $scope.getAverageAgentCommission();
     $scope.getTotalBilled();
 
 }]);
