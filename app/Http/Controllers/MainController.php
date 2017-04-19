@@ -148,11 +148,18 @@ class MainController extends Controller
 
     public function verifyPotentialUser(Request $request)
     {
+        
         $email = $request->get('email');
         session()->forget('email');
         session()->forget('user_type');
         $potentialCustomer = PotentialCustomer::where('email', $email)->first();
         $user = User::where('email', $email)->first();
+
+        
+        // $validator = $this->validate($request, [
+        //     'email' => 'required|email'
+        // ]);
+        
 
         if (!is_null($potentialCustomer) && $potentialCustomer->status == 1) {
             session()->put('email', $email);

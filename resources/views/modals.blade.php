@@ -100,7 +100,7 @@
 								{{csrf_field() }}
 								<div id="error"></div>
 								<div id="login-error"></div>
-								<input type="text" name="email" placeholder="Email" required>
+								<input type="email" name="email" placeholder="Email" required style="width: 100%;padding: 15px;border: 1px solid #e0e0e0;">
 								<!-- <input type="password" name="password" placeholder="Password" class="no-top"> -->
 								<button class="btn hs-primary" data-text="Proceed"> Proceed </button>
 							</form>
