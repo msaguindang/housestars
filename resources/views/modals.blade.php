@@ -136,8 +136,8 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>Rate a Trade or Service</h4>
-						<p class="sub-heading">Choose a tradesman or an agency.</p>
+						<h4>RATE A TRADE, SERVICE, OR AGENCY</h4>
+						<p class="sub-heading">Enter the business name you wish to select</p>
 						<form method="post" action="/review">
 				            <input type="hidden" name="_token" value="{{csrf_token()}}">
 							<!-- dropdown list tradesmen and services -->
@@ -153,7 +153,7 @@
 								</ul>
 							</div>
 							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
-							<button type="submit" class="btn hs-primary">Rate Tradesman Now</button>
+							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
 					</div>
 				</div>
