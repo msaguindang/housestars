@@ -91,7 +91,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>Rate a Trade or Service</h4>
+						<h4>RATE A TRADE, SERVICE, OR AGENT</h4>
 						<p class="sub-heading">
 							Verify you are a real customer by authenticating with an email address or facebook
 						</p>
@@ -100,7 +100,7 @@
 								{{csrf_field() }}
 								<div id="error"></div>
 								<div id="login-error"></div>
-								<input type="text" name="email" placeholder="Email" required>
+								<input type="email" name="email" placeholder="Email" required style="width: 100%;padding: 15px;border: 1px solid #e0e0e0;">
 								<!-- <input type="password" name="password" placeholder="Password" class="no-top"> -->
 								<button class="btn hs-primary" data-text="Proceed"> Proceed </button>
 							</form>
@@ -136,8 +136,8 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>Rate a Trade or Service</h4>
-						<p class="sub-heading">Choose a tradesman or an agency.</p>
+						<h4>RATE A TRADE, SERVICE, OR AGENCY</h4>
+						<p class="sub-heading">Enter the business name you wish to select</p>
 						<form method="post" action="/review">
 				            <input type="hidden" name="_token" value="{{csrf_token()}}">
 							<!-- dropdown list tradesmen and services -->
@@ -153,7 +153,7 @@
 								</ul>
 							</div>
 							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
-							<button type="submit" class="btn hs-primary">Rate Tradesman Now</button>
+							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
 					</div>
 				</div>
@@ -168,7 +168,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>Rate a Trade or Service</h4>
+						<h4>Review Page</h4>
 						<div class="col-xs-8  col-xs-offset-2 tradesman-info">
 							<div class="col-xs-4 tradesman-profile">
 								<img src="assets/thumb-profile.jpg" alt="Tradesman Name" id="tradesmanPic">
@@ -177,7 +177,7 @@
 								<h4 id="tradesmanName">John Joe Smith</h4>
 							</div>
 						</div>
-						<p class="bordered-desc">Your Honest answers really help other customers</p>
+						<p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 						<form id="reviewForm" enctype="multipart/form-data" method="post" action="/create">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID">
@@ -239,7 +239,7 @@
 								<p class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tips for writing a great review </br> </br> <b>DO</b> </br> - Describe your overall experience</br> - Tell us if you would recommended the business to others</br>-Talk about the strengths and weaknesses of the experience </br></br> <b>DON'T</b></br>-Lie. Be as honest as possible</br>-Use bad language or personal insults</br>-Be racist, sexist or vulgar" data-html="true">Tips for writing a good review</p>
 							 </br></br>
 							</div>
-							<button type="submit" class="btn hs-primary">Submit Reviews</button>
+							<button type="submit" class="btn hs-primary">Submit Review</button>
 						</form>
 					</div>
 				</div>
@@ -292,7 +292,7 @@
           </div>
           <div class="modal-body">
             <h4>Review Us!</h4>
-            <p class="bordered-desc">Your Honest answers really help other customers</p>
+            <p class="bordered-desc">Your honest answers really help other customers</p>
 
             <form id="reviewForm" enctype="multipart/form-data">
               {{csrf_field() }}
@@ -466,9 +466,9 @@
           <div class="modal-body">
             <h4>
             	<!-- There are currently no </br>listed tradesman in your area -->
-            	Do you know a great Tradie?
+            	THERE ARE CURRENTLY NO BUSINESSES LISTED IN THIS CATEGORY FOR YOUR SUBURB
             </h4>
-            </br><p class="sub-heading">If you know a tradesman that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+            </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
               {{csrf_field() }}
               <input type="hidden" id="search-suburb" name="suburb" />
