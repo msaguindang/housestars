@@ -2014,7 +2014,7 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getTotalCustomer();
     $scope.getTotalTransactions();
     // $scope.getAverageAgentCommission();
-    $scope.getTotalBilled();
+    // $scope.getTotalBilled();
 
 }]);
 
