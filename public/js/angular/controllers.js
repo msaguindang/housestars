@@ -62,6 +62,16 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
         }
         return new Date(str);
     }
+    
+    $scope.getProfileLink = function(user)
+    {
+        var role = (user.role_name).toLowerCase();
+        
+        if (role.indexOf('agency') > -1 || role.indexOf('tradesman') > -1) {
+            return '/profile/' + role + '/' + user.id;
+        }
+        return '/';
+    };
 
     $scope.editUser = function (user, index) {
 
@@ -835,6 +845,12 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         if (event.keyCode == 13) {
             $scope.search();
         }
+    };
+
+    $scope.getProfileLink = function(id)
+    {
+        var role = 'tradesman';
+        return '/public-profile/' + id;
     };
 
     // initialize

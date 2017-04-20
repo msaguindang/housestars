@@ -123,7 +123,9 @@
                     <tr ng-repeat="user in _users | filter:query">
                         
                         <td> {{ toJsDate(user.created_at) | date : 'mediumDate' }} </td>
-                        <td>{{ user.name }}</td>
+                        <td>
+                            <a href="{{ getProfileLink(user) }}" target="_blank">{{ user.name }}</a>
+                        </td>
                         <td>{{ user.email }}</td>
                         <td>{{ user.role_name }}</td>
                         <td>{{ user.subscription_type }}</td>

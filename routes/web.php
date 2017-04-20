@@ -291,7 +291,12 @@ Route::group(['prefix' => ''], function () {
         'uses' => 'SearchController@search'
     ]);
 
-    Route::get('/profile/{role}/{id}', 'ProfileController@profile');
+    Route::get('/profile/{role}/{id}',[
+        'as'   => 'profile.role.id',
+        'uses' => 'ProfileController@profile'
+    ]);
+    
+    Route::get('/public-profile/{id}', 'ProfileController@getPublicProfile');
 
     Route::post('/helpful', 'ProfileController@helpful');
 
