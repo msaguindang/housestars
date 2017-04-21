@@ -125,6 +125,7 @@
         			<input type="text" name="name">
         			<label>Suburb</label>
         			<select id="select-state" name="suburb"  class="demo-default"></select>
+              <span class="fa fa-spin fa-spinner hidden" style="position:relative;top:-37px;z-index:1;float:right;right:35px;"></span>
         		</div>
         		<div class="col-xs-4">
         			<label>Email Address</label>
@@ -226,9 +227,11 @@
               <span class="separator"></span>
           </div>
           <div class="col-xs-6 col-xs-offset-3">
-            <p>House Stars has been developed to maximize the return on selling your property. It uses trid-and-tested methods, as well as modern technology to track your progress and help you get the best results for your sale.</p>
-            <input type="text" id="select-state" name="term"
-                    class="required-input" required>
+            <p>
+              Enter your suburb below to see which local agents are available to help you sell your property.
+            </p>
+            <input type="text" id="view-local-agents" name="term" class="required-input" required />
+            <span class="fa fa-spin fa-spinner hidden" style="position:relative;top:-37px;z-index:1;float:right;right:35px;"></span>
           </div>
         </div>
       </div>
@@ -238,17 +241,17 @@
 
 @section('scripts')
 <script type="text/javascript">
-$('#select-type').selectize({
-    create: true,
-    sortField: 'text'
-});
+    $('#select-type').selectize({
+        create: true,
+        sortField: 'text'
+    });
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}'
         },
     });
 
-    $('#select-state').selectize({
+    $('#select-state, #view-local-agents').selectize({
         maxItems: 1,
         valueField: 'value',
         searchField: ['name', 'id'],
@@ -262,17 +265,22 @@ $('#select-type').selectize({
         },
         load: function(query, callback) {
             if (!query.length) return callback();
+            $elements = $('#select-state, #view-local-agents');
             $.ajax({
                 url: '{{ url('tradesman/search-suburb') }}',
                 type: 'GET',
                 data: {
                     query: query
                 },
+                beforeSend: function() {
+                    $elements.siblings('span.fa-spin').removeClass('hidden');
+                },
                 error: function() {
+                    $elements.siblings('span.fa-spin').addClass('hidden');
                     callback();
                 },
                 success: function(res) {
-                    console.log('results: ', res);
+                    $elements.siblings('span.fa-spin').addClass('hidden');
                     callback(res.suburbs);
                     //callback(res.repositories.slice(0, 10));
                 }
