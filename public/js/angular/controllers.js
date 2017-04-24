@@ -62,6 +62,16 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
         }
         return new Date(str);
     }
+    
+    $scope.getProfileLink = function(user)
+    {
+        var role = (user.role_name).toLowerCase();
+        
+        if (role.indexOf('agency') > -1 || role.indexOf('tradesman') > -1) {
+            return '/profile/' + role + '/' + user.id;
+        }
+        return '/';
+    };
 
     $scope.editUser = function (user, index) {
 
@@ -837,6 +847,12 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         }
     };
 
+    $scope.getProfileLink = function(id)
+    {
+        var role = 'tradesman';
+        return '/public-profile/' + id;
+    };
+
     // initialize
     $scope.getAllReviews();
     $scope.getAllReviewees();
@@ -1324,8 +1340,6 @@ housestars.controller('SuburbAvailabilityCtrl', ['$scope', 'currentSuburb', '$ui
 
 housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', function ($scope, http, $uibModal) {
 
-    console.log('AdvertisementsCtrl');
-
     $scope.advertisements = [];
     $scope._advertisements = angular.copy($scope.advertisements);
 
@@ -1337,7 +1351,7 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
     $scope.direction = '';
     $scope.fromDate = '';
     $scope.toDate = '';
-    $scope.searchField = {name: '', type: '', priority: ''};
+    $scope.searchField = {name: '', type: '', priority: '', page: ''};
 
     $scope.changePage = function (newPage) {
         $scope.currentPage = newPage;
@@ -1354,6 +1368,7 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
             name: $scope.searchField.name,
             type: $scope.searchField.type,
             priority: $scope.searchField.priority,
+            page: $scope.searchField.page,
             from: $scope.fromDate,
             to: $scope.toDate
         }).then(function (response) {
@@ -1494,7 +1509,7 @@ housestars.controller('AdvertisementsCtrl', ['$scope', 'http', '$uibModal', func
         jQuery("th > input").val("");
         $scope.fromDate = '';
         $scope.toDate = '';
-        $scope.searchField = {name: '', type: '', priority: ''};
+        $scope.searchField = {name: '', type: '', priority: '', page: ''};
         $scope.getAllAdvertisements();
     };
 
@@ -1545,7 +1560,8 @@ housestars.controller('AdvertisementModalCtrl', ['$scope', 'advertisementData', 
             $scope.advertisementData = {
                 name: '',
                 type: '',
-                priority: ''
+                priority: '',
+                page: ''
             }
         }
 
@@ -1561,6 +1577,7 @@ housestars.controller('AdvertisementModalCtrl', ['$scope', 'advertisementData', 
         formData.append('name', $scope.advertisementData.name);
         formData.append('type', $scope.advertisementData.type);
         formData.append('priority', $scope.advertisementData.priority);
+        formData.append('page', $scope.advertisementData.page);
         formData.append('adFile', $scope.adFile);
 
         http.saveAdvertisement(formData).then(function (response) {
@@ -1615,7 +1632,8 @@ housestars.controller('EditAdvertisementModalCtrl', ['$scope', 'advertisementDat
             $scope.advertisementData = {
                 name: '',
                 type: '',
-                priority: ''
+                priority: '',
+                page: ''
             }
         }
 
@@ -1632,6 +1650,7 @@ housestars.controller('EditAdvertisementModalCtrl', ['$scope', 'advertisementDat
         formData.append('name', $scope.advertisementData.name);
         formData.append('type', $scope.advertisementData.type);
         formData.append('priority', $scope.advertisementData.priority);
+        formData.append('page', $scope.advertisementData.page);
         formData.append('adFile', $scope.adFile);
 
         http.updateAdvertisement(formData).then(function (response) {
@@ -1963,7 +1982,7 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
         $scope.getTotalTradesman();
         $scope.getTotalCustomer();
         $scope.getTotalTransactions();
-        $scope.getAverageAgentCommission();
+        // $scope.getAverageAgentCommission();
     };
 
     $scope.fetchTotalBilled = function()
@@ -1994,8 +2013,8 @@ housestars.controller('ReportCtrl', ['$scope', 'http', 'validator', function ($s
     $scope.getTotalAgency();
     $scope.getTotalCustomer();
     $scope.getTotalTransactions();
-    $scope.getAverageAgentCommission();
-    $scope.getTotalBilled();
+    // $scope.getAverageAgentCommission();
+    // $scope.getTotalBilled();
 
 }]);
 

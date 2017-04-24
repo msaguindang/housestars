@@ -141,17 +141,11 @@
 						<form method="post" action="/review">
 				            <input type="hidden" name="_token" value="{{csrf_token()}}">
 							<!-- dropdown list tradesmen and services -->
-							<div class="btn-group dropdown">
-								<button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-								<ul class="dropdown-menu">
-									@foreach($businesses as $business)
-									<li>
-										<label for="{{$business->user_id}}">{{$business->meta_value}}</label>
-										<input type="radio" id="{{$business->user_id}}" name="businessId" value="{{$business->user_id}}" required>
-									</li>
-									@endforeach
-								</ul>
-							</div>
+							<select name="businessId" id='select-rate-business' required>
+								@foreach($businesses as $business)
+									<option class='item' id="{{$business->user_id}}" value="{{$business->user_id}}"> {{$business->meta_value}} </option>
+								@endforeach
+							</select>
 							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
 							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
@@ -1038,3 +1032,16 @@
 			</div>
 		</div>
 	</div>
+
+@section('scripts')
+	@parent
+	<script>
+		$("#select-rate-business").selectize({
+			render: {
+				option: function(item, escape) {
+					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
+				}
+			}
+		});
+	</script>
+@endsection

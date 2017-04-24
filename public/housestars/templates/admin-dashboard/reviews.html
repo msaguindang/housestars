@@ -118,8 +118,16 @@
                     <tr ng-repeat="review in _reviews | filter:query">
 
                         <td> {{ toJsDate(review.created_at) | date : 'mediumDate' }} </td>
-                        <td>{{ review.reviewee_name }}</td>
-                        <td>{{ review.reviewer_name }}</td>
+                        <td>
+                            <a href="{{ getProfileLink(review.reviewee_id) }}" target="_blank">
+                                {{ review.reviewee_name }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ getProfileLink(review.reviewer_id) }}" target="_blank">
+                                {{ review.reviewer_name }}
+                            </a>
+                        </td>
 
                         <td>{{ review.title }}</td>
                         <td>{{ review.content }}</td>

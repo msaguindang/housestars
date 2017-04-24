@@ -72,6 +72,12 @@
                             <span ng-click="sort('name', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'page')" />
+                            Page
+                            <span ng-click="sort('page', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('page', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
                             Type
                             <!-- <span ng-click="sort('type', 'asc')" class="fa fa-caret-up"></span>
@@ -90,6 +96,7 @@
                         
                         <td> {{ toJsDate(advertisement.created_at) | date : 'mediumDate' }} </td>
                         <td>{{ advertisement.name }}</td>
+                        <td>{{ advertisement.page  | capitalize }}</td>
                         <td>{{ advertisement.type }}</td>
                         <td>{{ advertisement.priority }}</td>
                         <td class="btn-actions">
@@ -177,6 +184,22 @@
 
         <div class="row form-item">
             <div class="col-xs-4">
+                <label>Page</label>
+            </div>
+            <div class="col-xs-8">
+                <select class="form-control" ng-model="advertisementData.page">
+                    <option value="">Select Page</option>
+                    <option value="home">Home</option>
+                    <option value="tradies">Tradies</option>
+                </select>
+                <span class="help-block has-error {{showErrorBlock('page', 'hidden')}}">
+                    <strong>{{errors.page[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
                 <label>Priority</label>
             </div>
             <div class="col-xs-8">
@@ -250,6 +273,22 @@
                 </select>
                 <span class="help-block has-error {{showErrorBlock('type', 'hidden')}}">
                     <strong>{{errors.type[0]}}</strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="row form-item">
+            <div class="col-xs-4">
+                <label>Page</label>
+            </div>
+            <div class="col-xs-8">
+                <select class="form-control" ng-model="advertisementData.page">
+                    <option value="">Select Page</option>
+                    <option value="home">Home</option>
+                    <option value="tradies">Tradies</option>
+                </select>
+                <span class="help-block has-error {{showErrorBlock('page', 'hidden')}}">
+                    <strong>{{errors.page[0]}}</strong>
                 </span>
             </div>
         </div>

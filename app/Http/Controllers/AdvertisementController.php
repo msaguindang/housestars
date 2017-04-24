@@ -36,6 +36,7 @@ class AdvertisementController extends Controller
         $direction = $this->payload->get('direction', '');
         $searchName = $this->payload->get('name', '');
         $searchType = $this->payload->get('type', '');
+        $searchPage = $this->payload->get('page', '');
         $searchPriority = $this->payload->get('priority', '');
         $fromDate = $this->payload->get('from', '');
         $toDate = $this->payload->get('to', '');
@@ -62,10 +63,10 @@ class AdvertisementController extends Controller
             $sortQuery = " ORDER BY {$field} {$direction}";
         }
         
-        $query = " WHERE (name LIKE '%$searchName%' AND type LIKE '%$searchType%' AND priority LIKE '%$searchPriority%')";
+        $query = " WHERE (name LIKE '%$searchName%' AND type LIKE '%$searchType%' AND priority LIKE '%$searchPriority%' AND page LIKE '%$searchPage%')";
 
         if (!empty($searchQuery)) {
-            $query .= " OR (name LIKE '%$searchQuery%' OR type LIKE '%$searchQuery%') ";
+            $query .= " OR (name LIKE '%$searchQuery%' OR type LIKE '%$searchQuery%' OR page LIKE '%$searchQuery%') ";
         }
         
         if(!empty($fromDate) && !empty($toDate)) {
@@ -144,6 +145,7 @@ class AdvertisementController extends Controller
         $advertisement = Advertisement::create([
             'name' => $payload['name'],
             'type' => $payload['type'],
+            'page' => $payload['page'],
             'priority' => $payload['priority']
         ]);
 
@@ -197,7 +199,8 @@ class AdvertisementController extends Controller
         $advertisement->update([
             'name' => $payload['name'],
             'type' => $payload['type'],
-            'priority' => $payload['priority']
+            'priority' => $payload['priority'],
+            'page' => $payload['page'],
         ]);
 
         if ($this->payload->hasFile('adFile')) {

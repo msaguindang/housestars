@@ -50,8 +50,11 @@ class EndingSubscription extends Command
    *
    * @return mixed
    */
+
   public function handle()
   {
+    echo "SENDING NOTICE TO SUBSCRIBERS... \n";
+
     Stripe::setApiKey($this->stripeKey);
 
     $users = User::select('users.*')
@@ -66,12 +69,15 @@ class EndingSubscription extends Command
                   })->get();
 
     $nextMonth = Carbon::now()->addMonth()->format('Y-m-d');
+    $nextTwoWeeks = Carbon::now()->addWeeks(2)->format('Y-m-d');
+    $nextWeek = Carbon::now()->addWeek()->format('Y-m-d');
+
     foreach($users as $user) {
       $customer = Customer::retrieve($user->customer_id);
       $subscriptions = $customer->subscriptions->data;
       if (count($subscriptions)) {
         $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
-        if ($nextMonth == $endDate) {
+        if ($nextMonth == $endDate || $nextTwoWeeks == $endDate || $nextWeek == $endDate) {
           $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
           $this->sendEmail($user->name, $user->email, $formattedEndDate);
           echo "*";
@@ -82,7 +88,7 @@ class EndingSubscription extends Command
 
   private function sendEmail($name, $email, $endDate)
   {
-    Mail::send(['html' => 'emails.ending-subscription-in-one-month'], [
+    Mail::send(['html' => "emails.ending-subscription-notice"], [
       'email' => $email,
       'name'  => $name,
       'date'  => $endDate

@@ -55,7 +55,6 @@ class ReviewController extends Controller
             }
         }
 
-
         return Response::json($data, 200);
     }
 

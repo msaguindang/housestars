@@ -145,7 +145,11 @@
                   @endif
                     @if($y == $z)
                    <div class="col-xs-12">
-                    <div class="ads"></div>
+                    <div class="ads">
+                      @if(isset($data['ads']) && $data['ads'])
+                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
+                      @endif
+                    </div>
                   </div>
                   @php($z = $z + 8)
                   @endif

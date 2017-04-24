@@ -48,4 +48,15 @@ class Video extends Model
 		}
 		return $query;
     }
+
+    public function scopeActive($query, $page = null)
+    {
+        if ($page) {
+            $query
+                ->where('page', $page)
+                ->where('status', 1);
+        }
+
+        return $query;
+    }
 }

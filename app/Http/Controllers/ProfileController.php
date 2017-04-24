@@ -214,4 +214,15 @@ class ProfileController extends Controller
         }
         return $properties;
     }
+
+    public function getPublicProfile($id)
+    {
+        if ($user = User::find($id)) {
+            if ($role = $user->role) {
+                $role_name = strtolower($role->definition->name);
+                return redirect()->route('profile.role.id', ['role' => $role_name,'id' => $id]);
+            }
+        }
+        return redirect('/');
+    }
 }

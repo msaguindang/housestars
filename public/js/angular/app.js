@@ -11,6 +11,7 @@
         'houseStarsControllers',
         'houseStarServices',
         'housestarsDirectives',
+        'housestarsFilters'
         /*
         'ui.tree',
         'ngMap',

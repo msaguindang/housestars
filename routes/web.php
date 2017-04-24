@@ -1,6 +1,7 @@
 <?php
 
 use App\UserMeta;
+use App\Video;
 use Illuminate\Http\Request;
 
 /*
@@ -68,11 +69,19 @@ Route::group(['prefix' => ''], function () {
     Route::get('/agency', 'MainController@agency');
 
     Route::get('/trades-services', function () {
-        return view('general.trades-services');
+        $data = [];
+        if($video = Video::active('trade-services')->first()) {
+            $data['video'] = $video->url;
+        }
+        return view('general.trades-services')->with('data', $data);
     });
 
     Route::get('/customer', function () {
-        return view('general.customer');
+        $data = [];
+        if($video = Video::active('customer')->first()) {
+            $data['video'] = $video->url;
+        }
+        return view('general.customer')->with('data', $data);
     });
 
     Route::get('/about', function () {
@@ -282,7 +291,12 @@ Route::group(['prefix' => ''], function () {
         'uses' => 'SearchController@search'
     ]);
 
-    Route::get('/profile/{role}/{id}', 'ProfileController@profile');
+    Route::get('/profile/{role}/{id}',[
+        'as'   => 'profile.role.id',
+        'uses' => 'ProfileController@profile'
+    ]);
+    
+    Route::get('/public-profile/{id}', 'ProfileController@getPublicProfile');
 
     Route::post('/helpful', 'ProfileController@helpful');
 

@@ -16,21 +16,21 @@ class VideosSeeder extends Seeder
 
         Video::firstOrCreate([
             'id'     => 1,
-            'url'    => 'https://www.youtube.com/watch?v=COxQooD4Jfk',
+            'url'    => 'https://www.youtube.com/embed/COxQooD4Jfk',
             'page'   => 'agency',
             'status' => 1
         ]);
 
         Video::firstOrCreate([
             'id'     => 2,
-            'url'    => 'https://www.youtube.com/watch?v=EgVltIVMbvw',
+            'url'    => 'https://www.youtube.com/embed/EgVltIVMbvw',
             'page'   => 'trade-services',
             'status' => 1
         ]);
 
         Video::firstOrCreate([
             'id'     => 3,
-            'url'    => 'https://www.youtube.com/watch?v=AjR5Y0oY7P8',
+            'url'    => 'https://www.youtube.com/embed/AjR5Y0oY7P8',
             'page'   => 'customer',
             'status' => 1
         ]);
