@@ -453,9 +453,11 @@ Route::group(['prefix' => ''], function () {
 
     });
 
-    Route::group(['prefix' => 'dev-testing'], function () {
+    Route::group(['prefix' => 'faq'], function () {
 
-        Route::get('', 'TestingController@index');
+        Route::get('customer', 'FaqController@customer');
+        Route::get('agency', 'FaqController@agency');
+        Route::get('tradesman', 'FaqController@tradesman');
 
     });
 
