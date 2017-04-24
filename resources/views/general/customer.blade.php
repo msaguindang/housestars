@@ -230,7 +230,7 @@
             <p>
               Enter your suburb below to see which local agents are available to help you sell your property.
             </p>
-              <input type="text" id="view-local-agents" name="term" class="required-input" required />
+              <input type="text" id="select-state" name="term" class="required-input" required />
               <span class="fa fa-spin fa-spinner hidden" style="position:relative;top:-37px;z-index:1;float:right;right:35px;"></span>
           </div>
         </div>
@@ -251,8 +251,8 @@
         },
     });
 
-    $elements = $('#select-state, #view-local-agents');
-
+    $elements = $('#select-state');
+    // #view-local-agents
     $elements.selectize({
         maxItems: 1,
         valueField: 'value',
@@ -266,10 +266,6 @@
             }
         },
         onChange: function(value) {
-          $localAgentEl = $('#view-local-agents');
-          if($localAgentEl.val() != '') {
-            window.location = '/listing/all/' + value;
-          }
         },
         load: function(query, callback) {
             if (!query.length) return callback();
