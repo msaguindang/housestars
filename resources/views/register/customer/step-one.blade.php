@@ -198,11 +198,11 @@
 				<span class="label-header">Agent Selection</span>
 
 				<div class="col-xs-12" id="agencyList"></div>
-        <div class="col-xs-12" id="nearbyAgencyList"></div>
+                <div class="col-xs-12" id="nearbyAgencyList"></div>
 				<div class="col-xs-3 col-xs-offset-9">
 					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement customer">
-						<input type="checkbox" id="terms"> I accept the <a href="#">Terms and Condition</a>
+						<input type="checkbox" id="terms"> I accept the <a target="_blank" href="{{route('terms.and.conditions')}}">Terms and Condition</a>
 					</div>
 				<div>
 				</form>

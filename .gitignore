@@ -18,3 +18,4 @@ backups
 .env.save
 .env.save.1
 
+composer.lock

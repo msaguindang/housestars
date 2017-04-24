@@ -24,6 +24,18 @@ Route::group(['prefix' => ''], function () {
         'uses'  => 'MainController@home'
     ]);
 
+    Route::get('/terms-and-conditions', [
+        'as' => 'terms.and.conditions',
+        function () {
+            return view('general.terms-and-conditions');
+        }
+    ]);
+
+
+    Route::get('/privacy-policy', function () {
+        return view('general.privacy-policy');
+    });
+
     Route::post('/delete-gallery-photo', [
         'as' => 'delete.gallery.photo',
         function (Request $request) {

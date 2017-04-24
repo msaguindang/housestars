@@ -33,7 +33,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Process Page</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
