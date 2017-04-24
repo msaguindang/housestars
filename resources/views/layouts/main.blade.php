@@ -145,20 +145,20 @@
                 <p class="label">Agency</p>
                 <ul>
                   <li><a href="{{env('APP_URL')}}/our-agent-philosophy">Our Agent Philosophy</a></li>
-                  <li><a href="#">Agent FAQ</a></li>
+                  <li><a href="{{env('APP_URL')}}/faq/agency">Agent FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
                 <p class="label">Tradesman</p>
                 <ul>
                   <li><a href="{{env('APP_URL')}}/our-service-philosophy">Our Service Philosophy</a></li>
-                  <li><a href="#">Service FAQ</a></li>
+                  <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
                 <p class="label">Customer</p>
                 <ul>
-                  <li><a href="#">Customer FAQ</a></li>
+                  <li><a href="{{env('APP_URL')}}/faq/customer">Customer FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/guidelines">Review Guidelines</a></li>
                   <li><a href="{{env('APP_URL')}}/process-page">Process Page</a></li>
                 </ul>
