@@ -451,9 +451,16 @@ Route::group(['prefix' => ''], function () {
 
         });
 
+    });
 
+    Route::group(['prefix' => 'dev-testing'], function () {
+
+        Route::get('', 'TestingController@index');
 
     });
+
+
+
 
 });
 

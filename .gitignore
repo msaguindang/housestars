@@ -11,8 +11,10 @@ Homestead.yaml
 public/uploads/advertisements/
 public/exports
 /.vscode
+.vscode
 /backups
 backups
 
 .env.save
 .env.save.1
+

@@ -41,7 +41,7 @@ class PotentialCustomerController extends Controller
         $this->sendEmail($request, 'admin', null);
 
         $price = explode(" - ", $request->input('estimated-price'));
-        $estimate = (int)preg_replace('/\D+/', '', $price[1]) * 0.03 * 0.2;
+        $estimate = (int)preg_replace('/\D+/', '', $price[1]) * 0.025 * 0.2;
         $this->sendEmail($request, 'client', $estimate);
         return Response::json('success', 200);
 
@@ -81,7 +81,7 @@ class PotentialCustomerController extends Controller
             ], function ($message) use ($name, $email) {
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to($email, $name);
-                $message->subject('Savings Estimation Calculator! ');
+                $message->subject('Savings Estimation Calculator.');
             });
           break;
       }
