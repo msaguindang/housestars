@@ -289,3 +289,37 @@
     $(document).on('click', '#processSuccess' ,function(){
       location.reload();
     });
+
+    var timeoutId;
+    $(document).on('input propertychange change', '.input-group > input' ,function() {
+      var $this = $(this),
+          token = $this.data('token'),
+          code = $this.data('code'),
+          meta = $this.data('meta'),
+          meta_amount_name = $this.data('meta-key'),
+          meta_amount_value = $this.val(),
+          isChecked = 'yes';
+
+      $loader = $('#'+meta_amount_name);
+
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(function() {
+        $.ajax({
+          url: '/confirm',
+          data: {_token: token, code: code, meta: meta, checked: isChecked, meta_amount_name: meta_amount_name, meta_amount_value: meta_amount_value},
+          type: 'POST',
+          beforeSend: function() {
+            $loader.show();
+            $loader.siblings('label').hide();
+          },success: function(data) {
+            $loader.hide();
+            $loader.siblings('label').show();
+            location.reload();
+          },
+          error: function(){
+            $loader.hide();
+            $loader.siblings('label').show();
+          }
+        });
+      }, 1000);
+    });

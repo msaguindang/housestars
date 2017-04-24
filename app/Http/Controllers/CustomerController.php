@@ -141,14 +141,9 @@ class CustomerController extends Controller
             $i++;
         }
 
-
-
-
-
-
         $data['spending']['total'] = $total;
 
-        if(isset($data['agent']) && count($data['property']) > 1){
+        if(isset($data['agent']) && count($data['property']) > 1) {
             $agency_commission = ((float)str_replace("%","",$data['agent']['rate']) / 100) * (float)$data['property'][$lastIndex]['value-to'];
             $customer_commission = ((float)str_replace("%","",$data['property'][$lastIndex]['commission']) / 100) * $agency_commission;
             $data['commission']['total'] =  $customer_commission;
@@ -353,25 +348,38 @@ class CustomerController extends Controller
 
     }
 
-    function confirm(Request $request){
+    public function confirm(Request $request) 
+    {
         $user_id = Sentinel::getUser()->id;
         $code = $request->input('code');
         $meta = $request->input('meta');
-        $exist =  Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->get();
+        $isChecked = strtolower($request->input('checked', 'no'));
+        $exists =  Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->exists();
+        $updateAmount = Property::where('property_code', '=',$code)->where('meta_name','=', $request->get('meta_amount_name'))->exists();
 
-        if(count($exist) == 0){
+        if(!$exists) {
             $property = new Property;
             $property->user_id = $user_id;
             $property->meta_name = $meta;
-            $property->meta_value = 'yes';
+            $property->meta_value = $isChecked;
             $property->property_code = $code;
             $property->save();
-        } else {
-            Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->update(['meta_value' => $request->input('checked')]);
+        } else if($exists) {
+            Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->update(['meta_value' => $isChecked]);
         }
-
+        
+        if(!$updateAmount && $request->exists('meta_amount_name')) {
+            $property = new Property;
+            $property->user_id = $user_id;
+            $property->meta_name = $request->get('meta_amount_name');
+            $property->meta_value = $request->get('meta_amount_value');
+            $property->property_code = $code;
+            $property->save();
+        } else if ($updateAmount && $request->exists('meta_amount_name')) {
+            Property::where('property_code', '=',$code)->where('meta_name','=', $request->get('meta_amount_name'))->update(['meta_value' => $request->get('meta_amount_value')]);
+        }
+        
         return Response::json('success', 200);
-
     }
 
     function processForm(Request $request){
