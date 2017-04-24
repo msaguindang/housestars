@@ -120,63 +120,63 @@
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
                     <ul class="dropdown-menu">
                       <li>
-                        <input type="radio" id="b1" name="estimated-price" value="$100,000">
+                        <input type="radio" id="b1" name="estimated-price" value="$0 - $100,000">
                         <label for="b1">$0 - $100,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b2" name="estimated-price" value="$200,000">
+                        <input type="radio" id="b2" name="estimated-price" value="$100,000 - $200,000">
                         <label for="b2">$100,000 - $200,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b3" name="estimated-price" value="$300,000">
+                        <input type="radio" id="b3" name="estimated-price" value="$200,000 - $300,000">
                         <label for="b3">$200,000 - $300,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b4" name="estimated-price" value="$400,000">
+                        <input type="radio" id="b4" name="estimated-price" value="$300,000 - $400,000">
                         <label for="b4">$300,000 - $400,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b5" name="estimated-price" value="$500,000">
+                        <input type="radio" id="b5" name="estimated-price" value="$400,000 - $500,000">
                         <label for="b5">$400,000 - $500,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b6" name="estimated-price" value="$600,000">
+                        <input type="radio" id="b6" name="estimated-price" value="$500,000 - $600,000">
                         <label for="b6">$500,000 - $600,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b7" name="estimated-price" value="$700,000">
+                        <input type="radio" id="b7" name="estimated-price" value="$600,000 - $700,000">
                         <label for="b7">$600,000 - $700,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b8" name="estimated-price" value="$800,000">
+                        <input type="radio" id="b8" name="estimated-price" value="$700,000 - $800,000">
                         <label for="b8">$700,000 - $800,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b9" name="estimated-price" value="$900,000">
+                        <input type="radio" id="b9" name="estimated-price" value="$800,000 - $900,000">
                         <label for="b9">$800,000 - $900,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b10" name="estimated-price" value="$1,100,000">
+                        <input type="radio" id="b10" name="estimated-price" value="$1,000,000 - $1,100,000">
                         <label for="b10">$1,000,000 - $1,100,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b11" name="estimated-price" value="$1,300,000">
+                        <input type="radio" id="b11" name="estimated-price" value="$1,200,000 - $1,300,000">
                         <label for="b11">$1,200,000 - $1,300,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b12" name="estimated-price" value="$1,500,000">
+                        <input type="radio" id="b12" name="estimated-price" value="$1,400,000 - $1,500,000">
                         <label for="b12">$1,400,000 - $1,500,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b13" name="estimated-price" value="$1,800,000">
+                        <input type="radio" id="b13" name="estimated-price" value="$1,600,000 - $1,800,000">
                         <label for="b13">$1,600,000 - $1,800,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b14" name="estimated-price" value="$2,000,000">
+                        <input type="radio" id="b14" name="estimated-price" value="$1,900,000 - $2,000,000">
                         <label for="b14">$1,900,000 - $2,000,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b15" name="estimated-price" value="$2,100,000">
+                        <input type="radio" id="b15" name="estimated-price" value="$2,000,000-$2,100,000">
                         <label for="b15">$2,000,000+</label>
                       </li>
                   </ul>
@@ -196,7 +196,7 @@
 <script type="text/javascript">
 $('#select-type').selectize({
     create: true,
-    sortField: 'text'
+    // sortField: 'text'
 });
 
     $.ajaxSetup({
