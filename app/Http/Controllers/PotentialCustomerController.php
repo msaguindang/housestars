@@ -81,7 +81,7 @@ class PotentialCustomerController extends Controller
             ], function ($message) use ($name, $email) {
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to($email, $name);
-                $message->subject('Savings Estimation Calculator! ');
+                $message->subject('Savings Estimation Calculator.');
             });
           break;
       }
