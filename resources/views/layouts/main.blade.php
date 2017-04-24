@@ -167,17 +167,17 @@
             <div class="row social-media desktop">
               <div class="col-xs-4 social-item">
                 <span class="icon icon-fb"></span>
-                <a href="#">Housestars</a>
+                <a href="https://www.facebook.com/housestars.com.au/">Housestars</a>
                 <p>www.facebook.com/housestars</p>
               </div>
               <div class="col-xs-4 social-item">
                 <span class="icon icon-ig"></span>
-                <a href="#">@Housestars</a>
+                <a href="https://www.instagram.com/housestars.com.au/">@Housestars</a>
                 <p>www.instagram.com/housestars</p>
               </div>
               <div class="col-xs-4 social-item">
                 <span class="icon icon-tw"></span>
-                <a href="#">@Housestars</a>
+                <a href="https://twitter.com/HousestarsAu">@Housestars</a>
                 <p>www.twitter.com/housestars</p>
               </div>
             </div>
@@ -186,17 +186,17 @@
         <div class="row social-media tablet">
           <div class="col-xs-4 social-item">
             <span class="icon icon-fb"></span>
-            <a href="#">Housestars</a>
+            <a href="https://www.facebook.com/housestars.com.au/">Housestars</a>
             <p>www.facebook.com/housestars</p>
           </div>
           <div class="col-xs-4 social-item">
             <span class="icon icon-ig"></span>
-            <a href="#">@Housestars</a>
+            <a href="https://www.instagram.com/housestars.com.au/">@Housestars</a>
             <p>www.instagram.com/housestars</p>
           </div>
           <div class="col-xs-4 social-item">
             <span class="icon icon-tw"></span>
-            <a href="#">@Housestars</a>
+            <a href="https://twitter.com/HousestarsAu">@Housestars</a>
             <p>www.twitter.com/housestars</p>
           </div>
         </div>
