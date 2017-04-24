@@ -124,7 +124,7 @@ class SearchController extends Controller
                  $tradesmenArray = UserMeta::where('user_id', $id)->get();
                  foreach ($tradesmenArray as $tradie) {
 
-                   if($tradie->meta_name == 'trade' && $tradie->meta_value == $category){
+                   if ($tradie->meta_name == 'trade' && ($tradie->meta_value == $category || strtolower($category) == 'all')) {
                      $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
                      foreach ($tradesmanData as $value) {
                          $data[$x][$value->meta_name] = $value->meta_value;
