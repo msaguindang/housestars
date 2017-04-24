@@ -183,7 +183,9 @@ return [
         App\Services\Ajax\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        Laravel\Tinker\TinkerServiceProvider::class
+        Laravel\Tinker\TinkerServiceProvider::class,
+        PulkitJalan\Google\GoogleServiceProvider::class,
+        GoogleSheets\Providers\SheetsServiceProvider::class,
     ],
 
     /*
@@ -237,6 +239,8 @@ return [
         'Ajax' => \App\Services\Ajax\Facade\Ajax::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Google' => PulkitJalan\Google\Facades\Google::class,
+        'Sheets' => GoogleSheets\Facades\Sheets::class,
 
     ],
 
