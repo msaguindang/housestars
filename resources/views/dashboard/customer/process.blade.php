@@ -110,11 +110,13 @@
             </div>
             <div class="col-xs-3">
               <label>Estimated Savings Target</label>
-              @if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
+              {{--@if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
                   <h2 class="estimates">${{$data['commission']['total']}}</h2>
               @else
                   <h2 class="estimates">{{$data['commission']['total']}}</h2>
-              @endif
+              @endif--}}
+              @php ($savingsTarget = isset($data['property'][$a]['value-to']) ? ($data['property'][$a]['value-to'] * 0.025 * 0.2) : 'N/A')
+              <h2 class="estimates">${{ $savingsTarget }}</h2>
             </div>
             <div class="col-xs-2 terms">
               @if(isset($data['meta']['commission']))
