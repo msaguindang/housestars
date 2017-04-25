@@ -109,7 +109,7 @@
               @endif
             </div>
             <div class="col-xs-3">
-              <label>Estimated Commission Target</label>
+              <label>Estimated Savings Target</label>
               @if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
                   <h2 class="estimates">${{$data['commission']['total']}}</h2>
               @else
