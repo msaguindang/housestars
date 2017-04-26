@@ -3352,3 +3352,7 @@ button.disabled {
 .panel-default a, .panel-default a:focus {
     color: #343f51;
 }
+
+.fb-like {
+    float: left;
+}
