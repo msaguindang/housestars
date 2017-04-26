@@ -124,7 +124,7 @@
         			<label>Name</label>
         			<input type="text" name="name">
         			<label>Suburb</label>
-        			<select id="select-state" name="suburb"  class="demo-default"></select>
+        			<select id="select-suburb" name="suburb"  class="demo-default"></select>
               <span class="fa fa-spin fa-spinner hidden" style="position:relative;top:-37px;z-index:1;float:right;right:35px;"></span>
         		</div>
         		<div class="col-xs-4">
@@ -344,6 +344,46 @@
     });
 
     console.log('validator', validator);
+    
+    $elements = $('#select-suburb');
+    // #view-local-agents
+    $elements.selectize({
+        maxItems: 1,
+        valueField: 'value',
+        searchField: ['name', 'id'],
+        labelField: 'name',
+        sortField: 'text',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+            }
+        },
+        onChange: function(value) {
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '{{ url('tradesman/search-suburb') }}',
+                type: 'GET',
+                data: {
+                    query: query
+                },
+                beforeSend: function() {
+                    $elements.siblings('span.fa-spin').removeClass('hidden');
+                },
+                error: function() {
+                    $elements.siblings('span.fa-spin').addClass('hidden');
+                    callback();
+                },
+                success: function(res) {
+                    $elements.siblings('span.fa-spin').addClass('hidden');
+                    callback(res.suburbs);
+                    //callback(res.repositories.slice(0, 10));
+                }
+            });
+        }
+    });
 
 </script>
 @stop
