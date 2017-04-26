@@ -112,7 +112,7 @@
             <div class="step-description stepThree animated">
               <div class="description-box-left">
                 <h3>Get Hired to do a Task</h3>
-                <p>Customers will see your profile and call you to do some work. You do the work and bill them as you normally would. Its a great way to gain new, high quality customers for your business, boost your revenue and increase your local reputation. Put simply, its the best advertising money you will spend all year. <a href="#" class="content-hyperlink">(see our trade/service FAQ for more details)</a></p>
+                <p>Customers will see your profile and call you to do some work. You do the work and bill them as you normally would. Its a great way to gain new, high quality customers for your business, boost your revenue and increase your local reputation. Put simply, its the best advertising money you will spend all year. <a href="{{env('APP_URL')}}/faq/tradesman" class="content-hyperlink">(see our trade/service FAQ for more details)</a></p>
               </div>
             </div>
 

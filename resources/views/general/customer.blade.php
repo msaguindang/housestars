@@ -103,7 +103,7 @@
           			</div>
           			<div class="col-xs-8">
           				<h3>The Biggest Discounts Around</h3>
-          				<p>"The money spent on trades and services is returned to you once the house is sold. It's the best decision you can make when selling your home. You can claim work up to 7 years after it was done, so the next time you need a trade or service, make sure they are a Housestars partner. </br><a href="#" class="content-hyperlink">See Terms and Conditions.</a></p>
+          				<p>"The money spent on trades and services is returned to you once the house is sold. It's the best decision you can make when selling your home. You can claim work up to 7 years after it was done, so the next time you need a trade or service, make sure they are a Housestars partner. </br><a href="{{env('APP_URL')}}/legal/terms-conditions" class="content-hyperlink">See Terms and Conditions.</a></p>
           			</div>
           		</div>
           	</div>
