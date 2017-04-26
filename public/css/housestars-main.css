@@ -3386,3 +3386,12 @@ ol.ol3 {
     padding: 0;
 }
 
+.long-text ul li {
+    font-weight: 300;
+    list-style: disc;
+}
+
+.long-text ul {
+    padding-left: 40px;
+}
+

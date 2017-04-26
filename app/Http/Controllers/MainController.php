@@ -210,5 +210,10 @@ class MainController extends Controller
          return view('general.terms');
     }
     
+    public function privacyPolicy()
+    {
+         return view('general.policy');
+    }
+    
     
 }
