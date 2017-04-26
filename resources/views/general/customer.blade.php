@@ -251,9 +251,7 @@
         },
     });
 
-    $elements = $('#select-state');
-    // #view-local-agents
-    $elements.selectize({
+    $('#select-state').selectize({
         maxItems: 1,
         valueField: 'value',
         searchField: ['name', 'id'],
@@ -265,8 +263,6 @@
                 return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
             }
         },
-        onChange: function(value) {
-        },
         load: function(query, callback) {
             if (!query.length) return callback();
             $.ajax({
@@ -275,22 +271,73 @@
                 data: {
                     query: query
                 },
-                beforeSend: function() {
-                    $elements.siblings('span.fa-spin').removeClass('hidden');
-                },
                 error: function() {
-                    $elements.siblings('span.fa-spin').addClass('hidden');
                     callback();
                 },
                 success: function(res) {
-                    $elements.siblings('span.fa-spin').addClass('hidden');
+                    console.log('results: ', res);
                     callback(res.suburbs);
                     //callback(res.repositories.slice(0, 10));
                 }
             });
+        },
+        onChange: function(value) {
+
+            if(typeof value == "undefined" || value == null){
+                return false;
+            }
+
+            var selectize = $('#select-state').selectize();
+            var length = value.length;
+
+            $.ajax({
+                method:'POST',
+                url:'{{ url('/search/agency') }}',
+                data:{
+                    term:value
+                },
+                success: function(term){
+
+
+                 $('.thumb-holder0').empty();
+                 $('.thumb-holder1').empty();
+                 $('.thumb-holder2').empty();
+
+                 $('.agent-name0').empty();
+                 $('.agent-name1').empty();
+                 $('.agent-name2').empty();
+
+                 $('.location0').empty();
+                 $('.location1').empty();
+                 $('.location2').empty();
+
+                 if(term == 'redirect'){
+                   window.location.href = "/search-agency";
+                 }
+
+                  if(term.length < 1000 && term != 'error' && term != 'redirect'){
+                    $('#noAgency').modal('show');
+                    for(i = 0; term.length - 1; i++){
+                      if(term[i]['photo'] == null){
+                        $('.thumb-holder'+i).append('<img src="/assets/default.png" alt="">');
+                      } else {
+                        $('.thumb-holder'+i).append('<img src="'+term[i]['photo']+'" alt="">');
+                      }
+                      $('.agent-profile'+i).attr("href", "/profile/agency/"+term[i]['id'])
+                      $('.agent-name'+i).append(term[i]['name']);
+                      $('.location'+i).append('('+term[i]['suburb']+')');
+                    }
+                  } else if(term != 'error' && term != 'redirect'){
+                      $('#noAgency').modal('show');
+                  }
+
+
+               }
+            });
+
         }
     });
-
+    
     jQuery.validator.addMethod('positionsRequired', function(value, element){
 
         if(typeof value == "undefined" || value == null || value == ""){
