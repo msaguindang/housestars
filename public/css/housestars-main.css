@@ -3356,3 +3356,33 @@ button.disabled {
 .fb-like {
     float: left;
 }
+
+.p2, .p4, .p7, .p8{
+	display: none;
+}
+
+.ol1{
+	padding-left: 40px;
+	list-style: lower-roman;
+	font-weight: 300;
+}
+
+.p5, .p6{
+	padding-left: 40px;
+}
+
+.p1 .s2{
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+ul.ul1 {
+    padding-left: 50px;
+    list-style-type: disc;
+    font-weight: 300;
+}
+
+ol.ol3 {
+    padding: 0;
+}
+

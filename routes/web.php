@@ -474,6 +474,14 @@ Route::group(['prefix' => ''], function () {
     });
 
 
+Route::group(['prefix' => 'legal'], function () {
+
+        Route::get('terms-conditions', 'MainController@termsConditions');
+        Route::get('privacy-policy', 'MainController@privacyPolicy');
+
+    });
+
+
 
 
 });
