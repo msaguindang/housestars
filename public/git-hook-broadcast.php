@@ -5,28 +5,41 @@ switch (preg_replace("/:.*$/", "", strtolower($_SERVER['HTTP_HOST']))) {
     // PHP5 dev servers
     case 'stuart.loc':
         define ('BRANCH', 'dev');
-        break;
+        define ('WORK_DIR', '');
+    break;
+    
     case 'localhost':
         define ('BRANCH', 'dev');
-        break;
+        define ('WORK_DIR', '');
+    break;
+    
     case 'housestars.com.au':
         define ('BRANCH', 'master');
-        break;
+        define ('WORK_DIR', '/var/www/html');
+    break;
+    
     case 'staging.housestars.com.au':
         define ('BRANCH', 'staging');
-        break;
+        define ('WORK_DIR', '/var/www/html/staging');
+    break;
+    
     case 'dev.housestars.com.au':
         define ('BRANCH', 'dev');
-        break;
+        define ('WORK_DIR', '/var/www/html/dev');
+    break;
+    
     default:
         if(strstr($_SERVER['REQUEST_URI'], '/dev')) {
             define ('BRANCH', 'dev');
+            define ('WORK_DIR', '/var/www/html/dev');
         } else if(strstr($_SERVER['REQUEST_URI'], '/staging')) {
             define ('BRANCH', 'staging');
+            define ('WORK_DIR', '/var/www/html/staging');
         } else {
             define ('BRANCH', 'master');
+            define ('WORK_DIR', '/var/www/html');
         }
-        break;
+    break;
 }
 
 if(!isset($_GET['to'])){
@@ -39,14 +52,22 @@ if(!isset($_GET['to'])){
     mail($to, $subject, $body, $headers);
 }
 
-define ('BROADCAST', $_GET['to']);
+// if(isset($_GET['to']))
+// {
+//     define ('BROADCAST', $_GET['to']);
+// }
+// else
+// {
+//     define ('BROADCAST', "origin");
+// }
+
 
 $continue = true;
 $log = "<h3>Git hook log:</h3>
 <div style='color:darkred;background:#dfdfdf;font-family:monospace;padding:10px;font-size: 12px;'>";
 
 $log .= "<b>Checking out " . BRANCH . "...</b> <br>";
-$output = execute('git checkout ' . BRANCH);
+$output = execute('git checkout ' . BRANCH, WORK_DIR);
 foreach ($output as $k => $o) {
     if($o != "" && $k != 'code')
         $log .= '<pre>' . $o . '</pre><br>';
@@ -55,14 +76,14 @@ foreach ($output as $k => $o) {
 }
 if($continue){
     $log .= "<b>Fetching information from git repo...</b> <br>";
-    $output = execute('git fetch ');
+    $output = execute('git fetch ', WORK_DIR);
     foreach ($output as $k => $o) {
         if($o != "" && $k != 'code')
             $log .= '<pre>' . $o . '</pre><br>';
     }
 
     $log .= "<b>Getting commit difference between local and remote...</b> <br>";
-    $difference = execute('git rev-list --left-right --count '. BRANCH .'...origin/' . BRANCH);
+    $difference = execute('git rev-list --left-right --count '. BRANCH .'...origin/' . BRANCH, WORK_DIR);
 
     $behind = preg_split('/\s+/', $difference['out']);
     $log .= '<pre><i>' . BRANCH .'</i> ahead by ' . $behind[0] . ' commits
@@ -75,7 +96,7 @@ if($continue){
 }
 if($continue){
     $log .= "<b>Attempting to pull from git repo...</b> <br>";
-    $output = execute('git pull origin ' . BRANCH);
+    $output = execute('git pull origin ' . BRANCH, WORK_DIR);
     foreach ($output as $k => $o) {
         if($o != "" && $k != 'code')
             $log .= '<pre>' . $o . '</pre><br>';
@@ -85,14 +106,14 @@ if($continue){
 }
 if($continue){
     $log .= "<b>Retrieving commit logs...</b> <br>";
-    $commits = execute('git log -'.$behind[1]);
+    $commits = execute('git log -'.$behind[1], WORK_DIR);
     foreach ($commits as $k => $o) {
         if($o != "" && $k != 'code')
             $log .= '<pre>' . $o . '</pre><br>';
     }
 
-    $log .= "<b>Pushing to " . BROADCAST . " repo...</b> <br>";
-    $output = execute('git push ' . BROADCAST . ' ' . BRANCH);
+    $log .= "<b>Pushing to " . BRANCH . " repo...</b> <br>";
+    $output = execute('git push origin ' . BRANCH, WORK_DIR);
     foreach ($output as $k => $o) {
         if($o != "" && $k != 'code')
             $log .= '<pre>' . $o . '</pre><br>';
