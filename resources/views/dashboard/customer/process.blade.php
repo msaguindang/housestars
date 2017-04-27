@@ -538,7 +538,7 @@
                   <li>
                     <div class="label">
                       <label style="margin-bottom: 7px !important;width: 100%;text-align: left;">Like us on Facebook</label>
-                      <div class="fb-like" id="fb" data-href="https://www.facebook.com/webforest.solutions/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="false" style="float: left; margin-bottom: 15px;"></div>
+                      <div class="fb-like" data-href="https://www.facebook.com/housestars.com.au/" data-layout="standard" data-action="like" data-size="large" data-show-faces="true" data-share="false"></div>
                     </div>
                     <div class="value">
                       <div class="action">
@@ -580,12 +580,12 @@
 @endsection
 
  @section('scripts')
- <script>(function(d, s, id) {
-  $('#c13').prop('checked', true);
-  var js, fjs = d.getElementsByTagName(s)[$a];
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1889078964644540";
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=1889078964644540";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 

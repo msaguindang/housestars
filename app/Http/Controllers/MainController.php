@@ -204,4 +204,16 @@ class MainController extends Controller
                 $message->subject($topic.': ' . $subject);
             });
     }
+    
+    public function termsConditions()
+    {
+         return view('general.terms');
+    }
+    
+    public function privacyPolicy()
+    {
+         return view('general.policy');
+    }
+    
+    
 }

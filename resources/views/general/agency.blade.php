@@ -273,7 +273,7 @@
              <h2 class="narrow-1x"><span class="icon icon-left-bar"></span>AGENT FAQ<span class="icon icon-right-bar"></span></h2>
              <span class="separator"></span>
              <p>Want to know more? Go to our FAQ for detailed answers to all of your questions.</p>
-             <button class="btn btn-primary"><i class="fa fa-question-circle" aria-hidden="true"></i> Visit FAQ Section</button>
+             <a class="btn btn-primary" href="{{env('APP_URL')}}/faq/agency"><i class="fa fa-question-circle" aria-hidden="true"></i> Visit FAQ Section</a>
           </div>
         </div>
       </div>

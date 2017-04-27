@@ -167,17 +167,17 @@
             <div class="row social-media desktop">
               <div class="col-xs-4 social-item">
                 <span class="icon icon-fb"></span>
-                <a href="#">Housestars</a>
+                <a href="https://www.facebook.com/housestars.com.au/" target="_blank">Housestars</a>
                 <p>www.facebook.com/housestars</p>
               </div>
               <div class="col-xs-4 social-item">
                 <span class="icon icon-ig"></span>
-                <a href="#">@Housestars</a>
+                <a href="https://www.instagram.com/housestars.com.au/" target="_blank">@Housestars</a>
                 <p>www.instagram.com/housestars</p>
               </div>
               <div class="col-xs-4 social-item">
                 <span class="icon icon-tw"></span>
-                <a href="#">@Housestars</a>
+                <a href="https://twitter.com/HousestarsAu" target="_blank">@Housestars</a>
                 <p>www.twitter.com/housestars</p>
               </div>
             </div>
@@ -186,17 +186,17 @@
         <div class="row social-media tablet">
           <div class="col-xs-4 social-item">
             <span class="icon icon-fb"></span>
-            <a href="#">Housestars</a>
+            <a href="https://www.facebook.com/housestars.com.au/" target="_blank">Housestars</a>
             <p>www.facebook.com/housestars</p>
           </div>
           <div class="col-xs-4 social-item">
             <span class="icon icon-ig"></span>
-            <a href="#">@Housestars</a>
+            <a href="https://www.instagram.com/housestars.com.au/" target="_blank">@Housestars</a>
             <p>www.instagram.com/housestars</p>
           </div>
           <div class="col-xs-4 social-item">
             <span class="icon icon-tw"></span>
-            <a href="#">@Housestars</a>
+            <a href="https://twitter.com/HousestarsAu" target="_blank">@Housestars</a>
             <p>www.twitter.com/housestars</p>
           </div>
         </div>
@@ -205,8 +205,8 @@
         <div class="container">
           <p class="trademark">Copyright 2016 HouseStars</p>
           <ul class="legal-links">
-            <li><a href="#">Terms and Conditions</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/terms-conditions">Terms and Conditions</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/privacy-policy">Privacy Policy</a></li>
           </ul>
         </div>
       </div>

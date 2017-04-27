@@ -103,7 +103,7 @@
           			</div>
           			<div class="col-xs-8">
           				<h3>The Biggest Discounts Around</h3>
-          				<p>"The money spent on trades and services is returned to you once the house is sold. It's the best decision you can make when selling your home. You can claim work up to 7 years after it was done, so the next time you need a trade or service, make sure they are a Housestars partner. </br><a href="#" class="content-hyperlink">See Terms and Conditions.</a></p>
+          				<p>"The money spent on trades and services is returned to you once the house is sold. It's the best decision you can make when selling your home. You can claim work up to 7 years after it was done, so the next time you need a trade or service, make sure they are a Housestars partner. </br><a href="{{env('APP_URL')}}/legal/terms-conditions" class="content-hyperlink">See Terms and Conditions.</a></p>
           			</div>
           		</div>
           	</div>
@@ -124,7 +124,7 @@
         			<label>Name</label>
         			<input type="text" name="name">
         			<label>Suburb</label>
-        			<select id="select-state" name="suburb"  class="demo-default"></select>
+        			<select id="select-suburb" name="suburb"  class="demo-default"></select>
               <span class="fa fa-spin fa-spinner hidden" style="position:relative;top:-37px;z-index:1;float:right;right:35px;"></span>
         		</div>
         		<div class="col-xs-4">
@@ -251,9 +251,7 @@
         },
     });
 
-    $elements = $('#select-state');
-    // #view-local-agents
-    $elements.selectize({
+    $('#select-state').selectize({
         maxItems: 1,
         valueField: 'value',
         searchField: ['name', 'id'],
@@ -265,8 +263,6 @@
                 return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
             }
         },
-        onChange: function(value) {
-        },
         load: function(query, callback) {
             if (!query.length) return callback();
             $.ajax({
@@ -275,22 +271,73 @@
                 data: {
                     query: query
                 },
-                beforeSend: function() {
-                    $elements.siblings('span.fa-spin').removeClass('hidden');
-                },
                 error: function() {
-                    $elements.siblings('span.fa-spin').addClass('hidden');
                     callback();
                 },
                 success: function(res) {
-                    $elements.siblings('span.fa-spin').addClass('hidden');
+                    console.log('results: ', res);
                     callback(res.suburbs);
                     //callback(res.repositories.slice(0, 10));
                 }
             });
+        },
+        onChange: function(value) {
+
+            if(typeof value == "undefined" || value == null){
+                return false;
+            }
+
+            var selectize = $('#select-state').selectize();
+            var length = value.length;
+
+            $.ajax({
+                method:'POST',
+                url:'{{ url('/search/agency') }}',
+                data:{
+                    term:value
+                },
+                success: function(term){
+
+
+                 $('.thumb-holder0').empty();
+                 $('.thumb-holder1').empty();
+                 $('.thumb-holder2').empty();
+
+                 $('.agent-name0').empty();
+                 $('.agent-name1').empty();
+                 $('.agent-name2').empty();
+
+                 $('.location0').empty();
+                 $('.location1').empty();
+                 $('.location2').empty();
+
+                 if(term == 'redirect'){
+                   window.location.href = "/search-agency";
+                 }
+
+                  if(term.length < 1000 && term != 'error' && term != 'redirect'){
+                    $('#noAgency').modal('show');
+                    for(i = 0; term.length - 1; i++){
+                      if(term[i]['photo'] == null){
+                        $('.thumb-holder'+i).append('<img src="/assets/default.png" alt="">');
+                      } else {
+                        $('.thumb-holder'+i).append('<img src="'+term[i]['photo']+'" alt="">');
+                      }
+                      $('.agent-profile'+i).attr("href", "/profile/agency/"+term[i]['id'])
+                      $('.agent-name'+i).append(term[i]['name']);
+                      $('.location'+i).append('('+term[i]['suburb']+')');
+                    }
+                  } else if(term != 'error' && term != 'redirect'){
+                      $('#noAgency').modal('show');
+                  }
+
+
+               }
+            });
+
         }
     });
-
+    
     jQuery.validator.addMethod('positionsRequired', function(value, element){
 
         if(typeof value == "undefined" || value == null || value == ""){
@@ -344,6 +391,46 @@
     });
 
     console.log('validator', validator);
+    
+    $elements = $('#select-suburb');
+    // #view-local-agents
+    $elements.selectize({
+        maxItems: 1,
+        valueField: 'value',
+        searchField: ['name', 'id'],
+        labelField: 'name',
+        sortField: 'text',
+        create: false,
+        render: {
+            option: function(item, escape) {
+                return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+            }
+        },
+        onChange: function(value) {
+        },
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            $.ajax({
+                url: '{{ url('tradesman/search-suburb') }}',
+                type: 'GET',
+                data: {
+                    query: query
+                },
+                beforeSend: function() {
+                    $elements.siblings('span.fa-spin').removeClass('hidden');
+                },
+                error: function() {
+                    $elements.siblings('span.fa-spin').addClass('hidden');
+                    callback();
+                },
+                success: function(res) {
+                    $elements.siblings('span.fa-spin').addClass('hidden');
+                    callback(res.suburbs);
+                    //callback(res.repositories.slice(0, 10));
+                }
+            });
+        }
+    });
 
 </script>
 @stop

@@ -202,7 +202,7 @@
 				<div class="col-xs-3 col-xs-offset-9">
 					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement customer">
-						<input type="checkbox" id="terms"> I accept the <a target="_blank" href="{{route('terms.and.conditions')}}">Terms and Condition</a>
+						<input type="checkbox" id="terms"> I accept the <a target="_blank" href="{{env('APP_URL')}}/legal/terms-conditions">Terms and Condition</a>
 					</div>
 				<div>
 				</form>

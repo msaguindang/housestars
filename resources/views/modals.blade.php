@@ -484,7 +484,7 @@
 				 </div>
 				 <div class="modal-body">
 					 <h4>There are no agents currently</br>listed in your suburb</h4>
-				 </br><p class="sub-heading">If you know an agent or agency that could benifit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (you will remain anonymous) Thank you!</p>
+				 </br><p class="sub-heading">If you know an agent or agency that could benefit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (You will remain anonymous) Thank you! Also please add in the contact number field (not essential).</p>
 					 <form id="suggestAgency">
 						 {{csrf_field() }}
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
