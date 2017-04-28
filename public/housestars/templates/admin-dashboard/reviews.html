@@ -63,6 +63,12 @@
                             <span ng-click="sort('created_at', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class="clickable">
+                            <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'business')" />
+                            Business
+                            <span ng-click="sort('business', 'asc')" class="fa fa-caret-up"></span>
+                            <span ng-click="sort('business', 'desc')" class="fa fa-caret-down"></span>
+                        </th>
+                        <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'reviewee')" />
                             Reviewee
                             <span ng-click="sort('reviewee_name', 'asc')" class="fa fa-caret-up"></span>
@@ -74,7 +80,6 @@
                             <span ng-click="sort('reviewer_name', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('reviewer_name', 'desc')" class="fa fa-caret-down"></span>
                         </th>
-
                         <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'title')" />
                             Title
@@ -118,6 +123,9 @@
                     <tr ng-repeat="review in _reviews | filter:query">
 
                         <td> {{ toJsDate(review.created_at) | date : 'mediumDate' }} </td>
+                        <td>
+                            {{ review.business }}
+                        </td>
                         <td>
                             <a href="{{ getProfileLink(review.reviewee_id) }}" target="_blank">
                                 {{ review.reviewee_name }}

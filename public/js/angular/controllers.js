@@ -675,7 +675,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
     $scope.toDate = '';
     $scope.currentFilter = 'all';
     $scope.query = '';
-    $scope.searchField = {reviewee: '', reviewer: '', title: '', content: '', created_at: ''};
+    $scope.searchField = {reviewee: '', reviewer: '', title: '', content: '', created_at: '', business: ''};
 
     $scope.toJsDate = function(str){
         if (!str) {
@@ -777,7 +777,8 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
             reviewer: $scope.searchField.reviewer,
             title: $scope.searchField.title,
             content: $scope.searchField.content,
-            created_at: $scope.searchField.created_at
+            created_at: $scope.searchField.created_at,
+            business: $scope.searchField.business
         }).then(function(response) {
             $scope.reviews = response.data.reviews;
             $scope._reviews = angular.copy($scope.reviews);
@@ -834,7 +835,7 @@ housestars.controller('ReviewsCtrl', ['$scope', 'http', function ($scope, http) 
         $scope.toDate = '';
         $scope.isAscending = true;
         jQuery("th > input").val("");
-        $scope.searchField = {reviewee: '', reviewer: '', title: '', content: '', created_at: ''};
+        $scope.searchField = {reviewee: '', reviewer: '', title: '', content: '', created_at: '', business: ''};
         $scope.getAllReviews();
         $scope.getAllReviewees();
     }

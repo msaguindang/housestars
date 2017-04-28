@@ -16,11 +16,16 @@ class Reviews extends Model
         'reviewee_id', 'reviewer_id', 'communication', 'work_quality', 'price', 'punctuality', 'attitude', 'title', 'content', 'helpful', 'user_type', 'status'
     ];
 
-    protected $appends = ['reviewee_name', 'reviewer_name'];
+    protected $appends = ['reviewee_name', 'reviewer_name', 'business'];
 
     public function user()
     {	
     	return $this->belongsTo(User::class, 'reviewer_id', 'id');
+    }
+
+    public function user_meta()
+    {
+        return $this->hasMany(UserMeta::class, 'user_id', 'reviewee_id');
     }
 
     public function potential_customer()
@@ -33,7 +38,7 @@ class Reviews extends Model
     	return $this->belongsTo(User::class, 'reviewee_id', 'id');
     }
 
-    public function scopeSearchReview($query, $search, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt)
+    public function scopeSearchReview($query, $search, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt, $searchBusiness)
     {
         $search = "%" . $search . "%";
         $searchReviewee = "'%" . $searchReviewee . "%'"; 
@@ -41,11 +46,17 @@ class Reviews extends Model
         $searchTitle = "'%" . $searchTitle . "%'"; 
         $searchContent = "'%" . $searchContent . "%'";
         $searchCreatedAt = "%" . $searchCreatedAt . "%";
+        $searchBusiness = "'%" . $searchBusiness . "%'";
 
         $query
             ->leftJoin('potential_customers as pc', 'reviews.reviewer_id', '=', 'pc.id')
             ->leftJoin('users as u1', 'reviews.reviewer_id', '=', 'u1.id')
-            ->leftJoin('users as u2', 'reviews.reviewee_id', '=', 'u2.id');
+            ->leftJoin('users as u2', 'reviews.reviewee_id', '=', 'u2.id')
+            ->leftJoin('user_meta as um', function ($join) {
+                $join
+                    ->on('reviews.reviewee_id', '=', 'um.user_id')
+                    ->where('um.meta_name', '=', 'agency-name');
+            });
 
         if(!is_query_empty($search)) {
             $query
@@ -56,7 +67,8 @@ class Reviews extends Model
                         ->orWhere('u1.name', 'LIKE', $search)
                         ->orWhere('u1.email', 'LIKE', $search)
                         ->orWhere('u2.name', 'LIKE', $search)
-                        ->orWhere('u2.email', 'LIKE', $search);
+                        ->orWhere('u2.email', 'LIKE', $search)
+                        ->orWhere('um.meta_value', 'LIKE', $search);
                 })
                 ->where(function ($sub) {
                     $sub
@@ -69,7 +81,8 @@ class Reviews extends Model
             ->whereRaw("reviews.title LIKE $searchTitle")
             ->whereRaw("reviews.content LIKE $searchContent")
             ->whereRaw("u1.name LIKE $searchReviewer")
-            ->whereRaw("u2.name LIKE $searchReviewee");
+            ->whereRaw("u2.name LIKE $searchReviewee")
+            ->whereRaw("um.meta_value LIKE $searchBusiness");
 
         if(!is_query_empty($searchCreatedAt)) {
             $query->where(function ($sub) use ($searchCreatedAt) {
@@ -97,5 +110,13 @@ class Reviews extends Model
     public function getReviewerNameAttribute()
     {
     	return $this->{$this->user_type} ? $this->{$this->user_type}->name : '';
+    }
+
+    public function getBusinessAttribute()
+    {
+        if($userMeta = $this->user_meta->where('meta_name', 'agency-name')->first()) {
+            return $userMeta->meta_value;
+        }
+        return ''; 
     }
 }

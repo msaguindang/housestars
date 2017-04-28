@@ -137,19 +137,24 @@ class ReviewController extends Controller
                     users.`name`
                   FROM
                     users
-                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
+                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name,
+                  (SELECT
+                    user_meta.`meta_value`
+                  FROM
+                    user_meta
+                  WHERE user_meta.`user_id` = reviews.`reviewee_id` 
+                  AND user_meta.`meta_name` = 'agency-name') AS business
                 FROM
                   reviews
                 {$dateRangeQuery}
                 LIMIT {$limit}
                 OFFSET {$offset}";
 
-
         $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
             'reviews' => $reviews,
-            'length' => $length
+            'length'  => $length
         ];
 
         return Response::json($response, 200);
@@ -626,6 +631,7 @@ class ReviewController extends Controller
         $field  = $request->get('field', null);
         $fromDate = $request->get('from', '');
         $toDate = $request->get('to', '');
+        $searchBusiness = $request->get('business', '');
         $searchReviewee = $request->get('reviewee', '');
         $searchReviewer = $request->get('reviewer', '');
         $searchTitle = $request->get('title', '');
@@ -646,18 +652,19 @@ class ReviewController extends Controller
 
         $offset = $limit * ($pageNo - 1);
 
-        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt);
-        $queryStr = $reviews->toSql();
+        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt, $searchBusiness);
         $length = $reviews->count();
-        $reviews = $reviews->take($limit)->skip($offset)->get();
+        $reviews = $reviews->get();
         
         if(!is_null($field)) {
             $reviews = $reviews->sortBy($field, SORT_REGULAR, ($sort=='desc'));
-            $reviews = $reviews->values()->all();
+            // $reviews = $reviews->take($limit)->skip($offset);
         }
+        
+        $reviews = $reviews->forPage($pageNo, $limit);
+        $reviews = $reviews->values()->all();
 
         $response = [
-            'query'   => $queryStr,
             'reviews' => (is_array($reviews) ? $reviews : $reviews->toArray()),
             'length'  => $length
         ];
