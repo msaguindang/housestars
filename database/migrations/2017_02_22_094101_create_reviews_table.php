@@ -29,8 +29,7 @@ class CreateReviewsTable extends Migration
                 $table->integer('helpful')->nullable();
                 $table->integer('transaction', 11)->nullable();
                 $table->string('user_type')->default('potential_customer');
-                $table->timestamp('created_at');
-                $table->timestamps('updated_at');
+                $table->timestamp();
             });
         }
 
