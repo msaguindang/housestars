@@ -15,7 +15,7 @@ class CreateSuburbsTable extends Migration
     {
         if (!Schema::hasTable('suburbs')) {
             Schema::create('suburbs', function (Blueprint $table) {
-                $table->increments('id');
+                $table->string('id', 5);
                 $table->string('name', 100)->nullable();
                 $table->integer('availability')->nullable();
                 $table->decimal('latitude', 6, 3);
