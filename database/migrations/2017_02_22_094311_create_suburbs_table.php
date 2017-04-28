@@ -17,12 +17,11 @@ class CreateSuburbsTable extends Migration
             Schema::create('suburbs', function (Blueprint $table) {
                 $table->increments('id');
                 $table->string('name', 100)->nullable();
-                $table->integer('availability', 10);
+                $table->integer('availability')->nullable();
                 $table->decimal('latitude', 6, 3);
                 $table->decimal('longitude', 6, 3);
-                $table->integer('max_tradie', 10);
-                $table->timestamps('updated_at');
-                $table->timestamp('created_at');
+                $table->integer('max_tradie');
+                $table->timestamps();
             });
         }
 

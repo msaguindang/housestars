@@ -15,8 +15,8 @@ class MakeUsersMetaTable extends Migration
     {
         if (!Schema::hasTable('user_meta')) {
             Schema::create('user_meta', function (Blueprint $table) {
-                $table->increments('id', 11);
-                $table->integer('user_id', 11);
+                $table->increments('id');
+                $table->integer('user_id');
                 $table->string('meta_name', 50);
                 $table->string('meta_value', 10000);
                 $table->timestamps();
