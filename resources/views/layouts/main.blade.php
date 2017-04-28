@@ -215,7 +215,7 @@
 
 @include("modals")
 
-    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{config('app.url')}}/js/bootstrap.min.js"></script>
     <script src="{{config('app.url')}}/js/dropdowns-enhancement.js"></script>

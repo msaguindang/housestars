@@ -24,10 +24,13 @@ class CreateReviewsTable extends Migration
                 $table->integer('price')->nullable();
                 $table->integer('punctuality')->nullable();
                 $table->integer('attitude')->nullable();
-                $table->string('title')->nullable();
+                $table->string('title', 1000)->nullable();
                 $table->string('content', 2000)->nullable();
                 $table->integer('helpful')->nullable();
-                $table->timestamps();
+                $table->integer('transaction', 11)->nullable();
+                $table->string('user_type')->default('potential_customer');
+                $table->timestamp('created_at');
+                $table->timestamps('updated_at');
             });
         }
 
