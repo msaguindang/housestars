@@ -135,7 +135,7 @@
 
 					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
 					<div class="agreement">
-						<input type="checkbox" id="terms"> I accept the <a href="{{env('APP_URL')}}/legal/terms-conditions">Terms and Condition</a>
+						<input type="checkbox" id="terms"> I accept the <a href="{{env('APP_URL')}}/legal/terms-conditions" target="_blank">Terms and Condition</a>
 					</div>
 				</div>
 			</form>

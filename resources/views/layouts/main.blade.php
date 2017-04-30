@@ -205,8 +205,8 @@
         <div class="container">
           <p class="trademark">Copyright 2016 HouseStars</p>
           <ul class="legal-links">
-            <li><a href="{{env('APP_URL')}}/legal/terms-conditions">Terms and Conditions</a></li>
-            <li><a href="{{env('APP_URL')}}/legal/privacy-policy">Privacy Policy</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/terms-conditions" target="_blank">Terms and Conditions</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/privacy-policy" target="_blank">Privacy Policy</a></li>
           </ul>
         </div>
       </div>
