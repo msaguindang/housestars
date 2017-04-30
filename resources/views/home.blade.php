@@ -149,7 +149,7 @@
       @if(isset($advert['728x90']))
         <img src="{{env('APP_URL')}}/{{$advert['728x90']['url']}}" alt="Banner Ad">
       @else
-        <img src="assets/banner-test.png" alt="Banner Ad">
+        <img src="assets/banner-test.jpg" alt="Banner Ad">
       @endif
     </section>
 
