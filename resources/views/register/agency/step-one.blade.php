@@ -16,7 +16,6 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -100,7 +99,7 @@
 					<select id="select-state" name="positions[]" multiple  class="demo-default"></select>
 				</div>
 				<div class="col-xs-4">
-					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="NB. This figure is not shown to customers. It is used to measure the customers’ savings estimate only and will not be disclosed to any external party." data-html="true"></i></label>
+					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="NB. This figure is not shown to anyone. It is used for administration purposes only." data-html="true"></i></label>
 					<input type="text" min="0" name="base-commission" id="base-commission" required>
 					<label>Marketing Budget</label>
 					<input type="text" min="0" name="marketing-budget" id="marketing-budget">
