@@ -126,7 +126,7 @@ class TradesmanController extends Controller
 
     public function upload(Request $request) {
         $user_id = Sentinel::getUser()->id;
-        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->get()->count() < self::MAX_PHOTO) {
+        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->count() < self::MAX_PHOTO) {
             $file = $request->file('file');
             $data = array();
 	        $localpath = 'user/user-'.$user_id.'/uploads';
@@ -138,9 +138,11 @@ class TradesmanController extends Controller
             array_push($data, $url);
 
 	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials()], 200);
-        }else {
+        } else if (UserMeta::where('meta_name', 'gallery')->where('user_id', $user_id)->count() >= self::MAX_PHOTO) {
             $max = self::MAX_PHOTO;
             return Response::json(['error' => "You can only upload up to $max photos!"], 422);
+        } else {
+            return Response::json(['error' => "You have uploaded beyond the filesize limit!"], 422);
         }
 
         return Response::json('error', 400);
