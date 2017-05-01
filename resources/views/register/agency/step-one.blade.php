@@ -103,32 +103,6 @@
 					<input type="text" min="0" name="base-commission" id="base-commission" required>
 					<label>Marketing Budget</label>
 					<input type="text" min="0" name="marketing-budget" id="marketing-budget">
-					<label>Sales Type</label>
-					<div class="btn-group">
-			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-			            <ul class="dropdown-menu">
-			              <li>
-			                <input type="radio" id="b1" name="sales-type" value="Auction" checked="">
-			                <label for="b1">Auction</label>
-			              </li>
-			              <li>
-			                <input type="radio" id="b2" name="sales-type" value="Private Treaty">
-			                <label for="b2">Private Treaty</label>
-			              </li>
-			              <li>
-			                <input type="radio" id="b3" name="sales-type" value="Off Market">
-			                <label for="b3">Off Market</label>
-			              </li>
-			              <li>
-			                <input type="radio" id="b4" name="sales-type" value="Distressed Sale">
-			                <label for="b4">Distressed Sale</label>
-			              </li>
-			              <li>
-			                <input type="radio" id="b5" name="sales-type" value="Other">
-			                <label for="b5">Other</label>
-			              </li>
-			            </ul>
-			        </div>
 			        <label>Review URL</label>
 			        <input type="text" name="review-url">
 
