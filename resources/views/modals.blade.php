@@ -868,42 +868,38 @@
           </div>
           <div class="modal-body">
             @php($x = 0)
-            @if(isset($data['tradesmen']))
-            @if(count($data['tradesmen']) > 0)
-            <h4>ADD TRANSACTION</h4>
-            <p class="sub-heading">Process a transaction with a Tradesman.</p>
-            <form id="transaction" enctype="multipart/form-data">
-              {{csrf_field() }}
-              <div id="error"></div>
-              <div class="btn-group dropdown">
-                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                    <ul class="dropdown-menu">
-                    @php($x = 0)
-                    @foreach ($data['tradesmen'] as $tradesman)
-                      <li>
-                        <label for="b{{$x}}">{{ $tradesman['trading-name'] }}</label>
-                        <input type="radio" id="b{{$x}}" name="trades" value="{{ $tradesman['id'] }}">
-                      </li>
-                      @php($x++)
-                    @endforeach
-                    </ul>
-                </div>
-              <input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
-              @if(isset($a))
-                <input type="hidden" name="property-code" value="{{$data['property'][$a]['property-code']}}" id="code">
-              @endif
-              <div class="upload-button no-top">
-                <span class="label">Click to add Receipt</span>
-                <input type="file" name="receipt" id="receipt">
-              </div>
-
-
-                <button class="btn hs-primary" id="transaction">Order Now</button>
-              </form>
+            @if(isset($data['tradesmen']) && count($data['tradesmen']) > 0)
+	            <h4>ADD A RECEIPT</h4>
+	            <p class="sub-heading">Process a transaction with a Tradesman.</p>
+	            <form id="transaction" enctype="multipart/form-data">
+		            {{csrf_field() }}
+		            <div id="error"></div>
+		            	<div class="btn-group dropdown">
+	                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+	                    <ul class="dropdown-menu">
+	                    @php($x = 0)
+	                    @foreach ($data['tradesmen'] as $tradesman)
+	                      <li>
+	                        <label for="b{{$x}}">{{ $tradesman['trading-name'] }}</label>
+	                        <input type="radio" id="b{{$x}}" name="trades" value="{{ $tradesman['id'] }}">
+	                      </li>
+	                      @php($x++)
+	                    @endforeach
+	                    </ul>
+	                </div>
+	              	<input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
+	              	@if(isset($a))
+	                	<input type="hidden" name="property-code" value="{{$data['property'][$a]['property-code']}}" id="code">
+	              	@endif
+	              	<div class="upload-button no-top">
+	                	<span class="label">Click to add Receipt</span>
+	                	<input type="file" name="receipt" id="receipt">
+		            </div>
+	                <button class="btn hs-primary" id="transaction">Order Now</button>
+              	</form>
             @else
-            <h4>NO LISTED TRADESMAN</h4>
-            <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
-            @endif
+	            <h4>NO LISTED TRADESMAN</h4>
+	            <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
             @endif
           </div>
         </div>

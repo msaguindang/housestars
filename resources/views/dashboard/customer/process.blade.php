@@ -350,7 +350,7 @@
                     @endif
                   @endforeach
               </div>
-                <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Transaction</span></a>
+                <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Add a receipt</span></a>
                @endif
 
               <div class="total" id="transactionsTotal">
@@ -598,16 +598,6 @@
   js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=1889078964644540";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
-
-  <script type="text/javascript">
-    // var timeoutId;
-    // $('.input-group > input').on('input propertychange change', function() {
-    //   clearTimeout(timeoutId);
-    //   timeoutId = setTimeout(function() {
-    //     console.log('saving..');
-    //   }, 2000);
-    // });
-  </script>
   
   <script src="{{asset('js/processing.js')}}"></script>
   <script type="text/javascript">
