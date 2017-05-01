@@ -113,7 +113,7 @@
                       </div>
                       </div>
                       <div class="col-xs-4" style="padding-right: 0;">
-                      <label>CVC</label>
+                      <label>CCV</label>
                       <input type="text" name="cvc" placeholder="***">
                       </div>
                       <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE CARD DETAILS <span class="icon icon-arrow-right"></span></button>
