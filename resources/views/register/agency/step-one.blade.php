@@ -93,7 +93,7 @@
 					<label>Website</label>
 					<input type="text" name="website">
 					<label>Phone</label>
-					<input type="number" name="phone" required>
+					<input type="text" name="phone" required>
 					<label>ABN</label>
 					<input type="text" name="abn" required>
 					<label>Positions <span>(Enter the postcode of the suburd required)</span></label>
@@ -101,9 +101,9 @@
 				</div>
 				<div class="col-xs-4">
 					<label>Base Commission Charge <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="NB. This figure is not shown to customers. It is used to measure the customers’ savings estimate only and will not be disclosed to any external party." data-html="true"></i></label>
-					<input type="number" min="0" name="base-commission" id="base-commission" required>
+					<input type="text" min="0" name="base-commission" id="base-commission" required>
 					<label>Marketing Budget</label>
-					<input type="number" min="0" name="marketing-budget" id="marketing-budget">
+					<input type="text" min="0" name="marketing-budget" id="marketing-budget">
 					<label>Sales Type</label>
 					<div class="btn-group">
 			            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
