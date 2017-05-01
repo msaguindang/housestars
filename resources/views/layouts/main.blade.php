@@ -128,7 +128,7 @@
           <div class="col-xs-3 company-identity">
               <img src="{{asset('assets/logo-footer.png')}}" alt="HouseStars" class="logo">
               <p class="label">Office Address</p>
-              <p>21 Mian Street Alstonville, </br>New South Wales 2477</p>
+              <p>21 Main Street Alstonville, </br>New South Wales 2477</p>
               <p>Tel No: 0404045597 </p>
               <a href="#" data-toggle="modal" data-target="#team" class="hs-transparent-dark">BECOME PART OF THE TEAM</a>
           </div>
@@ -145,15 +145,15 @@
               <div class="col-xs-3 nav-category">
                 <p class="label">Agency</p>
                 <ul>
+	              <li><a href="{{env('APP_URL')}}/faq/agency">Agent FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-agent-philosophy">Our Agent Philosophy</a></li>
-                  <li><a href="{{env('APP_URL')}}/faq/agency">Agent FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
                 <p class="label">Tradesman</p>
                 <ul>
+	              <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-service-philosophy">Our Service Philosophy</a></li>
-                  <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">

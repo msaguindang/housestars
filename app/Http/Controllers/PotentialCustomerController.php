@@ -37,10 +37,10 @@ class PotentialCustomerController extends Controller
             'email' => $request->email,
             'phone' => $request->phone
         ]);
-
+		
         $this->sendEmail($request, 'admin', null);
 
-        $price = explode(" - ", $request->input('estimated-price'));
+        $price = explode("-", $request->input('estimated-price'));
         $estimate = (int)preg_replace('/\D+/', '', $price[1]) * 0.025 * 0.2;
         $this->sendEmail($request, 'client', $estimate);
         return Response::json('success', 200);

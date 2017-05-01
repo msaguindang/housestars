@@ -22,9 +22,13 @@ class SearchController extends Controller
     {
     	switch ($item) {
     		case 'category':
-    			$data['cat'] = Category::whereStatus(1)->get();
+    			$data['cat'] = Category::whereStatus(1)
+    							->orderBy("category", "asc")
+    							->groupBy('category')
+    							->get();
                 $data['suburb'] = $request->get('suburb', '');
                 $data['item'] = $this->hasResults($data['suburb']);
+                //dd($data);
     			      return Response::json($data, 200);
                 //return view('general.tradesman-listings')->with('data', $data);
     			break;
