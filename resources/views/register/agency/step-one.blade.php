@@ -103,7 +103,7 @@
 					<input type="text" min="0" name="base-commission" id="base-commission" required>
 					<label>Marketing Budget</label>
 					<input type="text" min="0" name="marketing-budget" id="marketing-budget">
-			        <label>Review URL</label>
+			        <label>Review URL <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="" data-original-title="If you have a profile or a rate and review list on another website that you would like to display, type the URL here, and it will be added to your profile page." data-html="true"></i> </label>
 			        <input type="text" name="review-url">
 
 					<button class="btn hs-primary" id="submit" disabled>NEXT <span class="icon icon-arrow-right"></span></button>
