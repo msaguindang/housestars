@@ -53,7 +53,14 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="row no-padding">
-              <div class="spacing"></div>
+              <div class="spacing">
+              </div>
+              <div>
+                <a class="btn btn-link" href="/profile">
+                  <span class="fa fa-chevron-left"></span>
+                  BACK
+                </a>
+              </div>
               <h2 class="section-title">Account Settings</h2>
               <div class="col-xs-6">
               <form action="{{env('APP_URL')}}/update-settings" method="POST" enctype="multipart/form-data">

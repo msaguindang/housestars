@@ -54,7 +54,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
+            <p class="links"><a href="/">Home Page</a> > <a href="/agency">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
           </div>
           <div class="profile">
             @if(filter_var($dp, FILTER_VALIDATE_URL) === FALSE)
@@ -371,11 +371,11 @@
           </div>
             <div class="col-xs-3 sidebar">
               <div class="advertisement">
-                @if(isset($data['advert']))
+                {{--@if(isset($data['advert']))
                   @foreach($data['advert'] as $ad)
                     <div class="ads" style="background: url({{env('APP_URL')}}/{{$ad['url']}})"></div>
                   @endforeach
-                @endif
+                @endif--}}
               </div>
             </div>
         </div>
