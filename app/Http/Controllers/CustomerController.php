@@ -89,7 +89,6 @@ class CustomerController extends Controller
         $data['transactions'] = array();
         $data['code'] = $property_code;
 
-        //dd($data['property']);
         if(count($data['property']) > 1){
             $lastIndex = count($data['property']) - 2;
             $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
@@ -146,10 +145,15 @@ class CustomerController extends Controller
         if(isset($data['agent']) && count($data['property']) > 1) {
             $agency_commission = ((float)str_replace("%","",$data['agent']['rate']) / 100) * (float)$data['property'][$lastIndex]['value-to'];
             $customer_commission = ((float)str_replace("%","",$data['property'][$lastIndex]['commission']) / 100) * $agency_commission;
-            $data['commission']['total'] =  $customer_commission;
-            //$data['commission']['total'] = (int)$data['property'][0]['value-to'] * $agency_commission ;
+            $data['commission']['estimate'] = $customer_commission;
+            if (isset($data['property'][$lastIndex]['commission-charged']) && strtolower($data['property'][$lastIndex]['commission-charged']) == 'yes') {
+                $data['commission']['total'] =  $data['property'][$lastIndex]['commission-total'];
+            } else {
+                $data['commission']['total'] = $customer_commission;
+            }
         } else {
             $data['commission']['total'] = 'N/A';
+            $data['commission']['estimate'] = 'N/A';
         }
 
         $ads = Advertisement::where('type', '=', '270x270')->get();
@@ -354,8 +358,8 @@ class CustomerController extends Controller
         $code = $request->input('code');
         $meta = $request->input('meta');
         $isChecked = strtolower($request->input('checked', 'no'));
-        $exists =  Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->exists();
-        $updateAmount = Property::where('property_code', '=',$code)->where('meta_name','=', $request->get('meta_amount_name'))->exists();
+        $exists =  Property::getProperty($code, $meta)->exists();
+        $updateAmount = Property::getProperty($code, $request->get('meta_amount_name', ''))->exists();
 
         if(!$exists) {
             $property = new Property;
@@ -365,7 +369,7 @@ class CustomerController extends Controller
             $property->property_code = $code;
             $property->save();
         } else if($exists) {
-            Property::where('property_code', '=',$code)->where('meta_name','=', $meta)->update(['meta_value' => $isChecked]);
+            Property::getProperty($code, $meta)->update(['meta_value' => $isChecked]);
         }
         
         if(!$updateAmount && $request->exists('meta_amount_name')) {
@@ -376,7 +380,7 @@ class CustomerController extends Controller
             $property->property_code = $code;
             $property->save();
         } else if ($updateAmount && $request->exists('meta_amount_name')) {
-            Property::where('property_code', '=',$code)->where('meta_name','=', $request->get('meta_amount_name'))->update(['meta_value' => $request->get('meta_amount_value')]);
+            Property::getProperty($code, $request->get('meta_amount_name'))->update(['meta_value' => $request->get('meta_amount_value')]);
         }
         
         return Response::json('success', 200);

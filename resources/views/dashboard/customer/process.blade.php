@@ -161,10 +161,10 @@
                 <h3 class="left">ESTIMATED COMMISSION DISCOUNT</h3>
               </div>
               <div class="col-xs-4">
-                @if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
-                  <h3 class="estimated-amount">${{$data['commission']['total']}}</h3>
+                @if(isset($data['commission']['estimate']) && $data['commission']['estimate'] != 'N/A')
+                  <h3 class="estimated-amount">${{$data['commission']['estimate']}}</h3>
               @else
-                  <h3 class="estimated-amount">{{$data['commission']['total']}}</h3>
+                  <h3 class="estimated-amount">{{$data['commission']['estimate']}}</h3>
               @endif
               </div>
               <div class="col-xs-12 section-title">
@@ -436,13 +436,27 @@
                     </div>
                     <div class="value">
                       <div class="action">
+                        <span id="commission-total" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
+                        @if(isset($data['property'][$a]['commission-charged']) && $data['property'][$a]['commission-charged'] == 'yes')
+                          <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
+                        @else
+                          <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" />
+                        @endif
+                        <label for="c9"><span></span></label>
                       </div>
                       <div class="amount form-inline">
                           <div class="input-group">
                             @php ($commisionCharged = ((isset($data['commission']['total']) && $data['commission']['total'] != 'N/A') ? $data['commission']['total'] : 0))
-                            <p>
-                              ${{number_format($commisionCharged)}}
-                            </p>
+                            <span class="input-group-addon" id="basic-addon1">$</span>
+                            <input type="number" 
+                              class="form-control" 
+                              aria-label="Percentage" 
+                              value="{{$commisionCharged}}"
+                              data-token="{{ csrf_token()}}" 
+                              data-code="{{$data['property'][$a]['property-code']}}"
+                              data-meta="commission-charged"
+                              data-meta-key="commission-total"
+                            />
                           </div>
                       </div>
                     </div>
