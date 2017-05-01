@@ -1,5 +1,15 @@
 @extends("layouts.main")
 
+@section('styles')
+  @parent
+  <style>
+    .amount.form-inline {
+      width: 150px;
+    }
+  </style>
+@endsection
+
+
 <?php
   $amountSold = $commissionPercentage = $commisionCharged = 0;
 ?>
