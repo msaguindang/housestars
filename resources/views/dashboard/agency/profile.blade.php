@@ -1,4 +1,16 @@
 @extends("layouts.main")
+
+@section('styles')
+  <style>
+    .gallery-item {
+      min-height: 150px;
+    }
+    .gallery-carousel > .carousel-slide-wrapper {
+      height: 200px;
+    }
+  </style>
+@endsection
+
 @section("content")
 <header id="header" class="animated desktop">
         <div class="container">
@@ -185,157 +197,63 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
-<!--             <div class="row gallery">
+            <div class="row gallery mobile-hidden" style="display: none;">
+                @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
-                <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
+                @else
+                  <div class="spacing"></div>
+                @endif
+
                 <div class="gallery-carousel">
-                  <div class="col-md-12" data-wow-delay="0.2s">
-                      <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
-                                  <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                          <div class="carousel-inner">
-                            <div class="item active">
-                                <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
+                   @if(isset($data['gallery']))
+                      @php($x = 0)
+                      @php($y = 2)
+                      <div class="col-md-12 carousel-slide-wrapper" data-wow-delay="0.2s">
+                          <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
+                            <!-- Carousel Buttons Next/Prev -->
+                                  <div class="controller">
+                                      <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                      <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
                                   </div>
+                            <!-- Carousel Slides / Quotes -->
+                              <div class="carousel-inner">
+                              <!-- Gallery 1 -->
 
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
 
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
+                                    @php($items = count($data['gallery']) - 1)
+
+                                    @foreach($data['gallery'] as $item)
+                                      @if ($x == 0 )
+                                        <div class="item active">
+                                          <div class="row">
+                                      @endif
+                                      <div class="col-xs-4">
+                                        <div class="gallery-item">
+                                          <div class="gallery-image" style="background: url({{url($item)}})"></div>
                                         </div>
                                       </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
+
+                                      @if ($x == $items)
+                                        </div>
                                       </div>
-                                    </div>
-                                  </div>
-                                </div>
+
+                                      @elseif($x == $y)
+                                         </div>
+                                      </div>
+                                      <div class="item">
+                                          <div class="row">
+                                      @php($y = $y + 3)
+                                      @endif
+
+                                      @php($x++)
+
+                                    @endforeach
                             </div>
-                            <div class="item">
-                               <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                               <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-
                         </div>
-                    </div>
-                </div>
+                      </div>
+                    @endif
               </div>
-            </div> -->
+            </div>
             <div class="spacing"></div>
             <div class="spacing"></div>
             <div class="row ratings">

@@ -25,11 +25,16 @@ class AgencyController extends Controller
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $dp = 'assets/default.png';
         $cp = 'assets/default_cover_photo.jpg';
+        $galleryCtr = 0;
+        
         foreach ($meta as $key) {
-            if($key->meta_name == 'profile-photo'){
+            if ($key->meta_name == 'profile-photo'){
                 $dp = $key->meta_value;
-            } else if($key->meta_name == 'cover-photo'){
+            } else if ($key->meta_name == 'cover-photo'){
                 $cp = $key->meta_value;
+            } else if ($key->meta_name == 'gallery') {
+                $data[$key->meta_name][$galleryCtr] = $key->meta_value;
+                $galleryCtr ++;
             } else {
                 $data[$key->meta_name] = $key->meta_value;
             }
