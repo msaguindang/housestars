@@ -1023,7 +1023,7 @@
 				</div>
 				<div class="modal-body">
 					<h4>WANT TO DO SOMETHING DIFFERENT?</h4>
-				</br><p class="sub-heading">At Houststars, we are always looking for partners, affiliates, leaders and staff to help us move foward. If you have something of value that you could give to the site, send us an email outlining your talent and what you want to achieve. Mark the heading of the email with the title "Where do I sign?" and we will contact you as soon as we can. Thanks for your interest. We look foward to you joining us and creating something amazing!</p>
+				</br><p class="sub-heading">At Housestars, we are always looking for partners, affiliates, leaders and staff to help us move foward. If you have something of value that you could give to the site, send us an email outlining your talent and what you want to achieve. Mark the heading of the email with the title "Where do I sign?" and we will contact you as soon as we can. Thanks for your interest. We look foward to you joining us and creating something amazing!</p>
 				</div>
 			</div>
 		</div>
