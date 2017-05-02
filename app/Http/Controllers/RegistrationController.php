@@ -329,7 +329,15 @@ class RegistrationController extends Controller
             $role = Sentinel::getUser()->roles()->first()->slug;
 
             if($role == 'agency'){
-                return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+	            $positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+	            $isFree = count(explode(",", $positions));
+	            
+	            if($isFree == '2'){
+		            return redirect(env('APP_URL').'/register/agency/step-four');
+	            } else{
+		            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+	            }
+
             } else {
                 return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
             }
@@ -344,7 +352,7 @@ class RegistrationController extends Controller
         $userinfo = UserMeta::where('user_id', $user_id)->get();
         $positions = array();
         $expiry = date('F d, Y', strtotime('+1 year'));
-
+		
         if($role != 'customer'){
             foreach ($userinfo as $info) {
                if($info->meta_name == 'positions') {
@@ -358,11 +366,8 @@ class RegistrationController extends Controller
                     }
                 }
             }
-             $price =  count($positions) * 2000;
+             $price =  (count($positions) - 1) * 1000;
 
-             if($price == 6000){
-                $price =  5000;
-             }
         }
 
         if($role == 'tradesman'){
@@ -381,11 +386,11 @@ class RegistrationController extends Controller
 
              return View::make('register/tradesman/step-three')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         } else if($role == 'agency'){
-
-             $price =  count($positions) * 2000;
-             if($price == 6000){
-                $price =  5000;
-             }
+			
+			if(count($positions) > 1){
+				$price =  (count($positions) - 1) * 1000;
+			}
+             
             return View::make('register/agency/step-four')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         } else {
             return View::make('register/customer/complete')->with('name', Sentinel::getUser()->name);
@@ -456,33 +461,39 @@ class RegistrationController extends Controller
     public function postCharge(Request $request)
     {
         if(Sentinel::check()){
-
-            try {
-            $role = Sentinel::getUser()->roles()->first()->name;
-
-            \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
-
-            \Stripe\Subscription::create(array(
-              "customer" => Sentinel::getUser()->customer_id,
-              "plan" => $request->input('plan')
-            ));
-
-            $request->session()->put('completed', 'yes');
-
-            if($role == 'Tradesman'){
-                return redirect(env('APP_URL').'/register/tradesman/complete');
-            } else {
-                return redirect(env('APP_URL').'/register/agency/complete');
-            }
-
-            } catch (\Stripe\Error\Card $e){
-
-                $body = $e->getJsonBody();
-                $err  = ''.$body['error']['message'].'';
-
-                return redirect()->back()->with('error', $err);
-
-            }
+			$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+	        $isFree = count(explode(",", $positions));
+	            
+	        if($isFree == '2'){
+		        return redirect(env('APP_URL').'/register/agency/complete');
+	        } else{
+	            try {
+	            $role = Sentinel::getUser()->roles()->first()->name;
+	
+	            \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
+	
+	            \Stripe\Subscription::create(array(
+	              "customer" => Sentinel::getUser()->customer_id,
+	              "plan" => $request->input('plan')
+	            ));
+	
+	            $request->session()->put('completed', 'yes');
+	
+	            if($role == 'Tradesman'){
+	                return redirect(env('APP_URL').'/register/tradesman/complete');
+	            } else {
+	                return redirect(env('APP_URL').'/register/agency/complete');
+	            }
+	
+	            } catch (\Stripe\Error\Card $e){
+	
+	                $body = $e->getJsonBody();
+	                $err  = ''.$body['error']['message'].'';
+	
+	                return redirect()->back()->with('error', $err);
+	
+	            }
+	        }
 
 
         } else {

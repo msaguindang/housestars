@@ -176,7 +176,7 @@
               <label>Sales Type</label>
               <div class="btn-group">
                   <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                    @if(isset($data['phone']))
+                    @if(isset($data['sales-type']))
                     {{$data['sales-type']}}
                     @else
                     Select Sales Type
