@@ -537,7 +537,7 @@
           <div class="modal-body">
             <h4>
             	<!-- There are currently no </br>listed tradesman in your area -->
-            	THERE ARE CURRENTLY NO BUSINESSES LISTED IN THIS CATEGORY FOR YOUR SUBURB
+            	PLEASE ENTER THE TRADE OR SERVICE YOU WOULD LIKE TO RECOMMEND
             </h4>
             </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
@@ -545,6 +545,7 @@
               <input type="hidden" id="search-suburb" name="suburb" />
               <input type="text" name="name" placeholder="Tradesman or Business Name"></br>
               <input type="text" name="contact" placeholder="Business Phone No. (not essential)" class="no-top"></br>
+              <input type="text" name="suburb-name" placeholder="Suburb"> </br>
               <button class="btn hs-primary">SUBMIT</button>
             </form>
           </div>

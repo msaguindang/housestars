@@ -209,14 +209,19 @@ class SearchController extends Controller
     }
 
     public function send(Request $request, $type){
+        $suburb = $request->get('suburb', '');
+
+        if ($request->has('suburb-name') && !empty($suburb)) {
+            $suburb = $request->get('suburb-name', '');
+        }
 
         switch ($type) {
             case 'tradesman':
-                $this->sendEmail($request->input('name'), $request->input('contact'), $request->get('suburb', ''), 'emails.suggest-tradesman', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $suburb, 'emails.suggest-tradesman', null);
                 return Response::json('success', 200);
                 break;
             case 'agency':
-                $this->sendEmail($request->input('name'), $request->input('contact'), $request->get('suburb', ''), 'emails.suggest-agency', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $suburb, 'emails.suggest-agency', null);
                 return Response::json('success', 200);
                 break;
             case 'category':
