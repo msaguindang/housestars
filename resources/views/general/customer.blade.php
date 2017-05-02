@@ -64,7 +64,7 @@
         <div class="row section-title">
           <h2 class="wide"><span class="icon icon-left-bar"></span>Why Sign Up with HOUSESTARS.COM.AU<span class="icon icon-right-bar"></span></h2>
          <span class="separator"></span>
-         <p>House Stars has been developed to maximize the return on selling your property. It uses tried-and-tested methods , as well as modern technology to track your progress and help you get the best results for your sale.</p>
+         <p>Housestars has been developed to maximize the return on selling your property. It uses tried-and-tested methods , as well as modern technology to track your progress and help you get the best results for your sale.</p>
         </div>
         <div class="row widget">
           	<div class="col-xs-6">

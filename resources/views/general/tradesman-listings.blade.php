@@ -94,7 +94,7 @@
             @if(isset($data['cat']) && $x > 0)
               @if($data['suburb'])
                 <!--  a <b>{{ $data['cat'] }}</b> in -->
-                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using House Stars.</p></br>
+                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using Housestars.</p></br>
               @endif
             @endif
             <ul class="list">

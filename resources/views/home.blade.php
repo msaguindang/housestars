@@ -196,7 +196,7 @@
              <div class="step-description stepOne animated">
               <div class="description-box-left">
                 <h3>Sign Up</h3>
-                <p>Register with House stars and create your own process page. You can do this with absolutely no requirement or pressure to continue. This step will start you on your journey to selling your property. You can sell your property up to 7 years later, and still claim the work you have done against your sales costs.</p>
+                <p>Register with Housestars and create your own process page. You can do this with absolutely no requirement or pressure to continue. This step will start you on your journey to selling your property. You can sell your property up to 7 years later, and still claim the work you have done against your sales costs.</p>
                 <p class="highlight-small">Please see our <a href="{{env('APP_URL')}}/legal/terms-conditions" class="content-hyperlink" target="_blank">terms and conditions</a> for details.</p>
               </div>
             </div>
