@@ -16,7 +16,7 @@
 								
 							</div>
 						</div>
-						<p class="bordered-desc">Your honest answers really help other customers</p>
+						<p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 						<form id="rateForm" enctype="multipart/form-data" method="post" action="/create/review">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$businessInfo['id']}}">

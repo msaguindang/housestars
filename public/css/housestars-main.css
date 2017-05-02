@@ -1193,7 +1193,8 @@ footer .social-item p{
     width: 100%;
     float: left;
     color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+    /*border: 1px solid #e0e0e0;*/
+    border: 1px solid #b2b2b2;
     padding: 11px;
     margin: 35px 0;
     font-size: 14px;

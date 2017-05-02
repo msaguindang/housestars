@@ -286,7 +286,7 @@
           </div>
           <div class="modal-body">
             <h4>Review Us!</h4>
-            <p class="bordered-desc">Your honest answers really help other customers</p>
+            <p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 
             <form id="reviewForm" enctype="multipart/form-data">
               {{csrf_field() }}
