@@ -157,28 +157,52 @@
                         <label for="b9">$800,000 - $900,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b10" name="estimated-price" value="$1,000,000 - $1,100,000">
-                        <label for="b10">$1,000,000 - $1,100,000</label>
+                        <input type="radio" id="b10" name="estimated-price" value="$900,000 - $1,000,000">
+                        <label for="b10">$900,000 - $1,000,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b11" name="estimated-price" value="$1,200,000 - $1,300,000">
-                        <label for="b11">$1,200,000 - $1,300,000</label>
+                        <input type="radio" id="b11" name="estimated-price" value="$1,000,000 - $1,100,000">
+                        <label for="b11">$1,000,000 - $1,100,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b12" name="estimated-price" value="$1,400,000 - $1,500,000">
-                        <label for="b12">$1,400,000 - $1,500,000</label>
+                        <input type="radio" id="b12" name="estimated-price" value="$1,100,000 - $1,200,000">
+                        <label for="b12">$1,100,000 - $1,200,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b13" name="estimated-price" value="$1,600,000 - $1,800,000">
-                        <label for="b13">$1,600,000 - $1,800,000</label>
+                        <input type="radio" id="b13" name="estimated-price" value="$1,200,000 - $1,300,000">
+                        <label for="b13">$1,200,000 - $1,300,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b14" name="estimated-price" value="$1,900,000 - $2,000,000">
-                        <label for="b14">$1,900,000 - $2,000,000</label>
+                        <input type="radio" id="b14" name="estimated-price" value="$1,300,000 - $1,400,000">
+                        <label for="b14">$1,300,000 - $1,400,000</label>
                       </li>
                       <li>
-                        <input type="radio" id="b15" name="estimated-price" value="$2,000,000-$2,100,000">
-                        <label for="b15">$2,000,000+</label>
+                        <input type="radio" id="b15" name="estimated-price" value="$1,400,000 - $1,500,000">
+                        <label for="b15">$1,400,000 - $1,500,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b16" name="estimated-price" value="$1,500,000 - $1,600,000">
+                        <label for="b16">$1,500,000 - $1,600,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b17" name="estimated-price" value="$1,600,000 - $1,700,000">
+                        <label for="b17">$1,600,000 - $1,700,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b18" name="estimated-price" value="$1,700,000 - $1,800,000">
+                        <label for="b18">$1,700,000 - $1,800,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b19" name="estimated-price" value="$1,800,000 - $1,900,000">
+                        <label for="b19">$1,800,000 - $1,900,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b20" name="estimated-price" value="$1,900,000 - $2,000,000">
+                        <label for="b20">$1,900,000 - $2,000,000</label>
+                      </li>
+                      <li>
+                        <input type="radio" id="b21" name="estimated-price" value="$2,000,000+">
+                        <label for="b21">$2,000,000+</label>
                       </li>
                   </ul>
               </div>
