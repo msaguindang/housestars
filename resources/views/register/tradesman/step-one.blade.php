@@ -120,7 +120,7 @@
 
                             </div>
                             <label>Write Business Description</label>
-                            <textarea placeholder="" class="summary"></textarea>
+                            <textarea placeholder="" class="summary" name="summary"></textarea>
                         </div>
                         <div class="col-xs-4">
                             <label>Trade or Service <span>(1 only)</span> <span class="required-symbol">*</span></label>
@@ -332,6 +332,9 @@
                             </div>
                             <label>Promotion Code</label>
                             <input type="text" name="promotion-code">
+                            
+                            <label>Phone Number</label>
+                            <input type="text" name="phone-number">
 
                             <button class="btn hs-primary" id="submit" disabled>NEXT <span
                                         class="icon icon-arrow-right"></span></button>

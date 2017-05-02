@@ -149,6 +149,14 @@
             </div>
             @endif
           </div>
+          <div class="info-item">
+            @if(isset($data['phone-number']))
+            <div class="col-xs-2 icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+            <div class="col-xs-10 detail">
+              <p><b> Phone Number </b></br><span class="detail">${{$data['phone-number']}}</span></p>
+            </div>
+            @endif
+          </div>
           <div class="switch-holder">
             <div class="col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>

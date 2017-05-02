@@ -3396,3 +3396,20 @@ ol.ol3 {
     padding-left: 40px;
 }
 
+.selectize-dropdown-content .option:last-child {
+    display: none;
+}
+
+a.view-summary {
+    font-size: 10px;
+    color: grey;
+    font-weight: 300;
+    font-style: italic;
+}
+
+#overallRatingSummary .rate{
+	width: 100%;
+    overflow: auto;
+    padding: 10px;
+}
+

@@ -77,6 +77,7 @@
                 <option value="Land">Land</option>
                 <option value="Townhouse">Townhouse</option>
                 <option value="Other">Other</option>
+                <option value="extra"></option>
               </select>
               <!-- <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
