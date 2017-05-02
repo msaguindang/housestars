@@ -222,7 +222,7 @@ $(document).on('submit', '#contactUS' ,function(e){
         processData: false,
         success: function(data){
           $('.sub-heading').empty();
-          $('#contactUS').html('<p>We successfully send your concern. Our team will connect to you shortly.</p>');
+          $('#contactUS').html('<p>Thanks for your contact. Our staff will reply to you shortly.</p>');
         }
       });
   });
