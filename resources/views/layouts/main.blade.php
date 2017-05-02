@@ -150,7 +150,7 @@
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
-                <p class="label">Tradesman</p>
+                <p class="label">TRADE/SERVICE</p>
                 <ul>
 	              <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-service-philosophy">Our Service Philosophy</a></li>
