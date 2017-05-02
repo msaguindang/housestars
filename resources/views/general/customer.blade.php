@@ -139,6 +139,7 @@
                 <option value="Land">Land</option>
                 <option value="Townhouse">Townhouse</option>
                 <option value="Other">Other</option>
+                <option value="extra"></option>
               </select>
         		</div>
         		<div class="col-xs-4">
@@ -243,6 +244,7 @@
 <script type="text/javascript">
     $('#select-type').selectize({
         create: true,
+        persist: false
         // sortField: 'text'
     });
     $.ajaxSetup({
