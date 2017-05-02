@@ -83,7 +83,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/trades-services', function () {
         $data = [];
         if($video = Video::active('trade-services')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
         return view('general.trades-services')->with('data', $data);
     });
@@ -91,7 +91,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/customer', function () {
         $data = [];
         if($video = Video::active('customer')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
         return view('general.customer')->with('data', $data);
     });
