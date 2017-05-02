@@ -115,7 +115,15 @@
       $suburb = $('#suburb').val();
       $('#search-suburb').val($suburb);
     });
+
+    $(document).on('mouseenter', '[data-toggle="tooltip"]', function() {
+        $(this).tooltip('show');
+    });
+    $(document).on('mouseleave', '[data-toggle="tooltip"]', function() {
+        $(this).tooltip('hide');
+    });
   </script>
+
   <script type="text/javascript">
         $.ajaxSetup({
             headers: {
