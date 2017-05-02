@@ -145,6 +145,14 @@
               </div>
               @endif
             </div>
+            <div class="info-item">
+              @if(isset($data['phone-number']))
+              <div class="col-xs-2 icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p><b> Phone Number </b></br><span class="detail">${{$data['phone-number']}}</span></p>
+              </div>
+              @endif
+            </div>
           </div>
         </div>
       </div>
