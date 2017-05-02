@@ -65,8 +65,8 @@
             </div>
             <div class="profile-info">
 
-                  @if(isset($data['business-name']))
-                  <h1>{{$data['business-name']}}</h1>
+                  @if(isset($data['trading-name']))
+                  <h1>{{$data['trading-name']}}</h1>
                   @endif
                   @if (isset($data['website']))
                   <p>Website: {{$data['website']}}</p>
@@ -99,6 +99,7 @@
                   @endfor
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
+                <a href="#" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
               </div>
             </div>
 

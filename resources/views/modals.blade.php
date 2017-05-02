@@ -447,6 +447,83 @@
       @endforeach
     @endif
 
+	<!-- RATING SUMMARY -->
+	
+	@if(isset($data['reviews']))
+        <div class="modal fade" id="overallRatingSummary" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+          <div class="modal-dialog" role="document" style="margin-top: 3%;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <h4>Rating Summary</h4></br>
+					<hr>
+					@php($a = 0 )
+					@php($b = 0)
+					@php($c = 0)
+					@php($d = 0)
+					@php($e = 0)
+					@php($f = 0)
+				  	@foreach($data['reviews'] as $review)
+						@if(isset($review['average']))
+							@if($review['average'] == '0')
+							@php($a = $a + 1 )
+							@elseif($review['average'] == '1')
+							@php($b = $b + 1 )
+							@elseif($review['average'] == '2')
+							@php($c = $c + 1 )
+							@elseif($review['average'] == '3')
+							@php($d = $d + 1 )
+							@elseif($review['average'] == '4')
+							@php($e = $e + 1 )
+							@elseif($review['average'] == '5')
+							@php($f = $f + 1 )
+							@endif
+						@endif
+				  	@endforeach
+				  	<div class="rating-stars no-border">
+					  	<div class="rate">
+					  		<p class="rating-label"> Number of users who rated 5 Stars</p> 
+					  		<p style="float: right;"><b>({{$f}})</b> </p>
+					  	</div>
+					  		<hr>
+					  	<div class="rate">
+			                <p class="rating-label"> Number of users who rated 4 Stars</p> 
+		                    <p style="float: right;"><b>({{$e}})</b> </p>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <p class="rating-label"> Number of users who rated 3 Stars</p> 
+		                    <p style="float: right;"><b>({{$d}})</b> </p>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <p class="rating-label"> Number of users who rated 2 Stars</p> 
+		                    <p style="float: right;"><b>({{$c}})</b> </p>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <p class="rating-label"> Number of users who rated 1 Stars</p> 
+		                    <p style="float: right;"><b>({{$b}})</b> </p>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <p class="rating-label"> Number of users who rated 0 Stars</p> 
+		                    <p style="float: right;"><b>({{$a}})</b> </p>
+	                    </div>
+						<hr>
+                  </div>
+				  	
+              </div>
+            </div>
+          </div>
+        </div>
+      
+    @endif
+
+	
+	
     <!-- RATE SUMMARY-->
 
 

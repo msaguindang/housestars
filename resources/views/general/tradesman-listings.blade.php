@@ -123,7 +123,7 @@
                             @endif
                           </div>
                           <div class="profile-info">
-                            <h3 class="name">{{ isset($tradesman['business-name']) ? $tradesman['business-name'] : '' }}</h3>
+                            <h3 class="name">{{ isset($tradesman['trading-name']) ? $tradesman['trading-name'] : 'N/A' }}</h3>
                             <p class="location">{{ isset($tradesman['trade']) ? $tradesman['trade'] : ''}}</p>
                             @if(isset($tradesman['rating']))
                               <div class="stars">
