@@ -313,6 +313,9 @@
                         <p>Here's the details:<p/>
                         <p><b>Agency Name:</b> {{$name}}</p>
                         <p><b>Agency Contact:</b> {{$contact}}</p>
+                        @if (isset($suburb) && !is_null($suburb))
+                          <p><b>Suburb:</b> {{ $suburb }}</p>
+                        @endif
                        </td>
                     </tr>
                   </table>

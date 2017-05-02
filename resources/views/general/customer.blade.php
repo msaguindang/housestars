@@ -301,7 +301,6 @@
                     callback();
                 },
                 success: function(res) {
-                    console.log('results: ', res);
                     callback(res.suburbs);
                     //callback(res.repositories.slice(0, 10));
                 }
@@ -341,9 +340,9 @@
                    window.location.href = "/search-agency";
                  }
 
-                  if(term.length < 1000 && term != 'error' && term != 'redirect'){
+                  if(term.length < 1000 && term != 'error' && term != 'redirect') {
                     $('#noAgency').modal('show');
-                    for(i = 0; term.length - 1; i++){
+                    for(i = 0; term.length - 1; i++) {
                       if(term[i]['photo'] == null){
                         $('.thumb-holder'+i).append('<img src="/assets/default.png" alt="">');
                       } else {
@@ -352,12 +351,13 @@
                       $('.agent-profile'+i).attr("href", "/profile/agency/"+term[i]['id'])
                       $('.agent-name'+i).append(term[i]['name']);
                       $('.location'+i).append('('+term[i]['suburb']+')');
+                      suburbTerm = term[i]['suburb'];
                     }
-                  } else if(term != 'error' && term != 'redirect'){
-                      $('#noAgency').modal('show');
+                  } else if(term != 'error' && term != 'redirect') {
+                    suburbSelected = $('.selectize-input > div.item').data('value');
+                    $('#no-agency-suburb').val(suburbSelected);
+                    $('#noAgency').modal('show');
                   }
-
-
                }
             });
 
@@ -382,7 +382,6 @@
 
         if(typeof value == "undefined" || value == null || value == ""){
 
-            console.log('undefined trade');
             $('#trade-btn-group').addClass('error');
 
             return false;
@@ -395,8 +394,6 @@
 
     var validator = $('form[name=form]').validate({
         errorPlacement: function (error, element) {
-            //console.log('error: ', error);
-            //console.log('element: ', element);
         },
         ignore: '',
         rules:{
@@ -415,8 +412,6 @@
 
         }*/
     });
-
-    console.log('validator', validator);
     
     $elements = $('#select-suburb');
     // #view-local-agents

@@ -216,7 +216,7 @@ class SearchController extends Controller
                 return Response::json('success', 200);
                 break;
             case 'agency':
-                $this->sendEmail($request->input('name'), $request->input('contact'), null, 'emails.suggest-agency', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $request->get('suburb', ''), 'emails.suggest-agency', null);
                 return Response::json('success', 200);
                 break;
             case 'category':

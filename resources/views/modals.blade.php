@@ -564,6 +564,7 @@
 				 </br><p class="sub-heading">If you know an agent or agency that could benefit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (You will remain anonymous) Thank you! Also please add in the contact number field (not essential).</p>
 					 <form id="suggestAgency">
 						 {{csrf_field() }}
+						 <input type="hidden" id='no-agency-suburb' name="suburb" />
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
 						 <input type="text" name="contact" placeholder="Contact Number" class="no-top"></br>
 						 <button class="btn hs-primary">SUBMIT</button>
