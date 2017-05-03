@@ -119,6 +119,7 @@ class RegistrationController extends Controller
     	}
 
     }
+   
 
     public function addProperty(Request $request)
     {

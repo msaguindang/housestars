@@ -121,6 +121,21 @@
 
  @section('scripts')
     <script type="text/javascript" src="{{ config('app.url').'/js/number.js' }}"></script>
+<!--
+    <script type="text/javascript">
+	    $('#select-state').on('change', function() {
+			  $.ajax({
+				url: '{{url('agency/add-position')}}',
+				data: data,
+				type: 'POST',
+				processData: false,
+				success: function(data){
+						
+					}
+				});
+			});
+    </script>
+-->
     <script type="text/javascript">
          var checker = document.getElementById('terms');
          var btn = document.getElementById('submit');
@@ -145,12 +160,13 @@
                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
              },
          });
-
-         $('#select-state').selectize({
+		 var positionsSelector = $('#select-state');
+         positionsSelector.selectize({
              maxItems: 3,
              valueField: 'value',
              searchField: ['name', 'id'],
              labelField: 'name',
+             hideSelected: false,
              options: [],
              create: false,
              render: {
@@ -185,12 +201,11 @@
                  var selectize = $('#select-state').selectize();
                  var length = value.length;
                  var currentValue = value[length-1];
-
                  $.ajax({
                      method:'POST',
                      url:'{{ url('agency/validate-availability') }}',
                      data:{
-                         data:currentValue
+                         data:currentValue, positions: value
                      },
                      success: function(res){
 
@@ -198,7 +213,8 @@
                              selectize[0].selectize.removeItem(currentValue);
                              $('#noPositions').modal();
                          }
-
+						 
+						 positionsSelector[0].selectize.load();
                      }
                  });
 
