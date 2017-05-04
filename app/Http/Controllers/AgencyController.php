@@ -469,23 +469,8 @@ class AgencyController extends Controller
 
         if ($suburb->availability == 3 ) {
             $valid = false;
-        } else {
-	        $role = Sentinel::getUser()->roles()->first()->slug;
-	        $user_id = Sentinel::getUser()->id;
-	        if($role === 'agency'){
-		        
-		        UserMeta::updateOrCreate(
-                            ['user_id' => $user_id, 'meta_name' => 'positions'],
-                            ['user_id' => $user_id, 'meta_name' => 'positions', 'meta_value' => implode(",", $request->input('positions'))]
-                        );
-	              foreach($request->input('positions') as $suburb){
-		              $sub = Suburbs::find(preg_replace('/\D/', '', $suburb));
-	                  DB::table('suburbs')->where('id', $sub->id)->update(['availability' => $sub->availability +  1]);
-	              }
-	        }
-	       
-        }
-
+        } 
+        
         $response = [
             'request' => $request->all(),
             'valid' => $valid
