@@ -96,8 +96,9 @@
                             <div class="col-xs-6 no-padding-left">
                                 <label>Business Name <span class="required-symbol">*</span></label>
                                 <input type="text" name="business-name" class="required-input" required>
-                                <label>Suburbs Working In
-                                    <span>(Enter the desired postcode and select suburbs)</span> <span class="required-symbol">*</span></label>
+                                <label>Postcodes Serviced
+                                    <!-- Suburbs Working In <span>(Enter the desired postcode and select suburbs)</span>  -->
+                                    <span class="required-symbol">*</span></label>
                                 <select id="select-state" name="positions[]" multiple class="demo-default"
                                         class="required-input" required>
                                     {{--@foreach ($suburbs as $suburb)
