@@ -93,7 +93,7 @@ class RegistrationController extends Controller
 
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
 
-    		} else if($role == 'tradesman'){
+    		} else if(strtolower($role) == 'tradesman'){
                 $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate', 'phone-number');
                 foreach ($meta_name as $meta) {
                     if($request->input($meta) != null || $request->input($meta) != '')
@@ -377,7 +377,7 @@ class RegistrationController extends Controller
 
         }
 
-        if($role == 'tradesman'){
+        if(strtolower($role) == 'tradesman'){
             \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
             $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
             $data['plan'] = $customer_info->metadata->selected;
@@ -430,7 +430,7 @@ class RegistrationController extends Controller
 
                     $description = $role.' Customer';
                     $subscription = array();
-                    if($role == 'Tradesman'){
+                    if(strtolower($role) == 'tradesman'){
                         $subscription['selected'] = $request->input('subscription');
                     }
 
@@ -451,7 +451,7 @@ class RegistrationController extends Controller
                     return redirect()->back()->with('error', $err);
                 }
 
-            if($role == 'Tradesman'){
+            if(strtolower($role) == 'tradesman'){
                 return redirect(env('APP_URL').'/register/tradesman/step-three');
             } else {
                 return redirect(env('APP_URL').'/register/agency/step-four');
@@ -467,15 +467,19 @@ class RegistrationController extends Controller
 
     public function postCharge(Request $request)
     {
-        if(Sentinel::check()){
+        if(Sentinel::check()) {
+            $role = Sentinel::getUser()->roles()->first()->name;
 			$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
 	        $isFree = count(explode(",", $positions));
-	            
-	        if($isFree == '2'){
-		        return redirect(env('APP_URL').'/register/agency/complete');
-	        } else{
+
+	        if($isFree == '2') {
+                if(strtolower($role) == 'tradesman') {
+                    return redirect(env('APP_URL').'/register/tradesman/complete');
+                } else {
+                    return redirect(env('APP_URL').'/register/agency/complete');
+                }
+	        } else {
 	            try {
-	            $role = Sentinel::getUser()->roles()->first()->name;
 	
 	            \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
 	
@@ -486,7 +490,7 @@ class RegistrationController extends Controller
 	
 	            $request->session()->put('completed', 'yes');
 	
-	            if($role == 'Tradesman'){
+	            if(strtolower($role) == 'tradesman'){
 	                return redirect(env('APP_URL').'/register/tradesman/complete');
 	            } else {
 	                return redirect(env('APP_URL').'/register/agency/complete');
