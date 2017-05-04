@@ -205,6 +205,8 @@ Route::group(['prefix' => ''], function () {
     Route::post('/logout', 'LoginController@logout');
 
     Route::post('/add-info', 'RegistrationController@postUserMeta');
+    
+    Route::post('/agency/add-position', 'RegistrationController@postPosition');
 
     Route::post('/add-agents', 'RegistrationController@postAddAgents');
 

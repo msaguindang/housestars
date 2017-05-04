@@ -459,20 +459,36 @@ class AgencyController extends Controller
 
     public function validateAvailability(Request $request)
     {
-        $id = preg_replace('/\D/', '', $request->input('data'));
+	    
+        $data = $request->input('data');
 
-        $suburb = Suburbs::find($id);
+        if(strpos($data,'-dup') !== false){
+            $data = explode('-dup',$data)[0];
+        }
+
+        $suburb = Suburbs::where(DB::raw("CONCAT(suburbs.id,suburbs.name)"),'LIKE',"%{$data}%")->get()->first();
         $valid = true;
 
         // count number of traders per area
 
-        if ($suburb->availability == 3 ) {
-            $valid = false;
+        if(!$suburb){
+            $response = [
+                'request' => $request->all(),
+                'valid' => $valid,
+                'suburb' => $suburb
+            ];
+
+            return Response::json($response, 200);
         }
 
+        if ($suburb->availability == 3 ) {
+            $valid = false;
+        } 
+        
         $response = [
             'request' => $request->all(),
-            'valid' => $valid
+            'valid' => $valid,
+            'suburb' => $suburb
         ];
 
         return Response::json($response, 200);

@@ -870,8 +870,8 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <h4>ORDER YOUR BUSINESS CARD</h4>
-            <p class="sub-heading">Enter the details you want to appear on your business card.</p>
+            <h4>ORDER YOUR BUSINESS CARDS</h4>
+            <p class="sub-heading">Enter the details you want to appear on your business cards.</p>
             <form id="orderBusinessCard">
               {{csrf_field() }}
               <div id="error"></div>
