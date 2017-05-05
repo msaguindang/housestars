@@ -20,6 +20,17 @@ class ProfileController extends Controller
         	switch ($role) {
         		case 'tradesman':
         			$data = $this->tradesman($id);
+        			$data['suburbs'] = explode(',', $data['positions']);
+        			$x = 0;
+        			foreach($data['suburbs'] as $suburb){
+	        			$sub = preg_replace('/[0-9]/','',$suburb);
+	        			$postcode = preg_replace('/\D/', '', $suburb);
+	        			if($sub != '' || !empty($sub)){
+		        			$data['position'][$x] = $sub. ' ('. $postcode .')'; 
+							$x++;
+	        			}
+	        			
+        			}
         			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
 
@@ -28,6 +39,17 @@ class ProfileController extends Controller
                     $listings = $this->property_listing($id);
                     $data['property-listings'] = $listings;
                     $data['total-listings'] = count($listings);
+                    $data['suburbs'] = explode(',', $data['positions']);
+					$x = 0;
+        			foreach($data['suburbs'] as $suburb){
+	        			$sub = preg_replace('/[0-9]/','',$suburb);
+	        			$postcode = preg_replace('/\D/', '', $suburb);
+	        			if($sub != '' || !empty($sub)){
+		        			$data['position'][$x] = $sub. ' ('. $postcode .')'; 
+							$x++;
+	        			}
+	        			
+        			}
                     return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                     break;
 
