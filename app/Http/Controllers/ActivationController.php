@@ -24,13 +24,14 @@ class ActivationController extends Controller
 
              switch ($account) {
                 case 'agency':
-                return redirect(env('APP_URL').'/register/agency/step-one');
+                    return redirect(env('APP_URL').'/register/agency/step-one');
                 break;
                 case 'tradesman':
-                return redirect(env('APP_URL').'/register/tradesman/step-one');
+                    // sends email
+                    return redirect(env('APP_URL').'/register/tradesman/step-one');
                 break;
                 case 'customer':
-                return redirect(env('APP_URL').'/register/customer/step-one');
+                    return redirect(env('APP_URL').'/register/customer/step-one');
                 break;
             }
         } else {
