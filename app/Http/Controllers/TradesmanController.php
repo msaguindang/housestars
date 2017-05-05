@@ -380,17 +380,24 @@ class TradesmanController extends Controller
         //check if user already added referral
         $verifyReferral = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'referral')->get();
         $abn = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'abn')->get();
-        if($abn[0]['meta_value'] == $request->input('referral-code')){
-          $response = 'I see what you did there. Sorry, you can\'t your own ABN.';
-        }else if(count($verifyReferral) == 0){
+        if ($abn[0]['meta_value'] == $request->get('referral-code')) {
+          $response = 'I see what you did there. Sorry, you can\'t add your own ABN.';
+        } else if(count($verifyReferral) == 0) {
           UserMeta::updateOrCreate(
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral'],
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral', 'meta_value' => $request->input('referral-code')]
           );
-          $response = 'Referral code successfully added.';
-        }else {
-          $response = 'You already added a referral code.';
-
+          $response = 'Referral successfully added.';
+          Mail::send(['html' => 'emails.tradesman-referral'], [
+                'name'     => Sentinel::getUser()->name,
+                'referral' => $request->get('referral-code')
+            ], function ($message) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au');
+                $message->subject('Referral');
+            });
+        } else {
+          $response = 'You already added a referral.';
         }
 
         return Response::json($response, 200);

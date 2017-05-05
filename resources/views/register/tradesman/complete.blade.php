@@ -55,11 +55,11 @@
 		<div class="row">
 			<div class="col-xs-12 form-box complete">
 				<h2>Congratulations!</h2>
-				<p>Welcome to Housestars. You are now on your way to boosting your business. </br> You can then start customizing your profile to suit your taste, and win more work.</p>
+				<p>Welcome to Housestars. You are now on your way to boosting your business. </br> You can now start customizing your profile to suit your taste, and win more work.</p>
         <p>Click the button below to view your profile.</p>
 				<a href="{{env('APP_URL')}}/dashboard/tradesman/profile" class="btn hs-primary"><span class="icon icon-summary"></span> GO TO MY PROFILE</a>
         </br> </br> </br>
-        <p>Who refer you to sign up with Housestars? Please enter the ABN of the tradesman below.</p>
+        <p>Before you go, please enter the name of another trade or service business that could benefit from this site.</p>
         <form id="referral">
           {{csrf_field()}}
           <div class="error"></div>
