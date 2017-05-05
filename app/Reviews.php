@@ -77,12 +77,14 @@ class Reviews extends Model
                 });
         }
 
-        $query
-            ->whereRaw("reviews.title LIKE $searchTitle")
-            ->whereRaw("reviews.content LIKE $searchContent")
-            ->whereRaw("u1.name LIKE $searchReviewer")
-            ->whereRaw("u2.name LIKE $searchReviewee")
-            ->whereRaw("um.meta_value LIKE $searchBusiness");
+        if (!empty($searchTitle) || !empty($searchContent) || !empty($searchReviewer) || !empty($searchReviewee) || !empty($searchBusiness)) {
+            $query
+                ->whereRaw("reviews.title LIKE $searchTitle")
+                ->whereRaw("reviews.content LIKE $searchContent")
+                ->whereRaw("u1.name LIKE $searchReviewer")
+                ->whereRaw("u2.name LIKE $searchReviewee")
+                ->whereRaw("um.meta_value LIKE $searchBusiness");
+        }
 
         if(!is_query_empty($searchCreatedAt)) {
             $query->where(function ($sub) use ($searchCreatedAt) {
