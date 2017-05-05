@@ -77,7 +77,7 @@ class Reviews extends Model
                 });
         }
 
-        if (!empty($searchTitle) || !empty($searchContent) || !empty($searchReviewer) || !empty($searchReviewee) || !empty($searchBusiness)) {
+        if (!is_query_empty($searchTitle) || !is_query_empty($searchContent) || !is_query_empty($searchReviewer) || !is_query_empty($searchReviewee) || !is_query_empty($searchBusiness)) {
             $query
                 ->whereRaw("reviews.title LIKE $searchTitle")
                 ->whereRaw("reviews.content LIKE $searchContent")
