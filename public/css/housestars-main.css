@@ -3413,3 +3413,22 @@ a.view-summary {
     padding: 10px;
 }
 
+.positions {
+    width: 100%;
+    float: left;
+    margin-top: 5px;
+}
+
+.positions span.label {
+    color: grey;
+    font-size: 12px;
+    font-weight: 300;
+}
+
+.positions .position {
+    color: #fff;
+    background: #1972b4;
+    font-size: 11px;
+    padding: 4px 10px;
+}
+
