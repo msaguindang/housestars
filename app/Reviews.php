@@ -41,12 +41,15 @@ class Reviews extends Model
     public function scopeSearchReview($query, $search, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt, $searchBusiness)
     {
         $search = "%" . $search . "%";
-        $searchReviewee = "'%" . $searchReviewee . "%'"; 
-        $searchReviewer = "'%" . $searchReviewer . "%'"; 
-        $searchTitle = "'%" . $searchTitle . "%'"; 
-        $searchContent = "'%" . $searchContent . "%'";
         $searchCreatedAt = "%" . $searchCreatedAt . "%";
-        $searchBusiness = "'%" . $searchBusiness . "%'";
+
+        $searchFields = [
+            'reviews.title'     => "%" . $searchTitle . "%",
+            'reviews.content'   => "%" . $searchContent . "%",
+            'u1.name'           => "%" . $searchReviewer . "%",
+            'u2.name'           => "%" . $searchReviewee . "%",
+            'um.meta_value'     => "%" . $searchBusiness . "%"
+        ];
 
         $query
             ->leftJoin('potential_customers as pc', 'reviews.reviewer_id', '=', 'pc.id')
@@ -77,13 +80,10 @@ class Reviews extends Model
                 });
         }
 
-        if (!is_query_empty($searchTitle) || !is_query_empty($searchContent) || !is_query_empty($searchReviewer) || !is_query_empty($searchReviewee) || !is_query_empty($searchBusiness)) {
-            $query
-                ->whereRaw("reviews.title LIKE $searchTitle")
-                ->whereRaw("reviews.content LIKE $searchContent")
-                ->whereRaw("u1.name LIKE $searchReviewer")
-                ->whereRaw("u2.name LIKE $searchReviewee")
-                ->whereRaw("um.meta_value LIKE $searchBusiness");
+        foreach ($searchFields as $key => $value) {
+            if (!is_query_empty($value)) {
+                $query->where($key, 'LIKE', $value);
+            }
         }
 
         if(!is_query_empty($searchCreatedAt)) {
