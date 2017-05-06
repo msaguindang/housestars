@@ -147,7 +147,7 @@ class CustomerController extends Controller
             $customer_commission = ((float)str_replace("%","",$data['property'][$lastIndex]['commission']) / 100) * $agency_commission;
             $data['commission']['estimate'] = $customer_commission;
             if (isset($data['property'][$lastIndex]['commission-charged']) && strtolower($data['property'][$lastIndex]['commission-charged']) == 'yes') {
-                $data['commission']['total'] =  $data['property'][$lastIndex]['commission-total'];
+                $data['commission']['total'] =  isset($data['property'][$lastIndex]['commission-total']) ? $data['property'][$lastIndex]['commission-total'] : $customer_commission;
             } else {
                 $data['commission']['total'] = $customer_commission;
             }
