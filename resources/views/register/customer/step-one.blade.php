@@ -234,39 +234,38 @@
 
      $('#select-state').selectize({
          maxItems: 1,
+         maxOptions: 10,
          valueField: 'value',
          searchField: ['name', 'id'],
          labelField: 'name',
          options: [],
-         sortField: 'text',
+         // sortField: 'text',
          create: false,
          render: {
-             option: function(item, escape) {
-                 return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
-             }
+            option: function(item, escape) {
+                return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+            }
          },
          load: function(query, callback) {
              if (!query.length) return callback();
              $.ajax({
-                 url: '{{ url('tradesman/search-suburb') }}',
+                 url: '{{ url('agency/search-suburb') }}',
                  type: 'GET',
                  data: {
-                     query: query
+                    query: query
                  },
                  error: function() {
-                     callback();
+                    callback();
                  },
                  success: function(res) {
-                     console.log('results: ', res);
-                     callback(res.suburbs);
-                     //callback(res.repositories.slice(0, 10));
-                 }
+                    callback(res.suburbs);
+                }
              });
          },
          onChange: function(value) {
 
-             if(typeof value == "undefined" || value == null){
-                 return false;
+             if (typeof value == "undefined" || value == null ) {
+                return;
              }
 
              var selectize = $('#select-state').selectize();
@@ -278,11 +277,9 @@
                  data:{
                      data:value
                  },
-                 success: function(data){
+                success: function(data) {
 
-             			$( ".option" ).addClass('hidden');
-
-                  console.log(data);
+    			  $( ".option" ).addClass('hidden');
 
                   if(data['search'].length != 0){
                       $( "#agencyList").html('<span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Agencies in '+ data['term'] +': </span></br>');
@@ -293,27 +290,25 @@
                       $( "#agencyList").html('<span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">No agencies listed under selected suburb " '+ data['term'] +'"</span></br>');
                   }
 
-
-                  if(data['nearby'].length != 0){
-                    $( "#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Nearby Agencies: </span></br>');
-                    for (var i in data['nearby']){
-               				$( "#nearbyAgencyList" ).append( '<span class="option"><input type="radio" value="' + data['nearby'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['nearby'][i].name +' ('+ data['nearby'][i].suburb +') </span> ' );
-               			}
+                  if (data['nearby'].length != 0) {
+                    $("#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Nearby Agencies: </span></br>');
+                    for (var i in data['nearby']) {
+           				$( "#nearbyAgencyList" ).append( '<span class="option"><input type="radio" value="' + data['nearby'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['nearby'][i].name +' ('+ data['nearby'][i].suburb +') </span> ' );
+           			}
                   } else {
                       $( "#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">No nearby agencies listed.</span></br>');
                   }
-
-                  $( "#nearbyAgencyList" ).append('</br></br><span class="option"><input type="radio" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span>');
-
-
-             		},
-             		error: function(data){
-             			$( ".option" ).addClass('hidden');
-             			$( "#agencyList" ).append( '<span class="option checklist-label">No agency listed under ' + suburb + ' yet<span class="checklist-label">' );
-             		}
-             });
-
-         }
+                    $( "#nearbyAgencyList" ).append('</br></br><span class="option"><input type="radio" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span>');
+         		},
+         		error: function(data) {
+         			$( ".option" ).addClass('hidden');
+         			$( "#agencyList" ).append( '<span class="option checklist-label">No agency listed under ' + suburb + ' yet<span class="checklist-label">' );
+                }
+            });
+        },
+        onDelete: function(values) {
+            $('#select-state').selectize()[0].selectize.clearOptions();
+        }
      });
 
      jQuery.validator.addMethod('positionsRequired', function(value, element){
@@ -332,9 +327,8 @@
 
      jQuery.validator.addMethod('tradeRequired', function(value, element){
 
-         if(typeof value == "undefined" || value == null || value == ""){
+         if (typeof value == "undefined" || value == null || value == "") {
 
-             console.log('undefined trade');
             $('#trade-btn-group').addClass('error');
              return false;
          }
@@ -346,7 +340,7 @@
 
      jQuery.validator.addMethod('stateRequired', function(value, element){
 
-         if(typeof value == "undefined" || value == null || value == ""){
+         if (typeof value == "undefined" || value == null || value == "") {
 
             $('#state-btn-group').addClass('error');
              return false;
