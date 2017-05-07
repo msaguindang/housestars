@@ -73,7 +73,7 @@
                 <label>Full Name</label>
                 <input type="text" name="name" value="{{$data['name']}}" required>
                 <label>Email</label>
-                <input type="text" name="email" value="{{$data['email']}}" required>
+                <input type="text" name="email" value="{{$data['email']}}" readonly>
                 <label>Address</label>
                 <input type="text" name="address" value="{{$data['address']}}" required>
                 <label>Password</label>
