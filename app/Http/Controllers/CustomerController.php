@@ -732,20 +732,32 @@ class CustomerController extends Controller
               $data['code'] = $request->input('code');
               $this->notifyAgency($data, $agencyEmail);
             }
+            $this->sendWelcomeEmail(Sentinel::getUser());
         }
 
         return redirect(env('APP_URL').'/dashboard/customer/profile');
 
     }
+    
+    private function sendWelcomeEmail($user)
+    {
+        Mail::send(['html' => 'emails.welcome-customer'], [
+            'name' => $user->name
+        ], function ($message) use ($user) {
+            $message->from('info@housestars.com.au', 'Housestars');
+            $message->to($user->email);
+            $message->subject('Welcome to Housestars!');
+        });
+    }
 
-    private function notifyAgency($property, $email){
+    private function notifyAgency($property, $email) {
         // $property_name = $property->suburb. ', '.$property->state;
         Mail::send(['html' => 'emails.property-offer'], [
-                'property' => $property
-            ], function ($message) use ($email) {
-                $message->from('info@housestars.com.au', 'Housestars');
-                $message->to($email);
-                $message->subject('Property Offer');
-            });
+            'property' => $property
+        ], function ($message) use ($email) {
+            $message->from('info@housestars.com.au', 'Housestars');
+            $message->to($email);
+            $message->subject('Property Offer');
+        });
     }
 }
