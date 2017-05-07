@@ -44,10 +44,9 @@ class RegistrationController extends Controller
         $role = Sentinel::findRoleBySlug($account);
         $role->users()->attach($user);
 
-        $this->sendEmail($user, $activation->code, $request->input('name'), $account);
+        $this->sendEmail($user, $activation->code, $request->input('name'), $account, $role);
 
         return \Ajax::redirect(env('APP_URL').'/activation-sent');
-
     }
 
     public function postUserMeta(Request $request)
@@ -264,7 +263,6 @@ class RegistrationController extends Controller
 
       $suburb = preg_replace('/[0-9]+/', '', $request->input('data'));
       $postcode = preg_replace('/\D/', '', $request->input('data'));
-    //  dd($postcode);
 
       $suburbInfo =  Suburbs::where('name', $suburb)->first();
       $lat = $suburbInfo->latitude;
@@ -278,7 +276,6 @@ class RegistrationController extends Controller
               limit 5";
 
         $nearby = DB::select($qry);
-      //  dd($nearby);
         $agencies = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
@@ -322,7 +319,6 @@ class RegistrationController extends Controller
         $data['search'] = $search;
         $data['nearby'] = $nearbySearch;
 
-        //dd($data);
         if(empty($data )){
             return Response::json('error', 422);
         } else {
@@ -447,7 +443,6 @@ class RegistrationController extends Controller
                     $body = $e->getJsonBody();
                     $err  = ''.$body['error']['message'].'';
 
-                    //dd($err);
                     return redirect()->back()->with('error', $err);
                 }
 
@@ -512,17 +507,30 @@ class RegistrationController extends Controller
         }
     }
 
-    private function sendEmail($user, $code, $name, $account){
+    private function sendEmail($user, $code, $name, $account, $role) {
         Mail::send(['html' => 'emails.activation'], [
-                'user' => $user,
-                'code' => $code,
-                'name' => $name,
-                'account' => $account
-            ], function ($message) use ($user) {
+            'user' => $user,
+            'code' => $code,
+            'name' => $name,
+            'account' => $account
+        ], function ($message) use ($user) {
+            $message->from('info@housestars.com.au', 'Housestars');
+            $message->to($user->email);
+            $message->subject('Activate your Housestars Account');
+        });
+
+        if ($role->id == 3) { //checks if role is tradesman then send an email to admin
+            Mail::send(['html' => 'emails.admin-signup-notice'], [
+                'user'  => $user,
+                'name'  => $name,
+                'email' => $user->email,
+                'link'  => route('admin.index') . '#/members'
+            ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to($user->email);
-                $message->subject('Activate your Housestars Account');
+                $message->to('info@housestars.com.au');
+                $message->subject('New Trade/Service Signs Up');
             });
+        }
     }
 
     private function notifyAgency($property, $email){

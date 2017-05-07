@@ -352,7 +352,10 @@ Route::group(['prefix' => ''], function () {
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('test', 'AdminController@test');
-        Route::get('', 'AdminController@showDashboard');
+        Route::get('/',[
+            'as'   => 'admin.index',
+            'uses' => 'AdminController@showDashboard'
+        ]);
         Route::post('status/toggle', 'AdminController@toggleStatus');
 
         Route::get('logout', 'AdminController@logout');
