@@ -291,25 +291,27 @@ class RegistrationController extends Controller
           $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
           foreach ($agencies as $agency) {
              foreach ($suburbs as $suburb) {
-                  if($suburb->user_id == $agency->id){
-                      array_push($search, $agency);
+                  if($suburb->user_id == $agency->id) {
+                      array_push($search, json_decode(json_encode($agency), true));
                   }
              }
           }
         }
 
+        // dd($search);
         foreach ($nearby as $key) {
-
-          if($key->name != $suburb){
+          if ($key->name != $suburb) {
             $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
 
             foreach ($agencies as $agency) {
                foreach ($suburbs as $suburb) {
-                    if($suburb->user_id == $agency->id){
+                    if($suburb->user_id == $agency->id) {
                         $agencyInfo['id'] = $agency->id;
                         $agencyInfo['name'] = $agency->name;
                         $agencyInfo['suburb'] = $key->name .', '.$key->id;
-                        array_push($nearbySearch, $agencyInfo);
+                        if (!in_array($agency->id, array_flatten($search))) {
+                            array_push($nearbySearch, $agencyInfo);
+                        }
                     }
                }
             }
