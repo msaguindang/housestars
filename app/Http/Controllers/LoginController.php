@@ -111,6 +111,10 @@ class LoginController extends Controller
 
 	public function handleProviderCallback ($provider, Request $request)
 	{
+		if ($request->get('error', '') == 'access_denied' && $request->get('error_reason', '') == 'user_denied') {
+			return redirect('/');
+		}
+
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
 		$stateIsNumeric = is_numeric($state);
