@@ -617,11 +617,13 @@
   <script type="text/javascript">
     $(document).ready(function () {
       var a = $("input[type='checkbox']");
-      if(a.length == a.filter(":checked").length){
+      $('body').on('click', "input[type='checkbox']", function(evt) {
+        if(a.length == a.filter(":checked").length) {
           $('#process').removeClass('disabled');
           $('#process').prop('disabled', false);
           $('.submit span').remove();
-      }
+        }
+      });
     });
 
     $(function() {
