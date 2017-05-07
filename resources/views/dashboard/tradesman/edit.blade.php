@@ -543,7 +543,7 @@
               url: "{{ config('app.url') . '/upload' }}",
               acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
-                  formData.append("_token", $('[name=_token').val());
+                  formData.append("_token", $("[name='_token']").val());
               },
               success: function (file, response) {
                   var imgName = response;
