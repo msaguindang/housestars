@@ -242,7 +242,7 @@ class RegistrationController extends Controller
     public function Tradesman()
     {
         $suburbs = Suburbs::all();
-        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->orderBy('category', 'ASC')->get()]);
+        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->orderBy('category', 'ASC')->groupBy('category')->get()]);
     }
 
     public function Customer()
