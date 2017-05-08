@@ -152,6 +152,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/dashboard/tradesman/settings', 'TradesmanController@settings')->middleware('tradesman');
 
     Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
+    
 
     Route::get('/dashboard/customer/edit', 'CustomerController@edit')->middleware('customer');
 
@@ -305,6 +306,8 @@ Route::group(['prefix' => ''], function () {
         'uses' => 'SearchController@search'
     ]);
 
+    Route::get('/profile/customer/{id}', 'CustomerController@dashboard');
+    
     Route::get('/profile/{role}/{id}',[
         'as'   => 'profile.role.id',
         'uses' => 'ProfileController@profile'

@@ -56,7 +56,7 @@
           </div>
           <div class="profile">
             <div class="profile-info">
-              <h1>{{Sentinel::getUser()->name}}</h1>
+              <h1>{{$data['user']->name}}</h1>
               <p>Location: {{$data['meta']['address']}}</p>
             </div>
           </div>
@@ -87,9 +87,11 @@
               @endif
             </div>
           </div>
-          <div class="col-xs-3 nav-panel">
-            <a href="{{env('APP_URL')}}/dashboard/customer/edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
-          </div>
+          @if($data['isOwner'])
+            <div class="col-xs-3 nav-panel">
+              <a href="{{env('APP_URL')}}/dashboard/customer/edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            </div>
+          @endif
         </div>
       </div>
     </section>
@@ -98,14 +100,16 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9 processing-form">
-            <div class="row property-info">
-              <div class="col-xs-4">
-                <label>Add a Property To be Renovated</label>
+            @if ($data['isOwner'])
+              <div class="row property-info">
+                <div class="col-xs-4">
+                  <label>Add a Property To be Renovated</label>
+                </div>
+                <div class="col-xs-8">
+                  <a href="{{env('APP_URL')}}/dashboard/customer/add" class="btn hs-primary" style="float: right; margin: 0 !important;">ADD PROPERTY</a>
+                </div>
               </div>
-              <div class="col-xs-8">
-                <a href="{{env('APP_URL')}}/dashboard/customer/add" class="btn hs-primary" style="float: right; margin: 0 !important;">ADD PROPERTY</a>
-              </div>
-            </div>
+            @endif
 
             <div class="row property-info mobile-hidden">
               <div class="col-xs-12">
