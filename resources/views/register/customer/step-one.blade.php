@@ -233,6 +233,7 @@
      });
 
      $('#select-state').selectize({
+	     persist: false,
          maxItems: 1,
          maxOptions: 10,
          valueField: 'value',
@@ -247,6 +248,7 @@
             }
          },
          load: function(query, callback) {
+	         console.log(query);
              if (!query.length) return callback();
              $.ajax({
                  url: '{{ url('agency/search-suburb') }}',
@@ -259,6 +261,7 @@
                  },
                  success: function(res) {
                     callback(res.suburbs);
+                    
                 }
              });
          },

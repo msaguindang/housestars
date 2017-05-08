@@ -273,9 +273,10 @@ class RegistrationController extends Controller
                   from suburbs
                   having  distance <= 10
                   order by distance
-                  limit 5";
+                  limit 20";
 
             $nearby = DB::select($qry);
+           // dd($nearby );
             $agencies = DB::table('users')
                             ->join('role_users', function ($join) {
                                 $join->on('users.id', '=', 'role_users.user_id')
