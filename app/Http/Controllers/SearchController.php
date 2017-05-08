@@ -34,7 +34,7 @@ class SearchController extends Controller
                     $data['suburb_id']   = implode('', $matches[0]);
                     $data['suburb_name'] = trim(str_replace($data['suburb_id'], '', $data['suburb']));
                 }
-                $data['item'] = $this->hasResults($data['suburb']);
+                $data['item'] = $this->hasResults($data['suburb_name']);
 		        return Response::json($data, 200);
     			break;
     		case 'agency':
@@ -137,9 +137,45 @@ class SearchController extends Controller
                      $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
                      foreach ($tradesmanData as $value) {
                          $data[$x][$value->meta_name] = $value->meta_value;
+/*
+                         $data[$x+ 1][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 2][$value->meta_name] = $value->meta_value;
+                          $data[$x+ 3][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 4][$value->meta_name] = $value->meta_value;
+                          $data[$x+ 5][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 6][$value->meta_name] = $value->meta_value;
+                          $data[$x+ 7][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 8][$value->meta_name] = $value->meta_value;
+*/
                      }
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
+                     
+/* For Testing Banner Advert
+                     $data[$x + 1]['rating'] = $this->getRating($id);
+                     $data[$x + 1]['id'] = $value->user_id;
+                     
+                     $data[$x + 2]['rating'] = $this->getRating($id);
+                     $data[$x + 2]['id'] = $value->user_id;
+                     
+                     $data[$x + 3]['rating'] = $this->getRating($id);
+                     $data[$x + 3]['id'] = $value->user_id;
+                     
+                     $data[$x + 4]['rating'] = $this->getRating($id);
+                     $data[$x + 4]['id'] = $value->user_id;
+                     
+                     $data[$x + 5]['rating'] = $this->getRating($id);
+                     $data[$x + 5]['id'] = $value->user_id;
+                     
+                     $data[$x + 6]['rating'] = $this->getRating($id);
+                     $data[$x + 6]['id'] = $value->user_id;
+                     
+                     $data[$x + 7]['rating'] = $this->getRating($id);
+                     $data[$x + 7]['id'] = $value->user_id;
+                     
+                     $data[$x + 8]['rating'] = $this->getRating($id);
+                     $data[$x + 8]['id'] = $value->user_id;
+*/
                      $x++;
                    }
                  }

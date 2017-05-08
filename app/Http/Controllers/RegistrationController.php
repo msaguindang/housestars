@@ -243,7 +243,7 @@ class RegistrationController extends Controller
     {
         $suburbs = Suburbs::all();
         $data = [];
-        
+
         if ($user = Sentinel::getUser()) {
             $userMetas = UserMeta::where('user_id', $user->id)->get();
             foreach ($userMetas as $userMeta) {
@@ -261,8 +261,7 @@ class RegistrationController extends Controller
                 }
             }
         }
-
-        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->get(), 'data' => $data]);
+        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->orderBy('category', 'ASC')->groupBy('category')->get(), 'data' => $data]);
     }
 
     public function Customer()
@@ -293,9 +292,10 @@ class RegistrationController extends Controller
                   from suburbs
                   having  distance <= 10
                   order by distance
-                  limit 5";
+                  limit 20";
 
             $nearby = DB::select($qry);
+           // dd($nearby );
             $agencies = DB::table('users')
                             ->join('role_users', function ($join) {
                                 $join->on('users.id', '=', 'role_users.user_id')

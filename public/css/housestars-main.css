@@ -3424,6 +3424,7 @@ a.view-summary {
     color: grey;
     font-size: 12px;
     font-weight: 300;
+    float: left;
 }
 
 .positions .position {
@@ -3431,5 +3432,8 @@ a.view-summary {
     background: #1972b4;
     font-size: 11px;
     padding: 4px 10px;
+    display: block;
+    float: left;
+    margin: 2px;
 }
 

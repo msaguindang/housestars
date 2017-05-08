@@ -141,11 +141,12 @@ class AdvertisementController extends Controller
                 'validator' => $validator->errors(),
             ], 400);
         }
-
+        
+        $ad_info = explode("/",$payload['type']);
         $advertisement = Advertisement::create([
             'name' => $payload['name'],
-            'type' => $payload['type'],
-            'page' => $payload['page'],
+            'type' => $ad_info[0],
+            'page' => $ad_info[1],
             'priority' => $payload['priority']
         ]);
 

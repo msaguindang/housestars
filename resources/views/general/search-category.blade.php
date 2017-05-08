@@ -141,7 +141,7 @@
             create: false,
             render: {
                 option: function(item, escape) {
-                  return '<div class="option" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+                  return '<div class="option" data-value="'+item.name+'">'+item.name+' ('+item.id+')</div>';
                 }
             },
             load: function(query, callback) {

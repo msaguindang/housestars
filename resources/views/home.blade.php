@@ -127,9 +127,9 @@
         </div>
         <div class="banner-ad desktop">
           @if(isset($advert['141x117']))
-            <img src="assets/{{$advert['141x117']['url']}}" alt="Banner Ad">
+            <img src="{{env('APP_URL')}}/{{$advert['141x117']['url']}}" alt="Banner Ad">
           @else
-            <img src="assets/banner-ad.png" alt="Banner Ad">
+            <img src="{{env('APP_URL')}}/assets/banner-ad.png" alt="Banner Ad">
           @endif
         </div>
 
@@ -149,7 +149,7 @@
       @if(isset($advert['728x90']))
         <img src="{{env('APP_URL')}}/{{$advert['728x90']['url']}}" alt="Banner Ad">
       @else
-        <img src="assets/banner-test.jpg" alt="Banner Ad">
+        <img src="{{env('APP_URL')}}/assets/banner-test.jpg" alt="Banner Ad">
       @endif
     </section>
 

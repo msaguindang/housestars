@@ -76,17 +76,19 @@ class MainController extends Controller
         }
 
         $data = array();
-
         if (isset($advert['141x117'])) {
             $numAds =  count($advert['141x117']) - 1;
             $index = rand(0, $numAds);
             $data['141x117'] = $advert['141x117'][$index ];
-
-        } else if (isset($advert['728x90'])) {
+		}
+        
+        if (isset($advert['728x90'])) {
             $numAds =  count($advert['728x90']) - 1;
             $index = rand(0, $numAds);
-            $data['728x90'] = $advert['728x90'][$index ];
+            $data['728x90'] = $advert['728x90'][$index ];   
         }
+        
+        
 
         return view('home')->with('advert', $data);
     }
