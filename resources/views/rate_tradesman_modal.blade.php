@@ -8,13 +8,18 @@
 					<div class="modal-body">
 						<h4>Review Page</h4>
 						<div class="col-xs-8  col-xs-offset-2 tradesman-info">
-							<div class="col-xs-4 tradesman-profile">
-								<img src="{{$businessInfo['photo']}}" alt="Tradesman Name" id="tradesmanPic">
-							</div>
-							<div class="col-xs-8 tradesman-name">
-								<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
-								
-							</div>
+							@if ($businessInfo['photo'])
+								<div class="col-xs-4 tradesman-profile">
+									<img src="{{ $businessInfo['photo'] }}" alt="{{$businessInfo['name']}}" id="tradesmanPic">
+								</div>
+								<div class="col-xs-8 tradesman-name">
+									<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+								</div>
+							@else
+								<div class="col-xs-12 tradesman-name">
+									<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+								</div>
+							@endif
 						</div>
 						<p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 						<form id="rateForm" enctype="multipart/form-data" method="post" action="/create/review">

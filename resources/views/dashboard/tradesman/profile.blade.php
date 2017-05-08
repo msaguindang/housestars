@@ -63,14 +63,12 @@
             <div class="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
             </div>
             <div class="profile-info">
-
-                  @if(isset($data['business-name']))
-                  <h1>{{$data['business-name']}}</h1>
-                  @endif
-                  @if (isset($data['website']))
-                  <p>Website: {{$data['website']}}</p>
-                  @endif
-
+              @if(isset($data['business-name']))
+              <h1>{{$data['business-name']}}</h1>
+              @endif
+              @if (isset($data['website']))
+              <p>Website: {{$data['website']}}</p>
+              @endif
             </div>
           </div>
         </div>
@@ -93,7 +91,7 @@
                       <span class="icon icon-star"></span>
                   @endfor
                 </div>
-                <span class="rating-p" style="margin-left: 10px;">0 Review</span>
+                <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Review</span>
               </div>
             </div>
             <div class="description">
