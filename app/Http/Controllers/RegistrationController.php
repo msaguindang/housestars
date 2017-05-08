@@ -242,7 +242,27 @@ class RegistrationController extends Controller
     public function Tradesman()
     {
         $suburbs = Suburbs::all();
-        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->get()]);
+        $data = [];
+        
+        if ($user = Sentinel::getUser()) {
+            $userMetas = UserMeta::where('user_id', $user->id)->get();
+            foreach ($userMetas as $userMeta) {
+                if (strtolower($userMeta->meta_name) == 'positions') {
+                    $positions = explode(',', $userMeta->meta_value);
+                    foreach ($positions as $key => $pos) {
+                        preg_match_all('!\d!', $pos, $matches);
+                        if (isset($matches[0]) && !empty($pos)) {
+                            $data[$userMeta->meta_name][$key]['id'] = implode('', $matches[0]);
+                            $data[$userMeta->meta_name][$key]['name'] = trim(str_replace($data[$userMeta->meta_name][$key]['id'], '', $pos));
+                        }
+                    }
+                } else {
+                    $data[$userMeta->meta_name] = $userMeta->meta_value;
+                }
+            }
+        }
+
+        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->get(), 'data' => $data]);
     }
 
     public function Customer()
