@@ -26,11 +26,16 @@ class SearchController extends Controller
     							->orderBy("category", "asc")
     							->groupBy('category')
     							->get();
+                $data['suburb_id'] = $data['suburb_name'] ='';
                 $data['suburb'] = $request->get('suburb', '');
+
+                preg_match_all('!\d!', $data['suburb'], $matches);
+                if (isset($matches[0])) {
+                    $data['suburb_id']   = implode('', $matches[0]);
+                    $data['suburb_name'] = trim(str_replace($data['suburb_id'], '', $data['suburb']));
+                }
                 $data['item'] = $this->hasResults($data['suburb']);
-                //dd($data);
-    			      return Response::json($data, 200);
-                //return view('general.tradesman-listings')->with('data', $data);
+		        return Response::json($data, 200);
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));

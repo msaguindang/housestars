@@ -63,8 +63,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
 						exists.push(data['item'][i]['trade']);
 					}
 
-
-          $('.message').append('<p>Available Trades And Services for location <b class="suburb">'+ suburb +'</b></p>');
+          $('.message').append('<p>Available Trades And Services for location <b class="suburb">' + data.suburb_name + ' ' + data.suburb_id + '</b></p>');
 
           for(i = 0; i < data['cat'].length; i++){
 
