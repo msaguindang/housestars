@@ -1,4 +1,18 @@
 @extends("layouts.main")
+<?php
+    $businessName = isset($data['business-name']) ? $data['business-name'] : '';
+    $tradingName = isset($data['trading-name']) ? $data['trading-name'] : '';
+    $summary = isset($data['summary']) ? $data['summary'] : '';
+    $trade = isset($data['trade']) ? $data['trade'] : '';
+    $website = isset($data['website']) ? $data['website'] : '';
+    $abn = isset($data['abn']) ? $data['abn'] : '';
+    $chargeRate = isset($data['charge-rate']) ? $data['charge-rate'] : '';
+    $phone = isset($data['phone-number']) ? $data['phone-number'] : '';
+    $promotionCode = isset($data['promotion-code']) ? $data['promotion-code'] : '';
+    $positions = isset($data['positions']) ? json_encode($data['positions']) : json_encode([]);
+    $selectedTradeIndex = -1;
+?>
+
 @section("content")
     <div id="loading">
         <div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}"/></div>
@@ -95,7 +109,7 @@
                         <div class="col-xs-8">
                             <div class="col-xs-6 no-padding-left">
                                 <label>Business Name <span class="required-symbol">*</span></label>
-                                <input type="text" name="business-name" class="required-input" required>
+                                <input type="text" name="business-name" class="required-input" value="{{ $businessName}} " required>
                                 <label>Postcodes Serviced
                                     <!-- Suburbs Working In <span>(Enter the desired postcode and select suburbs)</span>  -->
                                     <span class="required-symbol">*</span></label>
@@ -108,27 +122,32 @@
                                     @endforeach--}}
                                 </select>
                                 <label>Trading Name <span class="required-symbol">*</span></label>
-                                <input type="text" name="trading-name" class="required-input" required>
+                                <input type="text" name="trading-name" class="required-input" value="{{ $tradingName}} " required>
                             </div>
                             <div class="col-xs-6 no-padding-right">
                                 <label>Website <span class="required-symbol">*</span></label>
-                                <input type="text" name="website" class="required-input" required>
+                                <input type="text" name="website" class="required-input" value="{{ $website }} " required>
                                 <label>ABN <span class="required-symbol">*</span></label>
-                                <input type="text" name="abn" class="required-input" required>
+                                <input type="text" name="abn" class="required-input" value="{{ $abn}} " required>
                                 <label>Standard Hourly Rate (Enter N/A if this does not apply to you) <span class="required-symbol">*</span></label>
-                                <input type="text" name="charge-rate" class="required-input" required>
+                                <input type="text" name="charge-rate" class="required-input" value="{{ $chargeRate }} " required>
                             </div>
                             <label>Write Business Description</label>
-                            <textarea placeholder="" class="summary" name="summary"></textarea>
+                            <textarea placeholder="" class="summary" name="summary">{{$summary}}</textarea>
                         </div>
                         <div class="col-xs-4">
                             <label>Trade or Service <span>(1 only)</span> <span class="required-symbol">*</span></label>
                             <div id="trade-btn-group" class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select...
+                                <button data-toggle="dropdown" id="trade-service-select" class="btn btn-default dropdown-toggle">
+                                    {{-- empty($trade) ? 'Please Select... ' :  --}}
+                                    Please Select... 
                                     <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     @foreach($categories as $index => $cat)
+                                        @if (!empty($trade) && strtolower($trade) == strtolower($cat->category))
+                                            @php ($selectedTradeIndex = ($index+1))
+                                        @endif
                                         <li>
                                             <input type="radio" id="t{{$index+1}}" name="trade" value="{{ $cat->category }}">
                                             <label for="t{{$index+1}}">{{ $cat->category }}</label>
@@ -137,10 +156,10 @@
                                 </ul>
                             </div>
                             <label>Promotion Code</label>
-                            <input type="text" name="promotion-code">
+                            <input type="text" name="promotion-code" value="{{ $promotionCode }} ">
                             
                             <label>Phone Number</label>
-                            <input type="text" name="phone-number">
+                            <input type="text" name="phone-number" value="{{ $phone }} ">
 
                             <button class="btn hs-primary" id="submit" disabled>NEXT <span
                                         class="icon icon-arrow-right"></span></button>
@@ -161,10 +180,7 @@
         var btn = document.getElementById('submit');
 
         checker.onchange = function () {
-
             btn.disabled = !this.checked;
-
-
         };
 
         $.ajaxSetup({
@@ -172,7 +188,7 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
         });
-
+        
         $('#select-state').selectize({
             maxItems: 10000,
             valueField: 'value',
@@ -198,13 +214,12 @@
                     },
                     success: function(res) {
                         callback(res.suburbs);
-                        //callback(res.repositories.slice(0, 10));
                     }
                 });
             },
             onChange: function(value) {
 
-                if(typeof value == "undefined" || value == null){
+                if(typeof value == "undefined" || value == null) {
                     return false;
                 }
 
@@ -224,12 +239,15 @@
                             selectize[0].selectize.removeItem(currentValue);
                             $('#noPositions').modal();
                         }
-
                     }
                 });
-
             }
         });
+        
+        // var positions = {!! $positions !!};
+        // $.each(positions, function(id, item) {
+        //     $('<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.id+'</div>').insertBefore($(".selectize-input.items > input"));
+        // });
 
         jQuery.validator.addMethod('positionsRequired', function(value, element){
 
@@ -242,12 +260,10 @@
 
             $('.selectize-control .selectize-input').removeClass('error');
             return true;
-
         });
 
         jQuery.validator.addMethod('tradeRequired', function(value, element){
-
-            if(typeof value == "undefined" || value == null || value == ""){
+            if(typeof value == "undefined" || value == null || value == "") {
 
                 console.log('undefined trade');
                 $('#trade-btn-group').addClass('error');
@@ -262,8 +278,6 @@
 
         var validator = $('form[name=step_one_form]').validate({
             errorPlacement: function (error, element) {
-                //console.log('error: ', error);
-                //console.log('element: ', element);
             },
             ignore: '',
             rules:{
@@ -274,16 +288,11 @@
                     tradeRequired:true
                 }
             }
-            /*submitHandler: function(form) {
-
-
-
-
-
-            }*/
         });
 
-        console.log('validator', validator);
-
+        var selectedTradeIndex = {!! $selectedTradeIndex !!};
+        if (selectedTradeIndex != -1) {
+            $("#t"+selectedTradeIndex).trigger('click');
+        } 
     </script>
 @stop

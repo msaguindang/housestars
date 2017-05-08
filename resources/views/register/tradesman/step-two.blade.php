@@ -16,8 +16,6 @@
                 </div>
                 <div class="nav-items">
                   <ul>
-                    <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -106,7 +104,9 @@
 					<span class="spacing"></span>
 					<input type="radio" name="subscription" value="yearly"> Pay $550 for a 12 month subscription </br>
 					<input type="radio" name="subscription" value="monthly"> Pay an ongoing fee of $50 per month
-				</div>
+				    <br/>
+                    <a href="/register/tradesman/step-one" class="btn hs-primary" style="width:130px;padding:8px 15px 8px 30px;text-align:right;"> <span class="icon icon-arrow-left" style="margin-left:-20px;"></span> Back </a>
+                </div>
 				<div class="col-xs-6 border-left padding-40">
 					<h2>Add Billing Address</h2>
 					<label>Address</label>
@@ -114,7 +114,6 @@
 					<label>Suburb</label>
 					<div class="btn-group">
 						<select id="select-suburb" name="suburb"  class="demo-default plain" required></select>
-
 			        </div>
 					<label>State</label>
 					<div class="btn-group">
