@@ -3437,3 +3437,8 @@ a.view-summary {
     margin: 2px;
 }
 
+#nearbyAgencyList span.option {
+    float: left;
+    margin-bottom: 10px;
+}
+
