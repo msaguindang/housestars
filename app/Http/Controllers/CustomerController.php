@@ -191,17 +191,18 @@ class CustomerController extends Controller
 
         }
 
-        if(count($data['property']) > 1){
+        if(count($data['property']) > 1) {
             $data['recent'] = $lastIndex;
 
             if (isset($data['property'][$lastIndex]['process'])){
                 return View::make('dashboard/customer/profile')->with('data', $data);
             }
+        } else if ($data['isOwner']) {
+            // Check of the last property added was proccessed
+            return View::make('dashboard/customer/process')->with('data', $data);
+        } else {
+            abort(230, "Customer has no property yet.");
         }
-
-       // Check of the last property added was proccessed
-
-        return View::make('dashboard/customer/process')->with('data', $data);
     }
 
     public function edit()

@@ -9,7 +9,6 @@
   </style>
 @endsection
 
-
 <?php
   $amountSold = $commissionPercentage = $commisionCharged = 0;
 ?>
