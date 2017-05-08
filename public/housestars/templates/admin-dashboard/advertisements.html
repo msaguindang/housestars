@@ -73,13 +73,13 @@
                         </th>
                         <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'page')" />
-                            Page
+                            Location
                             <span ng-click="sort('page', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('page', 'desc')" class="fa fa-caret-down"></span>
                         </th>
                         <th class="clickable">
                             <input type="text" class="form-control column-search" ng-keyup="searchByField($event, 'type')" />
-                            Type
+                            Size
                             <!-- <span ng-click="sort('type', 'asc')" class="fa fa-caret-up"></span>
                             <span ng-click="sort('type', 'desc')" class="fa fa-caret-down"></span> -->
                         </th>
@@ -92,13 +92,13 @@
                         <th>Action</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="advertisement in _advertisements | filter : query">
+                    <tr ng-repeat="advertisement in _advertisements | filter : query" >
                         
                         <td> {{ toJsDate(advertisement.created_at) | date : 'mediumDate' }} </td>
                         <td>{{ advertisement.name }}</td>
-                        <td>{{ advertisement.page  | capitalize }}</td>
-                        <td>{{ advertisement.type }}</td>
-                        <td>{{ advertisement.priority }}</td>
+                        <td style="text-align: center">{{ advertisement.page  | capitalize }}</td>
+                        <td style="text-align: center">{{ advertisement.type }}</td>
+                        <td style="text-align: center">{{ advertisement.priority }}</td>
                         <td class="btn-actions">
                             <a uib-tooltip="Edit Advertisement" href="" ng-click="editAdvertisement(advertisement, $index)" class="edit">
                                 <i class="pe-7s-note"></i>
@@ -170,18 +170,20 @@
                 <label>Type</label>
             </div>
             <div class="col-xs-8">
-                <select class="form-control" ng-model="advertisementData.type">
+                <select class="form-control" ng-model="advertisementData.type" id="property-type">
                     <option value="">Select Property Type</option>
-                    <option value="270x270">270x270 (Profile Page)</option>
-                    <option value="728x90">728x90 (Homepage)</option>
-                    <option value="141x117">141x117 (Banner)</option>
+                    <option value="270x270/Profile Page">270x270 (Profile Page)</option>
+                    <option value="728x90/Home">728x90 (Homepage)</option>
+                    <option value="1170x125/Tradies">1170x125 (Results Page)</option>
+                    <option value="141x117/Home">141x117 (Banner)</option>
                 </select>
                 <span class="help-block has-error {{showErrorBlock('type', 'hidden')}}">
                     <strong>{{errors.type[0]}}</strong>
                 </span>
             </div>
         </div>
-
+<!-- 		<input type="hidden" ng-model="advertisementData.page" value=""> -->
+<!--
         <div class="row form-item">
             <div class="col-xs-4">
                 <label>Page</label>
@@ -197,6 +199,7 @@
                 </span>
             </div>
         </div>
+-->
 
         <div class="row form-item">
             <div class="col-xs-4">
@@ -260,16 +263,17 @@
             </div>
         </div>
 
-        <div class="row form-item">
+       <div class="row form-item">
             <div class="col-xs-4">
                 <label>Type</label>
             </div>
             <div class="col-xs-8">
-                <select class="form-control" ng-model="advertisementData.type">
+                <select class="form-control" ng-model="advertisementData.type" id="property-type">
                     <option value="">Select Property Type</option>
-                    <option value="270x270">270x270</option>
-                    <option value="728x90">728x90</option>
-                    <option value="141x117">141x117</option>
+                    <option value="270x270/Profile Page">270x270 (Profile Page)</option>
+                    <option value="728x90/Home">728x90 (Homepage)</option>
+                    <option value="1170x125/Tradies">1170x125 (Results Page)</option>
+                    <option value="141x117/Home">141x117 (Banner)</option>
                 </select>
                 <span class="help-block has-error {{showErrorBlock('type', 'hidden')}}">
                     <strong>{{errors.type[0]}}</strong>
@@ -277,6 +281,7 @@
             </div>
         </div>
 
+<!--
         <div class="row form-item">
             <div class="col-xs-4">
                 <label>Page</label>
@@ -292,6 +297,7 @@
                 </span>
             </div>
         </div>
+-->
 
         <div class="row form-item">
             <div class="col-xs-4">
