@@ -63,7 +63,7 @@ class PotentialCustomerController extends Controller
       preg_match_all('!\d!', $suburb, $matches);
       if (isset($matches[0])) {
         $suburb_id = implode('', $matches[0]);
-        $suburb = trim(str_replace($suburb_id, '', $suburb)) . ' ' . $suburb_id;
+        $suburb = trim(str_replace($suburb_id, '', $suburb)) . ' (' . $suburb_id . ')';
       }
       
       switch ($to) {
