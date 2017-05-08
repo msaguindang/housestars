@@ -129,7 +129,6 @@ class AgencyController extends Controller
 
     public function settings()
     {
-
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $agents = DB::table('users')
             ->join('agents', function ($join) {
@@ -138,7 +137,6 @@ class AgencyController extends Controller
             })
             ->get();
         $data = array();
-
 
         foreach ($meta as $key) {
             $data[$key->meta_name] = $key->meta_value;
@@ -179,7 +177,7 @@ class AgencyController extends Controller
                     ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name'), 'password' => $password]);
             }
 
-            return redirect()->back();
+            return redirect('/profile');
 
         } else {
             return redirect(env('APP_URL'));
@@ -215,7 +213,7 @@ class AgencyController extends Controller
                     User::where('id', $user_id)->update(['customer_id' => $customer->id]);
                 }
 
-                return redirect()->back();
+                return redirect('/profile');
 
             }catch (\Stripe\Error\Card $e){
 
