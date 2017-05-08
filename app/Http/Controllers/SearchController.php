@@ -137,6 +137,7 @@ class SearchController extends Controller
                      $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
                      foreach ($tradesmanData as $value) {
                          $data[$x][$value->meta_name] = $value->meta_value;
+/*
                          $data[$x+ 1][$value->meta_name] = $value->meta_value;
                          $data[$x+ 2][$value->meta_name] = $value->meta_value;
                           $data[$x+ 3][$value->meta_name] = $value->meta_value;
@@ -145,10 +146,12 @@ class SearchController extends Controller
                          $data[$x+ 6][$value->meta_name] = $value->meta_value;
                           $data[$x+ 7][$value->meta_name] = $value->meta_value;
                          $data[$x+ 8][$value->meta_name] = $value->meta_value;
+*/
                      }
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
                      
+/* For Testing Banner Advert
                      $data[$x + 1]['rating'] = $this->getRating($id);
                      $data[$x + 1]['id'] = $value->user_id;
                      
@@ -172,6 +175,7 @@ class SearchController extends Controller
                      
                      $data[$x + 8]['rating'] = $this->getRating($id);
                      $data[$x + 8]['id'] = $value->user_id;
+*/
                      $x++;
                    }
                  }
