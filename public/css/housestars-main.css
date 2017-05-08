@@ -2041,6 +2041,7 @@ input:checked + .slider:before {
     height: 270px;
     background: #333333;
     margin-bottom: 15px;
+	background-size: cover !important;
 }
 
 .breadcrumbs .links {
