@@ -20,11 +20,26 @@ use Hash;
 
 class CustomerController extends Controller
 {
-    function dashboard(){
-    	$user_info = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-        $property = Property::where('user_id', Sentinel::getUser()->id)->get();
-        $transactions = Transactions::where('user_id', Sentinel::getUser()->id)->get();
-        $reviews = Reviews::where('reviewer_id', Sentinel::getUser()->id)->get();
+    public function dashboard(Request $request)
+    {   
+        $data = [];
+        if (is_null($request->route('id')) && Sentinel::check()) {
+            $user = Sentinel::getUser();
+            $data['isOwner'] = true;
+        } else {
+            $user = User::findOrfail($request->route('id'));
+            $data['isOwner'] = false;
+        }
+
+        $data['user'] = $user;
+        $userId = $user->id;
+        $userName = $user->name;
+        $userEmail = $user->email;
+
+        $user_info = UserMeta::where('user_id', $userId)->get();
+        $property = Property::where('user_id', $userId)->get();
+        $transactions = Transactions::where('user_id', $userId)->get();
+        $reviews = Reviews::where('reviewer_id', $userId)->get();
         $tradesmen = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
@@ -33,7 +48,6 @@ class CustomerController extends Controller
                         ->get();
 
         $user_meta = DB::table('user_meta')->get();
-        $data = array();
         $property_code = '';
         $x = 0;
         $y = 0;
@@ -51,40 +65,40 @@ class CustomerController extends Controller
 
 
         foreach ($user_info as $key) {
-        	$data['meta'][$key->meta_name] = $key->meta_value;
+            $data['meta'][$key->meta_name] = $key->meta_value;
         }
 
 
 
-        $data['meta']['name'] = Sentinel::getUser()->name;
-        $data['meta']['email'] = Sentinel::getUser()->email;
+        $data['meta']['name'] = $userName;
+        $data['meta']['email'] = $userEmail;
 
         foreach ($property as $key) {
 
-        	if($property_code == ''){
+            if($property_code == ''){
 
-        		$data['property'][$x][$key->meta_name] = $key->meta_value;
-        		$data['property'][$x]['property-code'] = $key->property_code;
-        		$property_code = $key->property_code;
+                $data['property'][$x][$key->meta_name] = $key->meta_value;
+                $data['property'][$x]['property-code'] = $key->property_code;
+                $property_code = $key->property_code;
 
-        	}else if($key->meta_name == 'agent'){
+            }else if($key->meta_name == 'agent'){
                 $data['agent'] = $this->find_agent_by_id($key->meta_value);
                 $data['property'][$x][$key->meta_name] = $key->meta_value;
           } else if($property_code == $key->property_code){
-        		$data['property'][$x][$key->meta_name] = $key->meta_value;
-        		$property_code = $key->property_code;
-        	} else if($property_code != $key->property_code){
+                $data['property'][$x][$key->meta_name] = $key->meta_value;
+                $property_code = $key->property_code;
+            } else if($property_code != $key->property_code){
                 $property_code = $key->property_code;
                 $x++;
                 $data['property'][$x][$key->meta_name] = $key->meta_value;
                 $data['property'][$x]['property-code'] = $key->property_code;
             } else {
-        		$data['property'][$x][$key->meta_name] = $key->meta_value;
-        	}
+                $data['property'][$x][$key->meta_name] = $key->meta_value;
+            }
 
         }
 
-        $data['property']['user_id'] = Sentinel::getUser()->id;
+        $data['property']['user_id'] = $userId;
 
         $data['transactions'] = array();
         $data['code'] = $property_code;
@@ -177,21 +191,18 @@ class CustomerController extends Controller
 
         }
 
-        //dd($data);
-
-        if(count($data['property']) > 1){
+        if(count($data['property']) > 1) {
             $data['recent'] = $lastIndex;
 
             if (isset($data['property'][$lastIndex]['process'])){
                 return View::make('dashboard/customer/profile')->with('data', $data);
             }
+        } else if ($data['isOwner']) {
+            // Check of the last property added was proccessed
+            return View::make('dashboard/customer/process')->with('data', $data);
+        } else {
+            abort(230, "Customer has no property yet.");
         }
-
-       // Check of the last property added was proccessed
-
-      //  dd($data);
-
-        return View::make('dashboard/customer/process')->with('data', $data);
     }
 
     public function edit()
@@ -516,7 +527,6 @@ class CustomerController extends Controller
 
         $sub = preg_replace('/[0-9]+/', '', $suburb);
         $postcode = preg_replace('/\D/', '', $suburb);
-      //  dd($postcode);
 
         $suburbInfo =  Suburbs::where('name', $sub)->first();
         $lat = $suburbInfo->latitude;
