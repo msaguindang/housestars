@@ -65,7 +65,7 @@
               <label>Suburb</label>
               <select id="select-state" name="suburb"  class="demo-default"></select>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4 property-type">
               <label>Email Address</label>
               <input type="text" name="email">
               <label>Property Type</label>

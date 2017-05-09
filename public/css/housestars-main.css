@@ -3397,7 +3397,7 @@ ol.ol3 {
     padding-left: 40px;
 }
 
-#savingsCalc .selectize-dropdown-content .option:last-child {
+#savingsCalc .property-type .selectize-dropdown-content .option:last-child {
     display: none;
 }
 

@@ -234,6 +234,9 @@ $(document).on('submit', '#savingsCalc' ,function(e){
         success: function(data){
 					console.log(data);
 					$('#error').empty();
+					$('#select-state')[0].selectize.clear();
+					$('#select-type')[0].selectize.clear();
+					$('.dropdown-toggle').empty();
 					$("#savingsCalc")[0].reset();
 					$("#loading").fadeOut("slow");
 					$('#savingsSuccess').modal('show');
@@ -241,6 +244,9 @@ $(document).on('submit', '#savingsCalc' ,function(e){
 				error: function(data){
 					$("#loading").fadeOut("slow");
 					$errors = data.responseJSON;
+					$('#select-state')[0].selectize.clear();
+					$('#select-type')[0].selectize.clear();
+					$('.dropdown-toggle').empty();
 					$('#error').empty();
 					$('#error').append('Please complete the form, you need to fill in all fields.');
 				}
