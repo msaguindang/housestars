@@ -246,6 +246,7 @@ $(document).on('submit', '#savingsCalc' ,function(e){
 					$errors = data.responseJSON;
 					$('#select-state')[0].selectize.clear();
 					$('#select-type')[0].selectize.clear();
+					$("#savingsCalc")[0].reset();
 					$('.dropdown-toggle').empty();
 					$('#error').empty();
 					$('#error').append('Please complete the form, you need to fill in all fields.');
