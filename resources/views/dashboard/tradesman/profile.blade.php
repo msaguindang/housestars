@@ -87,9 +87,13 @@
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">
-                  @for ($i = 0; $i < 3; $i++)
-                      <span class="icon icon-star"></span>
-                  @endfor
+                  @for($i = 1; $i <= $data['rating']; $i++)
+                        <span class="icon icon-star"></span>
+                    @endfor
+                    @php ($rating = 5 - $data['rating'])
+                    @for($i = 1; $i <= $rating; $i++)
+                        <span class="icon icon-star-grey"></span>
+                    @endfor
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Review</span>
               </div>
