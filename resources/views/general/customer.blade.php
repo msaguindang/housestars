@@ -124,7 +124,7 @@
         			<label>Name</label>
         			<input type="text" name="name">
         			<label>Suburb</label>
-        			<select id="select-suburb" name="suburb"  class="demo-default savings-calc-suburb"></select>
+        			<select id="select-suburb" name="suburb"  class="demo-default"></select>
               <span class="fa fa-spin fa-spinner hidden" style="position:relative;top:-37px;z-index:1;float:right;right:35px;"></span>
         		</div>
         		<div class="col-xs-4">

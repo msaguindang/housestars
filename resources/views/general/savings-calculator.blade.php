@@ -59,11 +59,11 @@
           <form id="savingsCalc" method="POST">
             <div class="alert alert-danger" style="width: 100%; text-align: center; color: #000;"><span id="error"></span></div>
             {{csrf_field()}}
-            <div class="col-xs-4">
+            <div class="col-xs-4  savings-calc-suburb">
               <label>Name</label>
               <input type="text" name="name">
               <label>Suburb</label>
-              <select id="select-state" name="suburb"  class="demo-default savings-calc-suburb"></select>
+              <select id="select-state" name="suburb"  class="demo-default"></select>
             </div>
             <div class="col-xs-4">
               <label>Email Address</label>
@@ -77,7 +77,7 @@
                 <option value="Land">Land</option>
                 <option value="Townhouse">Townhouse</option>
                 <option value="Other">Other</option>
-                <option value="extra"></option>
+                <option value="extra" style="display: none;"></option>
               </select>
               <!-- <div class="btn-group">
                     <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
