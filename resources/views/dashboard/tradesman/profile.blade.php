@@ -114,7 +114,7 @@
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>
             <div class="col-xs-4">
-               <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="0"><div id="switch" class="slider round" style="float: right;"></div></label>
+               <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: right;"></div></label>
             </div>
           </div>
           <div class="col-xs-3 profile-details" style="display: none;">
@@ -164,7 +164,7 @@
               <p style="line-height: 30px;">Switch to Customer View</p>
             </div>
             <div class="col-xs-4 switch-guest">
-              <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
+              <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="0"><div id="switch" class="slider round" style="float: left;"></div></label>
             </div>
           </div>
 
