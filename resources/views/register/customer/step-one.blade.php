@@ -308,9 +308,6 @@
                 }
             });
         },
-        onItemAdd: function(value, $item){
-	         $('#select-state').selectize()[0].selectize.load();
-        },
         onDelete: function(values) {
             $('#select-state').selectize()[0].selectize.clearOptions();
         }
