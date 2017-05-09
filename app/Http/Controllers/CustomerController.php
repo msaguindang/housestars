@@ -122,7 +122,7 @@ class CustomerController extends Controller
             $data['transactions'][$z]['amount_spent'] = $transaction->amount_spent;
             $data['transactions'][$z]['receipt'] = $transaction->receipt;
 
-            if(isset($data['transactions'][$li]['code'])){
+            if (isset($data['transactions'][$li]['code'])) {
                 if($data['transactions'][$li]['code'] == $transaction->property_code){
                     $total = $total + (int)$transaction->amount_spent;
                 } else {
@@ -160,6 +160,7 @@ class CustomerController extends Controller
             $agency_commission = ((float)str_replace("%","",$data['agent']['rate']) / 100) * (float)$data['property'][$lastIndex]['value-to'];
             $customer_commission = ((float)str_replace("%","",$data['property'][$lastIndex]['commission']) / 100) * $agency_commission;
             $data['commission']['estimate'] = $customer_commission;
+            dd($customer_commission);
             if (isset($data['property'][$lastIndex]['commission-charged']) && strtolower($data['property'][$lastIndex]['commission-charged']) == 'yes') {
                 $data['commission']['total'] =  isset($data['property'][$lastIndex]['commission-total']) ? $data['property'][$lastIndex]['commission-total'] : $customer_commission;
             } else {
@@ -193,11 +194,12 @@ class CustomerController extends Controller
 
         if(count($data['property']) > 1) {
             $data['recent'] = $lastIndex;
-
             if (isset($data['property'][$lastIndex]['process'])){
                 return View::make('dashboard/customer/profile')->with('data', $data);
             }
-        } else if ($data['isOwner']) {
+        }
+
+        if ($data['isOwner']) {
             // Check of the last property added was proccessed
             return View::make('dashboard/customer/process')->with('data', $data);
         } else {
@@ -257,7 +259,7 @@ class CustomerController extends Controller
     }
 
 
-    function spending(Request $request){
+    public function spending(Request $request){
 
         if($request->input('trades') != null && $request->input('amount-spent') != null ){
             $user_id = Sentinel::getUser()->id;

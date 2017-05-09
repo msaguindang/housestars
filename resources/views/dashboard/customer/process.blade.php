@@ -434,28 +434,34 @@
                       <label>Total Commission Charge</label>
                     </div>
                     <div class="value">
-                      <div class="action">
-                        <span id="commission-total" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
-                        @if(isset($data['property'][$a]['commission-charged']) && $data['property'][$a]['commission-charged'] == 'yes')
-                          <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
-                        @else
-                          <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" />
-                        @endif
-                        <label for="c9"><span></span></label>
-                      </div>
+                      @if(isset($data['agent']))
+                        <div class="action">
+                          <span id="commission-total" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
+                          @if(isset($data['property'][$a]['commission-charged']) && $data['property'][$a]['commission-charged'] == 'yes')
+                            <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
+                          @else
+                            <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" />
+                          @endif
+                          <label for="c9"><span></span></label>
+                        </div>
+                      @endif
                       <div class="amount form-inline">
                           <div class="input-group">
-                            @php ($commisionCharged = ((isset($data['commission']['total']) && $data['commission']['total'] != 'N/A') ? $data['commission']['total'] : 0))
-                            <span class="input-group-addon" id="basic-addon1">$</span>
-                            <input type="number" 
-                              class="form-control" 
-                              aria-label="Percentage" 
-                              value="{{$commisionCharged}}"
-                              data-token="{{ csrf_token()}}" 
-                              data-code="{{$data['property'][$a]['property-code']}}"
-                              data-meta="commission-charged"
-                              data-meta-key="commission-total"
-                            />
+                            @if(isset($data['agent']))
+                              @php ($commisionCharged = ((isset($data['commission']['total']) && $data['commission']['total'] != 'N/A') ? $data['commission']['total'] : 0))
+                              <span class="input-group-addon" id="basic-addon1">$</span>
+                              <input type="number" 
+                                class="form-control" 
+                                aria-label="Percentage" 
+                                value="{{$commisionCharged}}"
+                                data-token="{{ csrf_token()}}" 
+                                data-code="{{$data['property'][$a]['property-code']}}"
+                                data-meta="commission-charged"
+                                data-meta-key="commission-total"
+                              />
+                            @else
+                              <p> N/A </p>
+                            @endif
                           </div>
                       </div>
                     </div>

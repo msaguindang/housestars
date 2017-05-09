@@ -135,7 +135,7 @@
                               <td><p>${{$property['value-from']}} - ${{$property['value-to']}}</p></td>
                               <td><p>
                               @if(isset($property['discount']))
-                                ${{$property['discount']}}
+                                {{ is_numeric($property['discount']) ? '$' . $property['discount'] : $property['discount'] }}
                               @endif
                               </p></td>
                               @if(isset($property['contract']))
@@ -190,9 +190,6 @@
                               @else
                               <b>Contract: </b><button type="button" class="btn btn-primary btn-xs disabled" >Contract</button>
                               @endif
-
-
-
                                 @if(isset($property['process']))
                                   @if($property['process'] == 'Pending')
                                 <p><b>Status: </b>

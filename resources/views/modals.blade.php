@@ -1137,9 +1137,15 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>SELECT YOUR AGENT</h4>
-						</br><p class="sub-heading">Select an agency near your property location.</p>
-						 <div class="agents">
+						<h4>SELECT YOUR AGENT</h4></br>
+						<p class="sub-heading">
+							@if(isset($data['agents']) && count($data['agents']))
+								Select an agency near your property location.
+							@else
+	                			Sorry, there are currently no agents registered near your area.
+				            @endif
+						</p>
+						<div class="agents">
 
 							@php($x = 0)
 							@php($y = 0)
@@ -1189,7 +1195,7 @@
 								@php($y++)
 
                 @endforeach
-              @endif
+              	@endif
              </div>
           </div>
         </div>
