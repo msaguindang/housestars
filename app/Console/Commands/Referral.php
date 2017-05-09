@@ -42,7 +42,7 @@ class Referral extends Command
      */
     public function handle()
     {
-      $meta = UserMeta::where('meta_name', 'referral')->get();
+      $meta = UserMeta::where('meta_name', 'promotion-code')->get();
       $referral = array();
       foreach ($meta as $key) {
         array_push($referral, $key->meta_value);
