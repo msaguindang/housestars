@@ -233,14 +233,13 @@
      });
 
      $('#select-state').selectize({
-	     persist: false,
          maxItems: 1,
          maxOptions: 10,
          valueField: 'value',
          searchField: ['name', 'id'],
          labelField: 'name',
          options: [],
-         // sortField: 'text',
+         sortField: 'text',
          create: false,
          render: {
             option: function(item, escape) {
@@ -251,7 +250,7 @@
 	         console.log(query);
              if (!query.length) return callback();
              $.ajax({
-                 url: '{{ url('agency/search-suburb') }}',
+                 url: '{{ url('tradesman/search-suburb') }}',
                  type: 'GET',
                  data: {
                     query: query
@@ -261,7 +260,7 @@
                  },
                  success: function(res) {
                     callback(res.suburbs);
-                    
+                    console.log('results: ', res);
                 }
              });
          },
@@ -308,6 +307,9 @@
          			$( "#agencyList" ).append( '<span class="option checklist-label">No agency listed under ' + suburb + ' yet<span class="checklist-label">' );
                 }
             });
+        },
+        onItemAdd: function(value, $item){
+	         $('#select-state').selectize()[0].selectize.load();
         },
         onDelete: function(values) {
             $('#select-state').selectize()[0].selectize.clearOptions();

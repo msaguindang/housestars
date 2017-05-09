@@ -63,7 +63,7 @@
               <label>Name</label>
               <input type="text" name="name">
               <label>Suburb</label>
-              <select id="select-state" name="suburb"  class="demo-default"></select>
+              <select id="select-state" name="suburb"  class="demo-default savings-calc-suburb"></select>
             </div>
             <div class="col-xs-4">
               <label>Email Address</label>
