@@ -13,9 +13,9 @@ switch (preg_replace("/:.*$/", "", strtolower($_SERVER['HTTP_HOST']))) {
         define ('WORK_DIR', '');
     break;
     
-    case 'housestars.com.au':
+    case 'www.housestars.com.au':
         define ('BRANCH', 'master');
-        define ('WORK_DIR', '/var/www/html');
+        define ('WORK_DIR', '/var/www/html/app');
     break;
     
     case 'staging.housestars.com.au':
@@ -37,16 +37,16 @@ switch (preg_replace("/:.*$/", "", strtolower($_SERVER['HTTP_HOST']))) {
             define ('WORK_DIR', '/var/www/html/staging');
         } else {
             define ('BRANCH', 'master');
-            define ('WORK_DIR', '/var/www/html');
+            define ('WORK_DIR', '/var/www/html/app');
         }
     break;
 }
 
-if(!isset($_GET['to'])){
+if(!isset($_GET['to'])) {
     // Always set content-type when sending HTML email
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-    $to = 'stuart@simpleclick.com.au, john@simpleclick.com.au';
+    $to = 'stuart@simpleclick.com.au, john@simpleclick.com.au, chris@simpleclick.com.au';
     $subject = $_SERVER['HTTP_HOST'] . ' ' . strtoupper(BRANCH) . ' FAILED auto deploy';
     $body = 'Attempt to broadcast failed. Remote repository destination not defined!';
     mail($to, $subject, $body, $headers);
@@ -135,7 +135,7 @@ $body =
     '<pre>' . $output['err'] .'</pre>' .
     $log . 'Email sent!</div>';
 
-if(mail('stuart@simpleclick.com.au, john@simpleclick.com.au', $subject, $body, $headers))
+if(mail('stuart@simpleclick.com.au, john@simpleclick.com.au, chris@simpleclick.com.au', $subject, $body, $headers))
     $log .= "Email sent.</div>";
 else
     $log .= "There was an error in sending the email.</div>";
