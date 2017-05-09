@@ -484,33 +484,177 @@
 				  	@endforeach
 				  	<div class="rating-stars no-border">
 					  	<div class="rate">
-					  		<p class="rating-label"> Number of users who rated 5 Stars</p> 
-					  		<p style="float: right;"><b>({{$f}})</b> </p>
+						  	<a href="#star5" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star5" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 5 Stars</p> 
+							  	<p style="float: right;"><b>({{$f}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star5" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '5')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
 					  	</div>
 					  		<hr>
 					  	<div class="rate">
-			                <p class="rating-label"> Number of users who rated 4 Stars</p> 
-		                    <p style="float: right;"><b>({{$e}})</b> </p>
+		                    <a href="#star4" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star4" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 4 Stars</p> 
+							  	<p style="float: right;"><b>({{$e}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star4" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '4')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
 	                    </div>
 	                    <hr>
 	                    <div class="rate">
-		                    <p class="rating-label"> Number of users who rated 3 Stars</p> 
-		                    <p style="float: right;"><b>({{$d}})</b> </p>
+		                    <a href="#star3" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star3" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 3 Stars</p> 
+							  	<p style="float: right;"><b>({{$d}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star3" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '3')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
 	                    </div>
 	                    <hr>
 	                    <div class="rate">
-		                    <p class="rating-label"> Number of users who rated 2 Stars</p> 
-		                    <p style="float: right;"><b>({{$c}})</b> </p>
+		                    <a href="#star2" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star2" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 2 Stars</p> 
+							  	<p style="float: right;"><b>({{$c}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star2" aria-expanded="true" style="width: 100%; float: left; padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '2')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
 	                    </div>
 	                    <hr>
 	                    <div class="rate">
-		                    <p class="rating-label"> Number of users who rated 1 Stars</p> 
-		                    <p style="float: right;"><b>({{$b}})</b> </p>
+		                    <a href="#star1" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star1" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 1 Star</p> 
+							  	<p style="float: right;"><b>({{$b}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star1" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '1')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
 	                    </div>
 	                    <hr>
 	                    <div class="rate">
-		                    <p class="rating-label"> Number of users who rated 0 Stars</p> 
-		                    <p style="float: right;"><b>({{$a}})</b> </p>
+		                    <a href="#star0" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star0" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 0 Star</p> 
+							  	<p style="float: right;"><b>({{$a}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star0" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '0')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
 	                    </div>
 						<hr>
                   </div>
@@ -1118,5 +1262,7 @@
 				}
 			}
 		});
+		
+		$('.collapse').collapse()
 	</script>
 @endsection

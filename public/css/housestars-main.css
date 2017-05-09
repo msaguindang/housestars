@@ -3442,3 +3442,15 @@ a.view-summary {
     margin-bottom: 10px;
 }
 
+.review-item {
+    float: left;
+    width: 100%;
+    border-top: 1px solid #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.review-item:last-child {
+    border-top: none;
+}
+
