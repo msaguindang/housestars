@@ -156,7 +156,7 @@ function execute($cmd, $workdir = null) {
     $descriptorspec = array(
         0 => array("pipe", "r"),  // stdin
         1 => array("pipe", "w"),  // stdout
-        2 => array("pipe", "w"),  // stderr
+        2 => array("pipe", "temp.txt", "w"),  // stderr
     );
 
     $process = proc_open($cmd, $descriptorspec, $pipes, $workdir, null);

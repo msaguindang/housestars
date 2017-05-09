@@ -16,3 +16,4 @@ public/exports
 backups
 .env.save
 .env.save.1
+temp.txt
