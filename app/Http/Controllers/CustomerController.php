@@ -138,19 +138,19 @@ class CustomerController extends Controller
             $li = $z - 1;
         }
 
-        $data['reviews'] = array();
+        $data['transaction_reviews'] = array();
         $average = 0;
 
         foreach ($reviews as $review ) {
-            $data['reviews'][$i]['id'] = $review->reviewee_id;
-            $data['reviews'][$i]['rate'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
-            $data['reviews'][$i]['transaction_id'] = $review->transaction;
-            $data['reviews'][$i]['communication'] = (int)$review->communication;
-            $data['reviews'][$i]['work_quality'] = (int)$review->work_quality;
-            $data['reviews'][$i]['price'] = (int)$review->price;
-            $data['reviews'][$i]['punctuality'] = (int)$review->punctuality;
-            $data['reviews'][$i]['attitude'] = (int)$review->attitude;
-            $data['reviews'][$i]['title'] = $review->title;
+            $data['transaction_reviews'][$i]['id'] = $review->reviewee_id;
+            $data['transaction_reviews'][$i]['rate'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $data['transaction_reviews'][$i]['transaction_id'] = $review->transaction;
+            $data['transaction_reviews'][$i]['communication'] = (int)$review->communication;
+            $data['transaction_reviews'][$i]['work_quality'] = (int)$review->work_quality;
+            $data['transaction_reviews'][$i]['price'] = (int)$review->price;
+            $data['transaction_reviews'][$i]['punctuality'] = (int)$review->punctuality;
+            $data['transaction_reviews'][$i]['attitude'] = (int)$review->attitude;
+            $data['transaction_reviews'][$i]['title'] = $review->title;
             $i++;
         }
 
@@ -160,7 +160,7 @@ class CustomerController extends Controller
             $agency_commission = ((float)str_replace("%","",$data['agent']['rate']) / 100) * (float)$data['property'][$lastIndex]['value-to'];
             $customer_commission = ((float)str_replace("%","",$data['property'][$lastIndex]['commission']) / 100) * $agency_commission;
             $data['commission']['estimate'] = $customer_commission;
-            dd($customer_commission);
+            //dd($customer_commission);
             if (isset($data['property'][$lastIndex]['commission-charged']) && strtolower($data['property'][$lastIndex]['commission-charged']) == 'yes') {
                 $data['commission']['total'] =  isset($data['property'][$lastIndex]['commission-total']) ? $data['property'][$lastIndex]['commission-total'] : $customer_commission;
             } else {
@@ -191,6 +191,8 @@ class CustomerController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
+        
+        //dd($data);
 
         if(count($data['property']) > 1) {
             $data['recent'] = $lastIndex;
