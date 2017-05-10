@@ -62,8 +62,12 @@ class ReviewController extends Controller
     {
 
         $request = $this->payload;
-
-        $user_id = Sentinel::getUser()->id;
+		if($request->input('user_id')){
+			 $user_id = $request->input('user_id');
+		}else{
+			 $user_id = Sentinel::getUser()->id;
+		}
+        //$user_id = Sentinel::getUser()->id;
         $userReviews = Reviews::where('reviewer_id', $user_id)->where('reviewee_id', $request->input('tradesman_id'))->whereYear('created_at', '=', date('Y'))->count();
 
         if($userReviews >= 5 ){

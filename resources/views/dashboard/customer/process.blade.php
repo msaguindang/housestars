@@ -305,7 +305,7 @@
                               @endforeach
 
                               @if($x == 0)
-                                <button class="add-review" data-tid="{{$transaction['id']}}" data-trade="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
+                                <button class="add-review" data-tid="{{$transaction['id']}}" data-trade="{{$transaction['tid']}}" data-user="{{$data['id']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
                               @endif
 
                             </div>
@@ -329,6 +329,7 @@
                                   <input type="file" name="receipt" id="tradesReceipt">
                                   <input type="hidden" name="id" value="{{$transaction['id']}}">
                                   <input type="hidden" name="tid" value="{{$transaction['tid']}}">
+						             <input type="hidden" name="user_id" value="{{$data['id']}}">
                                   <div class="upload-receipt"><span class="ur-text">Add a Receipt</span></div>
                                 </form>
                                 @endif
@@ -349,7 +350,7 @@
                     @endif
                   @endforeach
               </div>
-                <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Add a receipt</span></a>
+                <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades" ><span class="icon icon-add" style="margin-top: 6px;"></span>Add a receipt</span></a>
                @endif
 
               <div class="total" id="transactionsTotal">
@@ -393,6 +394,7 @@
                                 data-code="{{$data['property'][$a]['property-code']}}"
                                 data-meta="amount-sold"
                                 data-meta-key="value-to"
+                                data-id="{{$data['id']}}"
                           />
                         </div>
                       </div>

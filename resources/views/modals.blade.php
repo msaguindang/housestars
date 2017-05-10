@@ -177,6 +177,7 @@
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID">
 							<input type="hidden" name="transaction_id" id="transactionID">
+							<input type="hidden" name="user_id" id="userID">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">
@@ -1119,7 +1120,10 @@
 	                	<span class="label">Click to add Receipt</span>
 	                	<input type="file" name="receipt" id="receipt">
 		            </div>
-	                <button class="btn hs-primary" id="transaction">Order Now</button>
+		            @if($data['id'])
+		             <input type="hidden" name="user_id" value="{{$data['id']}}">
+		            @endif
+		            <button class="btn hs-primary" id="transaction">Order Now</button>
               	</form>
             @else
 	            <h4>NO LISTED TRADESMAN</h4>
@@ -1157,7 +1161,9 @@
 									<div class="row">
 								@endif
 									<div class="col-xs-4">
-										<a class="selectAgent" data-id="{{$agent['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
+										@if($data['id'])
+											<a class="selectAgent" data-id="{{$agent['id']}}" data-userid="{{$data['userid']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
+										@endif
 											<div class="col-xs-8  col-xs-offset-2 tradesman-profile">
 												@if(isset($agent['photo']))
 												<img src="{{url($agent['photo'])}}" alt="{{$agent['name']}}">

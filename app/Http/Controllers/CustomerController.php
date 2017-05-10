@@ -23,7 +23,9 @@ class CustomerController extends Controller
     public function dashboard(Request $request)
     {   
         $data = [];
-        if (is_null($request->route('id')) && Sentinel::check()) {
+        $role = Sentinel::getUser()->roles()->first()->slug;
+        
+        if ($role == 'customer') {
             $user = Sentinel::getUser();
             $data['isOwner'] = true;
         } else {
@@ -35,6 +37,8 @@ class CustomerController extends Controller
         $userId = $user->id;
         $userName = $user->name;
         $userEmail = $user->email;
+        
+        $data['id'] = $userId;
 
         $user_info = UserMeta::where('user_id', $userId)->get();
         $property = Property::where('user_id', $userId)->get();
@@ -102,12 +106,13 @@ class CustomerController extends Controller
 
         $data['transactions'] = array();
         $data['code'] = $property_code;
-
+		
         if(count($data['property']) > 1){
             $lastIndex = count($data['property']) - 2;
             $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
 
-        }
+        } 
+	       
 
         $total = 0;
         $li = 0;
@@ -192,8 +197,8 @@ class CustomerController extends Controller
 
         }
         
-        //dd($data);
-
+        
+                
         if(count($data['property']) > 1) {
             $data['recent'] = $lastIndex;
             if (isset($data['property'][$lastIndex]['process'])){
@@ -205,7 +210,14 @@ class CustomerController extends Controller
             // Check of the last property added was proccessed
             return View::make('dashboard/customer/process')->with('data', $data);
         } else {
-            abort(230, "Customer has no property yet.");
+           if(count($data['property']) > 1) {
+	            $data['recent'] = $lastIndex;
+	            if (isset($data['property'][$lastIndex]['process'])){
+	                return View::make('dashboard/customer/profile')->with('data', $data);
+				} else{
+					return View::make('dashboard/customer/process')->with('data', $data);
+				}
+        	}
         }
     }
 
@@ -264,7 +276,8 @@ class CustomerController extends Controller
     public function spending(Request $request){
 
         if($request->input('trades') != null && $request->input('amount-spent') != null ){
-            $user_id = Sentinel::getUser()->id;
+
+            $user_id = $request->input('user_id');
             $tradesman =  UserMeta::where('user_id', $request->input('trades'))->where('meta_name', 'business-name')->get();
 
             if ($request->hasFile('receipt') ) {
@@ -325,7 +338,7 @@ class CustomerController extends Controller
 
 
             if ($request->hasFile('receipt') ) {
-                $user_id = Sentinel::getUser()->id;
+	            $user_id = $request->input('user_id');
                 $file = $request->file('receipt');
                 $localpath = 'user/user-'.$user_id.'/uploads';
                 $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
@@ -345,7 +358,19 @@ class CustomerController extends Controller
     function uploadContract(Request $request){
 
             if ($request->hasFile('contract') ) {
-                $user_id = Sentinel::getUser()->id;
+               $data = [];
+		        $role = Sentinel::getUser()->roles()->first()->slug;
+        
+				if ($role == 'customer') {
+		            $user = Sentinel::getUser();
+		            $data['isOwner'] = true;
+		        } else {
+		            $user = User::findOrfail($request->route('id'));
+		            $data['isOwner'] = false;
+		        }
+		
+		        $data['user'] = $user;
+	            $user_id = $user->id;
                 $file = $request->file('contract');
                 $localpath = 'user/user-'.$user_id.'/uploads';
                 $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
@@ -369,7 +394,8 @@ class CustomerController extends Controller
 
     public function confirm(Request $request) 
     {
-        $user_id = Sentinel::getUser()->id;
+        
+        $user_id = $request->input('userid');
         $code = $request->input('code');
         $meta = $request->input('meta');
         $isChecked = strtolower($request->input('checked', 'no'));
@@ -402,6 +428,7 @@ class CustomerController extends Controller
     }
 
     function processForm(Request $request){
+
         $user_id = Sentinel::getUser()->id;
         $code = $request->input('property_code');
         $meta = array('process', 'discount');
@@ -539,9 +566,9 @@ class CustomerController extends Controller
 
         $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
                 from suburbs
-                having  distance <= 30
+                having  distance <= 10000
                 order by distance
-                limit 5";
+                limit 10";
 
         $nearby = DB::select($qry);
         
@@ -667,7 +694,7 @@ class CustomerController extends Controller
     }
 
     function agentInfo(Request $request){
-        $user_id = Sentinel::getUser()->id;
+        $user_id = $request->input('userid');
         $agent_meta = DB::table('user_meta')->where('user_id', '=', $request->input('id'))->get();
 
         $data = array();
