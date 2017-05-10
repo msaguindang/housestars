@@ -23,9 +23,7 @@ class CustomerController extends Controller
     public function dashboard(Request $request)
     {   
         $data = [];
-        $role = Sentinel::getUser()->roles()->first()->slug;
-        
-        if ($role == 'customer') {
+        if(is_null($request->route('id')) && Sentinel::check()) {
             $user = Sentinel::getUser();
             $data['isOwner'] = true;
         } else {
