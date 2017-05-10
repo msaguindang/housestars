@@ -107,8 +107,14 @@ class SearchController extends Controller
     }
 
     public function tradesmenListing($category, $suburb)
-    {
-        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+    {	
+
+
+                preg_match_all('!\d!', $suburb, $matches);
+                if (isset($matches[0])) {
+                    $data['suburb_id']   = implode('', $matches[0]);
+                }
+        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$data['suburb_id'].'%')->get();
         $tradesmen = array();
 
         foreach ($trade as $key) {
