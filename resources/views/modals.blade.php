@@ -142,6 +142,7 @@
 				            <input type="hidden" name="_token" value="{{csrf_token()}}">
 							<!-- dropdown list tradesmen and services -->
 							<select name="businessId" id='select-rate-business' required>
+								<option disabled selected></option>
 								@foreach($businesses as $business)
 									<option class='item' id="{{$business->user_id}}" value="{{$business->user_id}}"> {{$business->meta_value}} </option>
 								@endforeach
@@ -1262,13 +1263,18 @@
 	@parent
 	<script>
 		$("#select-rate-business").selectize({
+			maxItems: 1,
+	        maxOptions: 1,
+	        // hideSelected: true,
+	        // openOnFocus: false,
+	        // persist: false,
+	        // closeAfterSelect: true,
 			render: {
 				option: function(item, escape) {
 					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
 				}
 			}
 		});
-		
 		$('.collapse').collapse()
 	</script>
 @endsection

@@ -143,7 +143,7 @@ class AgencyController extends Controller
         }
 
         if(Sentinel::getUser()->customer_id){
-          \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
           $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
         }
@@ -190,7 +190,7 @@ class AgencyController extends Controller
         if(Sentinel::check())
         {
 
-            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
             try{
 

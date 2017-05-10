@@ -138,7 +138,7 @@ class MainController extends Controller
     public function unpaid()
     {
         $suburbs = Suburbs::all();
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
         $payment_status = $customer_info->subscriptions->data[0]->status;
         return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);

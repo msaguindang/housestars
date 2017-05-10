@@ -27,14 +27,6 @@ class EndingSubscription extends Command
    */
   protected $description = 'Check Ending Subscriptions';
 
-
-  /**
-   * Stripe Key
-   *
-   * @var string
-   */
-  private $stripeKey = 'sk_test_qaq6Jp8wUtydPSmIeyJpFKI1';
-
   /**
    * Create a new command instance.
    *
@@ -54,8 +46,8 @@ class EndingSubscription extends Command
   public function handle()
   {
     echo "SENDING NOTICE TO SUBSCRIBERS... \n";
-
-    Stripe::setApiKey($this->stripeKey);
+    
+    Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
     $users = User::select('users.*')
                   ->join('role_users', 'role_users.user_id', '=', 'users.id')

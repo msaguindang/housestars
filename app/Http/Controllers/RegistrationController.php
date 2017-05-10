@@ -399,7 +399,7 @@ class RegistrationController extends Controller
         }
 
         if(strtolower($role) == 'tradesman'){
-            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
             $data['plan'] = $customer_info->metadata->selected;
 
@@ -435,7 +435,7 @@ class RegistrationController extends Controller
             $role = Sentinel::getUser()->roles()->first()->name;
 
                 try{
-                    \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
+                    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
                     $token = \Stripe\Token::create(
                         array(
                             'card'=> array(
@@ -501,7 +501,7 @@ class RegistrationController extends Controller
 	        } else {
 	            try {
 	
-	            \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
+	            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 	
 	            \Stripe\Subscription::create(array(
 	              "customer" => Sentinel::getUser()->customer_id,

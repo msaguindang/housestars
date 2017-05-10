@@ -217,7 +217,7 @@ class TradesmanController extends Controller
             $data[$key->meta_name] = $key->meta_value;
         }
 
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
 
