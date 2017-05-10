@@ -143,6 +143,7 @@
                       </div>
                     </li>
                      @php ($y++)
+                     
                   @endif
                   @if($x > 7 )
 	                   @if($y == $z )
