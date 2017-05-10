@@ -13,7 +13,7 @@ class Reviews extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'reviewee_id', 'reviewer_id', 'communication', 'work_quality', 'price', 'punctuality', 'attitude', 'title', 'content', 'helpful', 'user_type', 'status'
+        'reviewee_id', 'reviewer_id', 'communication', 'work_quality', 'price', 'punctuality', 'attitude', 'title', 'content', 'helpful', 'user_type', 'status', 'postcode'
     ];
 
     protected $appends = ['reviewee_name', 'reviewer_name', 'business'];
@@ -52,6 +52,11 @@ class Reviews extends Model
         ];
 
         $query
+            ->selectRaw("reviews.*")
+            ->selectRaw("pc.id, pc.name, pc.email, pc.phone, pc.status")
+            ->selectRaw("um.user_id, um.meta_name, um.meta_value")
+            ->selectRaw("u1.id, u1.name")
+            ->selectRaw("u2.id, u2.name")
             ->leftJoin('potential_customers as pc', 'reviews.reviewer_id', '=', 'pc.id')
             ->leftJoin('users as u1', 'reviews.reviewer_id', '=', 'u1.id')
             ->leftJoin('users as u2', 'reviews.reviewee_id', '=', 'u2.id')

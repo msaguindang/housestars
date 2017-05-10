@@ -147,7 +147,7 @@
 									<option class='item' id="{{$business->user_id}}" value="{{$business->user_id}}"> {{$business->meta_value}} </option>
 								@endforeach
 							</select>
-							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
+							<input type="text" name="postcode" placeholder="Enter Postcode" class="no-top" required> </br></br>
 							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
 					</div>
@@ -1264,11 +1264,8 @@
 	<script>
 		$("#select-rate-business").selectize({
 			maxItems: 1,
-	        maxOptions: 1,
-	        // hideSelected: true,
-	        // openOnFocus: false,
-	        // persist: false,
-	        // closeAfterSelect: true,
+	        openOnFocus: false,
+	        placeholder: "Name of the business",
 			render: {
 				option: function(item, escape) {
 					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
