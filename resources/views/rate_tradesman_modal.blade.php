@@ -25,6 +25,7 @@
 						<form id="rateForm" enctype="multipart/form-data" method="post" action="/create/review">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$businessInfo['id']}}">
+							<input type="hidden" name='postcode' value="{{isset($businessInfo['postcode']) ? $businessInfo['postcode'] : ''}}">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">
