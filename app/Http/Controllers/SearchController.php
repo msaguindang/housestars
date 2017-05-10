@@ -34,7 +34,7 @@ class SearchController extends Controller
                     $data['suburb_id']   = implode('', $matches[0]);
                     $data['suburb_name'] = trim(str_replace($data['suburb_id'], '', $data['suburb']));
                 }
-                $data['item'] = $this->hasResults($data['suburb_name']);
+                $data['item'] = $this->hasResults($data['suburb_id']);
 		        return Response::json($data, 200);
     			break;
     		case 'agency':
@@ -107,8 +107,14 @@ class SearchController extends Controller
     }
 
     public function tradesmenListing($category, $suburb)
-    {
-        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+    {	
+
+
+                preg_match_all('!\d!', $suburb, $matches);
+                if (isset($matches[0])) {
+                    $data['suburb_id']   = implode('', $matches[0]);
+                }
+        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$data['suburb_id'].'%')->get();
         $tradesmen = array();
 
         foreach ($trade as $key) {
@@ -151,7 +157,8 @@ class SearchController extends Controller
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
                      
-/* For Testing Banner Advert
+// For Testing Banner Advert
+/*
                      $data[$x + 1]['rating'] = $this->getRating($id);
                      $data[$x + 1]['id'] = $value->user_id;
                      
