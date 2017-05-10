@@ -181,7 +181,7 @@
                             <div class="value">
                               <div class="action">
                                 @php ($unChecked = 'no')
-                                @foreach($data['reviews'] as $review)
+                                @foreach($data['transaction_reviews'] as $review)
                                   @if($review['id'] == $transaction['tid'] && $review['transaction_id'] == $transaction['id'])
                                     <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled checked/>
                                     @php ($unChecked = 'yes')
@@ -194,7 +194,7 @@
                                 <label for="r{{$transaction['id']}}"><span></span></label>
                               </div>
                               @php ($x = 0)
-                              @foreach($data['reviews'] as $review)
+                              @foreach($data['transaction_reviews'] as $review)
                                   @if($review['id'] == $transaction['tid'] && $review['transaction_id'] ==$transaction['id'])
                                     <a href="#" data-toggle="modal" data-target="#transactionReview{{$review['transaction_id']}}"><div class="stars">
                                         @if($review['rate'] == 0)
