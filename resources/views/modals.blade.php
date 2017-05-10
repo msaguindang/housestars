@@ -1162,7 +1162,7 @@
 								@endif
 									<div class="col-xs-4">
 										@if($data['id'])
-											<a class="selectAgent" data-id="{{$agent['id']}}" data-userid="{{$data['userid']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
+											<a class="selectAgent" data-id="{{$agent['id']}}" data-userid="{{$data['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
 										@endif
 											<div class="col-xs-8  col-xs-offset-2 tradesman-profile">
 												@if(isset($agent['photo']))
