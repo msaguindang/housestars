@@ -213,6 +213,7 @@
       var token = $(this).data('token');
       var code = $(this).data('code');
       var meta = 'amount-sold';
+      var meta_id = $(this).data('id');
 
       if ($(this).is(':checked')){
         var isChecked = 'yes';
@@ -222,7 +223,7 @@
 
       $.ajax({
           url: '/confirm',
-          data: {_token: token, code: code, meta: meta, checked: isChecked},
+          data: {_token: token, code: code, meta: meta, checked: isChecked, userid: meta_id},
           type: 'POST',
           success: function(data){
             location.reload();
@@ -234,6 +235,7 @@
       var token = $(this).data('token');
       var code = $(this).data('code');
       var meta = 'commission-percentage';
+      var meta_id = $(this).data('id');
 
       if ($(this).is(':checked')){
         var isChecked = 'yes';
@@ -243,7 +245,7 @@
 
       $.ajax({
           url: '/confirm',
-          data: {_token: token, code: code, meta: meta, checked: isChecked},
+          data: {_token: token, code: code, meta: meta, checked: isChecked, userid: meta_id},
           type: 'POST',
           success: function(data){
             location.reload();
@@ -255,8 +257,9 @@
       var token = $(this).data('token');
       var code = $(this).data('code');
       var meta = 'commission-charged';
+      var meta_id = $(this).data('id');
 
-      if ($(this).is(':checked')){
+      if ($(this).is(':checked')) {
         var isChecked = 'yes';
       } else {
         var isChecked = 'no';
@@ -264,7 +267,7 @@
 
       $.ajax({
           url: '/confirm',
-          data: {_token: token, code: code, meta: meta, checked: isChecked},
+          data: {_token: token, code: code, meta: meta, checked: isChecked, userid: meta_id},
           type: 'POST',
           success: function(data){
             location.reload();
