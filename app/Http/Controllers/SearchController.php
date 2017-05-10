@@ -157,7 +157,8 @@ class SearchController extends Controller
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
                      
-/* For Testing Banner Advert
+// For Testing Banner Advert
+/*
                      $data[$x + 1]['rating'] = $this->getRating($id);
                      $data[$x + 1]['id'] = $value->user_id;
                      

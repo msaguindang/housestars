@@ -89,6 +89,7 @@
             @php ($x = count($data))
             @php ($y = 0)
             @php ($z = 4)
+            @php ($a = 4)
             @php ($index = 0)
 
             @if(isset($data['cat']) && $x > 0)
@@ -143,17 +144,30 @@
                     </li>
                      @php ($y++)
                   @endif
-                    @if($y == $z)
-                   <div class="col-xs-12">
-                    <div class="ads">
-                      @if(isset($data['ads']) && $data['ads'])
-                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
-                      @endif
-                    </div>
-                  </div>
-                  @php($z = $z + 8)
+                  @if($x > 7 )
+	                   @if($y == $z )
+	                   <div class="col-xs-12">
+	                    <div class="ads">
+	                      @if(isset($data['ads']) && $data['ads'])
+	                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
+	                      @endif
+	                    </div>
+	                  </div>
+	                  @php($z = $z + 8)
+	                  @endif
+                  @else
+	                  @if($y == ($x - 3) && count($tradesman) > 5)
+	                   <div class="col-xs-12">
+	                    <div class="ads">
+	                      @if(isset($data['ads']) && $data['ads'])
+	                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
+	                      @endif
+	                    </div>
+	                  </div>
+	                  @endif
                   @endif
                   @php ($index ++)
+                  
               @endforeach
               @endif
               <!-- END AD SPACE HERE -->
