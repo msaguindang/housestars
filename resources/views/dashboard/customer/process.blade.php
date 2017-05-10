@@ -425,6 +425,7 @@
                                 data-code="{{$data['property'][$a]['property-code']}}"
                                 data-meta="commission-percentage"
                                 data-meta-key="commission"
+                                data-id="{{$data['id']}}"
                           />
                           <span class="input-group-addon">%</span>
                         </div>
@@ -460,6 +461,7 @@
                                 data-code="{{$data['property'][$a]['property-code']}}"
                                 data-meta="commission-charged"
                                 data-meta-key="commission-total"
+                                data-id="{{$data['id']}}"
                               />
                             @else
                               <p> N/A </p>
