@@ -59,7 +59,7 @@
             </div>
             <div class="profile-info">
               @foreach ($meta as $info)
-                @if($info->meta_name == 'agency-name')
+                @if($info->meta_name == 'trading-name')
                   <h1>{{$info->meta_value}}</h1>
                 @elseif ($info->meta_name == 'business-address')
                   <p>Location: {{$info->meta_value}}</p>

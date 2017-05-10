@@ -25,11 +25,16 @@ class AgencyController extends Controller
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $dp = 'assets/default.png';
         $cp = 'assets/default_cover_photo.jpg';
+        $galleryCtr = 0;
+        
         foreach ($meta as $key) {
-            if($key->meta_name == 'profile-photo'){
+            if ($key->meta_name == 'profile-photo'){
                 $dp = $key->meta_value;
-            } else if($key->meta_name == 'cover-photo'){
+            } else if ($key->meta_name == 'cover-photo'){
                 $cp = $key->meta_value;
+            } else if ($key->meta_name == 'gallery') {
+                $data[$key->meta_name][$galleryCtr] = $key->meta_value;
+                $galleryCtr ++;
             } else {
                 $data[$key->meta_name] = $key->meta_value;
             }
@@ -124,7 +129,6 @@ class AgencyController extends Controller
 
     public function settings()
     {
-
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $agents = DB::table('users')
             ->join('agents', function ($join) {
@@ -134,13 +138,12 @@ class AgencyController extends Controller
             ->get();
         $data = array();
 
-
         foreach ($meta as $key) {
             $data[$key->meta_name] = $key->meta_value;
         }
 
         if(Sentinel::getUser()->customer_id){
-          \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
           $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
         }
@@ -174,7 +177,7 @@ class AgencyController extends Controller
                     ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name'), 'password' => $password]);
             }
 
-            return redirect()->back();
+            return redirect('/profile');
 
         } else {
             return redirect(env('APP_URL'));
@@ -187,7 +190,7 @@ class AgencyController extends Controller
         if(Sentinel::check())
         {
 
-            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
             try{
 
@@ -210,7 +213,7 @@ class AgencyController extends Controller
                     User::where('id', $user_id)->update(['customer_id' => $customer->id]);
                 }
 
-                return redirect()->back();
+                return redirect('/profile');
 
             }catch (\Stripe\Error\Card $e){
 
@@ -302,15 +305,21 @@ class AgencyController extends Controller
         }
     }
 
-    public function getRating($id){
+     public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
-        foreach ($ratings as $rating) {
-            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+		$rate = 0;
+		$zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+		
+        if($numRatings > 0){
+            foreach ($ratings as $rating) {	
+	            $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+	            $rate = $rate + $ratingAverage;
+            }
+            $average =  (int)round($rate / $numRatings);
         }
-
+		
         return $average;
     }
 
@@ -454,20 +463,36 @@ class AgencyController extends Controller
 
     public function validateAvailability(Request $request)
     {
-        $id = preg_replace('/\D/', '', $request->input('data'));
+	    
+        $data = $request->input('data');
 
-        $suburb = Suburbs::find($id);
+        if(strpos($data,'-dup') !== false){
+            $data = explode('-dup',$data)[0];
+        }
+
+        $suburb = Suburbs::where(DB::raw("CONCAT(suburbs.id,suburbs.name)"),'LIKE',"%{$data}%")->get()->first();
         $valid = true;
 
         // count number of traders per area
 
-        if ($suburb->availability == 3 ) {
-            $valid = false;
+        if(!$suburb){
+            $response = [
+                'request' => $request->all(),
+                'valid' => $valid,
+                'suburb' => $suburb
+            ];
+
+            return Response::json($response, 200);
         }
 
+        if ($suburb->availability == 3 ) {
+            $valid = false;
+        } 
+        
         $response = [
             'request' => $request->all(),
-            'valid' => $valid
+            'valid' => $valid,
+            'suburb' => $suburb
         ];
 
         return Response::json($response, 200);

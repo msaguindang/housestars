@@ -53,9 +53,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box complete">
-				<h2>Congratulations!</h2>
-				<p>Welcome to House Stars. You are now on your way to selling more property. </br> You can then start customizing your profile to suit your taste, and win more listings.</p>
-				<p>Click the button below to view your profile.</p>
+				<h2>CONGRATULATIONS!</h2>
+        <p>Welcome to Housestars. You are now on your way to selling more property. You can now start customizing your profile to suit your taste, and win more listings.</p> 
+        <p>Click the button below to view your profile. </p>
 				<a class="btn hs-primary" href="{{env('APP_URL')}}/dashboard/agency/profile"><span class="icon icon-summary"></span> GO TO MY PROFILE</a>
 			</div>
 		</div>

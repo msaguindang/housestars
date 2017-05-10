@@ -83,7 +83,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/trades-services', function () {
         $data = [];
         if($video = Video::active('trade-services')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
         return view('general.trades-services')->with('data', $data);
     });
@@ -91,7 +91,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/customer', function () {
         $data = [];
         if($video = Video::active('customer')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
         return view('general.customer')->with('data', $data);
     });
@@ -152,6 +152,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/dashboard/tradesman/settings', 'TradesmanController@settings')->middleware('tradesman');
 
     Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
+    
 
     Route::get('/dashboard/customer/edit', 'CustomerController@edit')->middleware('customer');
 
@@ -205,6 +206,8 @@ Route::group(['prefix' => ''], function () {
     Route::post('/logout', 'LoginController@logout');
 
     Route::post('/add-info', 'RegistrationController@postUserMeta');
+    
+    Route::post('/agency/add-position', 'RegistrationController@postPosition');
 
     Route::post('/add-agents', 'RegistrationController@postAddAgents');
 
@@ -303,6 +306,8 @@ Route::group(['prefix' => ''], function () {
         'uses' => 'SearchController@search'
     ]);
 
+    Route::get('/profile/customer/{id}', 'CustomerController@dashboard');
+    
     Route::get('/profile/{role}/{id}',[
         'as'   => 'profile.role.id',
         'uses' => 'ProfileController@profile'
@@ -350,7 +355,10 @@ Route::group(['prefix' => ''], function () {
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('test', 'AdminController@test');
-        Route::get('', 'AdminController@showDashboard');
+        Route::get('/',[
+            'as'   => 'admin.index',
+            'uses' => 'AdminController@showDashboard'
+        ]);
         Route::post('status/toggle', 'AdminController@toggleStatus');
 
         Route::get('logout', 'AdminController@logout');

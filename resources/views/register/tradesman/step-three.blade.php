@@ -76,7 +76,7 @@
 			<form action="{{env('APP_URL')}}/charge" method="POST">
 				{{csrf_field() }}
 			<div class="col-xs-12 form-box" style="padding: 40px">
-				<h2>Tradesman Package</h2>
+				<h2>Trade/Service Package</h2>
 				<p>Please Review your details below. If you are happy that all of your details are correct, please click "Subscribe Now"</p>
 				<div class="package-review row">
 					<div class="col-xs-6">
@@ -91,14 +91,14 @@
 								@elseif ($info->meta_name == 'trading-name')
 									<p><b>Trading Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'charge-rate')
-									<p><b>Trade or Service:</b> {{$info->meta_value}}</p>
-								@elseif ($info->meta_name == 'trade')
 									<p><b>Charge Rate:</b> {{$info->meta_value}}</p>
+								@elseif ($info->meta_name == 'trade')
+									<p><b>Trade or Service:</b> {{$info->meta_value}}</p>
 								@endif
 
 							@endforeach
 
-							<p><b>Email Address:</b>{{$email}}</p>
+							<p><b>Email Address:</b> {{$email}}</p>
 						</div>
 					</div>
 

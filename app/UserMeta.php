@@ -16,6 +16,7 @@ class UserMeta extends Model
 					->select('user_id', 'meta_name', 'meta_value')
 					->where('meta_name', '=', 'agency-name')
 					->orWhere('meta_name', '=', 'business-name')
+					->orderBy('meta_value', 'ASC')
 					->get();
     }
 }

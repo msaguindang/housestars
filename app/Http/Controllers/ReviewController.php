@@ -62,8 +62,12 @@ class ReviewController extends Controller
     {
 
         $request = $this->payload;
-
-        $user_id = Sentinel::getUser()->id;
+		if($request->input('user_id')){
+			 $user_id = $request->input('user_id');
+		}else{
+			 $user_id = Sentinel::getUser()->id;
+		}
+        //$user_id = Sentinel::getUser()->id;
         $userReviews = Reviews::where('reviewer_id', $user_id)->where('reviewee_id', $request->input('tradesman_id'))->whereYear('created_at', '=', date('Y'))->count();
 
         if($userReviews >= 5 ){
@@ -80,11 +84,11 @@ class ReviewController extends Controller
 
                   if($request->input('transaction_id') != null || $request->input('transaction_id') != ''){
                     DB::table('reviews')->insert(
-                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id')]
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id'), 'postcode' => $request->input('postcode')]
                     );
                   } else{
                     DB::table('reviews')->insert(
-                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'postcode' => $request->input('postcode')]
                     );
                   }
         }
@@ -304,7 +308,8 @@ class ReviewController extends Controller
         $businessInfo = array(
             'id' => $businessId,
             'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
-            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL
+            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
+            'postcode' => $request->get('postcode', '')
         );
         return view('review_business')->with(compact('businessInfo'));
     }
@@ -551,9 +556,10 @@ class ReviewController extends Controller
             'content'       => $reviewText,
             'helpful'       => $helpful,
             'status'        => 0,
-            'updated_at'    => Carbon::now()
+            'updated_at'    => Carbon::now(),
+            'postcode'      => $request->get('postcode')
         ];
-
+        
         if (session()->has('email') && session()->has('user_type')) {
             $email = session()->get('email');
             $userType = session()->get('user_type');

@@ -114,7 +114,10 @@
     		<div class="row">
     			<div class="row section-title">
 			        <h2 class="narrower"><span class="icon icon-left-bar"></span>SUBURB AVAILABILITY<span class="icon icon-right-bar"></span></h2>
-			      	<span class="separator"></span>
+              <span class="separator"></span>
+              <p>
+                Enter your desired suburb. Green squares indicate available positions within that suburb. Red squares indicate occupied positions.    
+              </p></br>
 			    </div>
 			    <div class="col-xs-6 col-xs-offset-3">
 			    	<select id="select-state" name="positions[]" multiple  class="demo-default">

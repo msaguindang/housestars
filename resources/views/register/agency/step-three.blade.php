@@ -101,7 +101,7 @@
 					</div>
 					<div class="col-xs-6 no-padding-right">
 						<label>CVV</label>
-						<input type="number" name="cvc" required>
+						<input type="text" name="cvc" required>
 					</div>
 				</div>
 				<div class="col-xs-6 border-left padding-40">

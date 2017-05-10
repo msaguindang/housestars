@@ -310,6 +310,14 @@
                     </li>
                   </ul>
               </div>
+              
+              <label>Phone Number</label>
+
+              @if(isset($data['phone-number']))
+              <input type="text" name="abn" value="{{$data['phone-number']}}">
+              @else
+              <input type="text" name="abn" value="">
+              @endif
             </div>
             <div class="col-xs-4 dash-field" style="padding-right: 0">
               <label>Postcodes Working In</label>
@@ -535,7 +543,7 @@
               url: "{{ config('app.url') . '/upload' }}",
               acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
-                  formData.append("_token", $('[name=_token').val());
+                  formData.append("_token", $("[name='_token']").val());
               },
               success: function (file, response) {
                   var imgName = response;

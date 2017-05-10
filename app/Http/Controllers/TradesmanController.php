@@ -126,7 +126,7 @@ class TradesmanController extends Controller
 
     public function upload(Request $request) {
         $user_id = Sentinel::getUser()->id;
-        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->get()->count() < self::MAX_PHOTO) {
+        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->count() < self::MAX_PHOTO) {
             $file = $request->file('file');
             $data = array();
 	        $localpath = 'user/user-'.$user_id.'/uploads';
@@ -138,9 +138,11 @@ class TradesmanController extends Controller
             array_push($data, $url);
 
 	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials()], 200);
-        }else {
+        } else if (UserMeta::where('meta_name', 'gallery')->where('user_id', $user_id)->count() >= self::MAX_PHOTO) {
             $max = self::MAX_PHOTO;
             return Response::json(['error' => "You can only upload up to $max photos!"], 422);
+        } else {
+            return Response::json(['error' => "You have uploaded beyond the filesize limit!"], 422);
         }
 
         return Response::json('error', 400);
@@ -215,7 +217,7 @@ class TradesmanController extends Controller
             $data[$key->meta_name] = $key->meta_value;
         }
 
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
 
@@ -256,15 +258,21 @@ class TradesmanController extends Controller
     }
 
 
-    public function getRating($id){
+     public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
-        foreach ($ratings as $rating) {
-            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+		$rate = 0;
+		$zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+		
+        if($numRatings > 0){
+            foreach ($ratings as $rating) {	
+	            $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+	            $rate = $rate + $ratingAverage;
+            }
+            $average =  (int)round($rate / $numRatings);
         }
-
+		
         return $average;
     }
 
@@ -378,17 +386,24 @@ class TradesmanController extends Controller
         //check if user already added referral
         $verifyReferral = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'referral')->get();
         $abn = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'abn')->get();
-        if($abn[0]['meta_value'] == $request->input('referral-code')){
-          $response = 'I see what you did there. Sorry, you can\'t your own ABN.';
-        }else if(count($verifyReferral) == 0){
+        if ($abn[0]['meta_value'] == $request->get('referral-code')) {
+          $response = 'I see what you did there. Sorry, you can\'t add your own ABN.';
+        } else if(count($verifyReferral) == 0) {
           UserMeta::updateOrCreate(
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral'],
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral', 'meta_value' => $request->input('referral-code')]
           );
-          $response = 'Referral code successfully added.';
-        }else {
-          $response = 'You already added a referral code.';
-
+          $response = 'Referral successfully added.';
+          Mail::send(['html' => 'emails.tradesman-referral'], [
+                'name'     => Sentinel::getUser()->name,
+                'referral' => $request->get('referral-code')
+            ], function ($message) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au');
+                $message->subject('Referral');
+            });
+        } else {
+          $response = 'You already added a referral.';
         }
 
         return Response::json($response, 200);

@@ -290,14 +290,16 @@
 
             <!-- START CENTERED WHITE CONTAINER -->
             <table class="main">
-
+              <?php 
+                $baseUrl = (strtolower(env('APP_ENV')) != 'production' ? str_replace('https', 'http', env('APP_URL')) : env('APP_URL'));
+              ?>
               <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td>
                   <table border="0" cellpadding="0" cellspacing="0">
-                    <tr style="background: url('{{env('APP_URL')}}/assets/img-banner-main.jpg');" >
+                    <tr style="background: url('{{$baseUrl}}/assets/img-banner-main.jpg');" >
                       <td style="padding: 10px 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
-                        <img src="{{env('APP_URL')}}/assets/logo-header-home.png" alt="Housestars" width="250">
+                        <img src="{{$baseUrl}}/assets/logo-header-home.png" alt="Housestars" width="250">
                         <div class="socialmedia">
                           <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/facebook.png" alt="facebook" width="30" style="display: block; padding-bottom: 20px;" /></a>
                           <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/twitter.png" alt="twitter" width="30" style="display: block; padding-bottom: 20px;" /></a>
@@ -332,7 +334,7 @@
                                   <td><b>Agency Name: </b>
                                       <p>ABBEYWOOD, QUEENSLAND</p></td>
                                   <td><b>Contract: </b>
-                                      <a href="{{env('APP_URL')}}/{{$data['contract']}}" style="border: 1px solid #000;padding: 5px;font-size: 9px;text-decoration: none;color: #000;margin-left: 10px;">CLICK TO VIEW</a></td>
+                                      <a href="{{$baseUrl}}/{{$data['contract']}}" style="border: 1px solid #000;padding: 5px;font-size: 9px;text-decoration: none;color: #000;margin-left: 10px;">CLICK TO VIEW</a></td>
                                 </tr>
                               </tbody>
                             </table>

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterReviewsTable extends Migration
+class AddPostcodeFieldToReviewTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,7 +15,7 @@ class AlterReviewsTable extends Migration
     {
         if (Schema::hasTable('reviews')) {
             Schema::table('reviews', function (Blueprint $table) {
-                $table->string('user_type')->default('potential_customer');
+                $table->string('postcode')->nullable();
             });
         }
     }
@@ -28,7 +28,7 @@ class AlterReviewsTable extends Migration
     public function down()
     {
         Schema::table('reviews', function($table) {
-            $table->dropColumn('user_type');
+            $table->dropColumn('postcode');
         });
     }
 }

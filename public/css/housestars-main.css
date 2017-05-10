@@ -1193,7 +1193,8 @@ footer .social-item p{
     width: 100%;
     float: left;
     color: #e0e0e0;
-    border: 1px solid #e0e0e0;
+    /*border: 1px solid #e0e0e0;*/
+    border: 1px solid #b2b2b2;
     padding: 11px;
     margin: 35px 0;
     font-size: 14px;
@@ -2040,6 +2041,7 @@ input:checked + .slider:before {
     height: 270px;
     background: #333333;
     margin-bottom: 15px;
+	background-size: cover !important;
 }
 
 .breadcrumbs .links {
@@ -2178,7 +2180,7 @@ input:checked + .slider:before {
 
 #cover-container .page-info h2 {
     margin: 0 auto;
-    font-size: 23px;
+    font-size: 21px;
     text-transform: uppercase;
 }
 
@@ -3393,5 +3395,62 @@ ol.ol3 {
 
 .long-text ul {
     padding-left: 40px;
+}
+
+#savingsCalc .property-type .selectize-dropdown-content .option:last-child {
+    display: none;
+}
+
+a.view-summary {
+    font-size: 10px;
+    color: grey;
+    font-weight: 300;
+    font-style: italic;
+}
+
+#overallRatingSummary .rate{
+	width: 100%;
+    overflow: auto;
+    padding: 10px;
+}
+
+.positions {
+    width: 100%;
+    float: left;
+    margin-top: 5px;
+}
+
+.positions span.label {
+    color: grey;
+    font-size: 12px;
+    font-weight: 300;
+    float: left;
+}
+
+.positions .position {
+    color: #fff;
+    background: #1972b4;
+    font-size: 11px;
+    padding: 4px 10px;
+    display: block;
+    float: left;
+    margin: 2px;
+}
+
+#nearbyAgencyList span.option {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.review-item {
+    float: left;
+    width: 100%;
+    border-top: 1px solid #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.review-item:last-child {
+    border-top: none;
 }
 

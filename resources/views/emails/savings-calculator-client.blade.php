@@ -290,14 +290,16 @@
 
             <!-- START CENTERED WHITE CONTAINER -->
             <table class="main">
-
+              <?php 
+                $baseUrl = (strtolower(env('APP_ENV')) != 'production' ? str_replace('https', 'http', env('APP_URL')) : env('APP_URL'));
+              ?>
               <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td>
                   <table border="0" cellpadding="0" cellspacing="0">
-                    <tr style="background: url('{{env('APP_URL')}}/assets/img-banner-main.jpg');" >
+                    <tr style="background: url('{{$baseUrl}}/assets/img-banner-main.jpg');" >
                       <td style="padding: 10px 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
-                        <img src="{{env('APP_URL')}}/assets/logo-header-home.png" alt="Housestars" width="250">
+                        <img src="{{$baseUrl}}/assets/logo-header-home.png" alt="Housestars" width="250">
                         <div class="socialmedia">
                           <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/facebook.png" alt="facebook" width="30" style="display: block; padding-bottom: 20px;" /></a>
                           <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/twitter.png" alt="twitter" width="30" style="display: block; padding-bottom: 20px;" /></a>
@@ -310,8 +312,18 @@
                     <tr>
                       <td style="padding: 20px; background: #fff;">
                         <p>Hi {{$name}}!</p>
-                        <p>Thanks for using the Housestars savings calculator. Your estimated savings total using Housestars is <b>${{$estimate}}</b>. Please note that this figure is only an estimate and will vary depending on the sale price of your property, agent commission charges, amount spent on trades and services and other factors. Please see the FAQ on the website for further details about how this calculator works.</p>
-                        <p style="font-style: italic; color: grey"> * Note that the estimation will be the high end of the estimation (ie. the $200.000 to $300,000 bracket) will be $300,000 x 2.5% x 20% of that.</p>
+                        @if($estimate == 0)
+                          <p>
+                            Thanks for using the Housestars savings calculator. The rebate you can expect to receive is 20% of the commission charged by the agent. 
+                            Once the property value exceeds $2 Million, the commission charges can vary. Please wait and a staff member will contact you regarding your inquiry as soon as possible.
+                          </p>
+                        @else
+                          <p>
+                            Thanks for using the Housestars savings calculator. Your estimated savings total using Housestars is <b>${{$estimate}}</b>. 
+                            Please note that this figure is only an estimate and will vary depending on the sale price of your property, agent commission charges, 
+                            amount spent on trades and services and other factors. Please see the FAQ on the website for further details about how this calculator works.
+                          </p>
+                        @endif
                         <p>Here's the property details you submitted:</p>
                           <div style="width: 464px; border: 1px dashed #a9a9a9; margin: 20px auto; padding: 20px">
                             <table>

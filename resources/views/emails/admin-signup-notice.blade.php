@@ -311,12 +311,17 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>{{$content}}</p>
-
-                        <p>Inquirer details:<p/>
-                        <p><b>Name:</b> {{$name}}</p>
-                        <p><b>Email Address:</b> {{$email}}</p>
-                       </td>
+                        <p>Dear Admin,</p>
+                        <p>
+                          <a href="{{$link}}"> {{$name}} </a> has just signed up and requires business cards.
+                        </p>
+                        <div>
+                          <p>User information: <br/>
+                            Name : {{$name}} <br/>
+                            Email: {{$email}}
+                          </p>
+                        </div>
+                      </td>
                     </tr>
                   </table>
                 </td>

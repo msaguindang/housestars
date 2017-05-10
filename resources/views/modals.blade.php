@@ -142,11 +142,12 @@
 				            <input type="hidden" name="_token" value="{{csrf_token()}}">
 							<!-- dropdown list tradesmen and services -->
 							<select name="businessId" id='select-rate-business' required>
+								<option disabled selected></option>
 								@foreach($businesses as $business)
 									<option class='item' id="{{$business->user_id}}" value="{{$business->user_id}}"> {{$business->meta_value}} </option>
 								@endforeach
 							</select>
-							<!--<input type="text" name="" placeholder="Your Postcode" class="no-top"> </br></br>-->
+							<input type="text" name="postcode" placeholder="Enter Postcode" class="no-top" required> </br></br>
 							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
 					</div>
@@ -176,6 +177,7 @@
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID">
 							<input type="hidden" name="transaction_id" id="transactionID">
+							<input type="hidden" name="user_id" id="userID">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">
@@ -249,7 +251,7 @@
 					</div>
 					<div class="modal-body">
 						<h4>There are currently no Carpenters</br>Listed in your area</h4>
-						</br><p class="sub-heading">If you know a carpenter that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+						</br><p class="sub-heading">If you know a carpenter that can benefit from this site, please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
 						<form>
 							<input type="text" name="" placeholder="Trade or Service name"></br>
 							<button class="btn hs-primary">SUBMIT</button>
@@ -286,7 +288,7 @@
           </div>
           <div class="modal-body">
             <h4>Review Us!</h4>
-            <p class="bordered-desc">Your honest answers really help other customers</p>
+            <p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 
             <form id="reviewForm" enctype="multipart/form-data">
               {{csrf_field() }}
@@ -447,6 +449,227 @@
       @endforeach
     @endif
 
+	<!-- RATING SUMMARY -->
+	
+	@if(isset($data['reviews']))
+        <div class="modal fade" id="overallRatingSummary" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+          <div class="modal-dialog" role="document" style="margin-top: 3%;">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              </div>
+              <div class="modal-body">
+                <h4>Rating Summary</h4></br>
+					<hr>
+					@php($a = 0 )
+					@php($b = 0)
+					@php($c = 0)
+					@php($d = 0)
+					@php($e = 0)
+					@php($f = 0)
+				  	@foreach($data['reviews'] as $review)
+						@if(isset($review['average']))
+							@if($review['average'] == '0')
+							@php($a = $a + 1 )
+							@elseif($review['average'] == '1')
+							@php($b = $b + 1 )
+							@elseif($review['average'] == '2')
+							@php($c = $c + 1 )
+							@elseif($review['average'] == '3')
+							@php($d = $d + 1 )
+							@elseif($review['average'] == '4')
+							@php($e = $e + 1 )
+							@elseif($review['average'] == '5')
+							@php($f = $f + 1 )
+							@endif
+						@endif
+				  	@endforeach
+				  	<div class="rating-stars no-border">
+					  	<div class="rate">
+						  	<a href="#star5" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star5" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 5 Stars</p> 
+							  	<p style="float: right;"><b>({{$f}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star5" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '5')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
+					  	</div>
+					  		<hr>
+					  	<div class="rate">
+		                    <a href="#star4" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star4" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 4 Stars</p> 
+							  	<p style="float: right;"><b>({{$e}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star4" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '4')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <a href="#star3" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star3" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 3 Stars</p> 
+							  	<p style="float: right;"><b>({{$d}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star3" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '3')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <a href="#star2" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star2" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 2 Stars</p> 
+							  	<p style="float: right;"><b>({{$c}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star2" aria-expanded="true" style="width: 100%; float: left; padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '2')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <a href="#star1" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star1" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 1 Star</p> 
+							  	<p style="float: right;"><b>({{$b}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star1" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '1')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
+	                    </div>
+	                    <hr>
+	                    <div class="rate">
+		                    <a href="#star0" class="rating-label collapsed" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="star0" style="display: block; width: 100%; "> 
+							  	<p style="float: left;"> Number of users who rated 0 Star</p> 
+							  	<p style="float: right;"><b>({{$a}})</b> </p>
+						  	</a>
+					  		<div class="collapse in" id="star0" aria-expanded="true" style="width: 100%; float: left;     padding: 15px 0;"> 
+						  		 @if(isset($data['reviews']))
+					                @foreach($data['reviews'] as $review)
+					                	@if($review['average'] == '0')
+					                	<div class="review-item">
+						                	<p style="float: left;"><b>{{$review['name']}}</b></p>
+						                	<div class="stars left">
+					
+					                        @for($i = 1; $i <= $review['average']; $i++)
+					                            <span class="icon icon-star"></span>
+					                        @endfor
+					                        @php ($rating = 5 - $review['average'])
+					                        @for($i = 1; $i <= $rating; $i++)
+					                            <span class="icon icon-star-grey"></span>
+					                        @endfor
+					                    </div>
+					                	</div>
+					                    @endif
+					                @endforeach
+					              @endif
+
+						  	</div>
+	                    </div>
+						<hr>
+                  </div>
+				  	
+              </div>
+            </div>
+          </div>
+        </div>
+      
+    @endif
+
+	
+	
     <!-- RATE SUMMARY-->
 
 
@@ -460,14 +683,15 @@
           <div class="modal-body">
             <h4>
             	<!-- There are currently no </br>listed tradesman in your area -->
-            	THERE ARE CURRENTLY NO BUSINESSES LISTED IN THIS CATEGORY FOR YOUR SUBURB
+            	PLEASE ENTER THE TRADE OR SERVICE YOU WOULD LIKE TO RECOMMEND
             </h4>
-            </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, Please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+            </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
               {{csrf_field() }}
               <input type="hidden" id="search-suburb" name="suburb" />
               <input type="text" name="name" placeholder="Tradesman or Business Name"></br>
               <input type="text" name="contact" placeholder="Business Phone No. (not essential)" class="no-top"></br>
+              <input type="text" name="suburb-name" placeholder="Suburb"> </br>
               <button class="btn hs-primary">SUBMIT</button>
             </form>
           </div>
@@ -487,6 +711,7 @@
 				 </br><p class="sub-heading">If you know an agent or agency that could benefit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (You will remain anonymous) Thank you! Also please add in the contact number field (not essential).</p>
 					 <form id="suggestAgency">
 						 {{csrf_field() }}
+						 <input type="hidden" id='no-agency-suburb' name="suburb" />
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
 						 <input type="text" name="contact" placeholder="Contact Number" class="no-top"></br>
 						 <button class="btn hs-primary">SUBMIT</button>
@@ -791,8 +1016,8 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <h4>ORDER YOUR BUSINESS CARD</h4>
-            <p class="sub-heading">Enter the details you want to appear on your business card.</p>
+            <h4>ORDER YOUR BUSINESS CARDS</h4>
+            <p class="sub-heading">Enter the details you want to appear on your business cards.</p>
             <form id="orderBusinessCard">
               {{csrf_field() }}
               <div id="error"></div>
@@ -868,42 +1093,41 @@
           </div>
           <div class="modal-body">
             @php($x = 0)
-            @if(isset($data['tradesmen']))
-            @if(count($data['tradesmen']) > 0)
-            <h4>ADD TRANSACTION</h4>
-            <p class="sub-heading">Process a transaction with a Tradesman.</p>
-            <form id="transaction" enctype="multipart/form-data">
-              {{csrf_field() }}
-              <div id="error"></div>
-              <div class="btn-group dropdown">
-                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                    <ul class="dropdown-menu">
-                    @php($x = 0)
-                    @foreach ($data['tradesmen'] as $tradesman)
-                      <li>
-                        <label for="b{{$x}}">{{ $tradesman['trading-name'] }}</label>
-                        <input type="radio" id="b{{$x}}" name="trades" value="{{ $tradesman['id'] }}">
-                      </li>
-                      @php($x++)
-                    @endforeach
-                    </ul>
-                </div>
-              <input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
-              @if(isset($a))
-                <input type="hidden" name="property-code" value="{{$data['property'][$a]['property-code']}}" id="code">
-              @endif
-              <div class="upload-button no-top">
-                <span class="label">Click to add Receipt</span>
-                <input type="file" name="receipt" id="receipt">
-              </div>
-
-
-                <button class="btn hs-primary" id="transaction">Order Now</button>
-              </form>
+            @if(isset($data['tradesmen']) && count($data['tradesmen']) > 0)
+	            <h4>ADD A RECEIPT</h4>
+	            <p class="sub-heading">Process a transaction with a Tradesman.</p>
+	            <form id="transaction" enctype="multipart/form-data">
+		            {{csrf_field() }}
+		            <div id="error"></div>
+		            	<div class="btn-group dropdown">
+	                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
+	                    <ul class="dropdown-menu">
+	                    @php($x = 0)
+	                    @foreach ($data['tradesmen'] as $tradesman)
+	                      <li>
+	                        <label for="b{{$x}}">{{ $tradesman['trading-name'] }}</label>
+	                        <input type="radio" id="b{{$x}}" name="trades" value="{{ $tradesman['id'] }}">
+	                      </li>
+	                      @php($x++)
+	                    @endforeach
+	                    </ul>
+	                </div>
+	              	<input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
+	              	@if(isset($a))
+	                	<input type="hidden" name="property-code" value="{{$data['property'][$a]['property-code']}}" id="code">
+	              	@endif
+	              	<div class="upload-button no-top">
+	                	<span class="label">Click to add Receipt</span>
+	                	<input type="file" name="receipt" id="receipt">
+		            </div>
+		            @if($data['id'])
+		             <input type="hidden" name="user_id" value="{{$data['id']}}">
+		            @endif
+		            <button class="btn hs-primary" id="transaction">Order Now</button>
+              	</form>
             @else
-            <h4>NO LISTED TRADESMAN</h4>
-            <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
-            @endif
+	            <h4>NO LISTED TRADESMAN</h4>
+	            <p class="sub-heading">We have no tradesman listed on our system at the moment.</p>
             @endif
           </div>
         </div>
@@ -918,9 +1142,15 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</div>
 					<div class="modal-body">
-						<h4>SELECT YOUR AGENT</h4>
-						</br><p class="sub-heading">Select an agency near your property location.</p>
-						 <div class="agents">
+						<h4>SELECT YOUR AGENT</h4></br>
+						<p class="sub-heading">
+							@if(isset($data['agents']) && count($data['agents']))
+								Select an agency near your property location.
+							@else
+	                			Sorry, there are currently no agents registered near your area.
+				            @endif
+						</p>
+						<div class="agents">
 
 							@php($x = 0)
 							@php($y = 0)
@@ -931,7 +1161,9 @@
 									<div class="row">
 								@endif
 									<div class="col-xs-4">
-										<a class="selectAgent" data-id="{{$agent['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
+										@if($data['id'])
+											<a class="selectAgent" data-id="{{$agent['id']}}" data-userid="{{$data['id']}}" data-token="{{csrf_token()}}" data-code="{{$data['code']}}">
+										@endif
 											<div class="col-xs-8  col-xs-offset-2 tradesman-profile">
 												@if(isset($agent['photo']))
 												<img src="{{url($agent['photo'])}}" alt="{{$agent['name']}}">
@@ -970,7 +1202,7 @@
 								@php($y++)
 
                 @endforeach
-              @endif
+              	@endif
              </div>
           </div>
         </div>
@@ -1027,7 +1259,7 @@
 				</div>
 				<div class="modal-body">
 					<h4>WANT TO DO SOMETHING DIFFERENT?</h4>
-				</br><p class="sub-heading">At Houststars, we are always looking for partners, affiliates, leaders and staff to help us move foward. If you have something of value that you could give to the site, send us an email outlining your talent and what you want to achieve. Mark the heading of the email with the title "Where do I sign?" and we will contact you as soon as we can. Thanks for your interest. We look foward to you joining us and creating something amazing!</p>
+				</br><p class="sub-heading">At Housestars, we are always looking for partners, affiliates, leaders and staff to help us move foward. If you have something of value that you could give to the site, send us an email outlining your talent and what you want to achieve. Mark the heading of the email with the title "Where do I sign?" and we will contact you as soon as we can. Thanks for your interest. We look foward to you joining us and creating something amazing!</p>
 				</div>
 			</div>
 		</div>
@@ -1037,11 +1269,15 @@
 	@parent
 	<script>
 		$("#select-rate-business").selectize({
+			maxItems: 1,
+	        openOnFocus: false,
+	        placeholder: "Name of the business",
 			render: {
 				option: function(item, escape) {
 					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
 				}
 			}
 		});
+		$('.collapse').collapse()
 	</script>
 @endsection

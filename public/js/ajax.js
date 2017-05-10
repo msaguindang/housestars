@@ -63,8 +63,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
 						exists.push(data['item'][i]['trade']);
 					}
 
-
-          $('.message').append('<p>Available Trades And Services for location <b class="suburb">'+ suburb +'</b></p>');
+          $('.message').append('<p>Available Trades And Services for location <b class="suburb">' + data.suburb_name + ' (' + data.suburb_id + ') </b></p>');
 
           for(i = 0; i < data['cat'].length; i++){
 
@@ -74,17 +73,12 @@ $(document).on('submit', '#forgotPass' ,function(e){
               $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             }
           }
-
-          $('#trades').append('<div class="col-xs-12"><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#submitCategory"><span class="icon icon-arrow-right"></span>The category I am looking for is not here</button></div><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-arrow-right"></span>Recommend A Trade or Service</button></div></div>');
-
-
+          $('#trades').append('<div class="col-xs-12"><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#submitCategory"><span class="icon icon-arrow-right"></span> <span>Please enter the desired category <i class="fa fa-question-circle tooltip-info" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="" data-original-title="If this category is aligned with the Housestars philosophy, it will be added to the list. Thank you!" data-html="true"></i></span> </button></div><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-arrow-right"></span>Recommend A Trade or Service</button></div></div>');
         }
-
       });
-
   });
 
-  $(document).on('click', '#helpful' ,function(e){
+  $(document).on('click', '#helpful' ,function(e) {
       e.preventDefault();
       var countClass = '#count-' + $(this).data('id');
       $(this).attr("disabled", true);
@@ -183,9 +177,11 @@ $(document).on('click', '#switch' ,function(e){
     if(stat == '0'){
       $('.nav-panel').css('display', 'none');
       $('.profile-details').css('display', 'block');
+      $('div.gallery').show();
       $('input[name=switch]').val('1')
       $('input[name=switch]').attr('checked', true);
     } else {
+      $('div.gallery').hide();
       $('.nav-panel').css('display', 'block');
       $('.profile-details').css('display', 'none');
       $('input[name=switch]').val('0')
@@ -204,7 +200,8 @@ $(document).on('submit', '#orderBusinessCard' ,function(e){
         processData: false,
         success: function(data){
           $('.sub-heading').empty();
-          $('#orderBusinessCard').html('<p>We successfully send your details for your business card. Our team will contact you shortly for details.</p>');
+          $('#orderBC h4').empty();
+          $('#orderBusinessCard').html('<h4>BUSINESS CARDS ORDERED</h4></br><p>Your order has been placed. Our team will contact you shortly for details.</p>');
         }
       });
   });
@@ -220,7 +217,7 @@ $(document).on('submit', '#contactUS' ,function(e){
         processData: false,
         success: function(data){
           $('.sub-heading').empty();
-          $('#contactUS').html('<p>We successfully send your concern. Our team will connect to you shortly.</p>');
+          $('#contactUS').html('<p>Thanks for your contact. Our staff will reply to you shortly.</p>');
         }
       });
   });
@@ -237,6 +234,9 @@ $(document).on('submit', '#savingsCalc' ,function(e){
         success: function(data){
 					console.log(data);
 					$('#error').empty();
+					$('#select-state')[0].selectize.clear();
+					$('#select-type')[0].selectize.clear();
+					$('.dropdown-toggle').empty();
 					$("#savingsCalc")[0].reset();
 					$("#loading").fadeOut("slow");
 					$('#savingsSuccess').modal('show');
@@ -244,6 +244,10 @@ $(document).on('submit', '#savingsCalc' ,function(e){
 				error: function(data){
 					$("#loading").fadeOut("slow");
 					$errors = data.responseJSON;
+					$('#select-state')[0].selectize.clear();
+					$('#select-type')[0].selectize.clear();
+					$("#savingsCalc")[0].reset();
+					$('.dropdown-toggle').empty();
 					$('#error').empty();
 					$('#error').append('Please complete the form, you need to fill in all fields.');
 				}

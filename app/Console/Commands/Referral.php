@@ -42,7 +42,7 @@ class Referral extends Command
      */
     public function handle()
     {
-      $meta = UserMeta::where('meta_name', 'referral')->get();
+      $meta = UserMeta::where('meta_name', 'promotion-code')->get();
       $referral = array();
       foreach ($meta as $key) {
         array_push($referral, $key->meta_value);
@@ -58,7 +58,7 @@ class Referral extends Command
             $customerID = User::where('id', $tradesman[0]['user_id'])->first()->customer_id;
             $email = User::where('id', $tradesman[0]['user_id'])->first()->email;
             $name = User::where('id', $tradesman[0]['user_id'])->first()->name;
-            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $customer = \Stripe\Customer::retrieve($customerID);
 
             if($customer){

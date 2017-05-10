@@ -44,10 +44,9 @@ class RegistrationController extends Controller
         $role = Sentinel::findRoleBySlug($account);
         $role->users()->attach($user);
 
-        $this->sendEmail($user, $activation->code, $request->input('name'), $account);
+        $this->sendEmail($user, $activation->code, $request->input('name'), $account, $role);
 
         return \Ajax::redirect(env('APP_URL').'/activation-sent');
-
     }
 
     public function postUserMeta(Request $request)
@@ -70,7 +69,13 @@ class RegistrationController extends Controller
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
+
+                                if(strpos($suburb,"-dup") !== FALSE){
+                                    $suburb = explode("-dup", $suburb)[0];
+                                }
+
                                 $value .= $suburb. ',';
+
                                 // Update suburb availability
                                 $sub = Suburbs::find(preg_replace('/\D/', '', $suburb));
                                 DB::table('suburbs')->where('id', $sub->id)->update(['availability' => $sub->availability +  1]);
@@ -87,8 +92,8 @@ class RegistrationController extends Controller
 
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
 
-    		} else if($role == 'tradesman'){
-                $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate');
+    		} else if(strtolower($role) == 'tradesman'){
+                $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate', 'phone-number');
                 foreach ($meta_name as $meta) {
                     if($request->input($meta) != null || $request->input($meta) != '')
                     {
@@ -119,6 +124,7 @@ class RegistrationController extends Controller
     	}
 
     }
+   
 
     public function addProperty(Request $request)
     {
@@ -236,7 +242,26 @@ class RegistrationController extends Controller
     public function Tradesman()
     {
         $suburbs = Suburbs::all();
-        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->get()]);
+        $data = [];
+
+        if ($user = Sentinel::getUser()) {
+            $userMetas = UserMeta::where('user_id', $user->id)->get();
+            foreach ($userMetas as $userMeta) {
+                if (strtolower($userMeta->meta_name) == 'positions') {
+                    $positions = explode(',', $userMeta->meta_value);
+                    foreach ($positions as $key => $pos) {
+                        preg_match_all('!\d!', $pos, $matches);
+                        if (isset($matches[0]) && !empty($pos)) {
+                            $data[$userMeta->meta_name][$key]['id'] = implode('', $matches[0]);
+                            $data[$userMeta->meta_name][$key]['name'] = trim(str_replace($data[$userMeta->meta_name][$key]['id'], '', $pos));
+                        }
+                    }
+                } else {
+                    $data[$userMeta->meta_name] = $userMeta->meta_value;
+                }
+            }
+        }
+        return View::make('register/tradesman/step-one')->with(['suburbs' => $suburbs, 'categories' => Category::whereStatus(1)->orderBy('category', 'ASC')->groupBy('category')->get(), 'data' => $data]);
     }
 
     public function Customer()
@@ -254,72 +279,75 @@ class RegistrationController extends Controller
 
 
     public function listAgency(Request $request){
+      try {
+          $suburb = preg_replace('/[0-9]+/', '', $request->input('data'));
+          $postcode = preg_replace('/\D/', '', $request->input('data'));
 
-      $suburb = preg_replace('/[0-9]+/', '', $request->input('data'));
-      $postcode = preg_replace('/\D/', '', $request->input('data'));
-    //  dd($postcode);
-
-      $suburbInfo =  Suburbs::where('name', $suburb)->first();
-      $lat = $suburbInfo->latitude;
-      $long = $suburbInfo->longitude;
+          $suburbInfo =  Suburbs::where('name', $suburb)->first();
+          $lat = $suburbInfo->latitude;
+          $long = $suburbInfo->longitude;
 
 
-      $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
-              from suburbs
-              having  distance <= 10
-              order by distance
-              limit 5";
+          $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
+                  from suburbs
+                  having  distance <= 10
+                  order by distance
+                  limit 20";
 
-        $nearby = DB::select($qry);
-      //  dd($nearby);
-        $agencies = DB::table('users')
-                        ->join('role_users', function ($join) {
-                            $join->on('users.id', '=', 'role_users.user_id')
-                                 ->where('role_users.role_id', '=', 2);
-                        })
-                        ->get();
-        $search = array();
-        $nearbySearch = array();
-        $data['term'] = $suburb.', '.$postcode;
+            $nearby = DB::select($qry);
+           // dd($nearby );
+            $agencies = DB::table('users')
+                            ->join('role_users', function ($join) {
+                                $join->on('users.id', '=', 'role_users.user_id')
+                                     ->where('role_users.role_id', '=', 2);
+                            })
+                            ->get();
+            $search = array();
+            $nearbySearch = array();
+            $data['term'] = $suburb.', '.$postcode;
 
-        $searchInArray = array_search($suburb, $nearby);
-        if($searchInArray == false){
-          $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
-          foreach ($agencies as $agency) {
-             foreach ($suburbs as $suburb) {
-                  if($suburb->user_id == $agency->id){
-                      array_push($search, $agency);
-                  }
-             }
-          }
-        }
-
-        foreach ($nearby as $key) {
-
-          if($key->name != $suburb){
-            $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
-
-            foreach ($agencies as $agency) {
-               foreach ($suburbs as $suburb) {
-                    if($suburb->user_id == $agency->id){
-                        $agencyInfo['id'] = $agency->id;
-                        $agencyInfo['name'] = $agency->name;
-                        $agencyInfo['suburb'] = $key->name .', '.$key->id;
-                        array_push($nearbySearch, $agencyInfo);
-                    }
-               }
+            $searchInArray = array_search($suburb, $nearby);
+            if($searchInArray == false){
+              $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+              foreach ($agencies as $agency) {
+                 foreach ($suburbs as $suburb) {
+                      if($suburb->user_id == $agency->id) {
+                          array_push($search, json_decode(json_encode($agency), true));
+                      }
+                 }
+              }
             }
-          }
-        }
 
-        $data['search'] = $search;
-        $data['nearby'] = $nearbySearch;
+            // dd($search);
+            foreach ($nearby as $key) {
+              if ($key->name != $suburb) {
+                $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
 
-        //dd($data);
-        if(empty($data )){
-            return Response::json('error', 422);
-        } else {
-            return Response::json($data , 200);
+                foreach ($agencies as $agency) {
+                   foreach ($suburbs as $suburb) {
+                        if($suburb->user_id == $agency->id) {
+                            $agencyInfo['id'] = $agency->id;
+                            $agencyInfo['name'] = $agency->name;
+                            $agencyInfo['suburb'] = $key->name .', '.$key->id;
+                            if (!in_array($agency->id, array_flatten($search))) {
+                                array_push($nearbySearch, $agencyInfo);
+                            }
+                        }
+                   }
+                }
+              }
+            }
+
+            $data['search'] = $search;
+            $data['nearby'] = $nearbySearch;
+
+            if(empty($data)) {
+                return Response::json('error', 422);
+            } else {
+                return Response::json($data , 200);
+            }
+        } catch (\Exception $e) {
+            return Response::json(['search' => [], 'nearby' => [], 'term' => ''] , 200);  
         }
     }
 
@@ -329,7 +357,15 @@ class RegistrationController extends Controller
             $role = Sentinel::getUser()->roles()->first()->slug;
 
             if($role == 'agency'){
-                return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+	            $positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+	            $isFree = count(explode(",", $positions));
+	            
+	            if($isFree == '2'){
+		            return redirect(env('APP_URL').'/register/agency/step-four');
+	            } else{
+		            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+	            }
+
             } else {
                 return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
             }
@@ -344,7 +380,7 @@ class RegistrationController extends Controller
         $userinfo = UserMeta::where('user_id', $user_id)->get();
         $positions = array();
         $expiry = date('F d, Y', strtotime('+1 year'));
-
+		
         if($role != 'customer'){
             foreach ($userinfo as $info) {
                if($info->meta_name == 'positions') {
@@ -358,15 +394,12 @@ class RegistrationController extends Controller
                     }
                 }
             }
-             $price =  count($positions) * 2000;
+             $price =  (count($positions) - 1) * 1000;
 
-             if($price == 6000){
-                $price =  5000;
-             }
         }
 
-        if($role == 'tradesman'){
-            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        if(strtolower($role) == 'tradesman'){
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
             $data['plan'] = $customer_info->metadata->selected;
 
@@ -381,11 +414,11 @@ class RegistrationController extends Controller
 
              return View::make('register/tradesman/step-three')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         } else if($role == 'agency'){
-
-             $price =  count($positions) * 2000;
-             if($price == 6000){
-                $price =  5000;
-             }
+			
+			if(count($positions) > 1){
+				$price =  (count($positions) - 1) * 1000;
+			}
+             
             return View::make('register/agency/step-four')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         } else {
             return View::make('register/customer/complete')->with('name', Sentinel::getUser()->name);
@@ -402,7 +435,7 @@ class RegistrationController extends Controller
             $role = Sentinel::getUser()->roles()->first()->name;
 
                 try{
-                    \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
+                    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
                     $token = \Stripe\Token::create(
                         array(
                             'card'=> array(
@@ -418,7 +451,7 @@ class RegistrationController extends Controller
 
                     $description = $role.' Customer';
                     $subscription = array();
-                    if($role == 'Tradesman'){
+                    if(strtolower($role) == 'tradesman'){
                         $subscription['selected'] = $request->input('subscription');
                     }
 
@@ -435,11 +468,10 @@ class RegistrationController extends Controller
                     $body = $e->getJsonBody();
                     $err  = ''.$body['error']['message'].'';
 
-                    //dd($err);
                     return redirect()->back()->with('error', $err);
                 }
 
-            if($role == 'Tradesman'){
+            if(strtolower($role) == 'tradesman'){
                 return redirect(env('APP_URL').'/register/tradesman/step-three');
             } else {
                 return redirect(env('APP_URL').'/register/agency/step-four');
@@ -455,34 +487,44 @@ class RegistrationController extends Controller
 
     public function postCharge(Request $request)
     {
-        if(Sentinel::check()){
-
-            try {
+        if(Sentinel::check()) {
             $role = Sentinel::getUser()->roles()->first()->name;
+			$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+	        $isFree = count(explode(",", $positions));
 
-            \Stripe\Stripe::setApiKey('sk_test_qaq6Jp8wUtydPSmIeyJpFKI1');
-
-            \Stripe\Subscription::create(array(
-              "customer" => Sentinel::getUser()->customer_id,
-              "plan" => $request->input('plan')
-            ));
-
-            $request->session()->put('completed', 'yes');
-
-            if($role == 'Tradesman'){
-                return redirect(env('APP_URL').'/register/tradesman/complete');
-            } else {
-                return redirect(env('APP_URL').'/register/agency/complete');
-            }
-
-            } catch (\Stripe\Error\Card $e){
-
-                $body = $e->getJsonBody();
-                $err  = ''.$body['error']['message'].'';
-
-                return redirect()->back()->with('error', $err);
-
-            }
+	        if($isFree == '2') {
+                if(strtolower($role) == 'tradesman') {
+                    return redirect(env('APP_URL').'/register/tradesman/complete');
+                } else {
+                    return redirect(env('APP_URL').'/register/agency/complete');
+                }
+	        } else {
+	            try {
+	
+	            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+	
+	            \Stripe\Subscription::create(array(
+	              "customer" => Sentinel::getUser()->customer_id,
+	              "plan" => $request->input('plan')
+	            ));
+	
+	            $request->session()->put('completed', 'yes');
+	
+	            if(strtolower($role) == 'tradesman'){
+	                return redirect(env('APP_URL').'/register/tradesman/complete');
+	            } else {
+	                return redirect(env('APP_URL').'/register/agency/complete');
+	            }
+	
+	            } catch (\Stripe\Error\Card $e){
+	
+	                $body = $e->getJsonBody();
+	                $err  = ''.$body['error']['message'].'';
+	
+	                return redirect()->back()->with('error', $err);
+	
+	            }
+	        }
 
 
         } else {
@@ -490,17 +532,30 @@ class RegistrationController extends Controller
         }
     }
 
-    private function sendEmail($user, $code, $name, $account){
+    private function sendEmail($user, $code, $name, $account, $role) {
         Mail::send(['html' => 'emails.activation'], [
-                'user' => $user,
-                'code' => $code,
-                'name' => $name,
-                'account' => $account
-            ], function ($message) use ($user) {
+            'user' => $user,
+            'code' => $code,
+            'name' => $name,
+            'account' => $account
+        ], function ($message) use ($user) {
+            $message->from('info@housestars.com.au', 'Housestars');
+            $message->to($user->email);
+            $message->subject('Activate your Housestars Account');
+        });
+
+        if ($role->id == 3) { //checks if role is tradesman then send an email to admin
+            Mail::send(['html' => 'emails.admin-signup-notice'], [
+                'user'  => $user,
+                'name'  => $name,
+                'email' => $user->email,
+                'link'  => route('admin.index') . '#/members'
+            ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
-                $message->to($user->email);
-                $message->subject('Activate your Housestars Account');
+                $message->to('info@housestars.com.au');
+                $message->subject('New Trade/Service Signs Up');
             });
+        }
     }
 
     private function notifyAgency($property, $email){

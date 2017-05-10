@@ -94,7 +94,7 @@
             @if(isset($data['cat']) && $x > 0)
               @if($data['suburb'])
                 <!--  a <b>{{ $data['cat'] }}</b> in -->
-                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using House Stars.</p></br>
+                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using Housestars.</p></br>
               @endif
             @endif
             <ul class="list">
@@ -123,7 +123,7 @@
                             @endif
                           </div>
                           <div class="profile-info">
-                            <h3 class="name">{{ isset($tradesman['business-name']) ? $tradesman['business-name'] : '' }}</h3>
+                            <h3 class="name">{{ isset($tradesman['trading-name']) ? $tradesman['trading-name'] : 'N/A' }}</h3>
                             <p class="location">{{ isset($tradesman['trade']) ? $tradesman['trade'] : ''}}</p>
                             @if(isset($tradesman['rating']))
                               <div class="stars">
