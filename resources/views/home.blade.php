@@ -111,7 +111,7 @@
         <div class="row highlight">
           <div class="col-xs-6 col-xs-offset-3 highlight-text">
             <h1 class="animated fadeInRight">Sell your property smarter</h1>
-            <p class="animated fadeInLeft">The value spent on trades and services is deducted from the commission charged by the agent. Its smart, simple and can save you thousands. Scroll down to find out more.</p>
+            <p class="animated fadeInLeft">The value spent on trades and services preparing your house for sale is deducted from the commission charged by the agent. It's smart, simple and could save you thousands. Scroll down to find out more.</p>
           </div>
         </div>
         <div class="row tooltip-nav">
