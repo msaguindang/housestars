@@ -22,7 +22,7 @@ class AgentMiddleware
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agent':
                     if(Sentinel::getUser()->customer_id){
-                      \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+                      \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
                       $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
                     //  $payment_status = $customer_info->subscriptions->data[0]->status;
 

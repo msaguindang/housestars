@@ -133,7 +133,7 @@
 			<div class="row section-title">
 				<h2 class="wide"><span class="icon icon-left-bar mobile-hidden"></span>How Housestars.com.au Works <span class="icon icon-right-bar mobile-hidden"></span></h2>
 				<span class="separator"></span>
-				<p>House Stars is a great way to sell your property. By using local trades and services to prepare your house for sale, and by hiring the best agents to represent you, you can be sure you'll get the best results, at the cheapest prices.</p>
+				<p>Housestars is a great way to sell your property. By using local trades and services to prepare your house for sale, and by hiring the best agents to represent you, you can be sure you'll get the best results, at the cheapest prices.</p>
 			</div>
 			<div class="row steps">
 				<div class="left">
@@ -171,7 +171,7 @@
 					 <div class="step-description stepOne animated">
 						<div class="description-box-left">
 							<h3>The Property is Sold</h3>
-							<p>Register with House stars and create your own process page. You can do this with absolutely no requirement or pressure to continue. This step will start you on your journey to selling your property. You can sell your property up to 7 years later, and still claim the work you have done against your sales costs.</p>
+							<p>Register with Housestars and create your own process page. You can do this with absolutely no requirement or pressure to continue. This step will start you on your journey to selling your property. You can sell your property up to 7 years later, and still claim the work you have done against your sales costs.</p>
 							<p class="highlight-small">Please see our <a href="#" class="content-hyperlink">terms and conditions</a> for details.</p>
 						</div>
 					</div>
@@ -221,7 +221,7 @@
 			<div class="row widget">
 				<div class="col-xs-4 item animated">
 					<h3>Want to sell a property?</h3>
-					<p>There’s no better way to sell your property than with House Stars. The best team with the best results at the best prices.</p>
+					<p>There’s no better way to sell your property than with Housestars. The best team with the best results at the best prices.</p>
 					<div class="featured-img mobile-hidden">
 						<img src="assets/img-square-buildings.png" alt="Want to sell a property?">
 					</div>
@@ -229,7 +229,7 @@
 				</div>
 				<div class="col-xs-4 item animated">
 					<h3>are you a trade or service?</h3>
-					<p>House Stars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
+					<p>Housestars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
 					<div class="featured-img mobile-hidden">
 						<img src="assets/img-square-services.png" alt="are you a trade or service?">
 					</div>

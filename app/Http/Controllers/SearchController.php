@@ -22,11 +22,20 @@ class SearchController extends Controller
     {
     	switch ($item) {
     		case 'category':
-    			$data['cat'] = Category::whereStatus(1)->get();
+    			$data['cat'] = Category::whereStatus(1)
+    							->orderBy("category", "asc")
+    							->groupBy('category')
+    							->get();
+                $data['suburb_id'] = $data['suburb_name'] ='';
                 $data['suburb'] = $request->get('suburb', '');
-                $data['item'] = $this->hasResults($data['suburb']);
-    			      return Response::json($data, 200);
-                //return view('general.tradesman-listings')->with('data', $data);
+
+                preg_match_all('!\d!', $data['suburb'], $matches);
+                if (isset($matches[0])) {
+                    $data['suburb_id']   = implode('', $matches[0]);
+                    $data['suburb_name'] = trim(str_replace($data['suburb_id'], '', $data['suburb']));
+                }
+                $data['item'] = $this->hasResults($data['suburb_id']);
+		        return Response::json($data, 200);
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));
@@ -98,8 +107,14 @@ class SearchController extends Controller
     }
 
     public function tradesmenListing($category, $suburb)
-    {
-        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+    {	
+
+
+                preg_match_all('!\d!', $suburb, $matches);
+                if (isset($matches[0])) {
+                    $data['suburb_id']   = implode('', $matches[0]);
+                }
+        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$data['suburb_id'].'%')->get();
         $tradesmen = array();
 
         foreach ($trade as $key) {
@@ -128,9 +143,46 @@ class SearchController extends Controller
                      $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
                      foreach ($tradesmanData as $value) {
                          $data[$x][$value->meta_name] = $value->meta_value;
+/*
+                         $data[$x+ 1][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 2][$value->meta_name] = $value->meta_value;
+                          $data[$x+ 3][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 4][$value->meta_name] = $value->meta_value;
+                          $data[$x+ 5][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 6][$value->meta_name] = $value->meta_value;
+                          $data[$x+ 7][$value->meta_name] = $value->meta_value;
+                         $data[$x+ 8][$value->meta_name] = $value->meta_value;
+*/
                      }
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
+                     
+// For Testing Banner Advert
+/*
+                     $data[$x + 1]['rating'] = $this->getRating($id);
+                     $data[$x + 1]['id'] = $value->user_id;
+                     
+                     $data[$x + 2]['rating'] = $this->getRating($id);
+                     $data[$x + 2]['id'] = $value->user_id;
+                     
+                     $data[$x + 3]['rating'] = $this->getRating($id);
+                     $data[$x + 3]['id'] = $value->user_id;
+                     
+                     $data[$x + 4]['rating'] = $this->getRating($id);
+                     $data[$x + 4]['id'] = $value->user_id;
+                     
+                     $data[$x + 5]['rating'] = $this->getRating($id);
+                     $data[$x + 5]['id'] = $value->user_id;
+                     
+                     $data[$x + 6]['rating'] = $this->getRating($id);
+                     $data[$x + 6]['id'] = $value->user_id;
+                     
+                     $data[$x + 7]['rating'] = $this->getRating($id);
+                     $data[$x + 7]['id'] = $value->user_id;
+                     
+                     $data[$x + 8]['rating'] = $this->getRating($id);
+                     $data[$x + 8]['id'] = $value->user_id;
+*/
                      $x++;
                    }
                  }
@@ -145,6 +197,8 @@ class SearchController extends Controller
         if ($ads = Advertisement::getByPage('tradies')->randomPriority($hasPriority)->inRandomOrder()->first()) {
           $data['ads'] = $ads;
         }
+        
+        //dd($data);
                 
         return view('general.tradesman-listings')->with('data', $data);
     }
@@ -190,29 +244,38 @@ class SearchController extends Controller
         return $data;
     }
 
-    public function getRating($id){
+    public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
+		$rate = 0;
+		$zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+		
         if($numRatings > 0){
-            foreach ($ratings as $rating) {
-                $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+            foreach ($ratings as $rating) {	
+	            $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+	            $rate = $rate + $ratingAverage;
             }
+            $average =  (int)round($rate / $numRatings);
         }
-
+		
         return $average;
     }
 
     public function send(Request $request, $type){
+        $suburb = $request->get('suburb', '');
+
+        if ($request->has('suburb-name') && !empty($suburb)) {
+            $suburb = $request->get('suburb-name', '');
+        }
 
         switch ($type) {
             case 'tradesman':
-                $this->sendEmail($request->input('name'), $request->input('contact'), $request->get('suburb', ''), 'emails.suggest-tradesman', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $suburb, 'emails.suggest-tradesman', null);
                 return Response::json('success', 200);
                 break;
             case 'agency':
-                $this->sendEmail($request->input('name'), $request->input('contact'), null, 'emails.suggest-agency', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $suburb, 'emails.suggest-agency', null);
                 return Response::json('success', 200);
                 break;
             case 'category':

@@ -62,8 +62,12 @@ class ReviewController extends Controller
     {
 
         $request = $this->payload;
-
-        $user_id = Sentinel::getUser()->id;
+		if($request->input('user_id')){
+			 $user_id = $request->input('user_id');
+		}else{
+			 $user_id = Sentinel::getUser()->id;
+		}
+        //$user_id = Sentinel::getUser()->id;
         $userReviews = Reviews::where('reviewer_id', $user_id)->where('reviewee_id', $request->input('tradesman_id'))->whereYear('created_at', '=', date('Y'))->count();
 
         if($userReviews >= 5 ){
@@ -80,11 +84,11 @@ class ReviewController extends Controller
 
                   if($request->input('transaction_id') != null || $request->input('transaction_id') != ''){
                     DB::table('reviews')->insert(
-                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id')]
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id'), 'postcode' => $request->input('postcode')]
                     );
                   } else{
                     DB::table('reviews')->insert(
-                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'postcode' => $request->input('postcode')]
                     );
                   }
         }
@@ -137,19 +141,24 @@ class ReviewController extends Controller
                     users.`name`
                   FROM
                     users
-                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
+                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name,
+                  (SELECT
+                    user_meta.`meta_value`
+                  FROM
+                    user_meta
+                  WHERE user_meta.`user_id` = reviews.`reviewee_id` 
+                  AND user_meta.`meta_name` = 'agency-name') AS business
                 FROM
                   reviews
                 {$dateRangeQuery}
                 LIMIT {$limit}
                 OFFSET {$offset}";
 
-
         $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
             'reviews' => $reviews,
-            'length' => $length
+            'length'  => $length
         ];
 
         return Response::json($response, 200);
@@ -299,7 +308,8 @@ class ReviewController extends Controller
         $businessInfo = array(
             'id' => $businessId,
             'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
-            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL
+            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
+            'postcode' => $request->get('postcode', '')
         );
         return view('review_business')->with(compact('businessInfo'));
     }
@@ -546,9 +556,10 @@ class ReviewController extends Controller
             'content'       => $reviewText,
             'helpful'       => $helpful,
             'status'        => 0,
-            'updated_at'    => Carbon::now()
+            'updated_at'    => Carbon::now(),
+            'postcode'      => $request->get('postcode')
         ];
-
+        
         if (session()->has('email') && session()->has('user_type')) {
             $email = session()->get('email');
             $userType = session()->get('user_type');
@@ -626,6 +637,7 @@ class ReviewController extends Controller
         $field  = $request->get('field', null);
         $fromDate = $request->get('from', '');
         $toDate = $request->get('to', '');
+        $searchBusiness = $request->get('business', '');
         $searchReviewee = $request->get('reviewee', '');
         $searchReviewer = $request->get('reviewer', '');
         $searchTitle = $request->get('title', '');
@@ -646,18 +658,19 @@ class ReviewController extends Controller
 
         $offset = $limit * ($pageNo - 1);
 
-        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt);
-        $queryStr = $reviews->toSql();
+        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt, $searchBusiness);
         $length = $reviews->count();
-        $reviews = $reviews->take($limit)->skip($offset)->get();
+        $reviews = $reviews->get();
         
         if(!is_null($field)) {
             $reviews = $reviews->sortBy($field, SORT_REGULAR, ($sort=='desc'));
-            $reviews = $reviews->values()->all();
+            // $reviews = $reviews->take($limit)->skip($offset);
         }
+        
+        $reviews = $reviews->forPage($pageNo, $limit);
+        $reviews = $reviews->values()->all();
 
         $response = [
-            'query'   => $queryStr,
             'reviews' => (is_array($reviews) ? $reviews : $reviews->toArray()),
             'length'  => $length
         ];

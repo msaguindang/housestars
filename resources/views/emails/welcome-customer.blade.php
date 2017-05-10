@@ -311,12 +311,17 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>{{$content}}</p>
+                        <p>Hi {{$name}}!</p>
 
-                        <p>Inquirer details:<p/>
-                        <p><b>Name:</b> {{$name}}</p>
-                        <p><b>Email Address:</b> {{$email}}</p>
-                       </td>
+                          <p>
+                            Thank you for signing up to Housestars. <br/><br/>
+
+                            We hope you enjoy using it.
+                          </p>
+
+                        <p>Cheers,</p>
+                        <img src="https://trello-attachments.s3.amazonaws.com/58abe1cd025a65a1e39f2205/200x50/d55d597a4311edbdbc9789d1ac05744f/signature.png">
+                      </td>
                     </tr>
                   </table>
                 </td>

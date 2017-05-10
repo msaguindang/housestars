@@ -8,18 +8,24 @@
 					<div class="modal-body">
 						<h4>Review Page</h4>
 						<div class="col-xs-8  col-xs-offset-2 tradesman-info">
-							<div class="col-xs-4 tradesman-profile">
-								<img src="{{$businessInfo['photo']}}" alt="Tradesman Name" id="tradesmanPic">
-							</div>
-							<div class="col-xs-8 tradesman-name">
-								<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
-								
-							</div>
+							@if ($businessInfo['photo'])
+								<div class="col-xs-4 tradesman-profile">
+									<img src="{{ $businessInfo['photo'] }}" alt="{{$businessInfo['name']}}" id="tradesmanPic">
+								</div>
+								<div class="col-xs-8 tradesman-name">
+									<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+								</div>
+							@else
+								<div class="col-xs-12 tradesman-name">
+									<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+								</div>
+							@endif
 						</div>
-						<p class="bordered-desc">Your honest answers really help other customers</p>
+						<p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
 						<form id="rateForm" enctype="multipart/form-data" method="post" action="/create/review">
 							{{csrf_field() }}
 							<input type="hidden" name="tradesman_id" id="tradesmanID" value="{{$businessInfo['id']}}">
+							<input type="hidden" name='postcode' value="{{isset($businessInfo['postcode']) ? $businessInfo['postcode'] : ''}}">
 							<div class="rating-stars">
 								<p class="rating-label">Communication</p>
 								<div class="stars">

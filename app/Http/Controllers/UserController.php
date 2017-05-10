@@ -35,7 +35,7 @@ class UserController extends Controller
     public function __construct(Request $request)
     {
         $this->payload = $request;
-        $this->stripeKey = "sk_test_qaq6Jp8wUtydPSmIeyJpFKI1";
+        $this->stripeKey = env('STRIPE_SECRET_KEY');
     }
 
     public function getAllUsers(Request $request)

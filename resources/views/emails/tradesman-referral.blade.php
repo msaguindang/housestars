@@ -20,7 +20,7 @@
         font-size: 14px;
         line-height: 1.4;
         margin: 0;
-        padding: 0;
+        padding: 0; 
         -ms-text-size-adjust: 100%;
         -webkit-text-size-adjust: 100%; }
 
@@ -272,7 +272,7 @@
           font-size: inherit !important;
           font-weight: inherit !important;
           line-height: inherit !important;
-          text-decoration: none !important; }
+          text-decoration: none !important; } 
         .btn-primary table td:hover {
           background-color: #34495e !important; }
         .btn-primary a:hover {
@@ -311,11 +311,9 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>{{$content}}</p>
-
-                        <p>Inquirer details:<p/>
-                        <p><b>Name:</b> {{$name}}</p>
-                        <p><b>Email Address:</b> {{$email}}</p>
+                        <p>
+                          {{ $referral }} was recommended by {{ $name }}.
+                        </p>
                        </td>
                     </tr>
                   </table>
@@ -337,7 +335,7 @@
             </div>
 
             <!-- END FOOTER -->
-
+            
 <!-- END CENTERED WHITE CONTAINER --></div>
         </td>
         <td>&nbsp;</td>
@@ -345,3 +343,5 @@
     </table>
   </body>
 </html>
+
+                                   

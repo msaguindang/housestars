@@ -29,20 +29,24 @@ class AgencyMiddleware
                 if(count($meta) < 2){
                   return redirect('/register/agency/step-one');
                 }
-
-                if(Sentinel::getUser()->customer_id) {
-                  \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
-                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-                  $payment_status = $customer_info->status;
-
-
-                  if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
-                    return redirect('/payment-status');
-                  }
-                } else {
-                  return redirect('/register/agency/step-three');
-                }
-
+				
+				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+	            $isPaidCustomer = count(explode(",", $positions));
+	            
+	            if($isPaidCustomer > '2'){
+					if(Sentinel::getUser()->customer_id) {
+	                  \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+	                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
+	                  $payment_status = $customer_info->status;
+	
+	
+	                  if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
+	                    return redirect('/payment-status');
+	                  }
+	                } else {
+	                  return redirect('/register/agency/step-three');
+	                }
+	            }
                 return $next($request);
                 break;
 

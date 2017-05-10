@@ -117,16 +117,18 @@
 							<p>Position 1 Taken:</p>
 							<p>Position 2 Taken:</p>
 							<p>Position 3 Taken:</p>
-							<p>Discount:</p>
+<!-- 							<p>Discount:</p> -->
 						</div>
 						<div class="preview-value">
+							@php($x = 1)
 							@foreach($positions as $position)
-								<p>{{$position}} <span class="price"> = $2,000 per year</span></p>
+								@if($x == 1)
+								<p>{{$position}} <span class="price"> = FREE</span></p>
+								@else
+								<p>{{$position}} <span class="price"> = $1,000 per year</span></p>
+								@endif
+								@php ($x++)
 							@endforeach
-
-							@if(count($positions) > 2)
-								<p>For 3 Positions = $1000 per year</p>
-							@endif
 
 
 						</div>
@@ -135,7 +137,11 @@
 						<div class="preview-total">
 
 							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
-							<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@if($price === 0)
+								<span class="icon icon-total"></span> <p> Total Charges = <b> FREE </b></p>
+							@else
+								<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@endif
 						</div>
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
@@ -166,16 +172,24 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="preview-value">
-              @php ($x = 1)
+							@php ($x = 1)
 							@foreach($positions as $position)
-                <p><b>Position {{$x}} Taken:</b>
-								{{$position}} <span class="price"> = $2,000 per year</span></p>
-                @php ($x++)
+								@if($x == 1)
+									<p><b>Position {{$x}} Taken:</b>
+									{{$position}} <span class="price"> = FREE </span></p>
+									@php ($x++)
+	                			@else
+	                			<p><b>Position {{$x}} Taken:</b>
+									{{$position}} <span class="price"> = $1,000 per year</span></p>
+									@php ($x++)
+	                			@endif
 							@endforeach
 
+<!--
 							@if(count($positions) > 2)
 								<p>For 3 Positions = $1000 per year</p>
 							@endif
+-->
 
 
 						</div>
@@ -184,7 +198,11 @@
 						<div class="preview-total">
 
 							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
-							<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@if($price === 0)
+								<span class="icon icon-total"></span> <p> Total Charges = <b> FREE </b></p>
+							@else
+								<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@endif
 						</div>
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>

@@ -37,6 +37,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    @yield('styles')
   </head>
   <body>
     <header id="header" class="tablet">
@@ -127,7 +128,7 @@
           <div class="col-xs-3 company-identity">
               <img src="{{asset('assets/logo-footer.png')}}" alt="HouseStars" class="logo">
               <p class="label">Office Address</p>
-              <p>21 Mian Street Alstonville, </br>New South Wales 2477</p>
+              <p>21 Main Street Alstonville, </br>New South Wales 2477</p>
               <p>Tel No: 0404045597 </p>
               <a href="#" data-toggle="modal" data-target="#team" class="hs-transparent-dark">BECOME PART OF THE TEAM</a>
           </div>
@@ -144,15 +145,15 @@
               <div class="col-xs-3 nav-category">
                 <p class="label">Agency</p>
                 <ul>
+	              <li><a href="{{env('APP_URL')}}/faq/agency">Agent FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-agent-philosophy">Our Agent Philosophy</a></li>
-                  <li><a href="{{env('APP_URL')}}/faq/agency">Agent FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
-                <p class="label">Tradesman</p>
+                <p class="label">TRADE/SERVICE</p>
                 <ul>
+	              <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-service-philosophy">Our Service Philosophy</a></li>
-                  <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
@@ -205,8 +206,8 @@
         <div class="container">
           <p class="trademark">Copyright 2016 HouseStars</p>
           <ul class="legal-links">
-            <li><a href="{{env('APP_URL')}}/legal/terms-conditions">Terms and Conditions</a></li>
-            <li><a href="{{env('APP_URL')}}/legal/privacy-policy">Privacy Policy</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/terms-conditions" target="_blank">Terms and Conditions</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/privacy-policy" target="_blank">Privacy Policy</a></li>
           </ul>
         </div>
       </div>
@@ -215,7 +216,7 @@
 
 @include("modals")
 
-    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{config('app.url')}}/js/bootstrap.min.js"></script>
     <script src="{{config('app.url')}}/js/dropdowns-enhancement.js"></script>

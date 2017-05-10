@@ -64,7 +64,7 @@
       <div class="col-xs-4">
         <div class="option">
           <h3>Tradesman</h3>
-          <p>House Stars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
+          <p>Housestars is a fantastic way to boost your customer base and increase your sales. Watch the video below to check out the benefits of becoming a House Star.</p>
 
           <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="{{env('APP_URL')}}/assign-role/tradesman/">Select Tradesman</a>
         </div>
@@ -72,7 +72,7 @@
       <div class="col-xs-4">
         <div class="option">
           <h3>Customer/Vendor</h3>
-          <p>There’s no better way to sell your property than with House Stars. The best team with the best results at the best prices.</p>
+          <p>There’s no better way to sell your property than with Housestars. The best team with the best results at the best prices.</p>
 
           <a class="btn hs-primary" style="width: 100%; text-align: center; margin-top: 30px;" href="{{env('APP_URL')}}/assign-role/customer/">Select Customer</a>
         </div>

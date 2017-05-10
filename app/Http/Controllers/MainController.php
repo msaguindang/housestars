@@ -76,17 +76,19 @@ class MainController extends Controller
         }
 
         $data = array();
-
         if (isset($advert['141x117'])) {
             $numAds =  count($advert['141x117']) - 1;
             $index = rand(0, $numAds);
             $data['141x117'] = $advert['141x117'][$index ];
-
-        } else if (isset($advert['728x90'])) {
+		}
+        
+        if (isset($advert['728x90'])) {
             $numAds =  count($advert['728x90']) - 1;
             $index = rand(0, $numAds);
-            $data['728x90'] = $advert['728x90'][$index ];
+            $data['728x90'] = $advert['728x90'][$index ];   
         }
+        
+        
 
         return view('home')->with('advert', $data);
     }
@@ -127,7 +129,7 @@ class MainController extends Controller
         }
 
         if($video = Video::active('agency')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
 
         return view('general.agency')->with('data', $data);
@@ -136,7 +138,7 @@ class MainController extends Controller
     public function unpaid()
     {
         $suburbs = Suburbs::all();
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
         $payment_status = $customer_info->subscriptions->data[0]->status;
         return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);

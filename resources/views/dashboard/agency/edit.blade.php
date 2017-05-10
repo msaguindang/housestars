@@ -59,7 +59,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links small-screen"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
+            <p class="links small-screen"><a href="/">Home Page</a> > <a href="/agency">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
               <input id="cover-photo-drag" type='hidden' name="cover-photo-drag" />
@@ -176,7 +176,7 @@
               <label>Sales Type</label>
               <div class="btn-group">
                   <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                    @if(isset($data['phone']))
+                    @if(isset($data['sales-type']))
                     {{$data['sales-type']}}
                     @else
                     Select Sales Type
@@ -258,7 +258,12 @@
             </div>
             <div class="col-xs-4 btn-holder">
               <div class="spacing"></div>
-              <button class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-save" style="margin-top: 6px;"></span>SAVE CHANGES <span class="icon icon-arrow-right"></span></button>
+              <button class="btn hs-primary" style="margin-bottom: 5px;"><span class="icon icon-save" style="margin-top: 6px;"></span>SAVE CHANGES <span class="icon icon-arrow-right"></span></button>
+              <a href="/profile" class="btn hs-primary">
+                <span class="fa fa-times"></span>
+                CANCEL
+                <span class="icon icon-arrow-right pull-right"></span>
+              </a>
             </div>
           </div>
           <div class="spacing"></div>

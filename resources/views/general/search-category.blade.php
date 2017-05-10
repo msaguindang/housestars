@@ -58,9 +58,9 @@
           </div>
         </div>
         <div class="row page-info">
-          <h2 class="wide"><span class="icon icon-left-bar"></span> Search for a Tradesman or Service <span class="icon icon-right-bar"></span></h2>
+          <h2 class="wide"><span class="icon icon-left-bar"></span> Search for a Trade or Service business <span class="icon icon-right-bar"></span></h2>
           <span class="separator"></span>
-          <p>Selecting your next Trade or Service with House Stars means no nasty surprises. Each of our business are rated and reviewed so you can choose the one that is best suited to your needs. Just enter your suburb below to get started.</p>
+          <p>Selecting your next Trade or Service with Housestars means no nasty surprises. Each of our business are rated and reviewed so you can choose the one that is best suited to your needs. Just enter your suburb below to get started.</p>
         </div>
         </div>
       </div>
@@ -115,7 +115,15 @@
       $suburb = $('#suburb').val();
       $('#search-suburb').val($suburb);
     });
+
+    $(document).on('mouseenter', '[data-toggle="tooltip"]', function() {
+        $(this).tooltip('show');
+    });
+    $(document).on('mouseleave', '[data-toggle="tooltip"]', function() {
+        $(this).tooltip('hide');
+    });
   </script>
+
   <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -133,7 +141,7 @@
             create: false,
             render: {
                 option: function(item, escape) {
-                  return '<div class="option" data-value="'+item.id+''+item.name+'">'+item.name+' ('+item.id+')</div>';
+                  return '<div class="option" data-value="'+item.name+'">'+item.name+' ('+item.id+')</div>';
                 }
             },
             load: function(query, callback) {

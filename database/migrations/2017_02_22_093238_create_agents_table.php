@@ -15,9 +15,9 @@ class CreateAgentsTable extends Migration
     {
         if (!Schema::hasTable('agents')) {
             Schema::create('agents', function (Blueprint $table) {
-                $table->increments('id');
+                $table->increments('id', 11);
                 $table->integer('agent_id');
-                $table->integer('active');
+                $table->tinyInteger('active');
                 $table->integer('agency_id');
                 $table->timestamps();
             });

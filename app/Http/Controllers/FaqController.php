@@ -12,7 +12,8 @@ class FaqController extends Controller
     {
 
         Sheets::setService(Google::make('sheets'));
-        Sheets::spreadsheet('1CQdK1a2CJErV_MdG66alhzOewHgRiVUr6q4ltFo16eU');
+        // Sheets::spreadsheet('1CQdK1a2CJErV_MdG66alhzOewHgRiVUr6q4ltFo16eU');
+        Sheets::spreadsheet('15R5tZn0AvZC_x3hcZeL2dO1vRU9enQKnU8nT-tsl_jA');
 
         $values = Sheets::sheet('customer')->all();
 
@@ -23,7 +24,8 @@ class FaqController extends Controller
     {
 
         Sheets::setService(Google::make('sheets'));
-        Sheets::spreadsheet('1CQdK1a2CJErV_MdG66alhzOewHgRiVUr6q4ltFo16eU');
+        // Sheets::spreadsheet('1CQdK1a2CJErV_MdG66alhzOewHgRiVUr6q4ltFo16eU');
+        Sheets::spreadsheet('15R5tZn0AvZC_x3hcZeL2dO1vRU9enQKnU8nT-tsl_jA');
 
         $values = Sheets::sheet('agency')->all();
 
@@ -34,7 +36,8 @@ class FaqController extends Controller
     {
 
         Sheets::setService(Google::make('sheets'));
-        Sheets::spreadsheet('1CQdK1a2CJErV_MdG66alhzOewHgRiVUr6q4ltFo16eU');
+        // Sheets::spreadsheet('1CQdK1a2CJErV_MdG66alhzOewHgRiVUr6q4ltFo16eU');
+        Sheets::spreadsheet('15R5tZn0AvZC_x3hcZeL2dO1vRU9enQKnU8nT-tsl_jA');
 
         $values = Sheets::sheet('tradesman')->all();
 

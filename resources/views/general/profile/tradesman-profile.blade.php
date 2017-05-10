@@ -65,8 +65,8 @@
             </div>
             <div class="profile-info">
 
-                  @if(isset($data['business-name']))
-                  <h1>{{$data['business-name']}}</h1>
+                  @if(isset($data['trading-name']))
+                  <h1>{{$data['trading-name']}}</h1>
                   @endif
                   @if (isset($data['website']))
                   <p>Website: {{$data['website']}}</p>
@@ -99,6 +99,13 @@
                   @endfor
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
+                <a href="#"  class="view-summary" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
+              </div>
+              <div class="positions">
+	              <span class="label">Positions: </span>
+	              @foreach($data['position'] as $position)
+	              	<span class="position">{{$position}}</span>
+	              @endforeach
               </div>
             </div>
 
@@ -141,6 +148,14 @@
               <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
                 <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+              </div>
+              @endif
+            </div>
+            <div class="info-item">
+              @if(isset($data['phone-number']))
+              <div class="col-xs-2 icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p><b> Phone Number </b></br><span class="detail">{{$data['phone-number']}}</span></p>
               </div>
               @endif
             </div>
