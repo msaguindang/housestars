@@ -378,7 +378,7 @@
                         <div class="input-group">
                           <span class="input-group-addon" id="basic-addon1">$</span>
                           @php ($amountSold = isset($data['property'][$a]['value-to']) ? $data['property'][$a]['value-to'] : 0)
-                          <input type="number" 
+                          <input type="text" 
                                 class="form-control" 
                                 aria-describedby="basic-addon1" 
                                 value="{{ $amountSold }}"
@@ -409,7 +409,7 @@
                       <div class="amount form-inline" id="{{$data['property']['user_id']}}" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}">
                         <div class="input-group">
                           @php ($commissionPercentage = isset($data['property'][$a]['commission']) ? $data['property'][$a]['commission'] : 0)
-                          <input type="number" 
+                          <input type="text" 
                                 class="form-control" 
                                 aria-label="Percentage" 
                                 value="{{$commissionPercentage}}"
@@ -445,7 +445,7 @@
                             @if(isset($data['agent']))
                               @php ($commisionCharged = ((isset($data['commission']['total']) && $data['commission']['total'] != 'N/A') ? $data['commission']['total'] : 0))
                               <span class="input-group-addon" id="basic-addon1">$</span>
-                              <input type="number" 
+                              <input type="text" 
                                 class="form-control" 
                                 aria-label="Percentage" 
                                 value="{{$commisionCharged}}"

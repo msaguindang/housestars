@@ -396,6 +396,7 @@ class CustomerController extends Controller
         $user_id = $request->input('userid');
         $code = $request->input('code');
         $meta = $request->input('meta');
+        $amount = validate_amount($request->get('meta_amount_value', 0));
         $isChecked = strtolower($request->input('checked', 'no'));
         $exists =  Property::getProperty($code, $meta)->exists();
         $updateAmount = Property::getProperty($code, $request->get('meta_amount_name', ''))->exists();
@@ -415,11 +416,11 @@ class CustomerController extends Controller
             $property = new Property;
             $property->user_id = $user_id;
             $property->meta_name = $request->get('meta_amount_name');
-            $property->meta_value = $request->get('meta_amount_value');
+            $property->meta_value = $amount;
             $property->property_code = $code;
             $property->save();
         } else if ($updateAmount && $request->exists('meta_amount_name')) {
-            Property::getProperty($code, $request->get('meta_amount_name'))->update(['meta_value' => $request->get('meta_amount_value')]);
+            Property::getProperty($code, $request->get('meta_amount_name'))->update(['meta_value' => $amount]);
         }
         
         return Response::json('success', 200);
