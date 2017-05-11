@@ -1095,7 +1095,7 @@
             @php($x = 0)
             @if(isset($data['tradesmen']) && count($data['tradesmen']) > 0)
 	            <h4>ADD A RECEIPT</h4>
-	            <p class="sub-heading">Process a transaction with a Tradesman.</p>
+	            <p class="sub-heading">Process a transaction with a trade or service.</p>
 	            <form id="transaction" enctype="multipart/form-data">
 		            {{csrf_field() }}
 		            <div id="error"></div>
