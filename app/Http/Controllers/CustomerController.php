@@ -116,7 +116,7 @@ class CustomerController extends Controller
         $li = 0;
 
         foreach ($transactions as $transaction ) {
-            $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'business-name')->get();
+            $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'trading-name')->get();
             if(count($business_name) > 0){
                 $data['transactions'][$z]['name'] = $business_name[0]['meta_value'];
             }
