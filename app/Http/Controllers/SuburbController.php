@@ -86,7 +86,7 @@ class SuburbController extends Controller
 
         $userMetas = UserMeta::where('user_meta.meta_name', 'positions')
             ->join('users', 'users.id','=','user_meta.user_id')
-            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.'%')
+            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.''.$suburbName.'%')
             ->select('user_meta.*', 'users.name')
             ->get()
             ->toArray();
