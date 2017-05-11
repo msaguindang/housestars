@@ -71,7 +71,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
-				<h2>Vendors Registration Form</h2>
+				<h2>Customer Registration Form</h2>
 				<form name="form" action="{{env('APP_URL')}}/add-property" method="POST">
 					@if(session('error'))
 					<div class="alert alert-danger">
@@ -79,7 +79,7 @@
 					</div>
 					@endif
 					{{csrf_field() }}
-				<span class="label-header">Property to be sold</span>
+				<span class="label-header">PROPERTY TO BE RENOVATED</span>
 				<div class="col-xs-12">
 					<div class="col-xs-4 no-padding-left">
 						<label>Property Type</label>
@@ -171,7 +171,7 @@
 
 					</div>
 				</div>
-				<span class="label-header">Personal Details</span>
+				<span class="label-header">PERSONAL DETAILS</span>
 
 				<div class="col-xs-12">
 					<div class="col-xs-4 no-padding-left">
