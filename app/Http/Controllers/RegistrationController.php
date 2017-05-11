@@ -166,7 +166,11 @@ class RegistrationController extends Controller
                     );
             }
         }
-
+        $data['customer_name'] = Sentinel::getUser()->name;
+        $data['customer_email'] = Sentinel::getUser()->email;
+        $adminEmail = 'info@housestars.com.au';
+        $this->notifyAdmin($data, $adminEmail);
+		$this->notifyCustomer($data, Sentinel::getUser()->email);
         return redirect(env('APP_URL').'/register/customer/complete');
 
     }
@@ -566,6 +570,28 @@ class RegistrationController extends Controller
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to($email);
                 $message->subject('Property Offer');
+            });
+    }
+    
+    private function notifyCustomer($property, $email){
+        // $property_name = $property->suburb. ', '.$property->state;
+        Mail::send(['html' => 'emails.customer-welcome'], [
+                'property' => $property
+            ], function ($message) use ($email) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to($email);
+                $message->subject('Welcome to Housestars');
+            });
+    }
+    
+     private function notifyAdmin($property, $email){
+        // $property_name = $property->suburb. ', '.$property->state;
+        Mail::send(['html' => 'emails.admin-property'], [
+                'property' => $property
+            ], function ($message) use ($property) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au');
+                $message->subject('New Customer Sign-up: '. $property['customer_name']);
             });
     }
 }
