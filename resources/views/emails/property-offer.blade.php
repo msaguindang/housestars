@@ -312,7 +312,7 @@
                     <tr>
                       <td style="padding: 20px; background: #fff;">
                           <p><b>Property Code:</b> {{$property['code']}}</p>
-                          <p><b>Property Location:</b> {{$property['suburb']}}, {{$property['state']}}</p>
+                          <p><b>Property Location:</b> {{$property['property-address']}}, {{$property['suburb']}}, {{$property['state']}}</p>
                         <p><b>Type:</b> {{$property['property-type']}}</p>
                           <p><b>No. of Rooms:</b> {{$property['number-rooms']}}</p>
                           <p><b>Currently leased?:</b> {{$property['leased']}}</p>

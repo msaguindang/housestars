@@ -151,7 +151,7 @@
               <div class="col-xs-8">
                 @if(isset($data['recent']))
                   @php ($a = $data['recent'])
-                <h3 class="address">{{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
+                <h3 class="address">{{$data['property'][$a]['property-address']}}, {{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
                 @endif
               </div>
             </div>

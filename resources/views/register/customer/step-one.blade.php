@@ -120,6 +120,8 @@
 						<input type="hidden" name="commission" value="20">
 					</div>
 					<div class="col-xs-4">
+						<label>Address</label>
+						<input type="text" name="property-address">
 						<label>Suburb</label>
             <select id="select-state" name="suburb" class="demo-default"
                     class="required-input">
@@ -154,11 +156,7 @@
 				              </li>
 				            </ul>
 				        </div>
-				        <div class="radio-btn">
-				        	<label class="radio">Is the Property Currently Leased? </label>
-							<div class="radio-select"><input type="radio" name="leased" value="yes"> Yes </div>
-							<div class="radio-select"> <input type="radio" name="leased" value="no"> No </div>
-				        </div>
+				        
 
 
 					</div>
@@ -166,8 +164,14 @@
 					<div class="col-xs-4 no-padding-right price">
 						<label>Value of the Property</label>
 						<input type="text" name="value-from" placeholder="$" style="width: 47%" required> to <input type="text" name="value-to" placeholder="$" style="width: 47%" required>
+						<div class="radio-btn" style="margin-top: 16px">
+				        	<label class="radio">Is the Property Currently Leased? </label>
+							<div class="radio-select"><input type="radio" name="leased" value="yes"> Yes </div>
+							<div class="radio-select"> <input type="radio" name="leased" value="no"> No </div>
+				        </div>
 						<label>Anything Specific we need to know?</label>
 						<textarea name="more-details" placeholder="" class="no-top" style="height: 145px;" maxlength="10000"></textarea>
+						
 
 					</div>
 				</div>
