@@ -138,7 +138,7 @@
                 <p class="label">The Company</p>
                 <ul>
                   <li><a href="{{env('APP_URL')}}/about-us">About Us</a></li>
-                  <li><a href="#">Sitemap</a></li>
+                  <li><a href="#">In The Media</a></li>
                   <li><a href="#" data-toggle="modal" data-target="#contact">Contact Us</a></li>
                 </ul>
               </div>
