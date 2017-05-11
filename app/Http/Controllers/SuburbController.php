@@ -156,10 +156,14 @@ class SuburbController extends Controller
     public function updateSuburbAvailability()
     {
         $payload = $this->payload->all();
-
-        $suburb = Suburbs::find($payload['id']);
-        $suburb->availability = $payload['availability'];
-        $suburb->save();
+		
+		//dd($payload);
+		$suburb = Suburbs::where('suburb_id', $payload['suburb_id'])->update(['availability' => $payload['availability']]);
+/*
+        $suburb = Suburbs::find();
+        $suburb->availability = ;
+*/
+      //  $suburb->save();
 
         return Response::json([
             'suburb' => $payload,
