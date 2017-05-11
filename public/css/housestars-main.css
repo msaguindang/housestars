@@ -3458,3 +3458,14 @@ a.view-summary {
     text-align: left;
 }
 
+
+span.dollar-sign {
+    position: absolute;
+    margin-top: 15px;
+    margin-left: 15px;
+    font-weight: 500;
+}
+
+#processTrades input#amount {
+    padding-left: 24px;
+}

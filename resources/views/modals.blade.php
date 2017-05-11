@@ -1099,20 +1099,16 @@
 	            <form id="transaction" enctype="multipart/form-data">
 		            {{csrf_field() }}
 		            <div id="error"></div>
-		            	<div class="btn-group dropdown">
-	                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-	                    <ul class="dropdown-menu">
-	                    @php($x = 0)
-	                    @foreach ($data['tradesmen'] as $tradesman)
-	                      <li>
-	                        <label for="b{{$x}}">{{ $tradesman['trading-name'] }}</label>
-	                        <input type="radio" id="b{{$x}}" name="trades" value="{{ $tradesman['id'] }}">
-	                      </li>
-	                      @php($x++)
-	                    @endforeach
-	                    </ul>
-	                </div>
-	              	<input type="number" name="amount-spent" placeholder="Amount Spent" class="no-top" id="amount">
+		            <!-- dropdown list tradesmen and services -->
+		             @php($x = 0)
+					<select name="trades" id='select-trades' required>
+						<option disabled selected></option>
+						@foreach ($data['tradesmen'] as $tradesman)
+							<option class='item' value="{{ $tradesman['id'] }}"> {{ $tradesman['trading-name'] }}</option>
+						@endforeach
+					</select>
+					<span class="dollar-sign">$</span>
+	              	<input type="text" name="amount-spent"  placeholder="Amount Spent" class="no-top" id="amount">
 	              	@if(isset($a))
 	                	<input type="hidden" name="property-code" value="{{$data['property'][$a]['property-code']}}" id="code">
 	              	@endif
@@ -1123,7 +1119,7 @@
 		            @if($data['id'])
 		             <input type="hidden" name="user_id" value="{{$data['id']}}">
 		            @endif
-		            <button class="btn hs-primary" id="transaction">Order Now</button>
+		            <button class="btn hs-primary" id="transaction">Submit</button>
               	</form>
             @else
 	            <h4>NO LISTED TRADESMAN</h4>

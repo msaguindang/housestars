@@ -631,4 +631,17 @@
     });
 
   </script>
+  <script>
+		$("#select-trades").selectize({
+			maxItems: 1,
+	        openOnFocus: false,
+	        placeholder: "Name of the trade /service",
+			render: {
+				option: function(item, escape) {
+					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
+				}
+			}
+		});
+		$('.collapse').collapse()
+	</script>
 @stop
