@@ -750,12 +750,12 @@ class CustomerController extends Controller
     public function addProperty(Request $request)
     {
         $user_id = Sentinel::getUser()->id;
-        $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
+        $property_meta = array('property-type', 'property-address', 'number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $property_code = md5(uniqid(rand(), true));
+        $isNew = (Property::where('user_id', $user_id)->count() <= 1);
 
         foreach ($property_meta as $meta) {
-            if($request->input($meta) != null || $request->input($meta) != '')
-            {
+            if ($request->exists($meta) && $request->has($meta)) {
                 $value = $request->input($meta);
 
                 Property::updateOrCreate(
@@ -764,7 +764,7 @@ class CustomerController extends Controller
                     );
             }
 
-            if($meta == 'agent' && $request->input($meta) != null){
+            if($meta == 'agent' && $request->has($meta)) {
               $propertyInfo = Property::where('property_code', $property_code)->get();
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
               foreach ($propertyInfo as $info) {
@@ -773,11 +773,13 @@ class CustomerController extends Controller
               $data['code'] = $request->input('code');
               $this->notifyAgency($data, $agencyEmail);
             }
+        }
+
+        if ($isNew) {
             $this->sendWelcomeEmail(Sentinel::getUser());
         }
 
         return redirect(env('APP_URL').'/dashboard/customer/profile');
-
     }
     
     private function sendWelcomeEmail($user)

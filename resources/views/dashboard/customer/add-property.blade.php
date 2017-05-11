@@ -71,33 +71,29 @@
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
 				            <ul class="dropdown-menu">
 				              <li>
-				                <input type="radio" id="a1" name="property-type" value="Condominium">
-				                <label for="a1">Condominium</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a2" name="property-type" value="Commercial">
-				                <label for="a2">Commercial</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a3" name="property-type" value="Apartment">
-				                <label for="a3">Apartment</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a4" name="property-type" value="Foreclosures">
-				                <label for="a4">Foreclosures</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a5" name="property-type" value="Development">
-				                <label for="a5">Development</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a6" name="property-type" value="House">
-				                <label for="a6">House</label>
-				              </li>
-				              <li>
-				                <input type="radio" id="a7" name="property-type" value="Land">
-				                <label for="a7">Land</label>
-				              </li>
+                                <input type="radio" id="a1" name="property-type" value="House">
+                                <label for="a1">House</label>
+                              </li>
+                              <li>
+                                <input type="radio" id="a2" name="property-type" value="Unit">
+                                <label for="a2">Unit</label>
+                              </li>
+                              <li>
+                                <input type="radio" id="a3" name="property-type" value="Apartment">
+                                <label for="a3">Apartment</label>
+                              </li>
+                              <li>
+                                <input type="radio" id="a4" name="property-type" value="Land">
+                                <label for="a4">Land</label>
+                              </li>
+                              <li>
+                                <input type="radio" id="a5" name="property-type" value="Townhouse">
+                                <label for="a5">Townhouse</label>
+                              </li>
+                              <li>
+                                <input type="radio" id="a6" name="property-type" value="Other">
+                                <label for="a6">Other</label>
+                              </li>
 				            </ul>
 				        </div>
 
@@ -108,15 +104,17 @@
 						<input type="hidden" name="commission" value="20">
 					</div>
 					<div class="col-xs-4">
+                        <label>Address</label>
+                        <input type="text" name="property-address">
 						<label>Suburb</label>
-            <select id="select-state" name="suburb" class="demo-default"
-                    class="required-input" required>
-                {{--@foreach ($suburbs as $suburb)
-                    @if($suburb->availability != '3')
-                        <option value="{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }} ({{ $suburb->id}})</option>
-                    @endif
-                @endforeach--}}
-            </select>
+                        <select id="select-state" name="suburb" class="demo-default"
+                                class="required-input" required>
+                            {{--@foreach ($suburbs as $suburb)
+                                @if($suburb->availability != '3')
+                                    <option value="{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }} ({{ $suburb->id}})</option>
+                                @endif
+                            @endforeach--}}
+                        </select>
 						<label>State</label>
 						<div class="btn-group">
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>

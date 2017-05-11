@@ -123,9 +123,9 @@
 						<label>Address</label>
 						<input type="text" name="property-address">
 						<label>Suburb</label>
-            <select id="select-state" name="suburb" class="demo-default"
-                    class="required-input">
-            </select>
+                        <select id="select-state" name="suburb" class="demo-default"
+                                class="required-input">
+                        </select>
 						<label>State</label>
 						<div id="state-btn-group" class="btn-group">
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
