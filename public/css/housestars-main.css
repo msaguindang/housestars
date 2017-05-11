@@ -3454,3 +3454,7 @@ a.view-summary {
     border-top: none;
 }
 
+.selectize-control {
+    text-align: left;
+}
+
