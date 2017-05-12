@@ -544,6 +544,12 @@
               acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
                   formData.append("_token", $("[name='_token']").val());
+                  if ($("#loading").not(':visible')) {
+                    $("#loading").fadeIn("slow");
+                  }
+              },
+              queuecomplete: function() {
+                $("#loading").fadeOut("slow");
               },
               success: function (file, response) {
                   var imgName = response;
