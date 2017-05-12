@@ -172,6 +172,7 @@
               <input type="text" name="" value="">
               @endif
             </div>
+<!--
             <div class="col-xs-4">
               <label>Sales Type</label>
               <div class="btn-group">
@@ -205,6 +206,7 @@
                   </ul>
               </div>
             </div>
+-->
           </div>
           <!-- Gallery -->
           <div class="container gallery-uploader agency">
