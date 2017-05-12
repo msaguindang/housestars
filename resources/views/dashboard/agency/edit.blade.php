@@ -76,12 +76,12 @@
               <input id="profileupload-drag" type='hidden' name="profile-photo-drag" />
             </div>
             <div class="profile-info edit">
-              <label>Agency Name</label>
+              <label>Agency Trading Name</label>
 
-                  @if(isset($data['agency-name']))
-              <input type="text" name="agency-name" value="{{$data['agency-name']}}">
+              @if(isset($data['trading-name']))
+              <input type="text" name="trading-name" value="{{$data['trading-name']}}">
               @else
-              <input type="text" name="agency-name" value="">
+              <input type="text" name="trading-name" value="">
               @endif
             </div>
           </div>
@@ -126,12 +126,12 @@
             </div>
           <div class="col-xs-10">
             <div class="col-xs-4">
-              <label>Agency Trading Name</label>
+              <label>Business Name</label>
 
-              @if(isset($data['trading-name']))
-              <input type="text" name="trading-name" value="{{$data['trading-name']}}">
+              @if(isset($data['agency-name']))
+              <input type="text" name="agency-name" value="{{$data['agency-name']}}">
               @else
-              <input type="text" name="trading-name" value="">
+              <input type="text" name="agency-name" value="">
               @endif
             </div>
             <div class="col-xs-4">
@@ -172,6 +172,7 @@
               <input type="text" name="" value="">
               @endif
             </div>
+<!--
             <div class="col-xs-4">
               <label>Sales Type</label>
               <div class="btn-group">
@@ -205,6 +206,7 @@
                   </ul>
               </div>
             </div>
+-->
           </div>
           <!-- Gallery -->
           <div class="container gallery-uploader agency">

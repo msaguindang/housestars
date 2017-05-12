@@ -98,7 +98,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 form-box tradesman" style="padding: 40px 25px;">
-                    <h2>Trade/Srevice Registration Form</h2>
+                    <h2>Trade/Service Registration Form</h2>
                     <form name="step_one_form" action="{{env('APP_URL')}}/add-info" method="POST">
                         @if(session('error'))
                             <div class="alert alert-danger">

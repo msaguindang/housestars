@@ -102,7 +102,7 @@
                 <a href="#"  class="view-summary" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
               </div>
               <div class="positions">
-	              <span class="label">Positions: </span>
+	              <span class="label">Postcodes: </span>
 	              @foreach($data['position'] as $position)
 	              	<span class="position">{{$position}}</span>
 	              @endforeach

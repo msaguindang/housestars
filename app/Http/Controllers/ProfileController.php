@@ -26,7 +26,7 @@ class ProfileController extends Controller
 	        			$sub = preg_replace('/[0-9]/','',$suburb);
 	        			$postcode = preg_replace('/\D/', '', $suburb);
 	        			if($sub != '' || !empty($sub)){
-		        			$data['position'][$x] = $sub. ' ('. $postcode .')'; 
+		        			$data['position'][$x] = $postcode; 
 							$x++;
 	        			}
 	        			
