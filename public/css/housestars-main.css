@@ -2786,22 +2786,31 @@ input#profileupload {
     margin-top: 20px;
 }
 
-.upload-gallery #gallery-carousel .item .remove-photo {
+.upload-gallery #gallery-carousel .img-item-wrapper .remove-photo {
     position: relative;
     top: 0;
     float: right;
     height: 0;
+    z-index: 200;
 }
 
-.upload-gallery #gallery-carousel .item #close {
+.upload-gallery #gallery-carousel .img-item-wrapper #close {
     display: none;
     color: #f6f7f8;
-    background: #337ab7;
+    /*background: #337ab7;*/
+    background: #ff1919;
     padding: 2px;
 }
 
-.upload-gallery #gallery-carousel .item:hover #close{
+.upload-gallery #gallery-carousel .img-item-wrapper:hover #close {
     display: block;
+}
+
+.upload-gallery #gallery-carousel .img-item-wrapper:hover img,
+.gallery-carousel .gallery-image:hover {
+    /*opacity: 0.8;*/
+    background: #337ab7;
+    cursor: pointer;
 }
 
 .tradesman .gallery-item {

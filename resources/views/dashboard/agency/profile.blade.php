@@ -204,7 +204,7 @@
                   <div class="spacing"></div>
                 @endif
 
-                <div class="gallery-carousel">
+                <div class="gallery-carousel" id='lightgallery'>
                    @if(isset($data['gallery']))
                       @php($x = 0)
                       @php($y = 2)
@@ -229,7 +229,7 @@
                                       @endif
                                       <div class="col-xs-4">
                                         <div class="gallery-item">
-                                          <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                          <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{ url($item) }}"></div>
                                         </div>
                                       </div>
 
@@ -300,4 +300,13 @@
       </div>
     </section>
 
+@endsection
+
+@section('scripts')
+  @parent
+  <script type="text/javascript">
+    $("#lightgallery").lightGallery({
+      selector: '.gallery-image'
+    });
+  </script>
 @endsection

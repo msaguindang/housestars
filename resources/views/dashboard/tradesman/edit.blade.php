@@ -1,4 +1,5 @@
 @extends("layouts.main")
+
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
@@ -16,7 +17,6 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -355,7 +355,7 @@
                 <div class="col-xs-7">
                   <label>Gallery Photos</label>
                     <div id="gallery-carousel" class="carousel slide multi-item-carousel">
-                      <div class="carousel-inner">
+                      <div class="carousel-inner" id='lightgallery'>
                         @include('dashboard.tradesman.partials.gallery_items')
                       </div>
                       <!-- Left and right controls -->
@@ -392,8 +392,15 @@
 
 @endsection
 @section('scripts')
+    <script>
+      function lightGalleryInit() {
+        return $("#lightgallery").lightGallery({
+                  selector: '.img-item'
+                });
+      }
+      var gallery = lightGalleryInit();
+    </script>
     <script type="text/javascript">
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -526,12 +533,19 @@
               filename: $(this).data('filename')
             },
             dataType : 'json',
+            beforeSend: function() {
+              gallery.data('lightGallery').destroy(true);
+            },
+            error: function() {
+              gallery = lightGalleryInit();
+            },
             success: function(responseData, textStatus, jqXHR) {
               $('.carousel-inner .item').remove();
               $('.carousel-inner').append(responseData.html);
               if($('.carousel-inner .item').get().length == 0) {
                 $('.carousel-control').hide();
               }
+              gallery = lightGalleryInit();
             }
           });
         }
@@ -547,9 +561,11 @@
                   if ($("#loading").not(':visible')) {
                     $("#loading").fadeIn("slow");
                   }
+                  gallery.data('lightGallery').destroy(true);
               },
               queuecomplete: function() {
                 $("#loading").fadeOut("slow");
+                gallery = lightGalleryInit();
               },
               success: function (file, response) {
                   var imgName = response;

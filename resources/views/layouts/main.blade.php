@@ -31,6 +31,9 @@
     <script src="{{config('app.url')}}/js/loading.js"></script>
     <script src="{{config('app.url')}}/js/standalone/selectize.js"></script>
 
+    <!-- lightgallery css -->
+    <link href="{{config('app.url')}}/css/lightgallery.css" rel="stylesheet">
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -227,7 +230,7 @@
     <script src="{{config('app.url')}}/js/pagination.js"></script>
     <script src="{{config('app.url')}}/js/ajax.js"></script>
     <script src="{{config('app.url')}}/js/jquery.validate.min.js"></script>
-
+    <script src="{{config('app.url')}}/js/standalone/lightgallery.min.js"></script>
     <script>
       $('#signup-form').click(function() {
           laravel.errors.errorBagContainer = $('#errors-signup');
