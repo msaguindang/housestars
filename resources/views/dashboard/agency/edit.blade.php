@@ -78,7 +78,7 @@
             <div class="profile-info edit">
               <label>Agency Trading Name</label>
 
-                  @if(isset($data['trading-name']))
+              @if(isset($data['trading-name']))
               <input type="text" name="trading-name" value="{{$data['trading-name']}}">
               @else
               <input type="text" name="trading-name" value="">
