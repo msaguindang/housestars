@@ -347,6 +347,7 @@
 
     #categorySearch .col-xs-2 {
         padding: 0 !important;
+        width: 16%;
     }
 
     #categorySearch .hs-primary {
@@ -536,4 +537,15 @@
     .processing-form .transactions .entry .value {
         width: auto !important;
     }
+    
+    #tradesmanList button {
+	    width: 100% !important;
+	}
+	
+	a.view-summary {
+	    display: block;
+	    float: right;
+	    padding-right: 36px;
+	    margin-bottom: 12px;
+	}
 }
