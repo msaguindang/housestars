@@ -92,3 +92,18 @@ if (! function_exists('is_query_empty')) {
         return (empty($query) || (trim($query) == "'%%'") || (trim($query) == "%%"));
     }
 }
+
+if (! function_exists('validate_amount')) {
+    /**
+     *
+     * @return boolean
+     */
+    function validate_amount($amt = '0')
+    {
+        setlocale(LC_MONETARY,"en_US");
+        $amt = str_replace(',', '', $amt);
+        return money_format('%i', (float) $amt);
+    }
+}
+
+

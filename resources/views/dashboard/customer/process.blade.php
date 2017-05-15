@@ -14,6 +14,7 @@
 ?>
 
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
@@ -86,7 +87,7 @@
               <p class="telephone">{{$data['meta']['phone']}}</p>
               <p class="email">{{$data['meta']['email']}}</p>
             </div>
-            <div class="col-xs-4 agency-info">
+            <div class="col-xs-4 agency-info col-xs-offset-1">
               <label>Listed Under Agency:</label>
               @if(isset($data['recent']))
                 @php ($a = $data['recent'])
@@ -117,16 +118,7 @@
                 <h2 class="estimates">N/A</h2>
               @endif
             </div>
-            <div class="col-xs-3">
-              <label>Estimated Savings Target</label>
-              {{--@if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
-                  <h2 class="estimates">${{$data['commission']['total']}}</h2>
-              @else
-                  <h2 class="estimates">{{$data['commission']['total']}}</h2>
-              @endif--}}
-              @php ($savingsTarget = isset($data['property'][$a]['value-to']) ? ($data['property'][$a]['value-to'] * 0.025 * 0.2) : 'N/A')
-              <h2 class="estimates">${{ $savingsTarget }}</h2>
-            </div>
+ 
             <div class="col-xs-2 terms">
               @if(isset($data['meta']['commission']))
                 <p>This is an estimate only. Actual amount will vary with sale price Please see <a href="#" class="content-hyperlink">Terms & Conditions</a>.</p>
@@ -151,7 +143,7 @@
               <div class="col-xs-8">
                 @if(isset($data['recent']))
                   @php ($a = $data['recent'])
-                <h3 class="address">{{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
+                <h3 class="address">{{$data['property'][$a]['property-address']}}, {{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
                 @endif
               </div>
             </div>
@@ -386,7 +378,7 @@
                         <div class="input-group">
                           <span class="input-group-addon" id="basic-addon1">$</span>
                           @php ($amountSold = isset($data['property'][$a]['value-to']) ? $data['property'][$a]['value-to'] : 0)
-                          <input type="number" 
+                          <input type="text" 
                                 class="form-control" 
                                 aria-describedby="basic-addon1" 
                                 value="{{ $amountSold }}"
@@ -417,7 +409,7 @@
                       <div class="amount form-inline" id="{{$data['property']['user_id']}}" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}">
                         <div class="input-group">
                           @php ($commissionPercentage = isset($data['property'][$a]['commission']) ? $data['property'][$a]['commission'] : 0)
-                          <input type="number" 
+                          <input type="text" 
                                 class="form-control" 
                                 aria-label="Percentage" 
                                 value="{{$commissionPercentage}}"
@@ -453,7 +445,7 @@
                             @if(isset($data['agent']))
                               @php ($commisionCharged = ((isset($data['commission']['total']) && $data['commission']['total'] != 'N/A') ? $data['commission']['total'] : 0))
                               <span class="input-group-addon" id="basic-addon1">$</span>
-                              <input type="number" 
+                              <input type="text" 
                                 class="form-control" 
                                 aria-label="Percentage" 
                                 value="{{$commisionCharged}}"
@@ -640,4 +632,17 @@
     });
 
   </script>
+  <script>
+		$("#select-trades").selectize({
+			maxItems: 1,
+	        openOnFocus: false,
+	        placeholder: "Name of the trade /service",
+			render: {
+				option: function(item, escape) {
+					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
+				}
+			}
+		});
+		$('.collapse').collapse()
+	</script>
 @stop

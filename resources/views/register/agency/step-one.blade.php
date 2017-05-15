@@ -114,7 +114,10 @@
                                                              data-placement="right" title=""
                                                              data-original-title="NB. This figure is not shown to anyone. It is used for administration purposes only."
                                                              data-html="true"></i></label>
-                            <input type="text" min="0" name="base-commission" id="base-commission" required>
+                            <div class="input-group">
+                                <input type="text" min="0" name="base-commission" id="base-commission" required>
+                                <span class="input-group-addon" id="basic-addon1">%</span>
+                            </div>
                             <label>Marketing Budget</label>
                             <input type="text" min="0" name="marketing-budget" id="marketing-budget">
                             <label>Review URL <i class="fa fa-question-circle tooltip-info" aria-hidden="true"
@@ -168,7 +171,8 @@
         };
 
         $(function () {
-            $('#base-commission, #marketing-budget').bind('input', function (e) {
+            // #marketing-budget
+            $('#base-commission').bind('input', function (e) {
                 if (!Money.isValidMoney(e.target.value)) {
                     $(this).val('');
                 }

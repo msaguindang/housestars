@@ -71,7 +71,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 form-box" style="padding: 40px 25px;">
-				<h2>Vendors Registration Form</h2>
+				<h2>Customer Registration Form</h2>
 				<form name="form" action="{{env('APP_URL')}}/add-property" method="POST">
 					@if(session('error'))
 					<div class="alert alert-danger">
@@ -79,7 +79,7 @@
 					</div>
 					@endif
 					{{csrf_field() }}
-				<span class="label-header">Property to be sold</span>
+				<span class="label-header">PROPERTY TO BE RENOVATED</span>
 				<div class="col-xs-12">
 					<div class="col-xs-4 no-padding-left">
 						<label>Property Type</label>
@@ -120,10 +120,12 @@
 						<input type="hidden" name="commission" value="20">
 					</div>
 					<div class="col-xs-4">
+						<label>Address</label>
+						<input type="text" name="property-address">
 						<label>Suburb</label>
-            <select id="select-state" name="suburb" class="demo-default"
-                    class="required-input">
-            </select>
+                        <select id="select-state" name="suburb" class="demo-default"
+                                class="required-input">
+                        </select>
 						<label>State</label>
 						<div id="state-btn-group" class="btn-group">
 				            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Please Select... <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
@@ -154,11 +156,7 @@
 				              </li>
 				            </ul>
 				        </div>
-				        <div class="radio-btn">
-				        	<label class="radio">Is the Property Currently Leased? </label>
-							<div class="radio-select"><input type="radio" name="leased" value="yes"> Yes </div>
-							<div class="radio-select"> <input type="radio" name="leased" value="no"> No </div>
-				        </div>
+				        
 
 
 					</div>
@@ -166,12 +164,18 @@
 					<div class="col-xs-4 no-padding-right price">
 						<label>Value of the Property</label>
 						<input type="text" name="value-from" placeholder="$" style="width: 47%" required> to <input type="text" name="value-to" placeholder="$" style="width: 47%" required>
+						<div class="radio-btn" style="margin-top: 16px">
+				        	<label class="radio">Is the Property Currently Leased? </label>
+							<div class="radio-select"><input type="radio" name="leased" value="yes"> Yes </div>
+							<div class="radio-select"> <input type="radio" name="leased" value="no"> No </div>
+				        </div>
 						<label>Anything Specific we need to know?</label>
 						<textarea name="more-details" placeholder="" class="no-top" style="height: 145px;" maxlength="10000"></textarea>
+						
 
 					</div>
 				</div>
-				<span class="label-header">Personal Details</span>
+				<span class="label-header">PERSONAL DETAILS</span>
 
 				<div class="col-xs-12">
 					<div class="col-xs-4 no-padding-left">

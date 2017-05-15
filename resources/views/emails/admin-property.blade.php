@@ -311,12 +311,12 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                          <p><b>Property Code:</b> {{$property['code']}}</p>
+	                      <p>{{$property['customer_name']}} just signed up as a customer. </br> Here's the details:</p>
+                          <p><b>Name:</b> {{$property['customer_name']}}</p>
+                          <p><b>Name:</b> {{$property['customer_email']}}</p>
                           <p><b>Property Location:</b> {{$property['property-address']}}, {{$property['suburb']}}, {{$property['state']}}</p>
-                        <p><b>Type:</b> {{$property['property-type']}}</p>
-                          <p><b>No. of Rooms:</b> {{$property['number-rooms']}}</p>
-                          <p><b>Currently leased?:</b> {{$property['leased']}}</p>
-                          <p><b>Value:</b> ${{$property['value-from']}} - ${{$property['value-to']}}</p>
+
+                          
                        </td>
                     </tr>
                   </table>

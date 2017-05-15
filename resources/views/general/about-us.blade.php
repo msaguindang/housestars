@@ -1,4 +1,5 @@
 @extends("layouts.main")
+
 @section("content")
     <header id="header" class="animated desktop">
         <div class="container">
@@ -59,9 +60,9 @@
         <div class="row page-info">
           <h2 class="narrow"><span class="icon icon-left-bar"></span> About Housestars.com.au <span class="icon icon-right-bar"></span></h2>
           <span class="separator"></span>
-          <p>Out too the been like hard off. Improve enquire welcome own beloved matters her. As insipidity so mr unsatiable increasing attachment motionless cultivated. Addition mr husbands unpacked occasion he oh. Is unsatiable if projecting boisterous insensible. It recommend be resolving pretended middleton.
-</p>
-          <p>Or kind rest bred with am shed then. In raptures building an bringing be. Elderly is detract tedious assured private so to visited. Do travelling companions contrasted it. Mistress strongly remember up to. Ham him compass you proceed calling detract. Better of always missed we person mr. September smallness northward situation few her certainty something. </p>
+          <p>
+            The housestars concept was born in 2015 as a way for trades and services to connect and interact with their customers online, and as a way for property owners to maximise the return on their assets. Word of mouth, as everyone knows, is the best way to advertise for a small business but there are some problems with it. For the business, it is impossible to scale, and the message can sometimes get mixed up along the line. For the customer, it just works too slowly. If your friends or family don't know a good plasterer, you are back to taking a punt on the business that spent the most on advertising. The home improvement space was calling out for a trusted platform to connect business with customer, and that trusted space, is Housestars.
+          </p>
         </div>
         </div>
     </section>
@@ -69,30 +70,28 @@
     <section id="about-content">
       <div class="container">
         <div class="row">
-          <div class="col-xs-8">
+          <div class="col-xs-12">
             <div class="about-wrapper">
-              <h3>Or kind rest bred with am shed then.</h3>
-              <p>Instrument cultivated alteration any favourable expression law far nor. Both new like tore but year. An from mean on with when sing pain. Oh to as principles devonshire companions unsatiable an delightful. The ourselves suffering the sincerity. Inhabit her manners adapted age certain. Debating offended at branched striking be subjects. </p>
-              <p>Enjoyed minutes related as at on on. Is fanny dried as often me. Goodness as reserved raptures to mistaken steepest oh screened he. Gravity he mr sixteen esteems. Mile home its new way with high told said. Finished no horrible blessing landlord dwelling dissuade if. Rent fond am he in on read. Anxious cordial demands settled entered in do to colonel. </p>
-              <p>She travelling acceptance men unpleasant her especially entreaties law. Law forth but end any arise chief arose. Old her say learn these large. Joy fond many ham high seen this. Few preferred continual sir led incommode neglected. Discovered too old insensible collecting unpleasant but invitation. </p>
-              <p>Prevailed sincerity behaviour to so do principle mr. As departure at no propriety zealously my. On dear rent if girl view. First on smart there he sense. Earnestly enjoyment her you resources. Brother chamber ten old against. Mr be cottage so related minuter is. Delicate say and blessing ladyship exertion few margaret. Delight herself welcome against smiling its for. Suspected discovery by he affection household of principle perfectly he. </p>
+              <h3>Blair Rankin</h3>
+              <div class="title-main-page">
+                <p>
+                  Blair Rankin started an electrical business in and around Byron Bay in 2010 which focussed on helping Real Estate companies service their rent-rolls. Through this, he developed a deep working relationship and close friendship with real estate agents, principals and property managers around the area. His business model worked, and he went from arriving in the area with nothing, to hitting $1M in sales in 25 months.
+                </p>
+                <p>
+                  He would always be thinking of ways to better his business, coming up with new ideas, concepts and strategies, which he would pitch to his agent friends. A lot of the ideas went nowhere, but some did gather traction, which were implemented with varying degrees of success.
+                </p>
+                <p>
+                  Then in 2015, he was approached by the principal of an agency to come and join the company as an agent, with the view to becoming a co-principal. Then another agency found out about the offer, and decided to offer the same thing, saying, “we can't afford to let you go to someone else.” The fact that Blair knew nothing about selling property did not matter, as they saw the energy and drive he had inside him.
+                </p>
+                <p>
+                  Eventually both offers fell by the wayside, but this cemented in his head that he was destined to do something else. He played to his strengths, and came up with Housestars. A company combining trades, agents, business and customer relations all into one website. He now spends his time working on his dream of building Housestars into something amazing.
+                </p>
+              </div>
             </div>
           </div>
-          <div class="col-xs-4">
+          <div class="col-xs-4 hidden">
             <div class="about-wrapper">
               <h3>Customer Stories</h3>
-              <hr>
-              <div class="review">
-                <p>Instrument cultivated alteration any favourable expression law far nor. Both new like tore but year.</p>
-                <div class="col-xs-3 thumb">
-                  <img src="{{(isset($comment['img'])) ? url($comment['img']) : '/assets/default.png'}}" alt="Name Here">
-                </div>
-                <div class="col-xs-9 details">
-                  <b>Mark Zuckerberg</b></br>
-                  <small>Managing Director</small></br>
-                  <small>Australian Realty, LLC</small>
-                </div>
-              </div>
               <hr>
               <div class="review">
                 <p>Instrument cultivated alteration any favourable expression law far nor. Both new like tore but year.</p>

@@ -155,7 +155,7 @@
             @if(isset($data['phone-number']))
             <div class="col-xs-2 icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
-              <p><b> Phone Number </b></br><span class="detail">${{$data['phone-number']}}</span></p>
+              <p><b> Phone Number </b></br><span class="detail">{{$data['phone-number']}}</span></p>
             </div>
             @endif
           </div>
@@ -180,7 +180,7 @@
             <div class="row gallery">
                 <h2 class="section-title">Gallery</h2>
 
-                <div class="gallery-carousel ">
+                <div class="gallery-carousel" id="lightgallery">
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                         <!-- Carousel Buttons Next/Prev -->
@@ -205,7 +205,7 @@
                                   @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{env('APP_URL')}}/{{$item}})"></div>
+                                      <div class="gallery-image img-thumbnail" style="background: url({{env('APP_URL')}}/{{$item}})" data-src="{{ url($item) }}"></div>
                                     </div>
                                   </div>
 
@@ -283,5 +283,13 @@
         </div>
       </div>
     </section>
+@endsection
 
+@section('scripts')
+  @parent
+  <script type="text/javascript">
+    $("#lightgallery").lightGallery({
+      selector: '.gallery-image'
+    });
+  </script>
 @endsection

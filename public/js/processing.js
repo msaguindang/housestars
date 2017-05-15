@@ -279,14 +279,15 @@
     $(document).on('submit', '#processForm' ,function(e){
         e.preventDefault();
         var data = $(this).serialize();
-        $('#processSuccess').modal('show');
-
+       	$("#loading").fadeIn("slow");
         $.ajax({
           url: '/process-form',
           data: data,
           type: 'POST',
           processData: false,
           success: function(data){
+	       $("#loading").fadeOut("slow");
+		   $('#processSuccess').modal('show');
 
           }
         });

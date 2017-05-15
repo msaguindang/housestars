@@ -235,7 +235,7 @@ class LoginController extends Controller
 		$query = DB::table('user_meta')
 					->select('user_id', 'meta_name', 'meta_value')
 					->where('meta_name', '=', 'agency-name')
-					->orWhere('meta_name', '=', 'trade')
+					->orWhere('meta_name', '=', 'trading-name')
 					->get();
 		return json_decode($query, true);
 	}

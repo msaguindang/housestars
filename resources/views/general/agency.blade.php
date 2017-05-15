@@ -309,7 +309,7 @@
             load: function(query, callback) {
                 if (!query.length) return callback();
                 $.ajax({
-                    url: '{{ url('agency/search-suburb') }}',
+                    url: '{{ url('tradesman/search-suburb') }}',
                     type: 'GET',
                     data: {
                         query: query

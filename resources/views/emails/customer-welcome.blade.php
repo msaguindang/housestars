@@ -311,12 +311,16 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
+	                      <p>Hi {{$property['customer_name']}},</p>
+	                      <p>Thanks for joining the Housestars website. Please feel free to contact us if you have any questions along the way.  We look forward to helping you on your home improvement journey.</p>
+                          <hr>
                           <p><b>Property Code:</b> {{$property['code']}}</p>
                           <p><b>Property Location:</b> {{$property['property-address']}}, {{$property['suburb']}}, {{$property['state']}}</p>
-                        <p><b>Type:</b> {{$property['property-type']}}</p>
+						  <p><b>Type:</b> {{$property['property-type']}}</p>
                           <p><b>No. of Rooms:</b> {{$property['number-rooms']}}</p>
                           <p><b>Currently leased?:</b> {{$property['leased']}}</p>
                           <p><b>Value:</b> ${{$property['value-from']}} - ${{$property['value-to']}}</p>
+                          
                        </td>
                     </tr>
                   </table>

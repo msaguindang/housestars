@@ -194,7 +194,7 @@ class UserController extends Controller
     {
         $id = $this->payload->input('id');
 
-        try{
+        try {
 
             $user = User::find($id);
 
@@ -210,13 +210,15 @@ class UserController extends Controller
             Agents::where('agency_id', $id)->delete();
             DB::table('activations')->where('user_id', $id)->delete();
 
+            $uploads = public_path() . '/user/user-' . $id . "/uploads/*";
+            array_map('unlink', glob($uploads));
 
             $user->delete();
             $response['success'] = [
                 'message' => "User successfully deleted."
             ];
             return Response::json($response, 200);
-        }catch(Exception $e){
+        } catch(Exception $e) {
             $response['error'] = [
                 'message' => $e->getMessage()
             ];

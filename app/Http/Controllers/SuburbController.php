@@ -86,7 +86,7 @@ class SuburbController extends Controller
 
         $userMetas = UserMeta::where('user_meta.meta_name', 'positions')
             ->join('users', 'users.id','=','user_meta.user_id')
-            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.'%')
+            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.''.$suburbName.'%')
             ->select('user_meta.*', 'users.name')
             ->get()
             ->toArray();
@@ -156,10 +156,14 @@ class SuburbController extends Controller
     public function updateSuburbAvailability()
     {
         $payload = $this->payload->all();
-
-        $suburb = Suburbs::find($payload['id']);
-        $suburb->availability = $payload['availability'];
-        $suburb->save();
+		
+		//dd($payload);
+		$suburb = Suburbs::where('suburb_id', $payload['suburb_id'])->update(['availability' => $payload['availability']]);
+/*
+        $suburb = Suburbs::find();
+        $suburb->availability = ;
+*/
+      //  $suburb->save();
 
         return Response::json([
             'suburb' => $payload,

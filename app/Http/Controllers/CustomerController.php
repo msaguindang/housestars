@@ -116,7 +116,7 @@ class CustomerController extends Controller
         $li = 0;
 
         foreach ($transactions as $transaction ) {
-            $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'business-name')->get();
+            $business_name = UserMeta::where('user_id', $transaction->tradesman_id)->where('meta_name', 'trading-name')->get();
             if(count($business_name) > 0){
                 $data['transactions'][$z]['name'] = $business_name[0]['meta_value'];
             }
@@ -396,6 +396,7 @@ class CustomerController extends Controller
         $user_id = $request->input('userid');
         $code = $request->input('code');
         $meta = $request->input('meta');
+        $amount = validate_amount($request->get('meta_amount_value', 0));
         $isChecked = strtolower($request->input('checked', 'no'));
         $exists =  Property::getProperty($code, $meta)->exists();
         $updateAmount = Property::getProperty($code, $request->get('meta_amount_name', ''))->exists();
@@ -415,11 +416,11 @@ class CustomerController extends Controller
             $property = new Property;
             $property->user_id = $user_id;
             $property->meta_name = $request->get('meta_amount_name');
-            $property->meta_value = $request->get('meta_amount_value');
+            $property->meta_value = $amount;
             $property->property_code = $code;
             $property->save();
         } else if ($updateAmount && $request->exists('meta_amount_name')) {
-            Property::getProperty($code, $request->get('meta_amount_name'))->update(['meta_value' => $request->get('meta_amount_value')]);
+            Property::getProperty($code, $request->get('meta_amount_name'))->update(['meta_value' => $amount]);
         }
         
         return Response::json('success', 200);
@@ -749,12 +750,12 @@ class CustomerController extends Controller
     public function addProperty(Request $request)
     {
         $user_id = Sentinel::getUser()->id;
-        $property_meta = array('property-type','number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
+        $property_meta = array('property-type', 'property-address', 'number-rooms','post-code','suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $property_code = md5(uniqid(rand(), true));
+        $isNew = (Property::where('user_id', $user_id)->count() <= 1);
 
         foreach ($property_meta as $meta) {
-            if($request->input($meta) != null || $request->input($meta) != '')
-            {
+            if ($request->exists($meta) && $request->has($meta)) {
                 $value = $request->input($meta);
 
                 Property::updateOrCreate(
@@ -763,7 +764,7 @@ class CustomerController extends Controller
                     );
             }
 
-            if($meta == 'agent' && $request->input($meta) != null){
+            if($meta == 'agent' && $request->has($meta)) {
               $propertyInfo = Property::where('property_code', $property_code)->get();
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
               foreach ($propertyInfo as $info) {
@@ -772,11 +773,13 @@ class CustomerController extends Controller
               $data['code'] = $request->input('code');
               $this->notifyAgency($data, $agencyEmail);
             }
+        }
+
+        if ($isNew) {
             $this->sendWelcomeEmail(Sentinel::getUser());
         }
 
         return redirect(env('APP_URL').'/dashboard/customer/profile');
-
     }
     
     private function sendWelcomeEmail($user)

@@ -1,4 +1,5 @@
 @extends("layouts.main")
+
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
@@ -76,12 +77,12 @@
               <input id="profileupload-drag" type='hidden' name="profile-photo-drag" />
             </div>
             <div class="profile-info edit">
-              <label>Agency Name</label>
+              <label>Agency Trading Name</label>
 
-                  @if(isset($data['agency-name']))
-              <input type="text" name="agency-name" value="{{$data['agency-name']}}">
+              @if(isset($data['trading-name']))
+              <input type="text" name="trading-name" value="{{$data['trading-name']}}">
               @else
-              <input type="text" name="agency-name" value="">
+              <input type="text" name="trading-name" value="">
               @endif
             </div>
           </div>
@@ -126,12 +127,12 @@
             </div>
           <div class="col-xs-10">
             <div class="col-xs-4">
-              <label>Agency Trading Name</label>
+              <label>Business Name</label>
 
-              @if(isset($data['trading-name']))
-              <input type="text" name="trading-name" value="{{$data['trading-name']}}">
+              @if(isset($data['agency-name']))
+              <input type="text" name="agency-name" value="{{$data['agency-name']}}">
               @else
-              <input type="text" name="trading-name" value="">
+              <input type="text" name="agency-name" value="">
               @endif
             </div>
             <div class="col-xs-4">
@@ -172,6 +173,7 @@
               <input type="text" name="" value="">
               @endif
             </div>
+<!--
             <div class="col-xs-4">
               <label>Sales Type</label>
               <div class="btn-group">
@@ -205,6 +207,7 @@
                   </ul>
               </div>
             </div>
+-->
           </div>
           <!-- Gallery -->
           <div class="container gallery-uploader agency">
@@ -213,7 +216,7 @@
                   <div class="col-xs-7">
                     <label>Gallery Photos</label>
                     <div id="gallery-carousel" class="carousel slide multi-item-carousel">
-                      <div class="carousel-inner">
+                      <div class="carousel-inner" id='lightgallery'>
                         @include('dashboard.agency.partials.gallery_items')
                       </div>
                       <!-- Left and right controls -->
@@ -275,6 +278,15 @@
 @endsection
 
  @section('scripts')
+  @parent
+  <script>
+    function lightGalleryInit() {
+      return $("#lightgallery").lightGallery({
+                selector: '.img-item'
+              });
+    }
+    var gallery = lightGalleryInit();
+  </script>
   <script type="text/javascript">
       $.ajaxSetup({
           headers: {
@@ -310,6 +322,14 @@
               acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
                   formData.append("_token", $('[name=_token').val());
+                  if ($("#loading").not(':visible')) {
+                    $("#loading").fadeIn("slow");
+                  }
+                  gallery.data('lightGallery').destroy(true);
+              },
+              queuecomplete: function() {
+                $("#loading").fadeOut("slow");
+                gallery = lightGalleryInit();
               },
               success: function (file, response) {
                   var imgName = response;
@@ -337,9 +357,16 @@
               filename: $(this).data('filename')
             },
             dataType : 'json',
+            beforeSend: function() {
+              gallery.data('lightGallery').destroy(true);
+            },
+            error: function() {
+              gallery = lightGalleryInit();
+            },
             success: function(responseData, textStatus, jqXHR) {
               $('.carousel-inner .item').remove();
               $('.carousel-inner').append(responseData.html);
+              gallery = lightGalleryInit();
               if($('.carousel-inner .item').get().length == 0) {
                 $('.carousel-control').hide();
               }

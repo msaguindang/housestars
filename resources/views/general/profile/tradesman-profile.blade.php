@@ -1,4 +1,5 @@
 @extends("layouts.main")
+
 @section("content")
 <header id="header" class="animated desktop">
         <div class="container">
@@ -102,7 +103,7 @@
                 <a href="#"  class="view-summary" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
               </div>
               <div class="positions">
-	              <span class="label">Positions: </span>
+	              <span class="label">Postcodes: </span>
 	              @foreach($data['position'] as $position)
 	              	<span class="position">{{$position}}</span>
 	              @endforeach
@@ -155,7 +156,7 @@
               @if(isset($data['phone-number']))
               <div class="col-xs-2 icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
-                <p><b> Phone Number </b></br><span class="detail">${{$data['phone-number']}}</span></p>
+                <p><b> Phone Number </b></br><span class="detail">{{$data['phone-number']}}</span></p>
               </div>
               @endif
             </div>
@@ -177,7 +178,7 @@
                   <div class="spacing"></div>
                 @endif
 
-                <div class="gallery-carousel ">
+                <div class="gallery-carousel " id='lightgallery'>
                    @if(isset($data['gallery']))
                                 @php($x = 0)
                                 @php($y = 2)
@@ -202,7 +203,7 @@
                                   @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                      <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{url($item)}}"></div>
                                     </div>
                                   </div>
 
@@ -333,5 +334,13 @@
         $('#rating').modal('show');
       }
     </script>
+@endsection
 
+@section('scripts')
+  @parent
+  <script type="text/javascript">
+    $("#lightgallery").lightGallery({
+      selector: '.gallery-image'
+    });
+  </script>
 @endsection
