@@ -101,6 +101,14 @@
 						<label>CVV</label>
 						<input type="text" name="cvc" required>
 					</div>
+                    <label>Coupon Code (optional)
+                        <i class="fa fa-question-circle tooltip-info"
+                         aria-hidden="true" data-toggle="tooltip"
+                         data-placement="right" title=""
+                         data-original-title="If you have been given a coupon code, please enter it here."
+                         data-html="true"></i>
+                    </label>
+                    <input type="text" name="coupon">
 					<span class="spacing"></span>
 					<input type="radio" name="subscription" value="yearly"> Pay $550 for a 12 month subscription </br>
 					<input type="radio" name="subscription" value="monthly"> Pay an ongoing fee of $50 per month
