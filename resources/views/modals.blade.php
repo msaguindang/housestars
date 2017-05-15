@@ -1274,6 +1274,6 @@
 				}
 			}
 		});
-		$('.collapse').collapse()
+		
 	</script>
 @endsection
