@@ -21,6 +21,7 @@ use Mail;
 
 class RegistrationController extends Controller
 {
+    const COUPON = 'HSe1A172';
 
     public function postRegister(Request $request)
     {
@@ -437,6 +438,7 @@ class RegistrationController extends Controller
             $user_id = Sentinel::getUser()->id;
             $user_email = Sentinel::getUser()->email;
             $role = Sentinel::getUser()->roles()->first()->name;
+            $coupon = $request->get('coupon', null);
 
                 try{
                     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
@@ -458,30 +460,38 @@ class RegistrationController extends Controller
                     if(strtolower($role) == 'tradesman'){
                         $subscription['selected'] = $request->input('subscription');
                     }
-
-                    $customer = \Stripe\Customer::create(array(
+                    
+                    $userData = [
                         'description' => $description,
                         'email' => $user_email,
                         'source' => $token,
                         'metadata' =>  $subscription
-                    ));
+                    ];
 
-                    User::where('id', $user_id)->update(['customer_id' => $customer->id]);
-                } catch (\Stripe\Error\Card $e){
+                    $customer = \Stripe\Customer::create($userData);
+                    
+                    if (!is_null($coupon) && $coupon == Sentinel::getUser()->coupon) {
+                        throw new \Exception("You can't use same coupon twice!");
+                    }else if ($coupon != self::COUPON) {
+                        throw new \Exception("Invalid coupon code!");
+                    }
+
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon]);
+                } catch (\Stripe\Error\Card $e) {
 
                     $body = $e->getJsonBody();
                     $err  = ''.$body['error']['message'].'';
 
                     return redirect()->back()->with('error', $err);
+                } catch(\Exception $e) {
+                    return redirect()->back()->with('error', $e->getMessage());
                 }
 
-            if(strtolower($role) == 'tradesman'){
+            if(strtolower($role) == 'tradesman') {
                 return redirect(env('APP_URL').'/register/tradesman/step-three');
             } else {
                 return redirect(env('APP_URL').'/register/agency/step-four');
             }
-
-
         } else {
             return redirect(env('APP_URL'));
         }
@@ -495,6 +505,7 @@ class RegistrationController extends Controller
             $role = Sentinel::getUser()->roles()->first()->name;
 			$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
 	        $isFree = count(explode(",", $positions));
+            $coupon = Sentinel::getUser()->coupon;
 
 	        if($isFree == '2') {
                 if(strtolower($role) == 'tradesman') {
@@ -504,13 +515,19 @@ class RegistrationController extends Controller
                 }
 	        } else {
 	            try {
-	
+	            
 	            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-	
-	            \Stripe\Subscription::create(array(
-	              "customer" => Sentinel::getUser()->customer_id,
-	              "plan" => $request->input('plan')
-	            ));
+	   
+                $data = [
+                    "customer" => Sentinel::getUser()->customer_id,
+                    "plan" => $request->input('plan')
+                ];
+                
+                if (!is_null($coupon) && !empty($coupon)) {
+                    $data['coupon'] = $coupon;
+                }
+
+	            \Stripe\Subscription::create($data);
 	
 	            $request->session()->put('completed', 'yes');
 	

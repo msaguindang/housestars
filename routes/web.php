@@ -153,7 +153,6 @@ Route::group(['prefix' => ''], function () {
 
     Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
     
-
     Route::get('/dashboard/customer/edit', 'CustomerController@edit')->middleware('customer');
 
     Route::get('/dashboard/customer/add', 'CustomerController@property')->middleware('customer');

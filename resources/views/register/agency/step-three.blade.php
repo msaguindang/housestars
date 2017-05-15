@@ -103,6 +103,14 @@
 						<label>CVV</label>
 						<input type="text" name="cvc" required>
 					</div>
+                    <label>Coupon Code (optional) 
+                        <i class="fa fa-question-circle tooltip-info"
+                         aria-hidden="true" data-toggle="tooltip"
+                         data-placement="right" title=""
+                         data-original-title="If you have been given a coupon code, please enter it here."
+                         data-html="true"></i>
+                    </label>
+                    <input type="text" name="coupon">
 				</div>
 				<div class="col-xs-6 border-left padding-40">
 					<h2>Add Billing Address</h2>
@@ -111,7 +119,6 @@
 					<label>Suburb</label>
 					<div class="btn-group">
 						<select id="select-suburb" name="suburb"  class="demo-default plain" required></select>
-
 			        </div>
 					<label>State</label>
 					<div class="btn-group">

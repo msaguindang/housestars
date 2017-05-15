@@ -11,7 +11,7 @@ class User extends Model
     protected $table = 'users';
 
     protected $fillable = [
-        'id', 'name', 'email', 'password', 'customer_id', 'social_id',
+        'id', 'name', 'email', 'password', 'customer_id', 'social_id', 'coupon'
     ];
 
     protected $hidden = [
