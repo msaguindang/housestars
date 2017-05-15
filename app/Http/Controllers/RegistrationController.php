@@ -469,10 +469,9 @@ class RegistrationController extends Controller
                     ];
 
                     $customer = \Stripe\Customer::create($userData);
-                    
-                    if (!is_null($coupon) && $coupon == Sentinel::getUser()->coupon) {
+                    if ($coupon && ($coupon == Sentinel::getUser()->coupon)) {
                         throw new \Exception("You can't use same coupon twice!");
-                    }else if ($coupon != self::COUPON) {
+                    }else if ($coupon && $coupon != self::COUPON) {
                         throw new \Exception("Invalid coupon code!");
                     }
 
