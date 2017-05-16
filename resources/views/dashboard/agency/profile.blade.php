@@ -160,7 +160,7 @@
             @if(isset($data['charge-rate']))
             <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
-              <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+              <p><b> Charge Rate </b></br><span class="detail">{{$data['charge-rate']}}</span></p>
             </div>
             @endif
           </div>
