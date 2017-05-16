@@ -53,9 +53,9 @@
     <section id="savings-calculator" class="blue-area header-margin">
       <div class="container">
         <div class="row section-title">
-         <h2 class="wide"><span class="icon icon-left-bar-white mobile-hidden"></span>Savings Estimation Calculator<span class="icon icon-right-bar-white mobile-hidden"></span></h2>
-         <span class="separator"></span>
-         <p stye="color: white">Enter your details below to find out how much you can save. Visit the customer FAQ for more information on this calculator and how it works.</p>
+          <h2 class="wide" style="margin-bottom: 10px;"><span class="icon icon-left-bar-white mobile-hidden"></span>Savings Estimation Calculator<span class="icon icon-right-bar-white mobile-hidden"></span></h2>
+         <p style="color: white">Enter your details below to find out how much you can save. Visit the customer FAQ for more information on this calculator and how it works.</p>
+
         </div>
         <div class="calculator">
           <form id="savingsCalc" method="POST">
