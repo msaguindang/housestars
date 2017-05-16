@@ -274,6 +274,7 @@
             </div>
         </div>
       </div>
+      @include("modals.ratetradesman")
       @include("modals.rating")
       @include("modals.thankyou")
     </section>
@@ -287,6 +288,12 @@
 
 @section('scripts')
   @parent
+  <script>
+    $toShowRatingModal = {!! session('show_rate')  ? 'true' : 'false' !!};
+    if($toShowRatingModal) {
+      $("#rateModal").modal('show');
+    }
+  </script>
   <script type="text/javascript">
     $("#lightgallery").lightGallery({
       selector: '.gallery-image'

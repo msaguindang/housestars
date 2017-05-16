@@ -152,28 +152,33 @@ class MainController extends Controller
 
     public function verifyPotentialUser(Request $request)
     {
-        
         $email = $request->get('email');
         session()->forget('email');
         session()->forget('user_type');
+        session()->forget('business');
+        session()->forget('role');
         $potentialCustomer = PotentialCustomer::where('email', $email)->first();
         $user = User::where('email', $email)->first();
-
-        
-        // $validator = $this->validate($request, [
-        //     'email' => 'required|email'
-        // ]);
-        
+        $hasBusiness = $request->exists('business');
 
         if (!is_null($potentialCustomer) && $potentialCustomer->status == 1) {
             session()->put('email', $email);
             session()->put('user_type', 'potential_customer');
+            if ($hasBusiness) {
+                session()->put('business', $request->get('business'));
+                session()->put('role', $request->get('role'));
+            }
             return response()->json(['url' => url('/choose-business')], 200);
-        } else if(!is_null($user) && $user->status == 1) {
+        } else if (!is_null($user) && $user->status == 1) {
             session()->put('email', $email);
             session()->put('user_type', 'user');
+            if ($hasBusiness) {
+                session()->put('business', $request->get('business'));
+                session()->put('role', $request->get('role'));
+            }
             return response()->json(['url' => url('/choose-business')], 200);
         }
+
         Mail::send(['html' => 'emails.customer-rate-verification'], [
                     'subject'  => 'Email Verification',
                     'email'    => $email

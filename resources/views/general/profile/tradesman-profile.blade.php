@@ -328,6 +328,9 @@
       </div>
       @include("modals.tradesmanrating")
       @include("modals.thankyou")
+      @if($businessInfo = session('businessInfo'))
+        @include("rate_tradesman_modal")
+      @endif
     </section>
      <script>
       function openRatingModal() {
@@ -338,6 +341,12 @@
 
 @section('scripts')
   @parent
+  <script>
+    $toShowRatingModal = {!! session('show_rate')  ? 'true' : 'false' !!};
+    if($toShowRatingModal) {
+      $("#rateModal").modal('show');
+    }
+  </script>
   <script type="text/javascript">
     $("#lightgallery").lightGallery({
       selector: '.gallery-image'

@@ -3,6 +3,7 @@
 use App\UserMeta;
 use App\Video;
 use Illuminate\Http\Request;
+use App\Services\ReviewService;
 
 /*
 |--------------------------------------------------------------------------
@@ -300,7 +301,7 @@ Route::group(['prefix' => ''], function () {
 
     Route::get('/listing/{category}/{suburb}', 'SearchController@tradesmenListing');
 
-    Route::post('/search/{item}',[
+    Route::post('/search/{item}', [
         'as'   => 'search.item',
         'uses' => 'SearchController@search'
     ]);
@@ -332,11 +333,26 @@ Route::group(['prefix' => ''], function () {
     Route::post('admin/login', 'AdminController@postLogin');
 
     Route::post('/referral', 'TradesmanController@referral');
+
     Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
+
+    Route::get('/verify/{provider}/review/{role}/{businessId}', [
+        'as'   => 'verify.provider.review.business',
+        'uses' => 'LoginController@verifyToProviderToReviewBusiness'
+    ]);
+
     Route::get('/reviewer', 'LoginController@chooseBusiness');
 
-    Route::get('/choose-business', function () {
-        if (session()->exists('email')) {
+    Route::get('/choose-business', function (Request $request) {
+        if (session()->exists('business') && session()->exists('role')) {
+            $role = session()->get('role');
+            $ip = $request->ip();
+            $businessId = session()->get('business');
+            $redirect = "/profile/$role/$businessId";
+            $businessInfo = app(ReviewService::class)->validateBusinessReview($ip, $businessId, $redirect);
+            
+            return redirect($redirect)->with(['show_rate' => true, 'businessInfo' => $businessInfo]);
+        } else if (session()->exists('email')) {
             return view('choose_business');
         }
         return redirect('/');

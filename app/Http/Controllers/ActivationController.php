@@ -46,6 +46,8 @@ class ActivationController extends Controller
                 'status' => 1
             ], $customer);
             session()->forget('email');
+            session()->forget('role');
+            session()->forget('business');
             session()->put('email', $email);
             return redirect('/choose-business');
         }

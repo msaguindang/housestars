@@ -83,7 +83,7 @@
 			</div>
 		</div>
 
-		<!-- RATE A TRADE OR SERVICES SIGN IN-->
+		<!-- RATE A TRADE OR SERVICES SIGN IN 1-->
 		<div class="modal fade" id="rating" tabindex="-1" role="dialog" aria-labelledby="rating-area">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">

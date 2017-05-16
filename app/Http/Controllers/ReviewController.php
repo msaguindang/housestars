@@ -279,38 +279,42 @@ class ReviewController extends Controller
         $params = $request->all();
         $businessId = $params['businessId'];
         $hasReachedLimit = false;
+        $ip = $request->ip();
+        $postcode = $request->get('postcode', '');
 
-        if(session()->has('email') && session()->has('user_type')) {
-            $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
-            $user = app($type)->where('email', session()->get('email'))->first();
-            $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-        } else if($user = Sentinel::getUser()) {
-            $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-        }
+        // if(session()->has('email') && session()->has('user_type')) {
+        //     $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
+        //     $user = app($type)->where('email', session()->get('email'))->first();
+        //     $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
+        // } else if($user = Sentinel::getUser()) {
+        //     $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
+        // }
 
-        if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
-            $ip = $request->ip();
-            Mail::send(['html' => 'emails.review-redflag'], [
-                    'ip' => $ip,
-                    'email' => session()->get('email')
-                ], function ($message) use ($ip) {
-                    $message->from('info@housestars.com.au', 'Housestars');
-                    $message->to('info@housestars.com.au', 'Housestars');
-                    $message->subject('Oops!');
-                });
-            session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
-            return redirect('/');
-        }
+        // if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
+        //     $ip = $request->ip();
+        //     Mail::send(['html' => 'emails.review-redflag'], [
+        //             'ip' => $ip,
+        //             'email' => session()->get('email')
+        //         ], function ($message) use ($ip) {
+        //             $message->from('info@housestars.com.au', 'Housestars');
+        //             $message->to('info@housestars.com.au', 'Housestars');
+        //             $message->subject('Oops!');
+        //         });
+        //     session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
+        //     return redirect('/');
+        // }
 
-        $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
-        $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
-        $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
-        $businessInfo = array(
-            'id' => $businessId,
-            'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
-            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
-            'postcode' => $request->get('postcode', '')
-        );
+        // $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
+        // $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
+        // $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
+        // $businessInfo = array(
+        //     'id' => $businessId,
+        //     'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
+        //     'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
+        //     'postcode' => $request->get('postcode', '')
+        // );
+
+        $businessInfo = app(ReviewService::class)->validateBusinessReview($ip, $businessId);
         return view('review_business')->with(compact('businessInfo'));
     }
 
@@ -585,6 +589,8 @@ class ReviewController extends Controller
             }
             session()->forget('email');
             session()->forget('user_type');
+            session()->forget('business');
+            session()->forget('role');
         } else if ($user = Sentinel::getUser()) {
             $data['reviewer_id'] = $user->id;
             $data['user_type']   = 'user';

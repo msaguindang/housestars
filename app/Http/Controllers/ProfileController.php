@@ -31,6 +31,8 @@ class ProfileController extends Controller
 	        			}
 	        			
         			}
+                    $data['id'] = $id;
+                    $data['role'] = 'tradesman';
         			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
 
@@ -50,6 +52,8 @@ class ProfileController extends Controller
 	        			}
 	        			
         			}
+                    $data['id'] = $id;
+                    $data['role'] = 'agency';
                     return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                     break;
 
@@ -57,6 +61,7 @@ class ProfileController extends Controller
                     break;
             }
         } catch (\Exception $e) {
+            dd($e);
             abort(404);
         }
     }
@@ -184,8 +189,8 @@ class ProfileController extends Controller
     	$data = array(); $x = 0; $average = 0;
     	foreach ($reviews as $review) {
 
-        if ($review->name == null) {
-          $data[$x]['name'] = User::where('id', $review->reviewer_id)->first()->name;
+        if ($review->name == null && $user = User::where('id', $review->reviewer_id)->first()) {
+          $data[$x]['name'] = $user->name;
         } else {
             $data[$x]['name'] = $review->name;
         }

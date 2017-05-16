@@ -5,6 +5,8 @@ namespace App\Services;
 use App\PotentialCustomer;
 use App\Reviews;
 use Carbon\Carbon;
+use Mail;
+use DB;
 
 class ReviewService
 {
@@ -37,5 +39,42 @@ class ReviewService
         	return ($count >= self::MAX_PER_YEAR);
         }
         return false;
+    }
+
+    public function validateBusinessReview($ip, $businessId, $redirect = '/', $postcode = '')
+    {
+        if(session()->has('email') && session()->has('user_type')) {
+            $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
+            $user = app($type)->where('email', session()->get('email'))->first();
+            $hasReachedLimit = $this->validateCustomerReviews($user, $businessId);
+        } else if($user = Sentinel::getUser()) {
+            $hasReachedLimit = $this->validateCustomerReviews($user, $businessId);
+        }
+
+        if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
+            Mail::send(['html' => 'emails.review-redflag'], [
+                    'ip' => $ip,
+                    'email' => session()->get('email')
+                ], function ($message) use ($ip) {
+                    $message->from('info@housestars.com.au', 'Housestars');
+                    $message->to('info@housestars.com.au', 'Housestars');
+                    $message->subject('Oops!');
+                });
+            session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
+            return redirect($redirect);
+        }
+
+        $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
+        $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
+        $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
+        
+        $businessInfo = array(
+            'id' => $businessId,
+            'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
+            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
+            'postcode' => $postcode
+        );
+
+        return $businessInfo;
     }
 }
