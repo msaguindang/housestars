@@ -237,11 +237,13 @@
 
     footer .nav-category {
         width: 50%;
-        padding: 31px 0px 0px 0px !important;
+        padding: 31px 13px 0px 0px !important;
+        min-height: 150px;
     }
 
     footer .links {
         margin: 10px !important;
+        width: 100%;
     }
 
     footer .social-media {
@@ -347,6 +349,7 @@
 
     #categorySearch .col-xs-2 {
         padding: 0 !important;
+        width: 16%;
     }
 
     #categorySearch .hs-primary {
@@ -536,4 +539,15 @@
     .processing-form .transactions .entry .value {
         width: auto !important;
     }
+    
+    #tradesmanList button {
+	    width: 100% !important;
+	}
+	
+	a.view-summary {
+	    display: block;
+	    float: right;
+	    padding-right: 36px;
+	    margin-bottom: 12px;
+	}
 }

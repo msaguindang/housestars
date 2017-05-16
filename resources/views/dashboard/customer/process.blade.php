@@ -643,6 +643,5 @@
 				}
 			}
 		});
-		$('.collapse').collapse()
 	</script>
 @stop
