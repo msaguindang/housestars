@@ -1268,7 +1268,7 @@
 			maxItems: 1,
 	        openOnFocus: true,
 	        placeholder: "Name of the business",
-	        dropdownParent: 'body',
+	        dropdownParent: null,
 			render: {
 				option: function(item, escape) {
 					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
