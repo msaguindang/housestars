@@ -129,7 +129,7 @@
 		</div>
 
 		<!-- RATE INFO -->
-		<div class="modal fade" id="rateInfo" tabindex="-1" role="dialog" aria-labelledby="signup-area" style="position: relative;">
+		<div class="modal fade" id="rateInfo" tabindex="-1" role="dialog" aria-labelledby="signup-area" >
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
