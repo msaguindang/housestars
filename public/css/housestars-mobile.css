@@ -552,7 +552,9 @@
 	}
 	.selectize-dropdown{
 		opacity: 1 !important;
-		z-index: 1199;	
+		z-index: 19999;
+		-webkit-transform: translate3d(0,0,1px);
+		transform: translate3d(0,0,1px);	
 	}
 	    
 }
