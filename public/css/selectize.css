@@ -321,3 +321,8 @@
   opacity: 0.5;
   background-color: #fafafa;
 }
+
+.selectize-input input::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    position:absolute;
+}
