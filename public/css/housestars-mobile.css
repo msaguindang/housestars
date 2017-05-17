@@ -550,8 +550,9 @@
 	    padding-right: 36px;
 	    margin-bottom: 12px;
 	}
-	
-	.selectize-dropdown {
-	    z-index: 1199;
+	.selectize-dropdown{
+		opacity: 1 !important;
+		z-index: 1199;	
 	}
+	    
 }
