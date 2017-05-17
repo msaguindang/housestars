@@ -1271,7 +1271,7 @@
 	        dropdownParent: null,
 			render: {
 				option: function(item, escape) {
-					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
+					return "<div class='option' id="+item.value+" value="+item.value+">" + escape(item.text) + "</div>";
 				}
 			}
 		});
