@@ -178,7 +178,7 @@ class MainController extends Controller
             }
             return response()->json(['url' => url('/choose-business')], 200);
         }
-
+        
         Mail::send(['html' => 'emails.customer-rate-verification'], [
                     'subject'  => 'Email Verification',
                     'email'    => $email

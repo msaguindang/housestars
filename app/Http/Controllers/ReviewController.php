@@ -270,8 +270,6 @@ class ReviewController extends Controller
         ];
 
         return Response::json($response, 200);
-
-
     }
 
     public function addAReview (Request $request)
@@ -282,39 +280,8 @@ class ReviewController extends Controller
         $ip = $request->ip();
         $postcode = $request->get('postcode', '');
 
-        // if(session()->has('email') && session()->has('user_type')) {
-        //     $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
-        //     $user = app($type)->where('email', session()->get('email'))->first();
-        //     $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-        // } else if($user = Sentinel::getUser()) {
-        //     $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-        // }
-
-        // if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
-        //     $ip = $request->ip();
-        //     Mail::send(['html' => 'emails.review-redflag'], [
-        //             'ip' => $ip,
-        //             'email' => session()->get('email')
-        //         ], function ($message) use ($ip) {
-        //             $message->from('info@housestars.com.au', 'Housestars');
-        //             $message->to('info@housestars.com.au', 'Housestars');
-        //             $message->subject('Oops!');
-        //         });
-        //     session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
-        //     return redirect('/');
-        // }
-
-        // $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
-        // $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
-        // $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
-        // $businessInfo = array(
-        //     'id' => $businessId,
-        //     'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
-        //     'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
-        //     'postcode' => $request->get('postcode', '')
-        // );
-
         $businessInfo = app(ReviewService::class)->validateBusinessReview($ip, $businessId);
+
         return view('review_business')->with(compact('businessInfo'));
     }
 
@@ -548,7 +515,9 @@ class ReviewController extends Controller
         $reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
         $reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
         $helpful = isset($params['helpful']) ? $params['helpful'] : 0;
-
+        $ip = $request->ip();
+        $email = '';
+        
         $data = [
             'reviewee_id'   => $businessId,
             'communication' => $communication,
@@ -575,7 +544,6 @@ class ReviewController extends Controller
             $userReviews = Reviews::where('reviewer_id', $user->id)->where('reviewee_id', $businessId)->whereYear('created_at', '=', date('Y'))->count();
 
             if($userReviews >= 5 ){
-              $ip = $request->ip();
               Mail::send(['html' => 'emails.review-redflag'], [
                       'ip' => $ip,
                       'email' => $email
@@ -594,10 +562,10 @@ class ReviewController extends Controller
         } else if ($user = Sentinel::getUser()) {
             $data['reviewer_id'] = $user->id;
             $data['user_type']   = 'user';
+            $email = $user->email;
             $userReviews = Reviews::where('reviewer_id', $user->id)->where('reviewee_id', $businessId)->whereYear('created_at', '=', date('Y'))->count();
 
             if($userReviews >= 5 ){
-              $ip = $request->ip();
               Mail::send(['html' => 'emails.review-redflag'], [
                       'ip' => $ip,
                       'email' => $user->email
@@ -619,7 +587,6 @@ class ReviewController extends Controller
             $userReviews = Reviews::where('reviewer_id', $reviewerId)->where('reviewee_id', $businessId)->whereYear('created_at', '=', date('Y'))->count();
 
             if($userReviews >= 5 ){
-              $ip = $request->ip();
               Mail::send(['html' => 'emails.review-redflag'], [
                       'ip' => $ip,
                       'email' => ''
@@ -632,6 +599,16 @@ class ReviewController extends Controller
               app(ReviewService::class)->save($data, Reviews::where('id', $reviewId)->where('reviewer_id', $reviewerId)->first());
             }
         }
+
+        Mail::send(['html' => 'emails.leaves-review'], [
+                      'ip'       => $ip,
+                      'email'    => $email,
+                      'business' => UserMeta::where('user_id', $businessId)->where('meta_name', 'trading-name')->first()
+                  ], function ($message) use ($ip) {
+                      $message->from('info@housestars.com.au', 'Housestars');
+                      $message->to('info@housestars.com.au', 'Housestars');
+                      $message->subject('User leaves a review');
+                  });
 
         return redirect('/');
     }
