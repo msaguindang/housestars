@@ -550,4 +550,8 @@
 	    padding-right: 36px;
 	    margin-bottom: 12px;
 	}
+	
+	.selectize-dropdown {
+	    z-index: 10000;
+	}
 }
