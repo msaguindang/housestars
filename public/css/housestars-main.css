@@ -1942,6 +1942,20 @@ input:checked + .slider:before {
     background-size: cover !important;
 }
 
+.gallery-image-wrapper {
+    width: 100%;
+    height: 177px;
+    border-radius: 5px;
+    background-size: cover !important;
+    cursor: pointer;
+}
+
+.gallery-image-wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
 .gallery-label {
     position: relative;
     top: 130px;

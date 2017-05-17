@@ -202,7 +202,10 @@
                                   @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{url($item)}}"></div>
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{url($item)}}"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
+                                      </div>
                                     </div>
                                   </div>
 
@@ -296,7 +299,7 @@
   </script>
   <script type="text/javascript">
     $("#lightgallery").lightGallery({
-      selector: '.gallery-image'
+      selector: '.gallery-image-wrapper'
     });
   </script>
 @endsection
