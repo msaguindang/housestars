@@ -1266,7 +1266,7 @@
 	<script>
 		$("#select-rate-business").selectize({
 			maxItems: 1,
-	        openOnFocus: false,
+	        openOnFocus: true,
 	        placeholder: "Name of the business",
 			render: {
 				option: function(item, escape) {
