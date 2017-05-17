@@ -534,7 +534,9 @@
             },
             dataType : 'json',
             beforeSend: function() {
-              gallery.data('lightGallery').destroy(true);
+              if (gallery.data('lightGallery')) {
+                gallery.data('lightGallery').destroy(true);
+              }
             },
             error: function() {
               gallery = lightGalleryInit();
@@ -561,7 +563,9 @@
                   if ($("#loading").not(':visible')) {
                     $("#loading").fadeIn("slow");
                   }
-                  gallery.data('lightGallery').destroy(true);
+                  if (gallery.data('lightGallery')) {
+                    gallery.data('lightGallery').destroy(true);
+                  }
               },
               queuecomplete: function() {
                 $("#loading").fadeOut("slow");
