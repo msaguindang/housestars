@@ -79,7 +79,7 @@ class RegistrationController extends Controller
 
                                 // Update suburb availability
                                 $sub = Suburbs::find(preg_replace('/\D/', '', $suburb));
-                                DB::table('suburbs')->where('id', $sub->id)->update(['availability' => $sub->availability +  1]);
+                                DB::table('suburbs')->where('suburb_id', $sub->suburb_id)->update(['availability' => $sub->availability +  1]);
 
                             }
                         }
