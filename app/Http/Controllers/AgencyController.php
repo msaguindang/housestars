@@ -18,6 +18,7 @@ use App\Reviews;
 use App\Property;
 use App\Advertisement;
 use Response;
+use Image;
 
 class AgencyController extends Controller
 {
@@ -105,6 +106,7 @@ class AgencyController extends Controller
                     $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
                     $path = $request->file($meta)->move(public_path($localpath), $filename);
                     $value = $localpath.'/'.$filename;
+                    Image::make($value)->orientate()->save($value);
                 } else if(!empty($request->get($meta.'-drag', ''))) {
                     $value = $request->input($meta.'-drag');
                 } else {

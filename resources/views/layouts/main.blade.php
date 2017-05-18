@@ -218,7 +218,7 @@
 
 
 @include("modals")
-
+    
     <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{config('app.url')}}/js/bootstrap.min.js"></script>
@@ -226,6 +226,7 @@
     <script src="{{config('app.url')}}/js/custom.js"></script>
     <script src="{{config('app.url')}}/js/laravel.ajax.js"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript" src="{{asset('js/standalone/exif.js')}}"></script>
     <script src="{{config('app.url')}}/js/dropzone.js"></script>
     <script src="{{config('app.url')}}/js/pagination.js"></script>
     <script src="{{config('app.url')}}/js/ajax.js"></script>

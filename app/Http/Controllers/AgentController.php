@@ -17,6 +17,7 @@ use App\Agents;
 use App\Reviews;
 use App\Property;
 use Response;
+use Image;
 
 class AgentController extends Controller
 {
@@ -82,6 +83,7 @@ class AgentController extends Controller
                     $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
                     $path = $request->file($meta)->move(public_path($localpath), $filename);
                     $value = $localpath.'/'.$filename;
+                    Image::make($value)->orientate()->save($value);
                 } else {
                     $value = $request->input($meta);
                 }

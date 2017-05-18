@@ -65,7 +65,7 @@
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
               <input id="cover-photo-drag" name="cover-photo-drag" type="hidden" />
-            <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
+              <button type="button" class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
           </div>
           <div class="profile">
@@ -73,13 +73,12 @@
               @php ($data['profile-photo'] = config('app.url') . '/' . $data['profile-photo'])
             @endif
             <div ondragover="allowDrop(event);" class="profile-img" id="profile-img" style="background: url('{{$data['profile-photo']}}') 100%">
-              <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
+              <button type="button" class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
               <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
               <input id="profile-photo-drag" name="profile-photo-drag" type="hidden" />
             </div>
             <div class="profile-info">
               <label>Tradesman Name</label>
-
               @if(isset($data['business-name']))
               <input type="text" name="business-name" value="{{$data['business-name']}}">
               @else
@@ -392,6 +391,7 @@
 
 @endsection
 @section('scripts')
+    @parent
     <script>
       function lightGalleryInit() {
         return $("#lightgallery").lightGallery({

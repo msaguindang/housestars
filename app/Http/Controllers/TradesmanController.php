@@ -176,13 +176,13 @@ class TradesmanController extends Controller
     		foreach ($meta_name as $meta) {
 
 
-                if ($request->hasFile($meta) )  {
-
+                if ($request->hasFile($meta))  {
                 	$file = $request->file($meta);
                 	$localpath = 'user/user-'.$user_id.'/uploads';
 	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
 					$path = $file->move(public_path($localpath), $filename);
 					$value = $localpath.'/'.$filename;
+                    Image::make($value)->orientate()->save($value);
 				} else if(!empty($request->get($meta.'-drag', ''))) {
                     $value = $request->input($meta.'-drag');
                 } else {
