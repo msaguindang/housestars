@@ -143,9 +143,9 @@ class RegistrationController extends Controller
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value, 'property_code' => $property_code]
                     );
             }
-
+			$propertyInfo = Property::where('property_code', $property_code)->get();
             if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0){
-              $propertyInfo = Property::where('property_code', $property_code)->get();
+              
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
 
               foreach ($propertyInfo as $info) {
@@ -153,7 +153,16 @@ class RegistrationController extends Controller
               }
               $data['code'] = $request->input('code');
               $this->notifyAgency($data, $agencyEmail);
+              
             }
+            
+            //Get property info for email
+            
+             foreach ($propertyInfo as $info) {
+                $property[$info->meta_name] = $info->meta_value;
+             }
+             $property['code'] = $request->input('code');
+ 
         }
 
         foreach ($user_meta as $meta) {
@@ -167,11 +176,14 @@ class RegistrationController extends Controller
                     );
             }
         }
-        $data['customer_name'] = Sentinel::getUser()->name;
-        $data['customer_email'] = Sentinel::getUser()->email;
+        
+
+        $property['customer_name'] = Sentinel::getUser()->name;
+        $property['customer_email'] = Sentinel::getUser()->email;
+		//dd($property);
         $adminEmail = 'info@housestars.com.au';
-        $this->notifyAdmin($data, $adminEmail);
-		$this->notifyCustomer($data, Sentinel::getUser()->email);
+        $this->notifyAdmin($property, $adminEmail);
+		$this->notifyCustomer($property, Sentinel::getUser()->email);
         return redirect(env('APP_URL').'/register/customer/complete');
 
     }
