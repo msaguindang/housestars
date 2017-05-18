@@ -39,7 +39,9 @@ class SearchController extends Controller
     			break;
     		case 'agency':
                 $data = $this->agencyListing($request->get('term', ''));
-
+				
+				
+				
                 if(count($data) > 1 && $request->get('term', '') != ''){
                   $request->session()->put('data', $data);
                   return Response::json('redirect', 200);
@@ -314,13 +316,15 @@ class SearchController extends Controller
 
 
 
-      $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
+      	$qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
               from suburbs
-              having  distance <= 10
+              having  distance <= 1000
               order by distance
-              limit 5";
+              limit 1000";
 
         $nearby = DB::select($qry);
+       
+        
         $agencies = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')
