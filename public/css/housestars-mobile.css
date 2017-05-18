@@ -560,5 +560,10 @@
 	#about-content, #partners {
 	    top: 0;
 	}
+	
+	#main-content.tradesman {
+	    margin: 0;
+	    padding: 0 !important;
+	}
 	    
 }
