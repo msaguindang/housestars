@@ -565,5 +565,12 @@
 	    margin: 0;
 	    padding: 0 !important;
 	}
+	
+	.review-item .stars.left {
+	    float: none;
+	    width: 88px;
+	    overflow: auto;
+	    margin: 0 auto;
+	}
 	    
 }
