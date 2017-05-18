@@ -556,5 +556,21 @@
 		-webkit-transform: translate3d(0,0,1px);
 		transform: translate3d(0,0,1px);	
 	}
+	
+	#about-content, #partners {
+	    top: 0;
+	}
+	
+	#main-content.tradesman {
+	    margin: 0;
+	    padding: 0 !important;
+	}
+	
+	.review-item .stars.left {
+	    float: none;
+	    width: 88px;
+	    overflow: auto;
+	    margin: 0 auto;
+	}
 	    
 }
