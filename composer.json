@@ -16,7 +16,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "maatwebsite/excel": "^2.1",
         "laravel/tinker": "^1.0",
-        "revolution/laravel-google-sheets": "^2.3"
+        "revolution/laravel-google-sheets": "^2.3",
+        "intervention/image": "^2.3"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

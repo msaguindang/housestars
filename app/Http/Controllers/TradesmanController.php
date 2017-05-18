@@ -20,10 +20,13 @@ use Response;
 use Mail;
 use App\Reviews;
 use App\RoleUsers;
+use Image;
 
 class TradesmanController extends Controller
 {
-    const MAX_PHOTO = 10;
+    const MAX_PHOTO  = 10,
+          MAX_WIDTH  = 1200,
+          MAX_HEIGHT = 127;
 
     private $galleryService;
 
@@ -125,6 +128,14 @@ class TradesmanController extends Controller
     }
 
     public function upload(Request $request) {
+        $validator = app('validator')->make($request->all(),[
+                        'file' => 'max:2048'
+                    ]);
+        
+        if ($validator->fails()) {
+            return Response::json(['error' => "You can't upload beyond 2MB."], 422);
+        }
+
         $user_id = Sentinel::getUser()->id;
         if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->count() < self::MAX_PHOTO) {
             $file = $request->file('file');
@@ -132,12 +143,17 @@ class TradesmanController extends Controller
 	        $localpath = 'user/user-'.$user_id.'/uploads';
 	        $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
 			$path = $file->move(public_path($localpath), $filename);
+            $filePath = public_path($localpath . '/' . $filename);
+            list($width, $height) = getimagesize($filePath);
+            if ($width > self::MAX_WIDTH) {
+                $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                Image::make($filePath)->resize(self::MAX_WIDTH, $height)->save($filePath);
+            }
 			$url = $localpath.'/'.$filename;
-
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
             array_push($data, $url);
-
-	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials()], 200);
+            $meta = ['w' => $width, 'h' => $height];
+	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials(), 'meta' => $meta], 200);
         } else if (UserMeta::where('meta_name', 'gallery')->where('user_id', $user_id)->count() >= self::MAX_PHOTO) {
             $max = self::MAX_PHOTO;
             return Response::json(['error' => "You can only upload up to $max photos!"], 422);
