@@ -136,7 +136,7 @@ class TradesmanController extends Controller
             return Response::json(['error' => "You can't upload beyond 2MB."], 422);
         }
 
-        $user_id = Sentinel::getUser()->id;
+        $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
         if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->count() < self::MAX_PHOTO) {
             $file = $request->file('file');
             $data = array();
@@ -154,7 +154,7 @@ class TradesmanController extends Controller
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
             array_push($data, $url);
             $meta = ['w' => $width, 'h' => $height];
-	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials(), 'meta' => $meta], 200);
+	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials($user_id), 'meta' => $meta], 200);
         } else if (UserMeta::where('meta_name', 'gallery')->where('user_id', $user_id)->count() >= self::MAX_PHOTO) {
             $max = self::MAX_PHOTO;
             return Response::json(['error' => "You can only upload up to $max photos!"], 422);

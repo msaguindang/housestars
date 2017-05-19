@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated desktop">
+<header id="header" class="animat= desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -119,8 +119,10 @@
 
           </div>
           <div class="col-xs-3 profile-details">
-           <!--  <h3>More Details</h3> -->
-           <div class="info-item">
+            @if(is_admin())
+              <a href="{{$data['id']}}/edit" class="btn hs-primary"><span class="icon icon-summary hidden" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right hidden"></span></a><br/>
+            @endif
+            <div class="info-item">
               @if(isset($data['phone']))
               <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">

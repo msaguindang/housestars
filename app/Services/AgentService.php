@@ -101,4 +101,20 @@ class AgentService
         }
         return $properties;
     }
+
+    public function getEditableData($id)
+    {
+        $data = [];
+        
+        $user_id =  Agents::where('agent_id', '=', $id)->first()->agency_id;
+        $meta = UserMeta::where('user_id', $user_id)->get();
+        $data['summary'] = '';
+        $data['profile-photo'] = 'assets/default.png';
+        $data['cover-photo'] = 'assets/default_cover_photo.jpg';
+        foreach ($meta as $key) {
+            $data[$key->meta_name] = $key->meta_value;
+        }
+
+        return $data;
+    }
 }

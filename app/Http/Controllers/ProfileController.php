@@ -265,20 +265,22 @@ class ProfileController extends Controller
     public function editProfile(Request $request)
     {
         if (is_admin()) {
+            $role = $request->route('role');
             $data = array();
             $data['id'] = $request->route('id');
-            $user_id =  Agents::where('agent_id', '=', $data['id'])->first()->agency_id;
-
-            $meta = UserMeta::where('user_id', $user_id)->get();
-            $data['summary'] = '';
-            $data['profile-photo'] = 'assets/default.png';
-            $data['cover-photo'] = 'assets/default_cover_photo.jpg';
-
-            foreach ($meta as $key) {
-                $data[$key->meta_name] = $key->meta_value;
+            switch ($role) {
+                case 'agency':
+                    return app(AgencyController::class)->edit($request);
+                    break;
+                case 'tradesman':
+                    break;
+                case 'agent':
+                    $editData = app(AgentService::class)->getEditableData($data['id']);
+                    return View::make('dashboard/agent/edit')->with('data', array_merge($data, $editData));
+                    break;
+                default:
+                    abort(404);
             }
-
-            return View::make('dashboard/agent/edit')->with('data', $data);
         }
     }
 }

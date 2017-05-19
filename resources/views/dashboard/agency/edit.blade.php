@@ -1,5 +1,10 @@
 @extends("layouts.main")
 
+<?php
+  $uploadUrl = config('app.url') . '/upload' . ($data['isAdmin'] ? '/'.$data['id'] : '');
+  $userId = $data['isAdmin'] ? $data['id'] : '';
+?>
+
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
@@ -50,13 +55,12 @@
             </div>
           </div>
     </header>
- <form action="{{env('APP_URL')}}/update-profile" method="POST" enctype="multipart/form-data">
+ <form action="{{env('APP_URL')}}/update-profile/{{$userId}}" method="POST" enctype="multipart/form-data">
     @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
       @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
     @endif
     <section ondragover="allowDrop(event);" id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
-
-        {{csrf_field() }}
+      {{csrf_field() }}
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
@@ -263,7 +267,7 @@
             <div class="col-xs-4 btn-holder">
               <div class="spacing"></div>
               <button class="btn hs-primary" style="margin-bottom: 5px;"><span class="icon icon-save" style="margin-top: 6px;"></span>SAVE CHANGES <span class="icon icon-arrow-right"></span></button>
-              <a href="/profile" class="btn hs-primary">
+              <a href="/profile{{$data['isAdmin'] ? '/agency/'.$data['id'] : '/' }}" class="btn hs-primary">
                 <span class="fa fa-times"></span>
                 CANCEL
                 <span class="icon icon-arrow-right pull-right"></span>
@@ -319,7 +323,7 @@
       $(document).ready(function () {
           Dropzone.autoDiscover = false;
           $("#agency-gallery").dropzone({
-              url: "{{ config('app.url') . '/upload' }}",
+              url: "{{ $uploadUrl }}",
               acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
                   formData.append("_token", $('[name=_token').val());

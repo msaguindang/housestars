@@ -71,10 +71,10 @@ class AgencyController extends Controller
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-
-        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+        $userId = is_admin() ? $request->route('id') : Sentinel::getUser()->id;
+        $meta = UserMeta::where('user_id', $userId)->get();
         $data = array();
         $index = 0;
         $data['summary'] = '';
@@ -90,13 +90,15 @@ class AgencyController extends Controller
             }
         }
         $data['hasGallery'] = $index;
+        $data['isAdmin'] = is_admin();
+        $data['id'] = $userId;
         return View::make('dashboard/agency/edit')->with('data', $data);
     }
 
     public function updateProfile(Request $request)
     {
-        if(Sentinel::check()){
-            $user_id = Sentinel::getUser()->id;
+        if(Sentinel::check() || is_admin()) {
+            $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
 
             $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
 
