@@ -50,7 +50,6 @@ class ProfileController extends Controller
 		        			$data['position'][$x] = $sub. ' ('. $postcode .')'; 
 							$x++;
 	        			}
-	        			
         			}
                     $data['id'] = $id;
                     $data['role'] = 'agency';
@@ -61,7 +60,6 @@ class ProfileController extends Controller
                     break;
             }
         } catch (\Exception $e) {
-            dd($e);
             abort(404);
         }
     }
