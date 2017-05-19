@@ -54,7 +54,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
+            <p class="links"><a href="">Home Page</a> > <a href="">Trades/Services</a> > <span class="blue"> Dashboard</span> </p>
           </div>
           <div class="profile">
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
