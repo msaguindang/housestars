@@ -217,7 +217,7 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/update-profile', 'AgencyController@updateProfile');
 
-    Route::post('/update-profile-agent', 'AgentController@updateProfile');
+    Route::post('/update-profile-agent/{id?}', 'AgentController@updateProfile');
 
     Route::post('/update-settings', 'AgencyController@updateSettings');
 
@@ -313,6 +313,11 @@ Route::group(['prefix' => ''], function () {
         'uses' => 'ProfileController@profile'
     ]);
     
+    Route::get('/profile/{role}/{id}/edit',[
+        'as'   => 'profile.role.id.edit',
+        'uses' => 'ProfileController@editProfile'
+    ]);
+
     Route::get('/public-profile/{id}', 'ProfileController@getPublicProfile');
 
     Route::post('/helpful', 'ProfileController@helpful');

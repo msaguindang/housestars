@@ -9,8 +9,11 @@ use App\Reviews;
 use App\User;
 use App\Agents;
 use App\Advertisement;
+use App\Services\AgentService;
 use App\Property;
 use Response;
+use View;
+use Sentinel;
 
 class ProfileController extends Controller
 {
@@ -22,7 +25,7 @@ class ProfileController extends Controller
         			$data = $this->tradesman($id);
         			$data['suburbs'] = explode(',', $data['positions']);
         			$x = 0;
-        			foreach($data['suburbs'] as $suburb){
+        			foreach($data['suburbs'] as $suburb) {
 	        			$sub = preg_replace('/[0-9]/','',$suburb);
 	        			$postcode = preg_replace('/\D/', '', $suburb);
 	        			if($sub != '' || !empty($sub)){
@@ -35,7 +38,6 @@ class ProfileController extends Controller
                     $data['role'] = 'tradesman';
         			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
-
                 case 'agency':
                     $data = $this->agency($id);
                     $listings = $this->property_listing($id);
@@ -55,8 +57,14 @@ class ProfileController extends Controller
                     $data['role'] = 'agency';
                     return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                     break;
-
+                case 'agent':
+                    $data = app(AgentService::class)->getData($id);
+                    $data['isOwner'] = false;
+                    $data['id'] = $id;
+                    return View::make('dashboard/agent/profile')->with('meta', $data['meta'])->with('dp', $data['dp'])->with('cp', $data['cp'])->with('data', $data);
+                    break;
                 default:
+                    abort(404);
                     break;
             }
         } catch (\Exception $e) {
@@ -111,7 +119,6 @@ class ProfileController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        //dd($data);
     	return $data;
     }
 
@@ -253,5 +260,25 @@ class ProfileController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    public function editProfile(Request $request)
+    {
+        if (is_admin()) {
+            $data = array();
+            $data['id'] = $request->route('id');
+            $user_id =  Agents::where('agent_id', '=', $data['id'])->first()->agency_id;
+
+            $meta = UserMeta::where('user_id', $user_id)->get();
+            $data['summary'] = '';
+            $data['profile-photo'] = 'assets/default.png';
+            $data['cover-photo'] = 'assets/default_cover_photo.jpg';
+
+            foreach ($meta as $key) {
+                $data[$key->meta_name] = $key->meta_value;
+            }
+
+            return View::make('dashboard/agent/edit')->with('data', $data);
+        }
     }
 }

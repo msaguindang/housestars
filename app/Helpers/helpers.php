@@ -106,4 +106,22 @@ if (! function_exists('validate_amount')) {
     }
 }
 
+if (! function_exists('is_admin')) {
+    /**
+     *
+     * @return boolean
+     */
+    function is_admin()
+    {
+        if (\Sentinel::check()) {
+            $user_id = \Sentinel::getUser()->id;
+            return \DB::table('role_users')
+                            ->where('user_id', $user_id)
+                            ->where('role_id', 1)
+                            ->exists();
+        }
+        return false;
+    }
+}
+
 

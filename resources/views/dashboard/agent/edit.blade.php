@@ -49,10 +49,9 @@
             </div>
           </div>
     </header>
- <form action="{{env('APP_URL')}}/update-profile-agent" method="POST" enctype="multipart/form-data">
+ <form action="{{env('APP_URL')}}/update-profile-agent/{{isset($data['id']) ? $data['id'] : ''}}" method="POST" enctype="multipart/form-data">
     <section id="cover-container" class="header-margin" style="background: url({{env('APP_URL')}}/{{$data['cover-photo']}})">
-     
-        {{csrf_field() }}
+      {{csrf_field() }}
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">

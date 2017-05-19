@@ -66,12 +66,7 @@ housestars.controller('MembersCtrl', ['$scope', 'http', '$uibModal', function ($
     $scope.getProfileLink = function(user)
     {
         var role = (user.role_name).toLowerCase();
-        
-        if (role.indexOf('agency') > -1 || role.indexOf('tradesman') > -1 || role.indexOf('customer') > -1) {
-            return '/profile/' + role + '/' + user.id;
-        }
-
-        return '/';
+        return '/profile/' + role + '/' + user.id;
     };
 
     $scope.editUser = function (user, index) {
