@@ -95,7 +95,8 @@
 						<p class="sub-heading">
 							Verify you are a real customer by authenticating with an email address or facebook
 						</p>
-						<div class="info-bar" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
+						<div class="info-bar mobile" data-toggle="tooltip" data-placement="top" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
+						<div class="info-bar mobile-hidden" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
 							<form action="{{ route('verify_to_rate') }}" method="POST" id='verify_to_rate'>
 								{{csrf_field() }}
 								<div id="error"></div>
