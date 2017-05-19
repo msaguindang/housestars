@@ -207,16 +207,16 @@ class CustomerController extends Controller
         if ($data['isOwner']) {
             // Check of the last property added was proccessed
             return View::make('dashboard/customer/process')->with('data', $data);
-        } else {
-           if(count($data['property']) > 1) {
-	            $data['recent'] = $lastIndex;
-	            if (isset($data['property'][$lastIndex]['process'])){
-	                return View::make('dashboard/customer/profile')->with('data', $data);
-				} else{
-					return View::make('dashboard/customer/process')->with('data', $data);
-				}
-        	}
-        }
+        } else if(count($data['property']) > 1) {
+            $data['recent'] = $lastIndex;
+            if (isset($data['property'][$lastIndex]['process'])){
+                return View::make('dashboard/customer/profile')->with('data', $data);
+			} else{
+				return View::make('dashboard/customer/process')->with('data', $data);
+			}
+    	}
+        
+        abort(230, "{$data['name']} haven't yet completed the registration process.");
     }
 
     public function edit()
