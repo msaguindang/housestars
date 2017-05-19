@@ -35,7 +35,7 @@ class CustomerController extends Controller
         $userId = $user->id;
         $userName = $user->name;
         $userEmail = $user->email;
-        
+        $data['name'] = $userName ;
         $data['id'] = $userId;
 
         $user_info = UserMeta::where('user_id', $userId)->get();

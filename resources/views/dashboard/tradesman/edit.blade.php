@@ -61,7 +61,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
+            <p class="links"><a href="">Home Page</a> > <a href="">Trades/Services</a> > <span class="blue"> Dashboard</span> </p>
             <div class="upload">
               <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
               <input id="cover-photo-drag" name="cover-photo-drag" type="hidden" />

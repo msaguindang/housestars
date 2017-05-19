@@ -95,7 +95,8 @@
 						<p class="sub-heading">
 							Verify you are a real customer by authenticating with an email address or facebook
 						</p>
-						<div class="info-bar" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
+						<div class="info-bar mobile" data-toggle="tooltip" data-placement="top" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
+						<div class="info-bar mobile-hidden" data-toggle="tooltip" data-placement="left" title="This step proves that you are a genuine customer and not a robot. This ensures the ratings data on the site is not false, so you get real information when looking for your next trade or service.">What does this mean?</div>
 							<form action="{{ route('verify_to_rate') }}" method="POST" id='verify_to_rate'>
 								{{csrf_field() }}
 								<div id="error"></div>
@@ -708,7 +709,7 @@
 				 </div>
 				 <div class="modal-body">
 					 <h4>There are no agents currently</br>listed in your suburb</h4>
-				 </br><p class="sub-heading">If you know an agent or agency that could benefit from this site, please enter their name below. We will contact them regarding becoming a partner with us. (You will remain anonymous) Thank you! Also please add in the contact number field (not essential).</p>
+				 </br><p class="sub-heading">If you know a real estate agency in your area that could benifit from this site, please enter their details below. We will contact them with regards to becoming a partner with us.</p>
 					 <form id="suggestAgency">
 						 {{csrf_field() }}
 						 <input type="hidden" id='no-agency-suburb' name="suburb" />
@@ -882,7 +883,7 @@
           </div>
           <div class="modal-body">
             <h4>Thank You!</h4>
-            </br><p class="sub-heading">We will contact them regarding signing up to be a partner. Thank you!</p>
+            </br><p class="sub-heading">We will contact them regarding signing up to be a partner.</p>
             <button class="btn hs-primary" data-dismiss="modal" aria-label="Close">Got it</button>
           </div>
         </div>
@@ -1016,16 +1017,18 @@
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           </div>
           <div class="modal-body">
-            <h4>ORDER YOUR BUSINESS CARDS</h4>
-            <p class="sub-heading">Enter the details you want to appear on your business cards.</p>
+            <h4>ORDER YOUR REVIEW CARDS</h4>
+            <p class="sub-heading">Please enter the business name that will appear on review cards.</p>
             <form id="orderBusinessCard">
               {{csrf_field() }}
               <div id="error"></div>
-              <input type="text" name="name" placeholder="Your Full Name">
+              <input type="text" name="name" placeholder="Business Name">
+<!--
               <input type="text" name="address" placeholder="Your Full Address" class="no-top">
               <input type="text" name="contact" placeholder="Your Contact Number" class="no-top">
               <input type="text" name="email" placeholder="Your Email Address" class="no-top">
               <input type="text" name="website" placeholder="Your Website" class="no-top">
+-->
               <button class="btn hs-primary">Order Now</button>
             </form>
           </div>

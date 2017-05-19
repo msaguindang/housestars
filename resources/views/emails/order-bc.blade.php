@@ -311,13 +311,10 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>{{$name}} requested for a business card.</p>
+                        <p>{{$name}} requested for a review cards.</p>
                         <p>Here's the details:<p/>
-                        <p><b>Tradesman Name:</b> {{$name}}</p>
-                        <p><b>Tradesman Address:</b> {{$address}}</p>
-                        <p><b>Tradesman Contact:</b> {{$contact}}</p>
-                        <p><b>Tradesman Email:</b> {{$email}}</p>
-                        <p><b>Tradesman Website:</b> {{$website}}</p>
+                        <p><b>Business Name:</b> {{$name}}</p>
+
                        </td>
                     </tr>
                   </table>

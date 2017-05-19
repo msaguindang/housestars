@@ -12,6 +12,7 @@ use App\User;
 use App\UserMeta;
 use App\Property;
 use App\Agents;
+use App\RoleUsers;
 use App\Suburbs;
 use App\Category;
 use View;
@@ -56,7 +57,6 @@ class RegistrationController extends Controller
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
 
-
     		if($role == 'agency'){
                 $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url');
 
@@ -70,15 +70,22 @@ class RegistrationController extends Controller
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
-
-                                if(strpos($suburb,"-dup") !== FALSE){
+								
+								if(strpos($suburb,",") !== FALSE){
+	                            	$suburb = explode(",", $suburb)[1];
+	                            	if(strpos($suburb,"-dup") !== FALSE){
+	                                    $suburb = explode("-dup", $suburb)[0];
+	                                }
+	                            } else if(strpos($suburb,"-dup") !== FALSE){
                                     $suburb = explode("-dup", $suburb)[0];
                                 }
 
                                 $value .= $suburb. ',';
-
+								
                                 // Update suburb availability
-                                $sub = Suburbs::find(preg_replace('/\D/', '', $suburb));
+                                $sub = Suburbs::where('id', preg_replace('/\D/', '', $suburb))->where('name', preg_replace('/\d/', '', $suburb) )->first();
+                                $role = new RoleUsers();
+                                
                                 DB::table('suburbs')->where('suburb_id', $sub->suburb_id)->update(['availability' => $sub->availability +  1]);
 
                             }
@@ -197,19 +204,19 @@ class RegistrationController extends Controller
             $agents = $request->input('add-agents');
 
             if($agents != null){
-
+				
                 foreach ($agents as $agent) {
                     try{
 
                         if($agent['name'] != '' && $agent['email'] != '' && $agent['password'] != ''){
-
+							
                             $credentials =  [
                                 'email'    => $agent['email'],
-                                'name'    => $agent['name'],
                                 'password'    => $agent['password'],
                             ];
-
+							
                             $user = Sentinel::registerAndActivate($credentials);
+                            User::where('email', $user->email)->update(['name' => $agent['name']]);
                             $role = Sentinel::findRoleBySlug('agent');
                             $role->users()->attach($user);
                             $email = [
@@ -222,7 +229,6 @@ class RegistrationController extends Controller
                             } else {
                                 Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
                             }
-
 
 
                             //return redirect('register/agency/step-three');
@@ -253,7 +259,29 @@ class RegistrationController extends Controller
     {
 
         $suburbs = Suburbs::all();
-        return View::make('register/agency/step-one')->with('suburbs', $suburbs);
+        $data = [];
+        if ($user = Sentinel::getUser()) {
+	        $userMetas = UserMeta::where('user_id', $user->id)->get();
+	        foreach ($userMetas as $userMeta) {
+                if (strtolower($userMeta->meta_name) == 'positions') {
+                    $positions = explode(',', $userMeta->meta_value);
+                    foreach ($positions as $key => $pos) {
+                        preg_match_all('!\d!', $pos, $matches);
+                        if (isset($matches[0]) && !empty($pos)) {
+                            $data[$userMeta->meta_name][$key]['id'] = implode('', $matches[0]);
+                            $data[$userMeta->meta_name][$key]['name'] = trim(str_replace($data[$userMeta->meta_name][$key]['id'], '', $pos));
+                            $data[$userMeta->meta_name][$key]['availability'] = Suburbs::where('id', $data[$userMeta->meta_name][$key]['id'])->where('name', $data[$userMeta->meta_name][$key]['name'])->first()->availability;
+                        }
+                    }
+                } else {
+                    $data[$userMeta->meta_name] = $userMeta->meta_value;
+                }
+            }
+        }
+        
+        
+        $data['pos_json'] = json_encode($data['positions']);
+        return View::make('register/agency/step-one')->with('suburbs', $suburbs)->with('user', $data);
     }
 
     public function Tradesman()

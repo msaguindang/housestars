@@ -107,9 +107,9 @@
 							</tr>
 						</tbody>
 					</table>
-					<div class="col-xs-2 col-xs-offset-8"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
+					<div class="col-xs-2"><a href="{{env('APP_URL')}}/register/agency/step-one" class="btn hs-primary" style="float: left; margin: 48px 0 10px;">BACK <span class="icon icon-arrow-left"></span></a></div>
+					<div class="col-xs-2 col-xs-offset-6"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
 				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
-
 				</form>
 
         <form class="repeater agents mobile" action="{{env('APP_URL')}}/add-agents" method="POST">
@@ -135,9 +135,8 @@
 					</div>
 					<div class="add-agent-button"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD AGENT</span></i></div>
 				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
-
 				</form>
-
+					
 			</div>
 		</div>
 	</div>

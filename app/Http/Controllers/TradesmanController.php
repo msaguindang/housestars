@@ -270,7 +270,7 @@ class TradesmanController extends Controller
             ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to('info@housestars.com.au', 'Housestars');
-                $message->subject('Order Business Card');
+                $message->subject('Order Review Card');
             });
     }
 

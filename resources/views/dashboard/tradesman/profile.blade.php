@@ -54,7 +54,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Dashboard</span> </p>
+            <p class="links"><a href="">Home Page</a> > <a href="">Trades/Services</a> > <span class="blue"> Dashboard</span> </p>
           </div>
           <div class="profile">
             @if(filter_var($data['profile-photo'], FILTER_VALIDATE_URL) === FALSE)
@@ -108,7 +108,7 @@
           <div class="col-xs-3 nav-panel">
             <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
             <a href="settings" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a>
-            <button class="btn hs-primary white" style="margin-bottom: 0;     padding-right: 24px;" data-toggle="modal" data-target="#orderBC"><span class="icon icon-summary-dark" style="margin-top: 6px; " ></span>ORDER BUSINESS CARDS <span class="icon icon-arrow-right-dark"></span></button>
+            <button class="btn hs-primary white" style="margin-bottom: 0;     padding-right: 24px;" data-toggle="modal" data-target="#orderBC"><span class="icon icon-summary-dark" style="margin-top: 6px; " ></span>ORDER REVIEW CARDS <span class="icon icon-arrow-right-dark"></span></button>
             <button class="btn hs-primary white" data-toggle="modal" data-target="#contact"><span class="icon icon-summary-dark" style="margin-top: 6px;"></span>CONTACT US <span class="icon icon-arrow-right-dark"></span></button>
             <div class="col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
@@ -161,7 +161,7 @@
           </div>
           <div class="switch-holder">
             <div class="col-xs-8 no-padding-left">
-              <p style="line-height: 30px;">Switch to Customer View</p>
+              <p style="line-height: 30px;">Switch to Profile View</p>
             </div>
             <div class="col-xs-4 switch-guest">
               <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
