@@ -197,19 +197,19 @@ class RegistrationController extends Controller
             $agents = $request->input('add-agents');
 
             if($agents != null){
-
+				
                 foreach ($agents as $agent) {
                     try{
 
                         if($agent['name'] != '' && $agent['email'] != '' && $agent['password'] != ''){
-
+							
                             $credentials =  [
                                 'email'    => $agent['email'],
-                                'name'    => $agent['name'],
                                 'password'    => $agent['password'],
                             ];
-
+							
                             $user = Sentinel::registerAndActivate($credentials);
+                            User::where('email', $user->email)->update(['name' => $agent['name']]);
                             $role = Sentinel::findRoleBySlug('agent');
                             $role->users()->attach($user);
                             $email = [
@@ -222,7 +222,6 @@ class RegistrationController extends Controller
                             } else {
                                 Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
                             }
-
 
 
                             //return redirect('register/agency/step-three');

@@ -157,7 +157,7 @@ class AgencyController extends Controller
         $data['name'] = Sentinel::getUser()->name;
         $data['email'] = Sentinel::getUser()->email;
         $data['password'] = Sentinel::getUser()->password;
-
+		//dd($agents);
 
         return View::make('dashboard/agency/settings')->with('data', $data)->with('agents', $agents);
     }
@@ -277,11 +277,11 @@ class AgencyController extends Controller
                     } else {
                         $credentials =  [
                             'email'    => $agent['email'],
-                            'name'    => $agent['name'],
                             'password'    => $agent['password'],
                         ];
 
                         $user = Sentinel::registerAndActivate($credentials);
+                        User::where('email', $user->email)->update(['name' => $agent['name']]);
                         $role = Sentinel::findRoleBySlug('agent');
                         $role->users()->attach($user);
                         $email = [
