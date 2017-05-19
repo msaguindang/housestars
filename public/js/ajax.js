@@ -201,7 +201,7 @@ $(document).on('submit', '#orderBusinessCard' ,function(e){
         success: function(data){
           $('.sub-heading').empty();
           $('#orderBC h4').empty();
-          $('#orderBusinessCard').html('<h4>BUSINESS CARDS ORDERED</h4></br><p>Your order has been placed. Our team will contact you shortly for details.</p>');
+          $('#orderBusinessCard').html('<h4>REVIEW CARDS ORDERED</h4></br><p>Your order has been placed. Our team will contact you shortly for details.</p>');
         }
       });
   });
