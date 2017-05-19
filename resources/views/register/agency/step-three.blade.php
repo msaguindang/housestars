@@ -111,6 +111,8 @@
                          data-html="true"></i>
                     </label>
                     <input type="text" name="coupon">
+                    <div class="col-xs-4"><a href="{{env('APP_URL')}}/register/agency/step-two" class="btn hs-primary" style="float: left; margin: 48px 0 10px;">BACK <span class="icon icon-arrow-left"></span></a></div>
+
 				</div>
 				<div class="col-xs-6 border-left padding-40">
 					<h2>Add Billing Address</h2>

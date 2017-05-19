@@ -467,10 +467,15 @@ class AgencyController extends Controller
     {
 	    
         $data = $request->input('data');
-
-        if(strpos($data,'-dup') !== false){
+		if(strpos($data,",") !== FALSE){
+	        $data = explode(",", $data)[1];
+	        if(strpos($data,'-dup') !== false){
+	            $data = explode('-dup',$data)[0];
+	        }
+	    } else if(strpos($data,'-dup') !== false){
             $data = explode('-dup',$data)[0];
         }
+    
 
         $suburb = Suburbs::where(DB::raw("CONCAT(suburbs.id,suburbs.name)"),'LIKE',"%{$data}%")->get()->first();
         $valid = true;

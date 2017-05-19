@@ -90,23 +90,24 @@
                         <h2>Agency Registration Form</h2>
                         <div class="col-xs-4">
                             <label>Agency Business Name</label>
-                            <input type="text" name="agency-name" required>
+                            <input type="text" name="agency-name" required value="{{isset($user['agency-name']) ? $user['agency-name'] : ''}}">
                             <label>Agency Trading Name</label>
-                            <input type="text" name="trading-name" required>
+                            <input type="text" name="trading-name" required value="{{isset($user['trading-name']) ? $user['trading-name'] : ''}}">
                             <label>Principal Name <span>(One Principal only as a point of contact)</span></label>
-                            <input type="text" name="principal-name" required>
+                            <input type="text" name="principal-name" required value="{{isset($user['principal-name']) ? $user['principal-name'] : ''}}">
                             <label>Business Address</label>
-                            <input type="text" name="business-address" required>
+                            <input type="text" name="business-address" required value="{{isset($user['business-address']) ? $user['business-address'] : ''}}">
                         </div>
                         <div class="col-xs-4">
                             <label>Website</label>
-                            <input type="text" name="website">
+                            <input type="text" name="website" value="{{isset($user['website']) ? $user['website'] : ''}}">
                             <label>Phone</label>
-                            <input type="text" name="phone" required>
+                            <input type="text" name="phone" required value="{{isset($user['phone']) ? $user['phone'] : ''}}">
                             <label>ABN</label>
-                            <input type="text" name="abn" required>
+                            <input type="text" name="abn" required value="{{isset($user['agency-name']) ? $user['agency-name'] : ''}}">
                             <label>Positions <span>(Enter the postcode of the suburd required)</span></label>
                             <select id="select-state" name="positions[]" multiple class="demo-default"></select>
+                            
                         </div>
                         <div class="col-xs-4">
                             <label>Base Commission Charge <i class="fa fa-question-circle tooltip-info"
@@ -115,16 +116,16 @@
                                                              data-original-title="NB. This figure is not shown to anyone. It is used for administration purposes only."
                                                              data-html="true"></i></label>
                             <div class="input-group">
-                                <input type="text" min="0" name="base-commission" id="base-commission" required>
+                                <input type="text" min="0" name="base-commission" id="base-commission" required value="{{isset($user['base-commission']) ? $user['base-commission'] : ''}}">
                                 <span class="input-group-addon" id="basic-addon1">%</span>
                             </div>
                             <label>Marketing Budget</label>
-                            <input type="text" min="0" name="marketing-budget" id="marketing-budget">
+                            <input type="text" min="0" name="marketing-budget" id="marketing-budget" value="{{isset($user['marketing-budget']) ? $user['marketing-budget'] : ''}}">
                             <label>Review URL <i class="fa fa-question-circle tooltip-info" aria-hidden="true"
                                                  data-toggle="tooltip" data-placement="right" title=""
                                                  data-original-title="If you have a profile or a rate and review list on another website that you would like to display, type the URL here, and it will be added to your profile page."
                                                  data-html="true"></i> </label>
-                            <input type="text" name="review-url">
+                            <input type="text" name="review-url" value="{{isset($user['review-url']) ? $user['review-url'] : ''}}">
 
                             <button class="btn hs-primary" id="submit" disabled>NEXT <span
                                         class="icon icon-arrow-right"></span></button>
@@ -139,7 +140,8 @@
             </div>
         </div>
     </section>
-
+	@php ($json = $user["pos_json"])
+	
 @endsection
 
 @section('scripts')
@@ -184,7 +186,11 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
         });
-
+        
+        var selectedSuburbs = '{{!!$json!!}}';
+        
+        
+		console.log(selectedSuburbs);
         var $positionSelector = $('#select-state').selectize({
             maxItems: 3,
             valueField: 'value',
@@ -217,12 +223,48 @@
                 });
             }
         });
+        
+
 
         var positionSelectorSelectize = $positionSelector[0].selectize;
+        var json = JSON.parse('{!!$json!!}');
+        		
+		
+		var name = '';
+		var x = 1;
+		
+        for (var i = 0, len = json.length; i < len; i++) {
+	        if(parseInt(json[i]['availability']) > 3){
+		        json[i]['availability'] = 3;
+	        }
+	        
+	         if(name == json[i]['name']){
+		        json[i]['availability'] = parseInt(json[i]['availability']) - x;
+		        var value = json[i]['id'] + '' + json[i]['name'] + '-dup-' + json[i]['availability'];
+		        x = x + 1;
+	        } else {
+		        var value = json[i]['id'] + '' + json[i]['name'] + '-dup-' + json[i]['availability'];
+	        }
+	        
+	        name = json[i]['name'];
+	      
+	        currentSuburb = {value: value,
+		        			availability: json[i]['availability'],
+		        			name: json[i]['name'],
+		        			id: json[i]['id']};
+		       
+		   positionSelectorSelectize.addOption(currentSuburb);
+		    positionSelectorSelectize.addItem(value);
+			console.log(value);		   
+		}
 
+	
+
+		
         var currentItems = {};
         var currentSuburb = {};
-
+        
+		
         positionSelectorSelectize.on('change', function (items) {
 
         });
@@ -273,13 +315,24 @@
                 rawValue = value.split('-dup')[0];
 
             }
-
+			console.log('item-remove: ' + rawValue);
+			
             if(currentItems.hasOwnProperty(rawValue)){
                 availability = currentItems[rawValue]-1;
+            } else {
+	            availability = currentItems[rawValue]-2;
             }
 
             currentItems[rawValue] = availability;
+			
+			var availabilities = [1, 2, 3];
+			index = availabilities.indexOf(availability);
+			availabilities.splice(index, 1);
+			
+			console.log('avail' + index);
+			positionSelectorSelectize.removeOption(value);
 
+		
             return availability;
 
         });

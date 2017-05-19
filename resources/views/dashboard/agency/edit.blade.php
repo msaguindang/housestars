@@ -173,6 +173,7 @@
               <input type="text" name="" value="">
               @endif
             </div>
+            
 <!--
             <div class="col-xs-4">
               <label>Sales Type</label>
