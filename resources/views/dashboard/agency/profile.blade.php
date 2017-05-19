@@ -182,7 +182,7 @@
           </div>
             <div class="switch-holder">
               <div class="col-xs-8 no-padding-left">
-                <p style="line-height: 30px;">Switch to Customer View</p>
+                <p style="line-height: 30px;">Switch to Profile View</p>
               </div>
               <div class="col-xs-4 switch-guest">
                 <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
