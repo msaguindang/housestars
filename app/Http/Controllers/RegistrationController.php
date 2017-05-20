@@ -279,8 +279,8 @@ class RegistrationController extends Controller
             }
         }
         
-        
-        $data['pos_json'] = json_encode($data['positions']);
+        $positions = isset($data['positions']) ? $data['positions'] : [];
+        $data['pos_json'] = json_encode($positions);
         return View::make('register/agency/step-one')->with('suburbs', $suburbs)->with('user', $data);
     }
 
