@@ -209,7 +209,6 @@
 				</div>
 
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
-				<button class="btn hs-default close-btn"><span class="icon icon-close"></span> CANCEL</button>
 
 			</div>
 		</div>
