@@ -197,13 +197,13 @@ class RegistrationController extends Controller
 
     public function postAddAgents(Request $request)
     {
-        if(Sentinel::check()){
+        if (Sentinel::check()) {
 
             $user_id = Sentinel::getUser()->id;
             $role = Sentinel::getUser()->roles()->first()->slug;
             $agents = $request->input('add-agents');
 
-            if($agents != null){
+            if ($agents != null) {
 				
                 foreach ($agents as $agent) {
                     try{
@@ -398,23 +398,14 @@ class RegistrationController extends Controller
 
     public function payment()
     {
-            $suburbs = Suburbs::all();
-            $role = Sentinel::getUser()->roles()->first()->slug;
+        $suburbs = Suburbs::all();
+        $role = Sentinel::getUser()->roles()->first()->slug;
 
-            if($role == 'agency'){
-	            $positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
-	            $isFree = count(explode(",", $positions));
-	            
-	            if($isFree == '2'){
-		            return redirect(env('APP_URL').'/register/agency/step-four');
-	            } else{
-		            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
-	            }
-
-            } else {
-                return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
-            }
-
+        if ($role == 'agency') {
+            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+        } else {
+            return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
+        }
     }
 
      public function review()
