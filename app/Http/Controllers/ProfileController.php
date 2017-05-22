@@ -44,9 +44,9 @@ class ProfileController extends Controller
                     $listings = $this->property_listing($id);
                     $data['property-listings'] = $listings;
                     $data['total-listings'] = count($listings);
-                    $data['suburbs'] = explode(',', $data['positions']);
+                    $data['suburbs'] = isset($data['positions']) ? explode(',', $data['positions']) : [];
 					$x = 0;
-        			foreach($data['suburbs'] as $suburb){
+        			foreach ($data['suburbs'] as $suburb) {
 	        			$sub = preg_replace('/[0-9]/','',$suburb);
 	        			$postcode = preg_replace('/\D/', '', $suburb);
 	        			if($sub != '' || !empty($sub)){

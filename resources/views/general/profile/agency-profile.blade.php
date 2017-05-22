@@ -99,11 +99,13 @@
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Reviews</span>
                 <a href="#"  class="view-summary" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
-                                <div class="positions ">
-	              <span class="label">Positions: </span>
-	              @foreach($data['position'] as $position)
-	              	<span class="position">{{$position}}</span>
-	              @endforeach
+                <div class="positions ">
+                  @if(isset($data['position']))
+    	              <span class="label">Positions: </span>
+    	              @foreach($data['position'] as $position)
+    	              	<span class="position">{{$position}}</span>
+    	              @endforeach
+                  @endif
               </div>
               </div>
             </div>

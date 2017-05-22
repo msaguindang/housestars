@@ -12,7 +12,7 @@
 								<img src="{{$data['profile-photo']}}" alt="Tradesman Name" id="tradesmanPic">
 							</div>
 							<div class="col-xs-8 tradesman-name">
-								<h4 id="tradesmanName">{{isset($data['agency-name']) ? $data['agency-name'] : $data['business-name']}}</h4>
+								<h4 id="tradesmanName">{{isset($data['agency-name']) ? $data['agency-name'] : isset($data['business-name']) ? $data['business-name'] : ''}}</h4>
 							</div>
 						</div>
 						<p style="color:#000000" class="bordered-desc">Your honest answers really help other customers</p>
