@@ -99,9 +99,9 @@
 						</thead>
 						<tbody data-repeater-list="add-agents">
 							<tr data-repeater-item>
-								<td style="width: 30%"><input type="text" name="name" value="" placeholder="" required/></td>
-								<td style="width: 30%"><input type="text" name="email" value="" placeholder="" required/></td>
-								<td style="width: 30%"><input type="password" name="password" value="" placeholder="" required/></td>
+								<td style="width: 30%"><input type="text" name="name" value="" placeholder="" /></td>
+								<td style="width: 30%"><input type="text" name="email" value="" placeholder="" /></td>
+								<td style="width: 30%"><input type="password" name="password" value="" placeholder="" /></td>
 								<td style="padding: 0 15px;"><label class="switch"><input type="checkbox" name="active"><div class="slider round"></div></label></td>
 								<td><i data-repeater-delete  class="fa fa-minus" aria-hidden="true"></i></i></td>
 							</tr>

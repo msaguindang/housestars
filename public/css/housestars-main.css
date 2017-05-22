@@ -3492,3 +3492,7 @@ span.dollar-sign {
 #processTrades input#amount {
     padding-left: 24px;
 }
+
+#sign-up-form .repeater.agents tbody tr:first-child {
+    display: none;
+}
