@@ -61,8 +61,8 @@
             <div class="profile-img" style="background: url({{$data['profile-photo']}}) no-repeat center center;">
             </div>
             <div class="profile-info">
-              @if(isset($data['agency-name']))
-              <h1>{{$data['agency-name']}}</h1>
+              @if(isset($data['trading-name']))
+              <h1>{{$data['trading-name']}}</h1>
               @endif
               @if (isset($data['business-address']))
               <p>Location: {{$data['business-address']}}</p>
@@ -84,6 +84,7 @@
               <!--  -->
               <div class="status">
                   <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{ $data['total-listings'] }} {{ str_plural('Listing', $data['total-listings']) }} </span>
+                  <span class="info"><i class="fa fa-list" aria-hidden="true"></i> Marketing Budget : {{isset($data['marketing-budget']) ? $data['marketing-budget'] : ''}}</span>
                   <!-- <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold</span> -->
               </div>
               <div class="status">
