@@ -36,7 +36,8 @@ class ProfileController extends Controller
         			}
                     $data['id'] = $id;
                     $data['role'] = 'tradesman';
-        			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
+        			$data['name'] = User::find($id)->name;
+                    return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
                 case 'agency':
                     $data = $this->agency($id);
@@ -55,12 +56,14 @@ class ProfileController extends Controller
         			}
                     $data['id'] = $id;
                     $data['role'] = 'agency';
+                    $data['name'] = User::find($id)->name;
                     return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                     break;
                 case 'agent':
                     $data = app(AgentService::class)->getData($id);
                     $data['isOwner'] = false;
                     $data['id'] = $id;
+                    $data['name'] = User::find($id)->name;
                     return View::make('dashboard/agent/profile')->with('meta', $data['meta'])->with('dp', $data['dp'])->with('cp', $data['cp'])->with('data', $data);
                     break;
                 default:
