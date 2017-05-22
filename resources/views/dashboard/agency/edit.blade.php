@@ -2,7 +2,7 @@
 
 <?php
   $uploadUrl = config('app.url') . '/upload' . ($data['isAdmin'] ? '/'.$data['id'] : '');
-  $userId = $data['isAdmin'] ? $data['id'] : '';
+  $userId = $data['isAdmin'] ? '/' . $data['id'] : '';
 ?>
 
 @section("content")
@@ -55,7 +55,7 @@
             </div>
           </div>
     </header>
- <form action="{{env('APP_URL')}}/update-profile/{{$userId}}" method="POST" enctype="multipart/form-data">
+ <form action="{{env('APP_URL')}}/update-profile{{$userId}}" method="POST" enctype="multipart/form-data">
     @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
       @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
     @endif
