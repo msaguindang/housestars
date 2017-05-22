@@ -80,23 +80,23 @@ class TradesmanController extends Controller
 
         }
 
-        //dd($data);
-
-    	   return View::make('dashboard/tradesman/profile')->with('data', $data);
+	   return View::make('dashboard/tradesman/profile')->with('data', $data);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
+        $data = [];
     	$suburbs = Suburbs::all();
-    	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-    	$data = array();
+        $userId = $request->route('id') ? : Sentinel::getUser()->id;
+    	$meta = UserMeta::where('user_id', $userId)->get();
+        $data['id'] = $userId;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
         $x = 0; $y = 0;
 
     	foreach ($meta as $key) {
-    		if($key->meta_name == 'positions'){
+    		if ($key->meta_name == 'positions') {
     			$positions = explode(",", $key->meta_value);
 
     			foreach ($positions as $position) {
@@ -122,8 +122,16 @@ class TradesmanController extends Controller
     		}
 
     	}
-      //dd($data);
+
         $data['hasGallery'] = $y;
+        $data['profile-url'] = "/profile";
+        $data['name'] = Sentinel::getUser()->name;
+        $data['isAdmin'] = is_admin();
+        if ($data['isAdmin']) {
+            $data['profile-url'] .= "/tradesman/$userId";
+            $data['name'] = User::find($userId)->name;
+        }
+        
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
 
@@ -167,14 +175,12 @@ class TradesmanController extends Controller
 
     public function updateProfile(Request $request)
     {
-    	//dd($request->all());
     	if(Sentinel::check()){
-    		$user_id = Sentinel::getUser()->id;
+    		$user_id = $request->route('id') ? : Sentinel::getUser()->id;
 
-    		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate');
+    		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate', 'phone');
 
     		foreach ($meta_name as $meta) {
-
 
                 if ($request->hasFile($meta))  {
                 	$file = $request->file($meta);
@@ -198,7 +204,7 @@ class TradesmanController extends Controller
                     }
                 }
 
-				if($value !== null){
+				if($value !== null) {
                 	UserMeta::updateOrCreate(
                     	['user_id' => $user_id, 'meta_name' => $meta],
                     	['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]

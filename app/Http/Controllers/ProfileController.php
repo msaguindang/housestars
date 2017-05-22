@@ -277,6 +277,7 @@ class ProfileController extends Controller
                     return app(AgencyController::class)->edit($request);
                     break;
                 case 'tradesman':
+                    return app(TradesmanController::class)->edit($request);
                     break;
                 case 'agent':
                     $editData = app(AgentService::class)->getEditableData($data['id']);
