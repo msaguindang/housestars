@@ -215,9 +215,11 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/charge', 'RegistrationController@postCharge');
 
-    Route::post('/update-profile/{id?}', 'AgencyController@updateProfile');
+    Route::post('/update-profile-agent', 'AgentController@updateProfile');
+    Route::post('/update-profile', 'AgencyController@updateProfile');
 
-    Route::post('/update-profile-agent/{id?}', 'AgentController@updateProfile');
+    Route::post('/update-profile-agent/{id}', 'AgentController@updateProfile');
+    Route::post('/update-profile/{id}', 'AgencyController@updateProfile');
 
     Route::post('/update-settings', 'AgencyController@updateSettings');
 
