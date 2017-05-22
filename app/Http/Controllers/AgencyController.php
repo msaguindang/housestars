@@ -67,6 +67,7 @@ class AgencyController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
+        
 
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
@@ -123,8 +124,11 @@ class AgencyController extends Controller
                 }
 
             }
-
-            return redirect(env('APP_URL').'/dashboard/agency/profile');
+			if(is_admin()){
+				return redirect(env('APP_URL').'/profile/agency/' . $request->route('id'));
+			} else{
+				return redirect(env('APP_URL').'/dashboard/agency/profile');
+			}
 
         } else {
             return redirect('');
