@@ -546,12 +546,8 @@ class RegistrationController extends Controller
 	        $isFree = count(explode(",", $positions));
             $coupon = Sentinel::getUser()->coupon;
 
-	        if($isFree == '2') {
-                if(strtolower($role) == 'tradesman') {
-                    return redirect(env('APP_URL').'/register/tradesman/complete');
-                } else {
+            if(strtolower($role) == 'agency' && $isFree == '2') {
                     return redirect(env('APP_URL').'/register/agency/complete');
-                }
 	        } else {
 	            try {
 	            
