@@ -372,7 +372,7 @@
                       <div class="action">
                         @php ($amountSold = null)
                         <span id="value-to" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
-                        @if(isset($data['property'][$a]['amount-sold']) && $data['property'][$a]['amount-sold'] == 'yes' && $data['property'][$a]['amount-sold'] != '0')
+                        @if(isset($data['property'][$a]['amount-sold']) && $data['property'][$a]['amount-sold'] == 'yes' && $data['property'][$a]['value-to'] != '0.00')
                           @php ($amountSold = isset($data['property'][$a]['value-to']) ? $data['property'][$a]['value-to'] : 0)
                           <input type="checkbox" data-id="{{$data['id']}}" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
                         @else
@@ -405,7 +405,7 @@
                       <div class="action">
                         <span id="commission" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
                         @php ($commissionPercentage = null)
-                        @if(isset($data['property'][$a]['commission-percentage']) && isset($data['property'][$a]['commission-percentage']) && $data['property'][$a]['commission-percentage'] == 'yes')
+                        @if(isset($data['property'][$a]['commission-percentage']) && isset($data['property'][$a]['commission-percentage']) && $data['property'][$a]['commission-percentage'] == 'yes' && $data['property'][$a]['commission'] != '0.00')
                           @php ($commissionPercentage = isset($data['property'][$a]['commission']) ? $data['property'][$a]['commission'] : 0)
                           <input type="checkbox" data-id="{{$data['id']}}" id="c8" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
                         @else
