@@ -31,6 +31,7 @@ class CustomerController extends Controller
             $data['isOwner'] = false;
         }
 
+        $data['isAdmin'] = is_admin();
         $data['user'] = $user;
         $userId = $user->id;
         $userName = $user->name;
@@ -219,11 +220,11 @@ class CustomerController extends Controller
         abort(230, "{$data['name']} haven't yet completed the registration process.");
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-
-        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-        $user = User::where('id', Sentinel::getUser()->id)->get();
+        $userId = $request->route('id') ? : Sentinel::getUser()->id;
+        $meta = UserMeta::where('user_id', $userId)->get();
+        $user = User::where('id', $userId)->get();
         $data = array();
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
@@ -236,7 +237,8 @@ class CustomerController extends Controller
             $data['email'] = $key->email;
             $data['name'] = $key->name;
         }
-
+        $data['id'] = $userId;
+        $data['profile-url'] = is_admin() ? "/profile/customer/$userId" : '/profile';
         return View::make('dashboard/customer/edit')->with('data', $data);
     }
 
@@ -244,9 +246,9 @@ class CustomerController extends Controller
     {
         if(Sentinel::check())
         {
-            $id = Sentinel::getUser()->id;
+            $id = (is_admin() && $request->route('id') ?  $request->route('id') : Sentinel::getUser()->id);
 
-            if($request->input('password') == ''){
+            if ($request->input('password') == '') {
                 User::updateOrCreate(
                     ['id' => $id],
                     ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name')]);
