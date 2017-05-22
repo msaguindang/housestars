@@ -124,8 +124,11 @@ class AgencyController extends Controller
                 }
 
             }
-
-            return redirect(env('APP_URL').'/dashboard/agency/profile');
+			if(is_admin()){
+				return redirect(env('APP_URL').'/profile/agency/' . $request->route('id'));
+			} else{
+				return redirect(env('APP_URL').'/dashboard/agency/profile');
+			}
 
         } else {
             return redirect('');
