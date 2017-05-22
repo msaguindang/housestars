@@ -1,5 +1,10 @@
 @extends("layouts.main")
 
+<?php
+  $uploadUrl = config('app.url') . '/upload' . ($data['isAdmin'] ? '/'.$data['id'] : '');
+  $extUrl = $data['isAdmin'] ? "/{$data['id']}" : '';
+?>
+
 @section("content")
 <div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 
@@ -18,7 +23,7 @@
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -35,7 +40,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{config('app.url')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{ config('app.url') . $data['profile-url'] }}">Profile</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="{{config('app.url')}}/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="{{config('app.url')}}/customer" >Customer</a></li>
@@ -49,9 +54,8 @@
             </div>
           </div>
     </header>
- <form action="{{config('app.url')}}/tradesman/update-profile" method="POST" enctype="multipart/form-data">
+ <form action="{{config('app.url')}}/tradesman/update-profile{{$extUrl}}" method="POST" enctype="multipart/form-data">
   {{csrf_field() }}
-
     @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
       @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
     @endif
@@ -116,12 +120,7 @@
 
             <div class="col-xs-3">
               <label>ABN</label>
-
-              @if(isset($data['abn']))
-              <input type="text" name="abn" value="{{$data['abn']}}">
-              @else
-              <input type="text" name="abn" value="">
-              @endif
+              <input type="text" name="abn" value="{{ isset($data['abn']) ? $data['abn'] : ''}}">
             </div>
             <div class="col-xs-4 dash-field">
               <label>Trading As</label>
@@ -309,14 +308,8 @@
                     </li>
                   </ul>
               </div>
-              
               <label>Phone Number</label>
-
-              @if(isset($data['phone-number']))
-              <input type="text" name="abn" value="{{$data['phone-number']}}">
-              @else
-              <input type="text" name="abn" value="">
-              @endif
+              <input type="text" name="phone" value="{{ isset($data['phone']) ? $data['phone'] : '' }}">
             </div>
             <div class="col-xs-4 dash-field" style="padding-right: 0">
               <label>Postcodes Working In</label>
@@ -556,7 +549,7 @@
       $(document).ready(function () {
           Dropzone.autoDiscover = false;
           $("#tradesman-gallery").dropzone({
-              url: "{{ config('app.url') . '/upload' }}",
+              url: "{{ $uploadUrl }}",
               acceptedFiles: ".png, .jpg, .gif, .tiff, .bmp",
               sending: function(file, xhr, formData) {
                   formData.append("_token", $("[name='_token']").val());

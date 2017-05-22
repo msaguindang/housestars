@@ -232,6 +232,7 @@ Route::group(['prefix' => ''], function () {
     Route::post('upload/{id?}', 'TradesmanController@upload');
 
     Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
+    Route::post('tradesman/update-profile/{id}', 'TradesmanController@updateProfile');
 
     Route::post('tradesman/validate-suburb-availability', 'TradesmanController@validateSuburbAvailability');
 

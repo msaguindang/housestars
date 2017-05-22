@@ -82,6 +82,9 @@
 					{{csrf_field() }}
 				<div class="col-xs-6 padding-40">
 					<h2>Add Payment Method</h2>
+                    <label>
+                        <i class="fa fa-info-circle" aria-hidden="true"></i> Credit details are for verification purposes only and will not be used unless you are selecting more than one position.
+                    </label>
 					@if(session('error'))
 					<div class="alert alert-danger">
 						{{session('error')}}

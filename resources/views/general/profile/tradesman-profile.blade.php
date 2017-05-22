@@ -65,14 +65,12 @@
             <div class="profile-img" style="background: url({{$data['profile-photo']}}) 100%">
             </div>
             <div class="profile-info">
-
-                  @if(isset($data['trading-name']))
-                  <h1>{{$data['trading-name']}}</h1>
-                  @endif
-                  @if (isset($data['website']))
-                  <p>Website: {{$data['website']}}</p>
-                  @endif
-
+              @if(isset($data['trading-name']))
+                <h1>{{$data['trading-name']}}</h1>
+              @endif
+              @if (isset($data['website']))
+                <p>Website: {{$data['website']}}</p>
+              @endif
             </div>
           </div>
         </div>
@@ -120,6 +118,10 @@
           </div>
           <div class="col-xs-3 profile-details">
            <!--  <h3>More Details</h3> -->
+            @if(is_admin())
+              @php($editUrl = "/profile/tradesman/{$data['id']}/edit")
+              <a href="{{ env('APP_URL') . $editUrl}}" class="btn hs-primary">EDIT PROFILE <span class="fa fa-chevron-right"></span></a>
+            @endif
            <div class="info-item">
               @if(isset($data['website']))
               <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>

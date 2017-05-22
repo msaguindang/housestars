@@ -135,8 +135,7 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="preview-total">
-
-							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
+							<input type="hidden" name="plan" value="agency-{{count(array_remove_null($positions))}}">
 							@if($price === 0)
 								<span class="icon icon-total"></span> <p> Total Charges = <b> FREE </b></p>
 							@else
@@ -184,14 +183,11 @@
 									@php ($x++)
 	                			@endif
 							@endforeach
-
 <!--
 							@if(count($positions) > 2)
 								<p>For 3 Positions = $1000 per year</p>
 							@endif
 -->
-
-
 						</div>
 					</div>
 					<div class="col-xs-4">
@@ -207,9 +203,7 @@
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
 				</div>
-
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
-
 			</div>
 		</div>
 	</div>

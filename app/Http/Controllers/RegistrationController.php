@@ -197,13 +197,13 @@ class RegistrationController extends Controller
 
     public function postAddAgents(Request $request)
     {
-        if(Sentinel::check()){
+        if (Sentinel::check()) {
 
             $user_id = Sentinel::getUser()->id;
             $role = Sentinel::getUser()->roles()->first()->slug;
             $agents = $request->input('add-agents');
 
-            if($agents != null){
+            if ($agents != null) {
 				
                 foreach ($agents as $agent) {
                     try{
@@ -398,26 +398,17 @@ class RegistrationController extends Controller
 
     public function payment()
     {
-            $suburbs = Suburbs::all();
-            $role = Sentinel::getUser()->roles()->first()->slug;
+        $suburbs = Suburbs::all();
+        $role = Sentinel::getUser()->roles()->first()->slug;
 
-            if($role == 'agency'){
-	            $positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
-	            $isFree = count(explode(",", $positions));
-	            
-	            if($isFree == '2'){
-		            return redirect(env('APP_URL').'/register/agency/step-four');
-	            } else{
-		            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
-	            }
-
-            } else {
-                return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
-            }
-
+        if ($role == 'agency') {
+            return View::make('register/agency/step-three')->with('suburbs', $suburbs);
+        } else {
+            return View::make('register/tradesman/step-two')->with('suburbs', $suburbs);
+        }
     }
 
-     public function review()
+    public function review()
     {
         $user_id = Sentinel::getUser()->id;
         $role = Sentinel::getUser()->roles()->first()->slug;
@@ -546,13 +537,9 @@ class RegistrationController extends Controller
 	        $isFree = count(explode(",", $positions));
             $coupon = Sentinel::getUser()->coupon;
 
-            if(strtolower($role) == 'agency' && $isFree == '2') {
-                    return redirect(env('APP_URL').'/register/agency/complete');
-	        } else {
-	            try {
-	            
-	            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-	   
+            try {
+                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+       
                 $data = [
                     "customer" => Sentinel::getUser()->customer_id,
                     "plan" => $request->input('plan')
@@ -562,27 +549,21 @@ class RegistrationController extends Controller
                     $data['coupon'] = $coupon;
                 }
 
-	            \Stripe\Subscription::create($data);
-	
-	            $request->session()->put('completed', 'yes');
-	
-	            if(strtolower($role) == 'tradesman'){
-	                return redirect(env('APP_URL').'/register/tradesman/complete');
-	            } else {
-	                return redirect(env('APP_URL').'/register/agency/complete');
-	            }
-	
-	            } catch (\Stripe\Error\Card $e){
-	
-	                $body = $e->getJsonBody();
-	                $err  = ''.$body['error']['message'].'';
-	
-	                return redirect()->back()->with('error', $err);
-	
-	            }
-	        }
+                \Stripe\Subscription::create($data);
 
+                $request->session()->put('completed', 'yes');
 
+                if(strtolower($role) == 'tradesman'){
+                    return redirect(env('APP_URL').'/register/tradesman/complete');
+                } else {
+                    return redirect(env('APP_URL').'/register/agency/complete');
+                }
+            } catch (\Stripe\Error\Card $e){
+                $body = $e->getJsonBody();
+                $err  = ''.$body['error']['message'].'';
+
+                return redirect()->back()->with('error', $err);
+            }
         } else {
             return redirect('/');
         }

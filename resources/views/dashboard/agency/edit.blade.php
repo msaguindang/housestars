@@ -21,10 +21,8 @@
                 </div>
                 <div class="nav-items">
                   <ul>
-                    <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-
-                     @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                    @if(Sentinel::check())
+                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -161,58 +159,12 @@
           <div class="col-xs-10 col-xs-offset-2">
             <div class="col-xs-4">
               <label>Principal Name</label>
-
-              @if(isset($data['principal-name']))
-              <input type="text" name="" value="{{$data['principal-name']}}">
-              @else
-              <input type="text" name="" value="">
-              @endif
+              <input type="text" name="principal-name" value="{{ isset($data['principal-name']) ? $data['principal-name'] : '' }}">
             </div>
             <div class="col-xs-4">
               <label>Phone</label>
-
-              @if(isset($data['phone']))
-              <input type="text" name="" value="{{$data['phone']}}">
-              @else
-              <input type="text" name="" value="">
-              @endif
+              <input type="text" name="phone" value="{{ isset($data['phone']) ? $data['phone'] : ''}}">
             </div>
-            
-<!--
-            <div class="col-xs-4">
-              <label>Sales Type</label>
-              <div class="btn-group">
-                  <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                    @if(isset($data['sales-type']))
-                    {{$data['sales-type']}}
-                    @else
-                    Select Sales Type
-                    @endif <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <input type="radio" id="b1" name="sales-type" value="Auction">
-                      <label for="b1">Auction</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b2" name="sales-type" value="Private Treaty">
-                      <label for="b2">Private Treaty</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b3" name="sales-type" value="Off Market">
-                      <label for="b3">Off Market</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b4" name="sales-type" value="Distressed Sale">
-                      <label for="b4">Distressed Sale</label>
-                    </li>
-                    <li>
-                      <input type="radio" id="b5" name="sales-type" value="Other">
-                      <label for="b5">Other</label>
-                    </li>
-                  </ul>
-              </div>
-            </div>
--->
           </div>
           <!-- Gallery -->
           <div class="container gallery-uploader agency">

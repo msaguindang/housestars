@@ -89,12 +89,10 @@
           </div>
           @if($data['isOwner'])
             <div class="col-xs-3 nav-panel">
-              @php($editUrl = "/dashboard/customer/edit")
               @if($data['isAdmin'])
-                <?php dd('asd'); ?>
                 @php($editUrl = "/profile/customer/{$data['id']}/edit")
+                <a href="{{ env('APP_URL') . $editUrl}}" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
               @endif
-              <a href="{{ env('APP_URL') . $editUrl}}" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
             </div>
           @endif
         </div>
