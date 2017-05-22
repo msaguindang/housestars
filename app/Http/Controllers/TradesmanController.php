@@ -156,7 +156,10 @@ class TradesmanController extends Controller
             $image = Image::make($filePath)->orientate();
             if ($width > self::MAX_WIDTH) {
                 $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
-                $image->resize(self::MAX_WIDTH, $height)->save($filePath);
+                $image->resize(self::MAX_WIDTH, $height, function($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })->save($filePath);
             }
 			$url = $localpath.'/'.$filename;
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
