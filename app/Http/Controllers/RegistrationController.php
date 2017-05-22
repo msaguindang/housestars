@@ -408,7 +408,7 @@ class RegistrationController extends Controller
         }
     }
 
-     public function review()
+    public function review()
     {
         $user_id = Sentinel::getUser()->id;
         $role = Sentinel::getUser()->roles()->first()->slug;
@@ -537,13 +537,9 @@ class RegistrationController extends Controller
 	        $isFree = count(explode(",", $positions));
             $coupon = Sentinel::getUser()->coupon;
 
-            if(strtolower($role) == 'agency' && $isFree == '2') {
-                    return redirect(env('APP_URL').'/register/agency/complete');
-	        } else {
-	            try {
-	            
-	            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-	   
+            try {
+                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+       
                 $data = [
                     "customer" => Sentinel::getUser()->customer_id,
                     "plan" => $request->input('plan')
@@ -553,27 +549,21 @@ class RegistrationController extends Controller
                     $data['coupon'] = $coupon;
                 }
 
-	            \Stripe\Subscription::create($data);
-	
-	            $request->session()->put('completed', 'yes');
-	
-	            if(strtolower($role) == 'tradesman'){
-	                return redirect(env('APP_URL').'/register/tradesman/complete');
-	            } else {
-	                return redirect(env('APP_URL').'/register/agency/complete');
-	            }
-	
-	            } catch (\Stripe\Error\Card $e){
-	
-	                $body = $e->getJsonBody();
-	                $err  = ''.$body['error']['message'].'';
-	
-	                return redirect()->back()->with('error', $err);
-	
-	            }
-	        }
+                \Stripe\Subscription::create($data);
 
+                $request->session()->put('completed', 'yes');
 
+                if(strtolower($role) == 'tradesman'){
+                    return redirect(env('APP_URL').'/register/tradesman/complete');
+                } else {
+                    return redirect(env('APP_URL').'/register/agency/complete');
+                }
+            } catch (\Stripe\Error\Card $e){
+                $body = $e->getJsonBody();
+                $err  = ''.$body['error']['message'].'';
+
+                return redirect()->back()->with('error', $err);
+            }
         } else {
             return redirect('/');
         }
