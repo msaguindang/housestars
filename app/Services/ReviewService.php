@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Services;
-
+use Sentinel;
 use App\PotentialCustomer;
 use App\Reviews;
 use Carbon\Carbon;
