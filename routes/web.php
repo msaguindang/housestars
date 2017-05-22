@@ -334,7 +334,7 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/contact-us', 'MainController@contact');
 
-    Route::post('/customer/update-settings', 'CustomerController@update');
+    Route::post('/customer/update-settings/{id}', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');
     Route::post('admin/login', 'AdminController@postLogin');

@@ -111,10 +111,11 @@ class AgentService
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
+        $data['name'] = User::find($id)->name;
         foreach ($meta as $key) {
             $data[$key->meta_name] = $key->meta_value;
         }
-
+        
         return $data;
     }
 }

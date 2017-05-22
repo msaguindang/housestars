@@ -24,7 +24,7 @@ use App\Video;
 
 class MainController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         if (Sentinel::check()) {
             switch (Sentinel::getUser()->roles()->first()->slug) {

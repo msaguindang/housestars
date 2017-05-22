@@ -16,7 +16,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
 
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -33,7 +33,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{ env('APP_URL') . $data['profile-url'] }}">Profile</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
@@ -68,7 +68,7 @@
               <div class="spacing"></div>
               <div class="col-xs-6">
                 <h2 class="section-title">Account Settings</h2>
-              <form action="{{env('APP_URL')}}/customer/update-settings" method="POST" enctype="multipart/form-data">
+              <form action="{{env('APP_URL')}}/customer/update-settings/{{$data['id']}}" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 <label>Full Name</label>
                 <input type="text" name="name" value="{{$data['name']}}" required>
@@ -78,20 +78,17 @@
                 <input type="text" name="address" value="{{$data['address']}}" required>
                 <label>Password</label>
                 <input type="password" name="password" placeholder="********">
-                 <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE SETTINGS <span class="icon icon-arrow-right"></span></button>
+                <a href="{{$data['profile-url']}}" class="btn hs-primary pull-left update-settings">BACK <span class="icon icon-arrow-left"></span></a>
+                <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE SETTINGS <span class="icon icon-arrow-right"></span></button>
               </form>
               </div>
-              <div class="col-xs-6 ">
-
-
-
+              <div class="col-xs-6">
               </div>
             </div>
           <div class="spacing"></div>
         </div>
       </div>
     </section>
-
 @endsection
 
  @section('scripts')

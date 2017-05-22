@@ -18,7 +18,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
                     
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{isset($data['name']) ? $data['name'] : Sentinel::getUser()->name}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -35,7 +35,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/{{ isset($data['profile-url']) ? $data['profile-url'] : 'profile' }}">Profile</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
@@ -167,8 +167,8 @@
               <label>Sales Type</label>
               <div class="btn-group">
                   <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                    @if(isset($data['phone']))
-                    {{$data['sales-type']}}
+                    @if(isset($data['phone']) && isset($data['sales-type']))
+                      {{$data['sales-type']}}
                     @else
                     Select Sales Type
                     @endif <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span></button>

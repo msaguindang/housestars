@@ -271,6 +271,7 @@ class ProfileController extends Controller
             $role = $request->route('role');
             $data = array();
             $data['id'] = $request->route('id');
+            $data['profile-url'] = "profile/$role/{$data['id']}";
             switch ($role) {
                 case 'agency':
                     return app(AgencyController::class)->edit($request);
@@ -280,6 +281,9 @@ class ProfileController extends Controller
                 case 'agent':
                     $editData = app(AgentService::class)->getEditableData($data['id']);
                     return View::make('dashboard/agent/edit')->with('data', array_merge($data, $editData));
+                    break;
+                case 'customer':
+                    return app(CustomerController::class)->edit($request);
                     break;
                 default:
                     abort(404);
