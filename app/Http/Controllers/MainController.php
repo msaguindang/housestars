@@ -21,6 +21,11 @@ use App\Services\PotentialCustomerService;
 use App\Services\ReviewService;
 use App\User;
 use App\Video;
+use DB;
+use Carbon\Carbon;
+use Stripe\Customer;
+use Stripe\Stripe;
+use Stripe\Subscription;
 
 class MainController extends Controller
 {
@@ -222,5 +227,44 @@ class MainController extends Controller
          return view('general.policy');
     }
     
+    
+    public function test(){
+	    	echo "SENDING NOTICE TO SUBSCRIBERS... \n";
+    
+		    Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+		
+		    $users = User::select('users.*')
+		                  ->join('role_users', 'role_users.user_id', '=', 'users.id')
+		                  ->join('roles', 'roles.id', '=', 'role_users.role_id')
+		                  ->where(function ($sub) {
+		                      $sub
+		                        ->whereNotNull('users.name')
+		                        ->whereNotNull('users.customer_id')
+		                        ->where('users.name', '<>', '')
+		                        ->where('users.customer_id', '<>', '');
+		                  })->get();
+		
+		    $nextMonth = Carbon::now()->addMonth()->format('Y-m-d');
+		    $nextTwoWeeks = Carbon::now()->addWeeks(2)->format('Y-m-d');
+		    $nextWeek = Carbon::now()->addWeek()->format('Y-m-d');
+		    $now = Carbon::now()->format('Y-m-d');
+		
+		    foreach($users as $user) {
+		      $customer = Customer::retrieve($user->customer_id);
+		      $subscriptions = $customer->subscriptions->data;
+		      if (count($subscriptions)) {
+		        $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
+		        if ($nextMonth <= $endDate || $nextTwoWeeks <= $endDate || $nextWeek <= $endDate) {
+		          $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
+		          //$this->sendEmail($user->name, $user->email, $formattedEndDate);
+		          echo "End Date: " . $formattedEndDate . '</br>';
+		        } else if($now <= $endDate){
+			        echo 'end subscription';
+		        }
+		      }
+		      
+		       echo 'Subscription checked for :' . $user->name . '</br>';
+		    }
+    }
     
 }

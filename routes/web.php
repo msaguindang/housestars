@@ -16,6 +16,9 @@ use App\Services\ReviewService;
 |
 */
 
+
+Route::get('test', 'MainController@test');
+
 Route::group(['prefix' => ''], function () {
 
     Route::get('/profile', 'MainController@dashboard');
@@ -254,7 +257,6 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/agency-list', 'RegistrationController@listAgency');
 
-    Route::get('/test', 'RegistrationController@test');
 
     Route::post('/add-property', 'RegistrationController@addProperty');
 

@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
                   ->everyMinute();
 
         $schedule->command('housestars:check-subscriptions')
-                  ->daily();
+                  ->everyMinute();
     }
 
     /**
