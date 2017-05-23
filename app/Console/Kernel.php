@@ -6,7 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\Referral;
 use App\Console\Commands\EndingSubscription;
-use App\Console\Commands\PositionAvailabilityCount
+use App\Console\Commands\PositionAvailabilityCount;
 
 class Kernel extends ConsoleKernel
 {
