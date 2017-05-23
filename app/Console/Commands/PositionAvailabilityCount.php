@@ -45,9 +45,8 @@ class PositionAvailabilityCount extends Command
      */
     public function handle()
     {
-			DB::table('suburbs')->update(array('availability' => 0));
+			DB::table('suburbs')->update(['availability' => 0]);
 
-/*
     		$suburbs = UserMeta::where('meta_name', 'positions')->get();
 	    	$positions = [];
 	    	
@@ -71,7 +70,6 @@ class PositionAvailabilityCount extends Command
 		    	}
 		    	Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
 	    	}
-*/
 	    	
     }
 }

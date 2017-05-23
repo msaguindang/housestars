@@ -33,7 +33,7 @@ class TradesmanMiddleware
                     $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
                     $payment_status = $customer_info->status;
 
-                    if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
+                    if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
                       return redirect('/payment-status');
                     }
                   } else {
