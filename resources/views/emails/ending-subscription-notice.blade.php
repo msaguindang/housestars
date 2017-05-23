@@ -313,7 +313,9 @@
                       <td style="padding: 20px; background: #fff;">
                         <p>Hi {{$name}},</p>
                         <p> Your subscription is about to expire on {{ $date }}.</p>
-                        <p> Please extend your subscription in the profile page by clicking <a href="{{$baseUrl}}/agency/profile">Account details</a></p>
+                        <p>
+                          Your subscription will automatically renew on the {{$renewDate}}. Please visit <a href="{{$baseUrl}}/agency/profile">Account Settings</a> page in your profile to end your subscription.
+                        </p>
 
                         <p>Cheers,</p>
                         <img src="https://trello-attachments.s3.amazonaws.com/58abe1cd025a65a1e39f2205/200x50/d55d597a4311edbdbc9789d1ac05744f/signature.png">

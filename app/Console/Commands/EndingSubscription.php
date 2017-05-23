@@ -73,23 +73,24 @@ class EndingSubscription extends Command
         $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
         if ($nextMonth == $endDate || $nextTwoWeeks == $endDate || $nextWeek == $endDate) {
           $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
-          $this->sendEmail($user->name, $user->email, $formattedEndDate);
+          $renewDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->addDay()->format('jS M Y');
+          $this->sendEmail($user->name, $user->email, $formattedEndDate, $renewDate);
           echo "*";
-        } else if($now == $endDate){
-			User::where('id', $user->id)->update(['subs_status' => 0]);
-			UserMeta::where('user_id', $user->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
-		}
+        } else if($now == $endDate) {
+    			User::where('id', $user->id)->update(['subs_status' => 0]);
+    			UserMeta::where('user_id', $user->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
+    		}
       }
-      
     }
   }
 
-  private function sendEmail($name, $email, $endDate)
+  private function sendEmail($name, $email, $endDate, $renewDate)
   {
     Mail::send(['html' => "emails.ending-subscription-notice"], [
       'email' => $email,
       'name'  => $name,
-      'date'  => $endDate
+      'date'  => $endDate,
+      'renewDate' => $renewDate
     ], function ($message) use ($email, $name) {
       $message->from('info@housestars.com.au', 'Housestars');
       $message->to($email, $name);
