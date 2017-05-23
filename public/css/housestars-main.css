@@ -273,6 +273,10 @@ input.search {
     border-left: 1px solid #d9d9d9;
 }
 
+.border-right{
+    border-right: 1px solid #d9d9d9;
+}
+
 .padding-40{
     padding: 40px;
 }
@@ -3495,4 +3499,9 @@ span.dollar-sign {
 
 #sign-up-form .repeater.agents tbody tr:first-child {
     display: none;
+}
+
+button[disabled], html input[disabled] {
+    cursor: default;
+    background: #e4e4e4;
 }

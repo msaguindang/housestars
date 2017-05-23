@@ -83,10 +83,9 @@ class RegistrationController extends Controller
                                 $value .= $suburb. ',';
 								
                                 // Update suburb availability
-                                $sub = Suburbs::where('id', preg_replace('/\D/', '', $suburb))->where('name', preg_replace('/\d/', '', $suburb) )->first();
-                                $role = new RoleUsers();
+                                //$sub = Suburbs::where('id', preg_replace('/\D/', '', $suburb))->where('name', preg_replace('/\d/', '', $suburb) )->first();
                                 
-                                DB::table('suburbs')->where('suburb_id', $sub->suburb_id)->update(['availability' => $sub->availability +  1]);
+                               // DB::table('suburbs')->where('suburb_id', $sub->suburb_id)->update(['availability' => $sub->availability +  1]);
 
                             }
                         }
@@ -96,6 +95,10 @@ class RegistrationController extends Controller
                             ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
                         );
                     }
+    			}
+    			
+    			if(Sentinel::getUser()->subs_status == 0){
+	    			return redirect(env('APP_URL').'/register/agency/step-three');
     			}
 
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
@@ -281,6 +284,7 @@ class RegistrationController extends Controller
         
         $positions = isset($data['positions']) ? $data['positions'] : [];
         $data['pos_json'] = json_encode($positions);
+        $data['sub_status'] = Sentinel::getUser()->subs_status;
         return View::make('register/agency/step-one')->with('suburbs', $suburbs)->with('user', $data);
     }
 

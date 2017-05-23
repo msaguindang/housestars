@@ -40,8 +40,8 @@ class AgencyMiddleware
 	                  $payment_status = $customer_info->status;
 	
 	
-	                  if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
-	                    return redirect('/payment-status');
+	                  if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
+	                    return redirect('/register/agency/step-one');
 	                  }
 	                } else {
 	                  return redirect('/register/agency/step-three');

@@ -229,43 +229,31 @@ class MainController extends Controller
     
     
     public function test(){
-	    	echo "SENDING NOTICE TO SUBSCRIBERS... \n";
-    
-		    Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-		
-		    $users = User::select('users.*')
-		                  ->join('role_users', 'role_users.user_id', '=', 'users.id')
-		                  ->join('roles', 'roles.id', '=', 'role_users.role_id')
-		                  ->where(function ($sub) {
-		                      $sub
-		                        ->whereNotNull('users.name')
-		                        ->whereNotNull('users.customer_id')
-		                        ->where('users.name', '<>', '')
-		                        ->where('users.customer_id', '<>', '');
-		                  })->get();
-		
-		    $nextMonth = Carbon::now()->addMonth()->format('Y-m-d');
-		    $nextTwoWeeks = Carbon::now()->addWeeks(2)->format('Y-m-d');
-		    $nextWeek = Carbon::now()->addWeek()->format('Y-m-d');
-		    $now = Carbon::now()->format('Y-m-d');
-		
-		    foreach($users as $user) {
-		      $customer = Customer::retrieve($user->customer_id);
-		      $subscriptions = $customer->subscriptions->data;
-		      if (count($subscriptions)) {
-		        $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
-		        if ($nextMonth == $endDate || $nextTwoWeeks == $endDate || $nextWeek == $endDate) {
-		          $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
-		          //$this->sendEmail($user->name, $user->email, $formattedEndDate);
-		          echo "End Date: " . $formattedEndDate . '</br>';
-		        } else if($now <= $endDate){
-			        User::where('id', $user->id)
-		          ->update(['subs_status' => 0]);
-		        }
-		      }
-		      
-		       echo 'Subscription checked for :' . $user->name . '</br>';
-		    }
+	    	$suburbs = UserMeta::where('meta_name', 'positions')->get();
+	    	$positions = [];
+	    	
+	    	foreach($suburbs as $suburb){
+		    	if(!is_null(RoleUsers::hasRole($suburb->user_id, 2)->first())) {
+	              $subs = explode(",", $suburb->meta_value);
+	              foreach($subs as $sub){
+		              array_push($positions, $sub);
+	              }
+	            }
+	    	}
+	    	//dd($suburbCount);
+	    	$availabilityCount = array_count_values($positions);
+	    	
+	    	foreach($availabilityCount as $suburb => $count){
+		    	$postcode = preg_replace('/\D/', '', $suburb);
+		    	$suburb_name = preg_replace('/\d/', '', $suburb);
+		    	
+		    	if($count > 3){
+			    	$count = 3;
+		    	}
+		    	Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
+	    	}
+	    	
+	    	//DB::table('suburbs')->update(array('availability' => 0));
     }
     
 }
