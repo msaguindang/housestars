@@ -32,6 +32,11 @@ class User extends Model
     {
         return $this->hasMany(UserMeta::class);
     }
+    
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
 
     public function scopeSearch($query, $search)
     {
