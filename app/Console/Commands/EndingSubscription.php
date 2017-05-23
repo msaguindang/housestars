@@ -71,13 +71,13 @@ class EndingSubscription extends Command
       $subscriptions = $customer->subscriptions->data;
       if (count($subscriptions)) {
         $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
-        if ($nextMonth <= $endDate || $nextTwoWeeks <= $endDate || $nextWeek <= $endDate) {
+        if ($nextMonth == $endDate || $nextTwoWeeks == $endDate || $nextWeek == $endDate) {
           $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
           $this->sendEmail($user->name, $user->email, $formattedEndDate);
           echo "*";
-        } else if($now == $endDate){
-	        echo 'end subscription';
-        }
+        } else if($now <= $endDate){
+			User::where('id', $user->id)->update(['subs_status' => 0]);
+		}
       }
       
     }
