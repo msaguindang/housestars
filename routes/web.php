@@ -17,7 +17,7 @@ use App\Services\ReviewService;
 */
 
 
-Route::get('test', 'MainController@test');
+Route::get('testing-page', 'MainController@test');
 
 Route::group(['prefix' => ''], function () {
 
