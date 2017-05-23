@@ -12,7 +12,7 @@ class TradesmanService
 	public function isSubscriber($tradesman)
 	{
 		$valid = false;
-		if ($tradesman->status && $tradesman->customer_id) {
+		if ($tradesman->subs_status && $tradesman->status && $tradesman->customer_id) {
 			Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
       		$customer_info = Customer::retrieve($tradesman->customer_id);
       		$payment_status = $customer_info->status;
