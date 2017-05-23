@@ -75,7 +75,7 @@ class EndingSubscription extends Command
           $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
           $this->sendEmail($user->name, $user->email, $formattedEndDate);
           echo "*";
-        } else if($now <= $endDate){
+        } else if($now == $endDate){
 			User::where('id', $user->id)->update(['subs_status' => 0]);
 			UserMeta::where('user_id', $user->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
 		}
