@@ -73,7 +73,7 @@
 	</div>
 </section>
 
-    @if($user['sub_status'] == 0)
+    @if(Sentinel::getUser()->subs_status == 0)
         <div class="container">
 			<div class="row">
 				<div class="error-bar">

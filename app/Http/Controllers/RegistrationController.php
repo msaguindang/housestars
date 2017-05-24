@@ -81,7 +81,6 @@ class RegistrationController extends Controller
                                 }
 
                                 $value .= $suburb. ',';
-								
                                 // Update suburb availability
                                 //$sub = Suburbs::where('id', preg_replace('/\D/', '', $suburb))->where('name', preg_replace('/\d/', '', $suburb) )->first();
                                 
@@ -96,6 +95,8 @@ class RegistrationController extends Controller
                         );
                     }
     			}
+    			
+    			$this->updateAvailability();
     			
     			if(Sentinel::getUser()->subs_status == 0){
 	    			return redirect(env('APP_URL').'/register/agency/step-three');
@@ -635,4 +636,35 @@ class RegistrationController extends Controller
                 $message->subject('New Customer Sign-up: '. $property['customer_name']);
             });
     }
+    
+    public function updateAvailability()
+    {
+		DB::table('suburbs')->update(['availability' => 0]);
+
+    	$suburbs = UserMeta::where('meta_name', 'positions')->get();
+	    $positions = [];
+	    	
+	    foreach($suburbs as $suburb){
+		    if(!is_null(RoleUsers::hasRole($suburb->user_id, 2)->first())) {
+	           $subs = explode(",", $suburb->meta_value);
+	            foreach($subs as $sub){
+		           array_push($positions, $sub);
+	            }
+	        }
+	    }
+	    	//dd($suburbCount);
+	    $availabilityCount = array_count_values($positions);
+	    	
+	    foreach($availabilityCount as $suburb => $count){
+		    $postcode = preg_replace('/\D/', '', $suburb);
+		    $suburb_name = preg_replace('/\d/', '', $suburb);
+		    	
+		    if($count > 3){
+			    $count = 3;
+		    }
+		    Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
+	    }
+	}
+	    	
+
 }

@@ -34,7 +34,7 @@ class AgencyMiddleware
 				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
 	            $isPaidCustomer = count(explode(",", $positions));
 	            
-	            if($isPaidCustomer > '2'){
+	            if($isPaidCustomer > '2' || $isPaidCustomer == 1 ){
 					if(Sentinel::getUser()->customer_id) {
 	                  \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 	                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
