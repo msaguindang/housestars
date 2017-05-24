@@ -520,7 +520,11 @@ class RegistrationController extends Controller
                 } catch(\Exception $e) {
                     return redirect()->back()->with('error', $e->getMessage());
                 }
-
+			
+			if(Sentinel::getUser()->subs_status == 0){
+				User::where('id', $user_id)->update(['subs_status' => 1]);
+			}
+			
             if(strtolower($role) == 'tradesman') {
                 return redirect(env('APP_URL').'/register/tradesman/step-three');
             } else {

@@ -80,6 +80,22 @@
             </div>
         </div>
     </section>
+    
+    @if($user['sub_status'] == 0)
+        <div class="container">
+			<div class="row">
+				<div class="error-bar">
+	        <div class="col-xs-1">
+	          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+	        </div>
+	        <div class="col-xs-11">
+	          <p><span class="blue">Subscription Status: Inactive</span></p>
+	          <p>We're unable to charge your account. Please update your positions and payment method to continue your access to our system.</p>
+	        </div>
+	      </div>
+			</div>
+		</div>
+	@endif
 
     <section id="sign-up-form">
         <div class="container">

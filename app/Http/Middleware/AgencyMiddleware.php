@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Sentinel;
+use App\User;
 use URL;
 use App\UserMeta;
 
@@ -41,8 +42,11 @@ class AgencyMiddleware
 	
 	
 	                  if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
+		    			User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
+		    			UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
 	                    return redirect('/register/agency/step-one');
 	                  }
+	                  
 	                } else {
 	                  return redirect('/register/agency/step-three');
 	                }
