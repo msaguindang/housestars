@@ -286,6 +286,7 @@ class RegistrationController extends Controller
         $positions = isset($data['positions']) ? $data['positions'] : [];
         $data['pos_json'] = json_encode($positions);
         $data['sub_status'] = Sentinel::getUser()->subs_status;
+        $this->updateAvailability();
         return View::make('register/agency/step-one')->with('suburbs', $suburbs)->with('user', $data);
     }
 
