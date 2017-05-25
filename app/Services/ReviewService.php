@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use Sentinel;
 use App\PotentialCustomer;
 use App\Reviews;
@@ -76,5 +77,32 @@ class ReviewService
         );
 
         return $businessInfo;
+    }
+
+    public function getReviews($id)
+    {
+        $data = array();
+        $x = 0;
+        $average = 0;
+
+        foreach (Reviews::where('reviewee_id', '=', $id)->get() as $review) {
+            $userType = "App\\".ucfirst(camel_case($review->user_type));
+            $user = app($userType)->findOrFail($review->reviewer_id);
+            $data[$x]['name'] = $user->name ? : $user->email;
+            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
+            $data[$x]['communication'] = (int)$review->communication;
+            $data[$x]['work_quality'] = (int)$review->work_quality;
+            $data[$x]['price'] = (int)$review->price;
+            $data[$x]['punctuality'] = (int)$review->punctuality;
+            $data[$x]['attitude'] = (int)$review->attitude;
+            $data[$x]['title'] = $review->title;
+            $data[$x]['content'] = $review->content;
+            $data[$x]['created'] = $review->created_at->format('M d, Y');
+            $data[$x]['helpful'] = $review->helpful;
+            $data[$x]['id'] = $review->id;
+            $x++;
+        }
+
+        return $data;
     }
 }

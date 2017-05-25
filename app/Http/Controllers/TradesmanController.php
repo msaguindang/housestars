@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Services\GalleryService;
+use App\Services\ReviewService;
 use View;
 use Sentinel;
 use App\User;
@@ -28,11 +29,13 @@ class TradesmanController extends Controller
           MAX_WIDTH  = 1200,
           MAX_HEIGHT = 127;
 
-    private $galleryService;
+    private $galleryService,
+            $reviewService;
 
-    public function __construct(GalleryService $galleryService)
+    public function __construct(GalleryService $galleryService, ReviewService $reviewService)
     {
         $this->galleryService = $galleryService;
+        $this->reviewService = $reviewService;
     }
 
     public function dashboard()
@@ -58,7 +61,7 @@ class TradesmanController extends Controller
 
     	}
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
-        $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
+        $data['reviews'] = $this->reviewService->getReviews(Sentinel::getUser()->id);
         $data['total'] = count($data['reviews']);
 
         $ads = Advertisement::where('type', '=', '270x270')->get();
@@ -247,8 +250,6 @@ class TradesmanController extends Controller
 
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
 
-        //dd($customer_info);
-
         $data['credit-card'] = $customer_info->sources->data[0]->last4;
         $data['expiry-month'] = $customer_info->sources->data[0]->exp_month;
         $data['expiry-year'] = $customer_info->sources->data[0]->exp_year;
@@ -300,30 +301,6 @@ class TradesmanController extends Controller
         }
 		
         return $average;
-    }
-
-    public function getReviews($id){
-
-        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
-        $data = array(); $x = 0; $average = 0;
-        foreach ($reviews as $review) {
-            $user = User::where('id', $review->reviewer_id)->first();
-            $data[$x]['name'] = $user ? $user->name : '';
-            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
-            $data[$x]['communication'] = (int)$review->communication;
-            $data[$x]['work_quality'] = (int)$review->work_quality;
-            $data[$x]['price'] = (int)$review->price;
-            $data[$x]['punctuality'] = (int)$review->punctuality;
-            $data[$x]['attitude'] = (int)$review->attitude;
-            $data[$x]['title'] = $review->title;
-            $data[$x]['content'] = $review->content;
-            $data[$x]['created'] = $review->created_at->format('M d, Y');
-            $data[$x]['helpful'] = $review->helpful;
-            $data[$x]['id'] = $review->id;
-            $x++;
-        }
-
-        return $data;
     }
 
     public function helpful(Request $request){

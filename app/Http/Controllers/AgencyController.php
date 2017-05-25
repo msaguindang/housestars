@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ReviewService;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -22,14 +23,22 @@ use Image;
 
 class AgencyController extends Controller
 {
-    public function dashboard(){
+    private $reviewService;
+
+    public function __construct(ReviewService $reviewService)
+    {
+        $this->reviewService = $reviewService;
+    }
+
+    public function dashboard()
+    {
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $dp = 'assets/default.png';
         $cp = 'assets/default_cover_photo.jpg';
         $galleryCtr = 0;
         
         foreach ($meta as $key) {
-            if ($key->meta_name == 'profile-photo'){
+            if ($key->meta_name == 'profile-photo') {
                 $dp = $key->meta_value;
             } else if ($key->meta_name == 'cover-photo'){
                 $cp = $key->meta_value;
@@ -42,7 +51,7 @@ class AgencyController extends Controller
         }
 
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
-        $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
+        $data['reviews'] = $this->reviewService->getReviews(Sentinel::getUser()->id);
         $data['total'] = count($data['reviews']);
 
         $data['properties'] = $this->property_listing(Sentinel::getUser()->id);
@@ -331,29 +340,6 @@ class AgencyController extends Controller
         return $average;
     }
 
-    public function getReviews($id){
-
-        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
-        $data = array(); $x = 0; $average = 0;
-        foreach ($reviews as $review) {
-            $name = User::where('id', $review->reviewer_id)->get();
-            $data[$x]['name'] = $name[0]['name'];
-            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
-            $data[$x]['communication'] = (int)$review->communication;
-            $data[$x]['work_quality'] = (int)$review->work_quality;
-            $data[$x]['price'] = (int)$review->price;
-            $data[$x]['punctuality'] = (int)$review->punctuality;
-            $data[$x]['attitude'] = (int)$review->attitude;
-            $data[$x]['title'] = $review->title;
-            $data[$x]['content'] = $review->content;
-            $data[$x]['created'] = $review->created_at->format('M d, Y');
-            $data[$x]['helpful'] = $review->helpful;
-            $data[$x]['id'] = $review->id;
-            $x++;
-        }
-
-        return $data;
-    }
     public function helpful(Request $request){
         $review = Reviews::where('id', '=', $request->input('id'))->get();
 

@@ -11,12 +11,20 @@ use App\Agents;
 use App\Advertisement;
 use App\Services\AgentService;
 use App\Property;
+use App\Services\ReviewService;
 use Response;
 use View;
 use Sentinel;
 
 class ProfileController extends Controller
-{
+{   
+    private $reviewService;
+
+    public function __construct(ReviewService $reviewService)
+    {
+        $this->reviewService = $reviewService;
+    }
+
     public function profile($role, $id)
     {
         try {
@@ -37,6 +45,7 @@ class ProfileController extends Controller
                     $data['id'] = $id;
                     $data['role'] = 'tradesman';
         			$data['name'] = User::find($id)->name;
+                    $data['reviews'] = $this->reviewService->getReviews($id);
                     return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
                 case 'agency':
@@ -57,6 +66,7 @@ class ProfileController extends Controller
                     $data['id'] = $id;
                     $data['role'] = 'agency';
                     $data['name'] = User::find($id)->name;
+                    $data['reviews'] = $this->reviewService->getReviews($id);
                     return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                     break;
                 case 'agent':
