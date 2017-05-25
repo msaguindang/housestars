@@ -81,7 +81,6 @@ class RegistrationController extends Controller
                                 }
 
                                 $value .= $suburb. ',';
-								
                                 // Update suburb availability
                                 //$sub = Suburbs::where('id', preg_replace('/\D/', '', $suburb))->where('name', preg_replace('/\d/', '', $suburb) )->first();
                                 
@@ -96,6 +95,8 @@ class RegistrationController extends Controller
                         );
                     }
     			}
+    			
+    			$this->updateAvailability();
     			
     			if(Sentinel::getUser()->subs_status == 0){
 	    			return redirect(env('APP_URL').'/register/agency/step-three');
@@ -138,7 +139,9 @@ class RegistrationController extends Controller
    
 
     public function addProperty(Request $request)
-    {
+    {	
+	
+
         $user_id = Sentinel::getUser()->id;
         $property_meta = array('property-type','number-rooms','post-code', 'property-address', 'suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $user_meta = array('address', 'phone', 'username');
@@ -154,7 +157,7 @@ class RegistrationController extends Controller
                     );
             }
 			$propertyInfo = Property::where('property_code', $property_code)->get();
-            if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0){
+            if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0 && $request->input($meta) != 1){
               
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
 
@@ -190,10 +193,12 @@ class RegistrationController extends Controller
 
         $property['customer_name'] = Sentinel::getUser()->name;
         $property['customer_email'] = Sentinel::getUser()->email;
+        
 		//dd($property);
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);
 		$this->notifyCustomer($property, Sentinel::getUser()->email);
+		
         return redirect(env('APP_URL').'/register/customer/complete');
 
     }
@@ -285,6 +290,7 @@ class RegistrationController extends Controller
         $positions = isset($data['positions']) ? $data['positions'] : [];
         $data['pos_json'] = json_encode($positions);
         $data['sub_status'] = Sentinel::getUser()->subs_status;
+        $this->updateAvailability();
         return View::make('register/agency/step-one')->with('suburbs', $suburbs)->with('user', $data);
     }
 
@@ -520,7 +526,11 @@ class RegistrationController extends Controller
                 } catch(\Exception $e) {
                     return redirect()->back()->with('error', $e->getMessage());
                 }
-
+			
+			if(Sentinel::getUser()->subs_status == 0){
+				User::where('id', $user_id)->update(['subs_status' => 1]);
+			}
+			
             if(strtolower($role) == 'tradesman') {
                 return redirect(env('APP_URL').'/register/tradesman/step-three');
             } else {
@@ -631,4 +641,35 @@ class RegistrationController extends Controller
                 $message->subject('New Customer Sign-up: '. $property['customer_name']);
             });
     }
+    
+    public function updateAvailability()
+    {
+		DB::table('suburbs')->update(['availability' => 0]);
+
+    	$suburbs = UserMeta::where('meta_name', 'positions')->get();
+	    $positions = [];
+	    	
+	    foreach($suburbs as $suburb){
+		    if(!is_null(RoleUsers::hasRole($suburb->user_id, 2)->first())) {
+	           $subs = explode(",", $suburb->meta_value);
+	            foreach($subs as $sub){
+		           array_push($positions, $sub);
+	            }
+	        }
+	    }
+	    	//dd($suburbCount);
+	    $availabilityCount = array_count_values($positions);
+	    	
+	    foreach($availabilityCount as $suburb => $count){
+		    $postcode = preg_replace('/\D/', '', $suburb);
+		    $suburb_name = preg_replace('/\d/', '', $suburb);
+		    	
+		    if($count > 3){
+			    $count = 3;
+		    }
+		    Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
+	    }
+	}
+	    	
+
 }

@@ -304,7 +304,7 @@
                   } else {
                       $( "#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">No nearby agencies listed.</span></br>');
                   }
-                    $( "#nearbyAgencyList" ).append('</br></br><span class="option"><input type="radio" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span>');
+                    $( "#nearbyAgencyList" ).append('</br></br><input type="checkbox" value="1" name="agent"> <span class="checklist-label"> I am ready for an agent, but there are none available. </span><span class="option"><input type="checkbox" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span><span class="option">');
          		},
          		error: function(data) {
          			$( ".option" ).addClass('hidden');

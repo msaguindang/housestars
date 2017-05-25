@@ -229,6 +229,8 @@ class MainController extends Controller
     
     
     public function test(){
+	   		DB::table('suburbs')->update(array('availability' => 0));
+
 	    	$suburbs = UserMeta::where('meta_name', 'positions')->get();
 	    	$positions = [];
 	    	
@@ -253,7 +255,6 @@ class MainController extends Controller
 		    	Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
 	    	}
 	    	
-	    	//DB::table('suburbs')->update(array('availability' => 0));
-    }
+	    	    }
     
 }

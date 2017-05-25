@@ -70,6 +70,22 @@
 	</div>
 </section>
 
+    @if(Sentinel::getUser()->subs_status == 0)
+        <div class="container">
+			<div class="row">
+				<div class="error-bar">
+	        <div class="col-xs-1">
+	          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+	        </div>
+	        <div class="col-xs-11">
+	          <p><span class="blue">Subscription Status: Inactive</span></p>
+	          <p>We're unable to charge your account. Please update your payment method to continue your access to our system.</p>
+	        </div>
+	      </div>
+			</div>
+		</div>
+	@endif
+
 <section id="sign-up-form">
 	<div class="container">
 		<div class="row">
@@ -78,7 +94,7 @@
 					<form name="form" action="{{env('APP_URL')}}/add-payment" method="POST">
 
 					{{csrf_field() }}
-				<div class="col-xs-6 padding-40">
+				<div class="col-xs-6 padding-40 border-right">
 					<h2>Add Payment Method</h2>
 					@if(session('error'))
 					<div class="alert alert-danger">
@@ -115,7 +131,7 @@
 				    <br/>
                     <a href="/register/tradesman/step-one" class="btn hs-primary" style="width:130px;padding:8px 15px 8px 30px;text-align:right;"> <span class="icon icon-arrow-left" style="margin-left:-20px;"></span> Back </a>
                 </div>
-				<div class="col-xs-6 border-left padding-40">
+				<div class="col-xs-6 padding-40">
 					<h2>Add Billing Address</h2>
 					<label>Address</label>
 					<input type="text" name="address" required>
