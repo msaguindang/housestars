@@ -139,7 +139,9 @@ class RegistrationController extends Controller
    
 
     public function addProperty(Request $request)
-    {
+    {	
+	
+
         $user_id = Sentinel::getUser()->id;
         $property_meta = array('property-type','number-rooms','post-code', 'property-address', 'suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $user_meta = array('address', 'phone', 'username');
@@ -155,7 +157,7 @@ class RegistrationController extends Controller
                     );
             }
 			$propertyInfo = Property::where('property_code', $property_code)->get();
-            if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0){
+            if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0 && $request->input($meta) != 1){
               
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
 
@@ -191,10 +193,12 @@ class RegistrationController extends Controller
 
         $property['customer_name'] = Sentinel::getUser()->name;
         $property['customer_email'] = Sentinel::getUser()->email;
+        
 		//dd($property);
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);
 		$this->notifyCustomer($property, Sentinel::getUser()->email);
+		
         return redirect(env('APP_URL').'/register/customer/complete');
 
     }
