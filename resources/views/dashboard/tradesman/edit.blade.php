@@ -67,7 +67,7 @@
           <div class="row">
             <p class="links"><a href="">Home Page</a> > <a href="">Trades/Services</a> > <span class="blue"> Dashboard</span> </p>
             <div class="upload">
-              <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
+              <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="" data-html="true"> <!-- <b>Minimum size: 1328 x 272</b> -->
               <input id="cover-photo-drag" name="cover-photo-drag" type="hidden" />
               <button type="button" class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
@@ -78,7 +78,7 @@
             @endif
             <div ondragover="allowDrop(event);" class="profile-img" id="profile-img" style="background: url('{{$data['profile-photo']}}') 100%">
               <button type="button" class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
-              <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
+              <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="" data-html="true"> <!-- <b>Minimum size: 117 x 117</b> -->
               <input id="profile-photo-drag" name="profile-photo-drag" type="hidden" />
             </div>
             <div class="profile-info">
@@ -101,7 +101,7 @@
             <div class="col-xs-3"></div>
             <div class="col-xs-4 dash-field">
               <label>Website</label>
-
+              
               @if(isset($data['website']))
               <input type="text" name="website" value="{{$data['website']}}">
               @else
@@ -392,6 +392,10 @@
                 });
       }
       var gallery = lightGalleryInit();
+      var hasError = '{{ $errors->any() }}';
+      if(hasError) {
+        $('#editErrorModal').modal('show');
+      }
     </script>
     <script type="text/javascript">
         $.ajaxSetup({

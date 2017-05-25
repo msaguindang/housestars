@@ -64,7 +64,7 @@
           <div class="row">
             <p class="links small-screen"><a href="/">Home Page</a> > <a href="/agency">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
             <div class="upload">
-              <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="<b>Minimum size: 1328 x 272</b>" data-html="true">
+              <input id="CoverUpload" type="file" name="cover-photo" class="tooltip-info" data-toggle="tooltip" data-placement="left" title="" data-original-title="" data-html="true"> <!-- <b>Minimum size: 1328 x 272</b> -->
               <input id="cover-photo-drag" type='hidden' name="cover-photo-drag" />
             <button class="btn hs-secondary update-cover"><span class="icon icon-image"></span> Change Photo</button>
             </div>
@@ -75,7 +75,7 @@
             @endif
             <div ondragover="allowDrop(event);" class="profile-img" id="profile-img" style="background: url('{{ $data['profile-photo'] }}') 100%">
               <button class="btn hs-secondary update-profile"><span class="icon icon-image"></span> Change Photo</button>
-              <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="<b>Minimum size: 117 x 117</b>" data-html="true">
+              <input id="profileupload" type="file" name="profile-photo" class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="" data-html="true"> <!-- <b>Minimum size: 117 x 117</b> -->
               <input id="profileupload-drag" type='hidden' name="profile-photo-drag" />
             </div>
             <div class="profile-info edit">
@@ -243,6 +243,10 @@
               });
     }
     var gallery = lightGalleryInit();
+    var hasError = '{{ $errors->any() }}';
+    if(hasError) {
+      $('#editErrorModal').modal('show');
+    }
   </script>
   <script type="text/javascript">
       $.ajaxSetup({

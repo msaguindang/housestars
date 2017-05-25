@@ -22,7 +22,10 @@ use Response;
 use Image;
 
 class AgencyController extends Controller
-{
+{   
+    const MAX_WIDTH  = 1200,
+          MAX_HEIGHT = 127;
+
     private $reviewService;
 
     public function __construct(ReviewService $reviewService)
@@ -107,7 +110,17 @@ class AgencyController extends Controller
 
     public function updateProfile(Request $request)
     {
-        if(Sentinel::check() || is_admin()) {
+        $validator = app('validator')->make($request->all(), [
+            'profile-photo' => 'max:2048',
+            'cover-photo'   => 'max:2048'
+        ],[
+            'profile-photo.max' => 'Profile photo should not be greater than 2MB.',
+            'cover-photo.max'   => 'Cover photo should not be greater than 2MB.'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else if(Sentinel::check() || is_admin()) {
             $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
 
             $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
@@ -117,8 +130,16 @@ class AgencyController extends Controller
                     $localpath = 'user/user-'.$user_id.'/uploads';
                     $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
                     $path = $request->file($meta)->move(public_path($localpath), $filename);
-                    $value = $localpath.'/'.$filename;
-                    Image::make($value)->orientate()->save($value);
+                    $value = $localpath . '/' . $filename;               
+                    list($width, $height) = getimagesize($value);
+                    $image = Image::make($value)->orientate();
+                    if ($width > self::MAX_WIDTH) {
+                        $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                        $image->resize(self::MAX_WIDTH, $height, function($c) {
+                            $c->aspectRatio();
+                            $c->upsize();
+                        })->save($value);
+                    }
                 } else if(!empty($request->get($meta.'-drag', ''))) {
                     $value = $request->input($meta.'-drag');
                 } else {

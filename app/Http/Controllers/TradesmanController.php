@@ -144,7 +144,7 @@ class TradesmanController extends Controller
                     ]);
         
         if ($validator->fails()) {
-            return Response::json(['error' => "You can't upload beyond 2MB."], 422);
+            return Response::json(['error' => "photo(s) should not be greater than 2MB."], 422);
         }
 
         $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
@@ -181,46 +181,62 @@ class TradesmanController extends Controller
 
     public function updateProfile(Request $request)
     {
-    	if(Sentinel::check()){
-    		$user_id = $request->route('id') ? : Sentinel::getUser()->id;
+        $validator = app('validator')->make($request->all(), [
+            'profile-photo' => 'max:2048',
+            'cover-photo'   => 'max:2048'
+        ],[
+            'profile-photo.max' => 'Profile photo should not be greater than 2MB.',
+            'cover-photo.max'   => 'Cover photo should not be greater than 2MB.'
+        ]);
 
-    		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate', 'phone');
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else if(Sentinel::check()) {
+            try {
+        		$user_id = $request->route('id') ? : Sentinel::getUser()->id;
+        		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate', 'phone');
+        		foreach ($meta_name as $meta) {
+                    if ($request->hasFile($meta))  {
+                    	$file = $request->file($meta);
+                    	$localpath = 'user/user-'.$user_id.'/uploads';
+    	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
+    					$path = $file->move(public_path($localpath), $filename);
+    					$value = $localpath.'/'.$filename;
+                        list($width, $height) = getimagesize($value);
+                        $image = Image::make($value)->orientate();
+                        if ($width > self::MAX_WIDTH) {
+                            $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                            $image->resize(self::MAX_WIDTH, $height, function($c) {
+                                $c->aspectRatio();
+                                $c->upsize();
+                            })->save($value);
+                        }
+    				} else if(!empty($request->get($meta.'-drag', ''))) {
+                        $value = $request->input($meta.'-drag');
+                    } else {
+    					$value = $request->input($meta);
+    				}
 
-    		foreach ($meta_name as $meta) {
+    				if($meta == 'positions' && $request->input($meta) != null && $meta != ''){
+                        $suburbs = $request->input($meta);
+                        $value = '';
 
-                if ($request->hasFile($meta))  {
-                	$file = $request->file($meta);
-                	$localpath = 'user/user-'.$user_id.'/uploads';
-	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
-					$path = $file->move(public_path($localpath), $filename);
-					$value = $localpath.'/'.$filename;
-                    Image::make($value)->orientate()->save($value);
-				} else if(!empty($request->get($meta.'-drag', ''))) {
-                    $value = $request->input($meta.'-drag');
-                } else {
-					$value = $request->input($meta);
-				}
-
-				if($meta == 'positions' && $request->input($meta) != null && $meta != ''){
-                    $suburbs = $request->input($meta);
-                    $value = '';
-
-                    foreach ($suburbs as $suburb) {
-                        $value .= $suburb . ',';
+                        foreach ($suburbs as $suburb) {
+                            $value .= $suburb . ',';
+                        }
                     }
-                }
 
-				if($value !== null) {
-                	UserMeta::updateOrCreate(
-                    	['user_id' => $user_id, 'meta_name' => $meta],
-                    	['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
-                	);
-				}
-
-    		}
-
-		    return redirect(env('APP_URL').'/dashboard/tradesman/profile');
-
+    				if($value !== null) {
+                    	UserMeta::updateOrCreate(
+                        	['user_id' => $user_id, 'meta_name' => $meta],
+                        	['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
+                    	);
+    				}
+        		}
+                return redirect(env('APP_URL').'/dashboard/tradesman/profile');
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
     	} else {
     		return redirect(env('APP_URL'));
     	}
