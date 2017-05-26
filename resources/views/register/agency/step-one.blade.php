@@ -136,7 +136,7 @@
                                 <span class="input-group-addon" id="basic-addon1">%</span>
                             </div>
                             <label>Marketing Budget</label>
-                            <input type="text" min="0" name="marketing-budget" id="marketing-budget" value="{{isset($user['marketing-budget']) ? $user['marketing-budget'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="marketing-budget" value="{{isset($user['marketing-budget']) ? $user['marketing-budget'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
                             <label>Review URL <i class="fa fa-question-circle tooltip-info" aria-hidden="true"
                                                  data-toggle="tooltip" data-placement="right" title=""
                                                  data-original-title="If you have a profile or a rate and review list on another website that you would like to display, type the URL here, and it will be added to your profile page."
@@ -190,7 +190,6 @@
         };
 
         $(function () {
-            // #marketing-budget
             $('#base-commission').bind('input', function (e) {
                 if (!Money.isValidMoney(e.target.value)) {
                     $(this).val('');
