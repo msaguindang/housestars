@@ -102,16 +102,14 @@ var _URL = window.URL || window.webkitURL;
 $("#CoverUpload").change(function(e) {
     var file, img;
 
-console.log('YES');
-
     if ((file = this.files[0])) {
         img = new Image();
         img.onload = function() {
 
-            if(this.width < 1328){
-              $('#thankYou .modal-body').html('<p>Image width is too small, please resize and upload it again for better quality.</p>');
-              $('#thankYou').modal('show');
-            }
+            // if (this.width < 1328) {
+            //   $('#thankYou .modal-body').html('<p>Image width is too small, please resize and upload it again for better quality.</p>');
+            //   $('#thankYou').modal('show');
+            // }
         };
 
         img.onerror = function() {
@@ -127,16 +125,14 @@ console.log('YES');
 $("#profileUpload").change(function(e) {
     var file, img;
 
-console.log('YES');
-
     if ((file = this.files[0])) {
         img = new Image();
         img.onload = function() {
 
-            if(this.width < 177){
-              $('#thankYou .modal-body').html('<p>Image width is too small, please resize and upload it again for better quality.</p>');
-              $('#thankYou').modal('show');
-            }
+            // if (this.width < 177) {
+            //   $('#thankYou .modal-body').html('<p>Image width is too small, please resize and upload it again for better quality.</p>');
+            //   $('#thankYou').modal('show');
+            // }
         };
 
         img.onerror = function() {

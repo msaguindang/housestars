@@ -26,8 +26,9 @@ use Image;
 class TradesmanController extends Controller
 {
     const MAX_PHOTO  = 10,
-          MAX_WIDTH  = 1200,
-          MAX_HEIGHT = 127;
+          MAX_WIDTH_LANDSCAPE  = 1200,
+          MAX_WIDTH_PORTRAIT  = 270,
+          MAX_HEIGHT = 270;
 
     private $galleryService,
             $reviewService;
@@ -157,13 +158,21 @@ class TradesmanController extends Controller
             $filePath = public_path($localpath . '/' . $filename);
             list($width, $height) = getimagesize($filePath);
             $image = Image::make($filePath)->orientate();
-            if ($width > self::MAX_WIDTH) {
-                $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
-                $image->resize(self::MAX_WIDTH, $height, function($c) {
+            $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+            if ($width > $height && $width > self::MAX_WIDTH_LANDSCAPE) {
+                // Landscape
+                $image->resize(self::MAX_WIDTH_LANDSCAPE, $h, function($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })->save($filePath);
+            } else if ($width < $height && $width > self::MAX_WIDTH_PORTRAIT) {
+                // Portrait or Square
+                $image->resize(self::MAX_WIDTH_PORTRAIT, $h, function($c) {
                     $c->aspectRatio();
                     $c->upsize();
                 })->save($filePath);
             }
+
 			$url = $localpath.'/'.$filename;
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
             array_push($data, $url);
@@ -204,13 +213,21 @@ class TradesmanController extends Controller
     					$value = $localpath.'/'.$filename;
                         list($width, $height) = getimagesize($value);
                         $image = Image::make($value)->orientate();
-                        if ($width > self::MAX_WIDTH) {
-                            $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
-                            $image->resize(self::MAX_WIDTH, $height, function($c) {
+                        $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                        if ($width > $height && $width > self::MAX_WIDTH_LANDSCAPE) {
+                            // Landscape
+                            $image->resize(self::MAX_WIDTH_LANDSCAPE, $h, function($c) {
+                                $c->aspectRatio();
+                                $c->upsize();
+                            })->save($value);
+                        } else if ($width < $height && $width > self::MAX_WIDTH_PORTRAIT) {
+                            // Portrait or Square
+                            $image->resize(self::MAX_WIDTH_PORTRAIT, $h, function($c) {
                                 $c->aspectRatio();
                                 $c->upsize();
                             })->save($value);
                         }
+
     				} else if(!empty($request->get($meta.'-drag', ''))) {
                         $value = $request->input($meta.'-drag');
                     } else {

@@ -23,9 +23,10 @@ use Image;
 
 class AgencyController extends Controller
 {   
-    const MAX_WIDTH  = 1200,
-          MAX_HEIGHT = 127;
-
+    const MAX_WIDTH_LANDSCAPE  = 1200,
+          MAX_WIDTH_PORTRAIT  = 270,
+          MAX_HEIGHT = 270;
+          
     private $reviewService;
 
     public function __construct(ReviewService $reviewService)
@@ -133,13 +134,21 @@ class AgencyController extends Controller
                     $value = $localpath . '/' . $filename;               
                     list($width, $height) = getimagesize($value);
                     $image = Image::make($value)->orientate();
-                    if ($width > self::MAX_WIDTH) {
-                        $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
-                        $image->resize(self::MAX_WIDTH, $height, function($c) {
+                    $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                    if ($width > $height && $width > self::MAX_WIDTH_LANDSCAPE) {
+                        // Landscape
+                        $image->resize(self::MAX_WIDTH_LANDSCAPE, $h, function($c) {
+                            $c->aspectRatio();
+                            $c->upsize();
+                        })->save($value);
+                    } else if ($width < $height && $width > self::MAX_WIDTH_PORTRAIT) {
+                        // Portrait or Square
+                        $image->resize(self::MAX_WIDTH_PORTRAIT, $h, function($c) {
                             $c->aspectRatio();
                             $c->upsize();
                         })->save($value);
                     }
+
                 } else if(!empty($request->get($meta.'-drag', ''))) {
                     $value = $request->input($meta.'-drag');
                 } else {
