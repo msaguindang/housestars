@@ -255,6 +255,24 @@ class MainController extends Controller
 		    	Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
 	    	}
 	    	
-	    	    }
+
+/*
+		$qry = DB::select("SELECT meta_data.count, grab_chars(meta_data.name) suburb, grab_nums(meta_data.name) postcode, s.availability
+				FROM 
+				(select count(SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, ',', numbers.number), ',', -1)) count, SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, ',', numbers.number), ',', -1) name
+				from
+				  numbers inner join user_meta_positions
+				  on CHAR_LENGTH(meta_value)
+				     -CHAR_LENGTH(REPLACE(meta_value, ',', ''))>=numbers.number-1
+				WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, ',', numbers.number), ',', -1) <> ''
+				GROUP BY
+				  name
+				) meta_data,
+				suburbs s
+				WHERE grab_nums(meta_data.name) = s.id AND grab_chars(meta_data.name) = s.name");
+		
+		dd($qry);
+*/
+	}
     
 }

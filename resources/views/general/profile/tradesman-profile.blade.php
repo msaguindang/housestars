@@ -122,14 +122,7 @@
               @php($editUrl = "/profile/tradesman/{$data['id']}/edit")
               <a href="{{ env('APP_URL') . $editUrl}}" class="btn hs-primary">EDIT PROFILE <span class="fa fa-chevron-right"></span></a>
             @endif
-           <div class="info-item">
-              @if(isset($data['website']))
-              <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-              <div class="col-xs-10 detail">
-                <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
-              </div>
-              @endif
-            </div>
+
             <div class="info-item">
               @if(isset($data['email']))
               <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
