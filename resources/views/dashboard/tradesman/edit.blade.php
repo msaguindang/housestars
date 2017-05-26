@@ -82,7 +82,7 @@
               <input id="profile-photo-drag" name="profile-photo-drag" type="hidden" />
             </div>
             <div class="profile-info">
-              <label>Tradesman Name</label>
+              <label>Business Name</label>
               @if(isset($data['business-name']))
               <input type="text" name="business-name" value="{{$data['business-name']}}">
               @else

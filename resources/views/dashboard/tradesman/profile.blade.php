@@ -119,19 +119,12 @@
           </div>
           <div class="col-xs-3 profile-details" style="display: none;">
            <!--  <h3>More Details</h3> -->
-         <div class="info-item">
-            @if(isset($data['website']))
-            <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-            <div class="col-xs-10 detail">
-              <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
-            </div>
-            @endif
-          </div>
+
           <div class="info-item">
-            @if(isset($data['email']))
+            @if(isset(Sentinel::getUser()->email))
             <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
-              <p> <b> Email Address </b></br><span class="detail">{{$data['email']}}</span></p>
+              <p> <b> Email Address </b></br><span class="detail">{{Sentinel::getUser()->email}}</span></p>
             </div>
             @endif
           </div>

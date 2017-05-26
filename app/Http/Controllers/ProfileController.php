@@ -45,6 +45,7 @@ class ProfileController extends Controller
                     $data['id'] = $id;
                     $data['role'] = 'tradesman';
         			$data['name'] = User::find($id)->name;
+        			$data['email'] = User::find($id)->email;
                     $data['reviews'] = $this->reviewService->getReviews($id);
                     return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
