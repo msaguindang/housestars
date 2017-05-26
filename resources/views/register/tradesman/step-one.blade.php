@@ -108,7 +108,7 @@
                         {{csrf_field() }}
                         <div class="col-xs-8">
                             <div class="col-xs-6 no-padding-left">
-                                <label>Business Name <span class="required-symbol">*</span></label>
+                                <label>Business Name <span class="required-symbol">*</span> <span class="placeholder">This name will be displayed in search results</span></label>
                                 <input type="text" name="business-name" class="required-input" value="{{ $businessName}} " required>
                                 <label>Postcodes Serviced
                                     <!-- Suburbs Working In <span>(Enter the desired postcode and select suburbs)</span>  -->
@@ -121,7 +121,7 @@
                                         @endif
                                     @endforeach--}}
                                 </select>
-                                <label>Trading Name <span class="required-symbol">*</span></label>
+                                <label>Trading Name <span class="required-symbol">*</span> <span class="placeholder">For a sole trader or a partnership, please enter N/A.</span></label>
                                 <input type="text" name="trading-name" class="required-input" value="{{ $tradingName}} " required>
                             </div>
                             <div class="col-xs-6 no-padding-right">
@@ -129,14 +129,14 @@
                                 <input type="text" name="website" class="required-input" value="{{ $website }} " required>
                                 <label>ABN <span class="required-symbol">*</span></label>
                                 <input type="text" name="abn" class="required-input" value="{{ $abn}} " required>
-                                <label>Standard Hourly Rate (Enter N/A if this does not apply to you) <span class="required-symbol">*</span></label>
+                                <label>Standard Hourly Rate <span class="required-symbol">*</span> <span class="placeholder">Enter N/A if this does not apply to you</span></label>
                                 <input type="text" name="charge-rate" class="required-input" value="{{ $chargeRate }} " required>
                             </div>
                             <label>Write Business Description</label>
                             <textarea placeholder="" class="summary" name="summary">{{$summary}}</textarea>
                         </div>
                         <div class="col-xs-4">
-                            <label>Trade or Service <span>(1 only)</span> <span class="required-symbol">*</span></label>
+                            <label>Trade or Service <span class="required-symbol">*</span> <span>(1 only)</span></label>
                             <div id="trade-btn-group" class="btn-group">
                                 <button data-toggle="dropdown" id="trade-service-select" class="btn btn-default dropdown-toggle">
                                     {{-- empty($trade) ? 'Please Select... ' :  --}}
