@@ -136,25 +136,12 @@
                             <textarea placeholder="" class="summary" name="summary">{{$summary}}</textarea>
                         </div>
                         <div class="col-xs-4">
-                            <label>Trade or Service <span class="required-symbol">*</span> <span>(1 only)</span></label>
-                            <div id="trade-btn-group" class="btn-group">
-                                <button data-toggle="dropdown" id="trade-service-select" class="btn btn-default dropdown-toggle">
-                                    {{-- empty($trade) ? 'Please Select... ' :  --}}
-                                    Please Select... 
-                                    <span class="caret"><i class="fa fa-angle-down" aria-hidden="true"></i></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    @foreach($categories as $index => $cat)
-                                        @if (!empty($trade) && strtolower($trade) == strtolower($cat->category))
-                                            @php ($selectedTradeIndex = ($index+1))
-                                        @endif
-                                        <li>
-                                            <input type="radio" id="t{{$index+1}}" name="trade" value="{{ $cat->category }}">
-                                            <label for="t{{$index+1}}">{{ $cat->category }}</label>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                            <label>Trade or Service <span class="required-symbol">*</span></label>
+                            <select id="select-cat" name="trade[]" multiple class="demo-default" class="required-input" required>
+                                @foreach($categories as $index => $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->category }}</option>
+                                @endforeach
+                            </select>
                             <label>Promotion Code</label>
                             <input type="text" name="promotion-code" value="{{ $promotionCode }} ">
                             
@@ -189,6 +176,14 @@
             },
         });
         
+        $('#select-cat').selectize({
+            render: {
+                option: function(item, escape) {
+                    return '<div class="option" data-selectable="" data-value="' + escape(item.value) + '">' + escape(item.text) + '</div>';
+                }
+            }
+        });
+
         $('#select-state').selectize({
             maxItems: 10000,
             valueField: 'value',
