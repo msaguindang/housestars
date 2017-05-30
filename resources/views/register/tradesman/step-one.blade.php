@@ -109,7 +109,7 @@
                         <div class="col-xs-8">
                             <div class="col-xs-6 no-padding-left">
                                 <label>Business Name <span class="required-symbol">*</span> <span class="placeholder">This name will be displayed in search results</span></label>
-                                <input type="text" name="business-name" class="required-input" value="{{ $businessName}} " required>
+                                <input type="text" name="business-name" class="required-input" value="{{ $businessName}}" required>
                                 <label>Postcodes Serviced
                                     <!-- Suburbs Working In <span>(Enter the desired postcode and select suburbs)</span>  -->
                                     <span class="required-symbol">*</span></label>
@@ -117,20 +117,20 @@
                                         class="required-input" required>
                                     {{--@foreach ($suburbs as $suburb)
                                         @if($suburb->availability != '3')
-                                            <option value="{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }} ({{ $suburb->id}})</option>
+                                            <option value="{{ $suburb->id}}{{ $suburb->name }}">{{ $suburb->name }}({{ $suburb->id}})</option>
                                         @endif
                                     @endforeach--}}
                                 </select>
                                 <label>Trading Name <span class="required-symbol">*</span> <span class="placeholder">For a sole trader or a partnership, please enter N/A.</span></label>
-                                <input type="text" name="trading-name" class="required-input" value="{{ $tradingName}} " required>
+                                <input type="text" name="trading-name" class="required-input" value="{{ $tradingName}}" required>
                             </div>
                             <div class="col-xs-6 no-padding-right">
                                 <label>Website <span class="required-symbol">*</span></label>
-                                <input type="text" name="website" class="required-input" value="{{ $website }} " required>
+                                <input type="text" name="website" class="required-input" value="{{ $website }}" required>
                                 <label>ABN <span class="required-symbol">*</span></label>
-                                <input type="text" name="abn" class="required-input" value="{{ $abn}} " required>
+                                <input type="text" name="abn" class="required-input" value="{{$abn}}" required>
                                 <label>Standard Hourly Rate <span class="required-symbol">*</span> <span class="placeholder">Enter N/A if this does not apply to you</span></label>
-                                <input type="text" name="charge-rate" class="required-input" value="{{ $chargeRate }} " required>
+                                <input type="text" name="charge-rate" class="required-input" value="{{ $chargeRate }}" required>
                             </div>
                             <label>Write Business Description</label>
                             <textarea placeholder="" class="summary" name="summary">{{$summary}}</textarea>
@@ -143,10 +143,10 @@
                                 @endforeach
                             </select>
                             <label>Promotion Code</label>
-                            <input type="text" name="promotion-code" value="{{ $promotionCode }} ">
+                            <input type="text" name="promotion-code" value="{{ $promotionCode }}">
                             
                             <label>Phone Number</label>
-                            <input type="text" name="phone-number" value="{{ $phone }} ">
+                            <input type="text" name="phone-number" value="{{ $phone }}">
 
                             <button class="btn hs-primary" id="submit" disabled>NEXT <span
                                         class="icon icon-arrow-right"></span></button>

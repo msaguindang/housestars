@@ -56,7 +56,7 @@ class MainController extends Controller
     }
 
     public function home(Request $request)
-    {
+    {        
         $ads = Advertisement::getByPage('home')->get();
         // $numAds =  count($ads['728x90'] );
         // $index = rand(0, $numAds);

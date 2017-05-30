@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
+use App\Services\AbnService;
 use Sentinel;
 use App\User;
 use App\UserMeta;
@@ -53,17 +54,19 @@ class RegistrationController extends Controller
 
     public function postUserMeta(Request $request)
     {
+        $abnService = new AbnService();
+
     	if (Sentinel::check()) {
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
-
+            
     		if ($role == 'agency') {
-                $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url');
+                $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url', 'abn');
     			foreach ($meta_name as $meta) {
                     if ($request->input($meta) != null || $request->input($meta) != '') {
                         $value = $request->input($meta);
 
-                        if($meta == 'positions' && $request->input($meta) != null){
+                        if($meta == 'positions' && $request->input($meta) != null) {
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
@@ -73,16 +76,24 @@ class RegistrationController extends Controller
 	                            	if(strpos($suburb,"-dup") !== FALSE){
 	                                    $suburb = explode("-dup", $suburb)[0];
 	                                }
-	                            } else if(strpos($suburb,"-dup") !== FALSE){
+	                            } else if(strpos($suburb,"-dup") !== FALSE) {
                                     $suburb = explode("-dup", $suburb)[0];
                                 }
-
                                 $value .= $suburb. ',';
-                                // Update suburb availability
-                                //$sub = Suburbs::where('id', preg_replace('/\D/', '', $suburb))->where('name', preg_replace('/\d/', '', $suburb) )->first();
-                                
-                               // DB::table('suburbs')->where('suburb_id', $sub->suburb_id)->update(['availability' => $sub->availability +  1]);
+                            }
+                        } else if ($meta == 'abn') {
+                            if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
+                                return redirect()->back()->withError("ABN already exist!");
+                            }
 
+                            try {
+                                $abnResponse = $abnService->searchByAbn($request->get($meta));
+                                $abnResult = $abnResponse->ABRPayloadSearchResults->response;
+                                if ($abnResult->exception && $abnResult->exception->exceptionDescription && $abnResult->exception->exceptionCode) {
+                                    return redirect()->back()->withError($abnResult->exception->exceptionDescription);
+                                }
+                            } catch (\Exception $e) {
+                                return redirect()->back()->withError("Not a valid ABN or ACN.");
                             }
                         }
 
@@ -102,7 +113,7 @@ class RegistrationController extends Controller
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
 
     		} else if (strtolower($role) == 'tradesman') {
-                $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate', 'phone-number');
+                $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'charge-rate', 'phone-number', 'abn');
                 foreach ($meta_name as $meta) {
                     if ($request->input($meta) != null || $request->input($meta) != '') {
                         $value = $request->input($meta);
@@ -120,6 +131,20 @@ class RegistrationController extends Controller
                                 );
                             }
                             continue;
+                        }  else if ($meta == 'abn') {
+                            if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
+                                return redirect()->back()->withError("ABN already exist!");
+                            }
+
+                            try {
+                                $abnResponse = $abnService->searchByAbn($request->get($meta));
+                                $abnResult = $abnResponse->ABRPayloadSearchResults->response;
+                                if ($abnResult->exception && $abnResult->exception->exceptionDescription && $abnResult->exception->exceptionCode) {
+                                    return redirect()->back()->withError($abnResult->exception->exceptionDescription);
+                                }
+                            } catch (\Exception $e) {
+                                return redirect()->back()->withError("Not a valid ABN or ACN");
+                            }
                         }
 
                         UserMeta::updateOrCreate(
@@ -128,22 +153,15 @@ class RegistrationController extends Controller
                         );
                     }
                 }
-
                 return redirect(env('APP_URL').'/register/tradesman/step-two');
-
             }
-
     	} else {
     		return redirect('/');
     	}
-
     }
    
-
     public function addProperty(Request $request)
     {	
-	
-
         $user_id = Sentinel::getUser()->id;
         $property_meta = array('property-type','number-rooms','post-code', 'property-address', 'suburb','state','leased','value-from','value-to','more-details','agent', 'commission');
         $user_meta = array('address', 'phone', 'username');
@@ -168,7 +186,6 @@ class RegistrationController extends Controller
               }
               $data['code'] = $request->input('code');
               $this->notifyAgency($data, $agencyEmail);
-              
             }
             
             //Get property info for email
@@ -196,7 +213,6 @@ class RegistrationController extends Controller
         $property['customer_name'] = Sentinel::getUser()->name;
         $property['customer_email'] = Sentinel::getUser()->email;
         
-		//dd($property);
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);
 		$this->notifyCustomer($property, Sentinel::getUser()->email);
@@ -352,7 +368,6 @@ class RegistrationController extends Controller
                   limit 20";
 
             $nearby = DB::select($qry);
-           // dd($nearby );
             $agencies = DB::table('users')
                             ->join('role_users', function ($join) {
                                 $join->on('users.id', '=', 'role_users.user_id')
@@ -375,7 +390,6 @@ class RegistrationController extends Controller
               }
             }
 
-            // dd($search);
             foreach ($nearby as $key) {
               if ($key->name != $suburb) {
                 $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
@@ -667,7 +681,6 @@ class RegistrationController extends Controller
 	            }
 	        }
 	    }
-	    	//dd($suburbCount);
 	    $availabilityCount = array_count_values($positions);
 	    	
 	    foreach($availabilityCount as $suburb => $count){
