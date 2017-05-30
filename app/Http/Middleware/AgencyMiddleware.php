@@ -41,15 +41,13 @@ class AgencyMiddleware
 	                  $payment_status = $customer_info->status;
 	
 	
-	                  if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
-		    			User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
+	                if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
+		    		    User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
 		    			UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
 	                    return redirect('/register/agency/step-one');
-	                  }
-	                  
-	                } else {
-	                  return redirect('/register/agency/step-three');
-	                }
+	                } else if (count($customer_info->subscriptions->data) == 0 && strtolower($request->route()->uri) != "register/agency/step-three") {
+                        return redirect('/register/agency/step-three');
+                    }
 	            }
                 return $next($request);
                 break;
