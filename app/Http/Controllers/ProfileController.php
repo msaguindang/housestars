@@ -15,6 +15,8 @@ use App\Services\ReviewService;
 use Response;
 use View;
 use Sentinel;
+use Cache;
+use App\Category;
 
 class ProfileController extends Controller
 {   
@@ -95,19 +97,22 @@ class ProfileController extends Controller
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
         $data['email'] = $user[0]['email'];
-        $x = 0; $y = 0;
+        $x = 0; $y = 0; $t = 0;
 
     	foreach ($meta as $key) {
     		if($key->meta_name == 'gallery'){
     			$data[$key->meta_name][$y] = $key->meta_value;
     			$y = $y + 1;
-
-    		} else {
-
+    		} else if($key->meta_name == 'trade') {
+                $categoryId = $key->meta_value;
+                $cat = Cache::rememberForever("category_$categoryId", function() use ($categoryId) {
+                    return Category::find($categoryId);
+                });
+                $data[$key->meta_name][$t] = $cat->category;
+                $t ++;
+            } else {
     			$data[$key->meta_name] = $key->meta_value;
-
     		}
-
     	}
     	$data['rating'] = $this->getRating($id);
         $data['reviews'] = $this->getReviews($id);
@@ -180,7 +185,6 @@ class ProfileController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        //dd($data);
         return $data;
     }
 

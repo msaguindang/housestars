@@ -96,7 +96,6 @@
 						</div>
 						<div class="preview-value">
 							@foreach($userinfo as $info)
-
 								@if($info->meta_name == 'agency-name')
 									<p>{{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'trading-name')
@@ -106,13 +105,11 @@
 								@elseif ($info->meta_name == 'phone')
 									<p>{{$info->meta_value}}</p>
 								@endif
-
 							@endforeach
-
 							<p>{{$email}}</p>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-4" style="padding: 0px;">
 						<div class="preview-label">
 							@php($posLen = count(array_flatten($positions)))
 							@for($ctr = 1; $ctr <= $posLen; $ctr ++)

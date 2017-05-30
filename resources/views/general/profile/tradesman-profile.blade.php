@@ -83,8 +83,8 @@
           <div class="col-xs-9">
             <div class="statistics">
                 @if(isset($data['trade']))
-                  <h2 class="trade">{{$data['trade']}}</h2>
-                  @endif
+                  <h2 class="trade">{{ implode(', ', $data['trade']) }}</h2>
+                @endif
 
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>

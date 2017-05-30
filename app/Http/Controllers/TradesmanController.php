@@ -13,6 +13,7 @@ use Sentinel;
 use App\User;
 use App\UserMeta;
 use App\Suburbs;
+use App\Category;
 use Carbon\Carbon;
 use Hash;
 use App\Agents;
@@ -22,6 +23,7 @@ use Mail;
 use App\Reviews;
 use App\RoleUsers;
 use Image;
+use Cache;
 
 class TradesmanController extends Controller
 {
@@ -41,23 +43,26 @@ class TradesmanController extends Controller
 
     public function dashboard()
     {
-
     	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
     	$data = array();
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
-        $x = 0; $y = 0;
+        $x = 0; $y = 0; $t = 0;
 
     	foreach ($meta as $key) {
-    		if($key->meta_name == 'gallery'){
+    		if($key->meta_name == 'gallery') {
     			$data[$key->meta_name][$y] = $key->meta_value;
     			$y = $y + 1;
-
-    		} else {
-
+    		} else if($key->meta_name == 'trade') {
+                $categoryId = $key->meta_value;
+                $cat = Cache::rememberForever("category_$categoryId", function() use ($categoryId) {
+                    return Category::find($categoryId);
+                });
+                $data[$key->meta_name][$t] = $cat->category;
+                $t ++;
+            } else {
     			$data[$key->meta_name] = $key->meta_value;
-
     		}
 
     	}
@@ -93,11 +98,14 @@ class TradesmanController extends Controller
     	$suburbs = Suburbs::all();
         $userId = $request->route('id') ? : Sentinel::getUser()->id;
     	$meta = UserMeta::where('user_id', $userId)->get();
+        $data['categories'] = Category::whereStatus(1)->orderBy('category', 'ASC')->groupBy('category')->get();
         $data['id'] = $userId;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
-        $x = 0; $y = 0;
+        $x = 0; $y = 0; 
+        $trades = [];
+        // $t = 0;
 
     	foreach ($meta as $key) {
     		if ($key->meta_name == 'positions') {
@@ -109,16 +117,15 @@ class TradesmanController extends Controller
     				$data['suburbs'][$x] = array('code' => $code[$x], 'name' => $suburb[$x]);
   					$x = $x + 1;
     			}
-
-
-    		} else if($key->meta_name == 'gallery'){
+    		} else if ($key->meta_name == 'trade') {
+                $categoryId = $key->meta_value;
+                array_push($trades, $categoryId);
+                $data[$key->meta_name] = $trades;
+            } else if($key->meta_name == 'gallery') {
     			$data[$key->meta_name][$y] = array('id'=>$key->id, 'url'=> $key->meta_value);
     			$y = $y + 1;
-
     		} else {
-
     			if(strlen($key->meta_value) > 30 && $key->meta_name == 'trade'){
-
     				$data[$key->meta_name] = substr($key->meta_value, 0, 30).'...';
     			} else {
     				$data[$key->meta_name] = $key->meta_value;
@@ -135,7 +142,6 @@ class TradesmanController extends Controller
             $data['profile-url'] .= "/tradesman/$userId";
             $data['name'] = User::find($userId)->name;
         }
-        
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
 
@@ -227,9 +233,20 @@ class TradesmanController extends Controller
                                 $c->upsize();
                             })->save($value);
                         }
-
     				} else if(!empty($request->get($meta.'-drag', ''))) {
                         $value = $request->input($meta.'-drag');
+                    } else if(($meta == 'trade') && ($trades = $request->get('trade', []))) {
+                        foreach ($trades as $tradeId) {
+                            UserMeta::updateOrCreate(
+                                ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $tradeId],
+                                ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $tradeId]
+                            );
+                        }
+                        UserMeta::where('user_id', $user_id)
+                                    ->where('meta_name', $meta)
+                                    ->whereNotIn('meta_value', $trades)
+                                    ->delete();
+                        continue;
                     } else {
     					$value = $request->input($meta);
     				}
