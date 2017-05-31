@@ -60,7 +60,7 @@ class TradesmanController extends Controller
                     return Category::find($categoryId);
                 });
                 $data[$key->meta_name][$t] = $cat->category;
-                $t ++;
+                $t++;
             } else {
     			$data[$key->meta_name] = $key->meta_value;
     		}
@@ -87,6 +87,10 @@ class TradesmanController extends Controller
             }
             $data['advert'][1] = $advert['270x270'][$index2];
 
+        }
+        
+		if(strpos(str_replace(str_split(' /'), '', strtolower($data['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data['trading-name']))) == 2){
+	        $data['trading-name'] = $data['business-name'];
         }
 
 	   return View::make('dashboard/tradesman/profile')->with('data', $data);

@@ -104,11 +104,11 @@
 							@if($price == '550')
 							<p> Total charges = <b>${{$price}} for a 12 month subscription</b></p>
 							@else
-							<p> Total charges = <b>${{$price}} for a 1 month subscription</b></p>
+							<p> Total charges = <b>${{$price}} per month</b></p>
 							@endif
 						</div>
 						<input type="hidden" name="plan" value="tradesman-{{$price}}">
-						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
+						
 					</div>
 				</div>
 
