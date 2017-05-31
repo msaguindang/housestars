@@ -53,17 +53,14 @@ class RegistrationController extends Controller
 
     public function postUserMeta(Request $request)
     {
-    	if(Sentinel::check()){
+    	if (Sentinel::check()) {
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
 
-    		if($role == 'agency'){
+    		if ($role == 'agency') {
                 $meta_name = array('agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'positions', 'base-commission', 'marketing-budget', 'sales-type', 'review-url');
-
     			foreach ($meta_name as $meta) {
-
-                    if($request->input($meta) != null || $request->input($meta) != '')
-                    {
+                    if ($request->input($meta) != null || $request->input($meta) != '') {
                         $value = $request->input($meta);
 
                         if($meta == 'positions' && $request->input($meta) != null){
@@ -104,20 +101,25 @@ class RegistrationController extends Controller
 
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
 
-    		} else if(strtolower($role) == 'tradesman'){
+    		} else if (strtolower($role) == 'tradesman') {
                 $meta_name = array('business-name', 'positions', 'trading-name', 'summary', 'promotion-code', 'trade', 'website', 'abn', 'charge-rate', 'phone-number');
                 foreach ($meta_name as $meta) {
-                    if($request->input($meta) != null || $request->input($meta) != '')
-                    {
+                    if ($request->input($meta) != null || $request->input($meta) != '') {
                         $value = $request->input($meta);
-
-                        if($meta == 'positions' && $request->input($meta) != null){
+                        if($meta == 'positions' && $request->input($meta) != null) {
                             $suburbs = $request->input($meta);
                             $value = '';
                             foreach ($suburbs as $suburb) {
                                 $value .= $suburb . ',';
-
                             }
+                        } else if(($meta == 'trade') && ($trades = $request->get('trade', []))) {
+                            foreach ($trades as $tradeId) {
+                                UserMeta::updateOrCreate(
+                                    ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $tradeId],
+                                    ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $tradeId]
+                                );
+                            }
+                            continue;
                         }
 
                         UserMeta::updateOrCreate(
@@ -426,8 +428,8 @@ class RegistrationController extends Controller
         $userinfo = UserMeta::where('user_id', $user_id)->get();
         $positions = array();
         $expiry = date('F d, Y', strtotime('+1 year'));
-		
-        if($role != 'customer'){
+
+        if ($role != 'customer') {                
             foreach ($userinfo as $info) {
                if($info->meta_name == 'positions') {
                     $pos = explode(",", $info->meta_value);
@@ -440,31 +442,39 @@ class RegistrationController extends Controller
                     }
                 }
             }
-             $price =  (count($positions) - 1) * 1000;
-
+            $price =  (count($positions) - 1) * 1000;
         }
 
-        if(strtolower($role) == 'tradesman'){
+        if(strtolower($role) == 'tradesman') {
+            $trades = UserMeta::where('user_id', $user_id)
+                                ->join('categories', 'categories.id', '=', 'user_meta.meta_value')
+                                ->where('user_meta.meta_name', 'trade')
+                                ->get(['categories.category'])->toArray();
+
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
             $data['plan'] = $customer_info->metadata->selected;
 
-
-            if($data['plan'] == 'yearly'){
+            if($data['plan'] == 'yearly') {
                 $price =  550;
                 $expiry = date('F d, Y', strtotime('+1 year'));
-             } else {
+            } else {
                 $price =  50;
                 $expiry = date('F d, Y', strtotime('+1 month'));
-             }
-
-             return View::make('register/tradesman/step-three')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
-        } else if($role == 'agency'){
-			
-			if(count($positions) > 1){
+            }
+            $data = [
+                'userinfo'  => $userinfo,
+                'email'     => $user_email,
+                'positions' => $positions,
+                'expiry'    => $expiry,
+                'price'     => $price,
+                'trades'    => array_remove_null(array_flatten($trades))
+            ];
+            return View::make('register/tradesman/step-three')->with($data);
+        } else if($role == 'agency') {
+			if(count($positions) > 1) {
 				$price =  (count($positions) - 1) * 1000;
 			}
-             
             return View::make('register/agency/step-four')->with('userinfo', $userinfo)->with('email', $user_email)->with('positions', $positions)->with('expiry', $expiry)->with('price', $price);
         } else {
             return View::make('register/customer/complete')->with('name', Sentinel::getUser()->name);

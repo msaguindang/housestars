@@ -84,8 +84,9 @@ class ReviewService
         $data = array();
         $x = 0;
         $average = 0;
-
-        foreach (Reviews::where('reviewee_id', '=', $id)->get() as $review) {
+        $reviews = Reviews::active()->where('reviewee_id', '=', $id)->get();
+        
+        foreach ($reviews as $review) {
             $userType = "App\\".ucfirst(camel_case($review->user_type));
             $user = app($userType)->findOrFail($review->reviewer_id);
             $data[$x]['name'] = $user->name ? : $user->email;

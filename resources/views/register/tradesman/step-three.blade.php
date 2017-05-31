@@ -81,27 +81,23 @@
 				<div class="package-review row">
 					<div class="col-xs-6">
 						<div class="preview-label" style="width: 25%">
-
 						</div>
 						<div class="preview-value">
+							<p><b>Email Address:</b> {{ $email }}</p>
 							@foreach($userinfo as $info)
-
 								@if($info->meta_name == 'business-name')
 									<p><b>Business Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'trading-name')
 									<p><b>Trading Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'charge-rate')
 									<p><b>Charge Rate:</b> {{$info->meta_value}}</p>
-								@elseif ($info->meta_name == 'trade')
-									<p><b>Trade or Service:</b> {{$info->meta_value}}</p>
 								@endif
-
 							@endforeach
-
-							<p><b>Email Address:</b> {{$email}}</p>
+							@if(count($trades))
+								<p><b> Trade or Service: </b> {{ implode(', ', $trades)}} </p>
+							@endif
 						</div>
 					</div>
-
 					<div class="col-xs-5 tradesman">
 						<div class="preview-total">
 							<span class="icon icon-total"></span>

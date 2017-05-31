@@ -160,9 +160,7 @@ class SearchController extends Controller
                      }
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
-                     if(strpos(strtolower($data[$x]['trading-name']), 'n/a') != false){
-					    $data[$x]['trading-name'] =  $data[$x]['business-name'];
-				     }
+                     
 // For Testing Banner Advert
 /*
                      $data[$x + 1]['rating'] = $this->getRating($id);
@@ -197,8 +195,7 @@ class SearchController extends Controller
 
         $data['cat'] = $category;
         $data['suburb'] = preg_replace('/[0-9]/', '', $suburb). ' (' . preg_replace('/\D+/', '', $suburb) . ')';
-		
-		
+
         $hasPriority = (Advertisement::hasPriority(0)->exists() && Advertisement::hasPriority(1)->exists());
         
         if ($ads = Advertisement::getByPage('tradies')->randomPriority($hasPriority)->inRandomOrder()->first()) {

@@ -208,7 +208,7 @@
         
 		console.log(selectedSuburbs);
         var $positionSelector = $('#select-state').selectize({
-            maxItems: 3,
+            maxItems: 10,
             valueField: 'value',
             searchField: ['name', 'id'],
             labelField: 'name',
