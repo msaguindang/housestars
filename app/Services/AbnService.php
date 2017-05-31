@@ -3,13 +3,11 @@ namespace App\Services;
 
 class AbnService extends \SoapClient {
 
-	private $guid;
 	private $url = "http://abr.business.gov.au/abrxmlsearch/ABRXMLSearch.asmx?WSDL";
+	private $guid = "1b2cc842-6922-403f-9a89-f0181622443d";
 
-	public function __construct($guid = '')
+	public function __construct()
 	{
-	    $this->guid = $guid;
-
 	    $params = array(
 	        'soap_version' => SOAP_1_1,
 	        'exceptions' => true,
