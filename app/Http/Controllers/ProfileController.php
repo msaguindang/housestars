@@ -44,6 +44,7 @@ class ProfileController extends Controller
 	        			}
 	        			
         			}
+        			
                     $data['id'] = $id;
                     $data['role'] = 'tradesman';
         			$data['name'] = User::find($id)->name;
@@ -114,6 +115,10 @@ class ProfileController extends Controller
     			$data[$key->meta_name] = $key->meta_value;
     		}
     	}
+    	
+    	if(strpos(strtolower($data[$x]['trading-name']), 'n/a') != false){
+			$data[$x]['trading-name'] =  $data[$x]['business-name'];
+		}
     	$data['rating'] = $this->getRating($id);
         $data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
@@ -138,6 +143,8 @@ class ProfileController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
+        
+        
     	return $data;
     }
 

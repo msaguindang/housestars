@@ -49,7 +49,7 @@
     </header>
     @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
       @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
-    @endif
+    @endif../../../../app/Http/Controllers/TradesmanController.php
     <section id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
@@ -83,6 +83,7 @@
                 @if(isset($data['trade']))
                   <h2 class="trade">{{ implode(', ', array_remove_null(array_flatten($data['trade']))) }}</h2>
                 @endif
+
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
                 <div class="stars left">

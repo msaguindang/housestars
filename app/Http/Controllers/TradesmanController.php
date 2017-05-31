@@ -88,6 +88,13 @@ class TradesmanController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
+        
+       
+        if(strpos(strtolower($data['trading-name']), 'n/a') != false){
+	        $data['trading-name'] =  $data['business-name'];
+        }
+        
+         //dd($data['trading-name']);
 
 	   return View::make('dashboard/tradesman/profile')->with('data', $data);
     }
