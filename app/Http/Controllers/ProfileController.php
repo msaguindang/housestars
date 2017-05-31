@@ -116,6 +116,10 @@ class ProfileController extends Controller
     		}
     	}
     	
+    	if(strpos(str_replace(str_split(' /'), '', strtolower($data['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data['trading-name']))) == 2){
+			$data['trading-name'] = $data['business-name'];
+		}
+    	
     	if(strpos(strtolower($data[$x]['trading-name']), 'n/a') != false){
 			$data[$x]['trading-name'] =  $data[$x]['business-name'];
 		}

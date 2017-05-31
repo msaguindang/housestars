@@ -161,6 +161,10 @@ class SearchController extends Controller
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
                      
+                     if(strpos(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name']))) == 2){
+					    $data[$x]['trading-name'] = $data[$x]['business-name'];
+				     }
+                     
 // For Testing Banner Advert
 /*
                      $data[$x + 1]['rating'] = $this->getRating($id);

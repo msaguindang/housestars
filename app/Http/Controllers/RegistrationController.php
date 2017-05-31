@@ -131,7 +131,8 @@ class RegistrationController extends Controller
                                 );
                             }
                             continue;
-                        }  else if ($meta == 'abn') {
+                        }  /*
+else if ($meta == 'abn') {
                             if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
                                 return redirect()->back()->withError("ABN already exist!");
                             }
@@ -146,6 +147,7 @@ class RegistrationController extends Controller
                                 return redirect()->back()->withError("Not a valid ABN or ACN");
                             }
                         }
+*/
 
                         UserMeta::updateOrCreate(
                             ['user_id' => $user_id, 'meta_name' => $meta],

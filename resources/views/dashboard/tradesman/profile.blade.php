@@ -49,7 +49,7 @@
     </header>
     @if(filter_var($data['cover-photo'], FILTER_VALIDATE_URL) === FALSE)
       @php ($data['cover-photo'] = config('app.url') . '/' . $data['cover-photo'])
-    @endif../../../../app/Http/Controllers/TradesmanController.php
+    @endif
     <section id="cover-container" class="header-margin" style="background: url({{$data['cover-photo']}})">
       <div class="cover-img">
         <div class="breadcrumbs container">
