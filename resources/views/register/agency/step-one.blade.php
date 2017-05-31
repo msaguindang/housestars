@@ -104,6 +104,11 @@
                     <form name="step_one_form" action="{{env('APP_URL')}}/add-info" method="POST">
                         {{csrf_field() }}
                         <h2>Agency Registration Form</h2>
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{session('error')}}
+                            </div>
+                        @endif
                         <div class="col-xs-4">
                             <label>Agency Business Name</label>
                             <input type="text" name="agency-name" required value="{{isset($user['agency-name']) ? $user['agency-name'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
