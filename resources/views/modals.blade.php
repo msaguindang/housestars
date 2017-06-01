@@ -68,7 +68,7 @@
 							<input type="password" name="password_confirmation" placeholder="Confirm Password" class="no-top">
 							<div class="row account-option">
 								<div class="col-xs-3"><input type="radio" name="account" value="agency" checked> Agent</div>
-								<div class="col-xs-3"><input type="radio" name="account" value="tradesman"> Trade/Service</div>
+								<div class="col-xs-4"><input type="radio" name="account" value="tradesman"> Trade/Service</div>
 								<div class="col-xs-4"><input type="radio" name="account" value="customer"> Customer</div>
 							</div>
 							<button class="btn hs-primary">Create an Account Now</button>
