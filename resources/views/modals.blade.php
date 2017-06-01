@@ -1274,7 +1274,7 @@
 				<div class="modal-body">
 					<h4 class="text-danger">Error!</h4>
 					</br><p class="sub-heading">
-						@if($errors->any())
+						@if(isset($errors) && $errors->any())
 							@foreach ($errors->all() as $error)
 							    {{ $error }}<br/>
 							@endforeach

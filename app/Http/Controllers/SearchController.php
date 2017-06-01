@@ -113,7 +113,8 @@ class SearchController extends Controller
     }
 
     public function tradesmenListing($category, $suburb)
-    { 
+    {
+        $category = str_replace('_', '/', $category);
         preg_match_all('!\d!', $suburb, $matches);
         if (isset($matches[0])) {
             $data['suburb_id']   = implode('', $matches[0]);
@@ -131,8 +132,6 @@ class SearchController extends Controller
             }
           }
         }
-
-
 
         $data = array();
         $x = 0;
@@ -171,9 +170,6 @@ class SearchController extends Controller
         if ($ads = Advertisement::getByPage('tradies')->randomPriority($hasPriority)->inRandomOrder()->first()) {
           $data['ads'] = $ads;
         }
-        
-        //dd($data);
-                
         return view('general.tradesman-listings')->with('data', $data);
     }
 

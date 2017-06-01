@@ -72,7 +72,8 @@ $(document).on('submit', '#forgotPass' ,function(e){
           $('.message').append('<p>Available Trades And Services for location <b class="suburb">' + data.suburb_name + ' (' + data.suburb_id + ') </b></p>');
           for(i = 0; i < data['cat'].length; i++) {
             if(jQuery.inArray(data['cat'][i]['category'], exists) !== -1) {
-              $('#trades').append('<div class="col-xs-4 item"><a href="/listing/'+ data['cat'][i]['category'] +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
+              $category = (data['cat'][i]['category']).replace('/', '_');
+              $('#trades').append('<div class="col-xs-4 item"><a href="/listing/'+ $category +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             } else {
               $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             }
