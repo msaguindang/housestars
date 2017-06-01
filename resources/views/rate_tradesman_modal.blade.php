@@ -1,4 +1,4 @@
-<!-- RATE A TRADESMAN -->
+<!-- RATE A TRADESMAN 2-->
 		<div class="modal fade" id="rateModal" tabindex="-1" role="dialog" aria-labelledby="signup-area">
 			<div class="modal-dialog" role="document" style="margin-top: 3%;">
 				<div class="modal-content">

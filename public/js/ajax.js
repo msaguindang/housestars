@@ -323,7 +323,7 @@ $(document).on('submit', '#loginform' ,function(e){
   });
 });
 
-$(document).on('click', '.addreview' ,function(e){
+$(document).on('click', '.addreview' ,function(e) {
 
 	var id = $(this).data('id');
 
@@ -331,15 +331,15 @@ $(document).on('click', '.addreview' ,function(e){
 		url: '/review-vendor',
 		data: {_token: $(this).data('token'), id: $(this).data('id')},
 		type: 'POST',
-		success: function(data) {
+    beforeSend: function() {
+      $('#tradesmanPic, #tradesmanName').remove();
+    },success: function(data) {
 			var url = window.location.origin + '/',
 					photo = data['isPhotoUrl'] ? data['photo'] : url + data['photo'];
 
 			$("#reviewForm").trigger("reset");
-			$('#tradesmanPic').remove();
-			$('.tradesman-profile').append('<img src="'+ photo +'" alt="'+ data['name'] +'" id="tradesmanPic">');
-			$('#tradesmanName').remove();
-			$('.tradesman-name').append('<h4 id="tradesmanName">'+ data['name'] +'</h4>');
+			$('.tradesman-profile').append('<img src="'+ photo +'" alt="'+ data['trading-name'] +'" id="tradesmanPic">');
+			$('.tradesman-name').append('<h4 id="tradesmanName">'+ data['trading-name'] +'</h4>');
 			$('#tradesmanID').val(id);
 			$('#rateTradesman').modal('show');
 		}

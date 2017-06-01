@@ -52,6 +52,8 @@ class ReviewController extends Controller
             if ($tradesman->meta_name == 'profile-photo') {
                 $data['photo'] = $tradesman->meta_value;
                 $data['isPhotoUrl'] = filter_var($data['photo'], FILTER_VALIDATE_URL);
+            } else {
+                $data[$tradesman->meta_name] = $tradesman->meta_value;
             }
         }
 
