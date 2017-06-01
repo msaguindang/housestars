@@ -108,8 +108,10 @@
                         {{csrf_field() }}
                         <div class="col-xs-8">
                             <div class="col-xs-6 no-padding-left">
-                                <label>Business Name <span class="required-symbol">*</span> <span class="placeholder">This name will be displayed in search results</span></label>
+                                <label>Business Name <span class="required-symbol">*</span> <span class="placeholder">This name will not be displayed in search results</span></label>
                                 <input type="text" name="business-name" class="required-input" value="{{ $businessName}}" required>
+                                <label>Trading Name <span class="required-symbol">*</span> <span class="placeholder">This name will be displayed in search results. For a sole trader or partnership, enter business name again.</span></label>
+                                <input type="text" name="trading-name" class="required-input" value="{{ $tradingName}}" required>
                                 <label>Postcodes Serviced
                                     <!-- Suburbs Working In <span>(Enter the desired postcode and select suburbs)</span>  -->
                                     <span class="required-symbol">*</span></label>
@@ -121,8 +123,6 @@
                                         @endif
                                     @endforeach--}}
                                 </select>
-                                <label>Trading Name <span class="required-symbol">*</span> <span class="placeholder">For a sole trader or a partnership, please enter N/A.</span></label>
-                                <input type="text" name="trading-name" class="required-input" value="{{ $tradingName}}" required>
                             </div>
                             <div class="col-xs-6 no-padding-right">
                                 <label>Website <span class="required-symbol">*</span></label>
@@ -193,7 +193,7 @@
             create: false,
             render: {
                 option: function(item, escape) {
-                    return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+item.id+'</div>';
+                    return '<div class="option" data-selectable="" data-value="'+item.id+''+item.name+'">'+ item.name + ' ('+item.id+') </div>';
                 }
             },
             load: function(query, callback) {

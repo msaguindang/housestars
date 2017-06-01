@@ -106,7 +106,7 @@
 					<label>Card Number</label>
 					<input type="text" name="number" required>
 					<div class="col-xs-6 no-padding-left">
-						<label>Expiry Date</label>
+						<label>Expiry Date <span>Enter in this format: _ _ / _ _ _ _</span></label>
 						<div class="btn-group" style="width: 40%">
 			           <input type="text"  name="exp_month" maxlength="2" required>
 			        </div> / <div class="btn-group" style="width: 50%">
@@ -150,6 +150,7 @@
 							<option value="Western Australia">WESTERN AUSTRALIA</option>
 						</select>
 			        </div>
+					<br><br><br><br><br><br><br><br>
 			        <button class="btn hs-primary">SUBMIT <span class="icon icon-arrow-right"></span></button>
 			    </form>
 			</div>

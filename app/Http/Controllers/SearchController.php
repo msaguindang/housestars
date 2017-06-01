@@ -84,7 +84,7 @@ class SearchController extends Controller
       foreach ($suburbExists as $key) {
         if($activeUser = User::active()->where('id', '=', $key->user_id)->first()) {
           if ($activeUser->role && ($activeUser->role->role_id == 3)) {
-            $tradesman = $activeUser->usermetas->toArray(); //$activeUser->usermetas->where('meta_name', 'trade')->toArray();
+            $tradesman = $activeUser->usermetas->toArray(); 
             if (!in_array($tradesman, $tradesmen) && $tradesmanService->isSubscriber($activeUser)) {
               array_push($tradesmen, $tradesman);
             }
