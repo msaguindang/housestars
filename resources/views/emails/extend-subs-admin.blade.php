@@ -329,7 +329,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Housestars Ltd., 3 Abbey Road, Sydney Australia 94102</span>
+                    <span class="apple-link">21 Main Street Alstonville, New South Wales 2477</span>
                   </td>
                 </tr>
               </table>
