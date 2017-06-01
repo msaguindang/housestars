@@ -309,8 +309,8 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>{{$name}} requested for a review cards.</p>
-                        <p>Here's the details:<p/>
+                        <p>{{$name}} has requested review cards.</p>
+                        <p>Here are the details:<p/>
                         <p><b>Business Name:</b> {{$business}}</p>
 						<p><b>Name:</b> {{$name}}</p>
 						<p><b>Email:</b> {{$email}}</p>
