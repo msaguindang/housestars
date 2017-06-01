@@ -101,15 +101,13 @@ class SearchController extends Controller
 
       $categoriesCollection = collect($tradesman)->where('meta_name', 'trade');
       foreach ($tradesmen as $key => $tradesman) {
-            $mapped = collect($tradesman)->mapWithKeys(function ($item) {
-              if($item['meta_name'] == 'trade') {
-                $categories = Category::where('id', $item['meta_value'])->get(['category'])->toArray();
-                return [$item['meta_name'] => array_flatten($categories)];
-              }
-              return [$item['meta_name'] => $item['meta_value']];
-            });
-            $mapped = $mapped->put('id', $tradesman[0]['user_id']);
-            array_push($data, $mapped);
+        $mapped = collect($tradesman)->mapWithKeys(function ($item) {
+          return [$item['meta_name'] => $item['meta_value']];
+        });
+        $categories = collect($tradesman)->where('meta_name', 'trade')->pluck('meta_value')->toArray();
+        $mapped = $mapped->put('id', $tradesman[0]['user_id']);
+        $mapped['trade'] = array_flatten(Category::whereIn('id', $categories)->get(['category'])->toArray());
+        array_push($data, $mapped);
       }
       return $data;
     }

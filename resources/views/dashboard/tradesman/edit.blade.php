@@ -133,7 +133,7 @@
                   @endforeach
               </select>
               <label>Phone Number</label>
-              <input type="text" name="phone" value="{{ isset($data['phone']) ? $data['phone'] : '' }}">
+              <input type="text" name="phone-number" value="{{ isset($data['phone-number']) ? $data['phone-number'] : '' }}">
             </div>
             <div class="col-xs-4 dash-field" style="padding-right: 0">
               <label>Postcodes Working In</label>
