@@ -36,7 +36,6 @@ class SearchController extends Controller
                     $data['suburb_name'] = trim(str_replace($data['suburb_id'], '', $data['suburb']));
                 }
                 $data['item'] = $this->hasResults($data['suburb_id']);
-                dd($data);
                 return Response::json($data, 200);
           break;
         case 'agency':
