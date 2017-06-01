@@ -84,7 +84,7 @@ class SearchController extends Controller
       foreach ($suburbExists as $key) {
         if($activeUser = User::active()->where('id', '=', $key->user_id)->first()) {
           if ($activeUser->role && ($activeUser->role->role_id == 3)) {
-            $tradesman = $activeUser->usermetas->toArray(); //$activeUser->usermetas->where('meta_name', 'trade')->toArray();
+            $tradesman = $activeUser->usermetas->toArray(); 
             if (!in_array($tradesman, $tradesmen) && $tradesmanService->isSubscriber($activeUser)) {
               array_push($tradesmen, $tradesman);
             }
@@ -99,25 +99,27 @@ class SearchController extends Controller
         return $data;
       }
 
+      $categoriesCollection = collect($tradesman)->where('meta_name', 'trade');
       foreach ($tradesmen as $key => $tradesman) {
             $mapped = collect($tradesman)->mapWithKeys(function ($item) {
-                return [$item['meta_name'] => $item['meta_value']];
+              if($item['meta_name'] == 'trade') {
+                $categories = Category::where('id', $item['meta_value'])->get(['category'])->toArray();
+                return [$item['meta_name'] => array_flatten($categories)];
+              }
+              return [$item['meta_name'] => $item['meta_value']];
             });
             $mapped = $mapped->put('id', $tradesman[0]['user_id']);
             array_push($data, $mapped);
       }
-
       return $data;
     }
 
     public function tradesmenListing($category, $suburb)
     { 
-
-
-                preg_match_all('!\d!', $suburb, $matches);
-                if (isset($matches[0])) {
-                    $data['suburb_id']   = implode('', $matches[0]);
-                }
+        preg_match_all('!\d!', $suburb, $matches);
+        if (isset($matches[0])) {
+            $data['suburb_id']   = implode('', $matches[0]);
+        }
         $trade = UserMeta::where('meta_value', 'LIKE', '%'.$data['suburb_id'].'%')->get();
         $tradesmen = array();
 
@@ -139,58 +141,24 @@ class SearchController extends Controller
         foreach ($tradesmen as $id) {
            $activeUser = User::where('id', '=', $id)->get();
            if(count($activeUser) > 0){
-
-                 $tradesmenArray = UserMeta::where('user_id', $id)->get();
+                 $tradesmenArray = UserMeta::selectRaw('user_meta.id, user_meta.user_id, categories.category')
+                                  ->where('user_id', $id)
+                                  ->join('categories', 'categories.id', '=', 'user_meta.meta_value')
+                                  ->where('user_meta.meta_name', 'trade')
+                                  ->get();
                  foreach ($tradesmenArray as $tradie) {
 
-                   if ($tradie->meta_name == 'trade' && ($tradie->meta_value == $category || strtolower($category) == 'all')) {
+                   if ($tradie->category == $category || strtolower($category) == 'all') {
                      $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
                      foreach ($tradesmanData as $value) {
                          $data[$x][$value->meta_name] = $value->meta_value;
-/*
-                         $data[$x+ 1][$value->meta_name] = $value->meta_value;
-                         $data[$x+ 2][$value->meta_name] = $value->meta_value;
-                          $data[$x+ 3][$value->meta_name] = $value->meta_value;
-                         $data[$x+ 4][$value->meta_name] = $value->meta_value;
-                          $data[$x+ 5][$value->meta_name] = $value->meta_value;
-                         $data[$x+ 6][$value->meta_name] = $value->meta_value;
-                          $data[$x+ 7][$value->meta_name] = $value->meta_value;
-                         $data[$x+ 8][$value->meta_name] = $value->meta_value;
-*/
                      }
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
                      
-                     if(strpos(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name']))) == 2){
-					    $data[$x]['trading-name'] = $data[$x]['business-name'];
-				     }
-                     
-// For Testing Banner Advert
-/*
-                     $data[$x + 1]['rating'] = $this->getRating($id);
-                     $data[$x + 1]['id'] = $value->user_id;
-                     
-                     $data[$x + 2]['rating'] = $this->getRating($id);
-                     $data[$x + 2]['id'] = $value->user_id;
-                     
-                     $data[$x + 3]['rating'] = $this->getRating($id);
-                     $data[$x + 3]['id'] = $value->user_id;
-                     
-                     $data[$x + 4]['rating'] = $this->getRating($id);
-                     $data[$x + 4]['id'] = $value->user_id;
-                     
-                     $data[$x + 5]['rating'] = $this->getRating($id);
-                     $data[$x + 5]['id'] = $value->user_id;
-                     
-                     $data[$x + 6]['rating'] = $this->getRating($id);
-                     $data[$x + 6]['id'] = $value->user_id;
-                     
-                     $data[$x + 7]['rating'] = $this->getRating($id);
-                     $data[$x + 7]['id'] = $value->user_id;
-                     
-                     $data[$x + 8]['rating'] = $this->getRating($id);
-                     $data[$x + 8]['id'] = $value->user_id;
-*/
+                    if(strpos(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name']))) == 2){
+        					    $data[$x]['trading-name'] = $data[$x]['business-name'];
+        				    }
                      $x++;
                    }
                  }

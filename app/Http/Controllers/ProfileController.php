@@ -120,9 +120,10 @@ class ProfileController extends Controller
 			$data['trading-name'] = $data['business-name'];
 		}
     	
-    	if(strpos(strtolower($data[$x]['trading-name']), 'n/a') != false){
-			$data[$x]['trading-name'] =  $data[$x]['business-name'];
+    	if(strpos(strtolower($data['trading-name']), 'n/a') != false) {
+			$data['trading-name'] =  $data['business-name'];
 		}
+
     	$data['rating'] = $this->getRating($id);
         $data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
