@@ -82,10 +82,12 @@
               <input id="profile-photo-drag" name="profile-photo-drag" type="hidden" />
             </div>
             <div class="profile-info">
-              <label>Business Name</label>
-              @if(isset($data['business-name']))
-              <input type="text" name="business-name" value="{{$data['business-name']}}">
+              
+              @if(isset($data['trading-name']))
+              <label>Trading Name</label>
+              <input type="text" name="trading-name" value="{{$data['trading-name']}}">
               @else
+              <label>Business Name</label>
               <input type="text" name="business-name" value="">
               @endif
             </div>
@@ -123,7 +125,7 @@
               <input type="text" name="abn" value="{{ isset($data['abn']) ? $data['abn'] : ''}}">
             </div>
             <div class="col-xs-4 dash-field">
-              <label>Trading As</label>
+              <label>Categories</label>
               <select id="select-cat" name="trade[]" multiple class="demo-default" class="required-input" required>
                   @foreach($data['categories'] as $cat)
                     @php ($selected = in_array($cat->id, $data['trade']) ? 'selected' : '')
