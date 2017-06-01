@@ -325,12 +325,13 @@ class TradesmanController extends Controller
     }
 
     private function sendOrder($data){
+	    $phone = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'phone')->first();
+	    
         Mail::send(['html' => 'emails.order-bc'], [
-                'name' => $data->input('name'),
-                'address' => $data->input('address'),
-                'contact' => $data->input('contact'),
-                'email' => $data->input('email'),
-                'website' => $data->input('website')
+                'business' => $data->input('name'),
+                'name' => Sentinel::getUser()->name,
+                'email' => Sentinel::getUser()->email,
+                'phone' => $phone->meta_value
             ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to('info@housestars.com.au', 'Housestars');
