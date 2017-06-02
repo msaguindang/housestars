@@ -93,7 +93,7 @@
               @php ($z = 0)
               @if(isset($data['cat']) && $x > 1)
                 <p class="center">
-                  Your search for a <b>{!! $data['cat'] !!}</b> generated the folowing results. Thanks for using House Stars.
+                  Your search for a <b>{!! $data['cat'] !!}</b> generated the folowing results. Thanks for using Housestars.
                 </p></br>
               @endif
               <ul class="list">

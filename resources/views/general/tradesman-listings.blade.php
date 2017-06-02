@@ -89,12 +89,13 @@
             @php ($x = count($data))
             @php ($y = 0)
             @php ($z = 4)
+            @php ($a = 4)
             @php ($index = 0)
 
             @if(isset($data['cat']) && $x > 0)
               @if($data['suburb'])
                 <!--  a <b>{{ $data['cat'] }}</b> in -->
-                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using House Stars.</p></br>
+                <p class="center">Your search for <b>{{ $data['suburb'] }}</b> generated the folowing results. Thanks for using Housestars.</p></br>
               @endif
             @endif
             <ul class="list">
@@ -123,7 +124,7 @@
                             @endif
                           </div>
                           <div class="profile-info">
-                            <h3 class="name">{{ isset($tradesman['business-name']) ? $tradesman['business-name'] : '' }}</h3>
+                            <h3 class="name">{{ isset($tradesman['trading-name']) ? $tradesman['trading-name'] : 'N/A' }}</h3>
                             <p class="location">{{ isset($tradesman['trade']) ? $tradesman['trade'] : ''}}</p>
                             @if(isset($tradesman['rating']))
                               <div class="stars">
@@ -142,18 +143,32 @@
                       </div>
                     </li>
                      @php ($y++)
+                     
                   @endif
-                    @if($y == $z)
-                   <div class="col-xs-12">
-                    <div class="ads">
-                      @if(isset($data['ads']) && $data['ads'])
-                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
-                      @endif
-                    </div>
-                  </div>
-                  @php($z = $z + 8)
+                  @if($x > 7 )
+	                   @if($y == $z )
+	                   <div class="col-xs-12">
+	                    <div class="ads">
+	                      @if(isset($data['ads']) && $data['ads'])
+	                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
+	                      @endif
+	                    </div>
+	                  </div>
+	                  @php($z = $z + 8)
+	                  @endif
+                  @else
+	                  @if($y == ($x - 3) && count($tradesman) > 5)
+	                   <div class="col-xs-12">
+	                    <div class="ads">
+	                      @if(isset($data['ads']) && $data['ads'])
+	                        <img src="/{{ $data['ads']['image_path'] }}" alt="{{ $data['ads']['name'] }}" width="100%" height="100%">                        
+	                      @endif
+	                    </div>
+	                  </div>
+	                  @endif
                   @endif
                   @php ($index ++)
+                  
               @endforeach
               @endif
               <!-- END AD SPACE HERE -->

@@ -9,29 +9,79 @@ use App\Reviews;
 use App\User;
 use App\Agents;
 use App\Advertisement;
+use App\Services\AgentService;
 use App\Property;
+use App\Services\ReviewService;
 use Response;
+use View;
+use Sentinel;
+use Cache;
+use App\Category;
 
 class ProfileController extends Controller
-{
+{   
+    private $reviewService;
+
+    public function __construct(ReviewService $reviewService)
+    {
+        $this->reviewService = $reviewService;
+    }
+
     public function profile($role, $id)
     {
         try {
         	switch ($role) {
         		case 'tradesman':
         			$data = $this->tradesman($id);
-        			return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
+        			$data['suburbs'] = explode(',', $data['positions']);
+        			$x = 0;
+        			foreach($data['suburbs'] as $suburb) {
+	        			$sub = preg_replace('/[0-9]/','',$suburb);
+	        			$postcode = preg_replace('/\D/', '', $suburb);
+	        			if($sub != '' || !empty($sub)){
+		        			$data['position'][$x] = $postcode; 
+							$x++;
+	        			}
+	        			
+        			}
+        			
+                    $data['id'] = $id;
+                    $data['role'] = 'tradesman';
+        			$data['name'] = User::find($id)->name;
+        			$data['email'] = User::find($id)->email;
+                    $data['reviews'] = $this->reviewService->getReviews($id);
+                    return view('general.profile.tradesman-profile')->with('data', $data)->with('category', $role);
         			break;
-
                 case 'agency':
                     $data = $this->agency($id);
                     $listings = $this->property_listing($id);
                     $data['property-listings'] = $listings;
                     $data['total-listings'] = count($listings);
+                    $data['suburbs'] = isset($data['positions']) ? explode(',', $data['positions']) : [];
+					$x = 0;
+        			foreach ($data['suburbs'] as $suburb) {
+	        			$sub = preg_replace('/[0-9]/','',$suburb);
+	        			$postcode = preg_replace('/\D/', '', $suburb);
+	        			if($sub != '' || !empty($sub)){
+		        			$data['position'][$x] = $sub. ' ('. $postcode .')'; 
+							$x++;
+	        			}
+        			}
+                    $data['id'] = $id;
+                    $data['role'] = 'agency';
+                    $data['name'] = User::find($id)->name;
+                    $data['reviews'] = $this->reviewService->getReviews($id);
                     return view('general.profile.agency-profile')->with('data', $data)->with('category', $role);
                     break;
-
+                case 'agent':
+                    $data = app(AgentService::class)->getData($id);
+                    $data['isOwner'] = false;
+                    $data['id'] = $id;
+                    $data['name'] = User::find($id)->name;
+                    return View::make('dashboard/agent/profile')->with('meta', $data['meta'])->with('dp', $data['dp'])->with('cp', $data['cp'])->with('data', $data);
+                    break;
                 default:
+                    abort(404);
                     break;
             }
         } catch (\Exception $e) {
@@ -48,20 +98,32 @@ class ProfileController extends Controller
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
         $data['email'] = $user[0]['email'];
-        $x = 0; $y = 0;
+        $x = 0; $y = 0; $t = 0;
 
     	foreach ($meta as $key) {
     		if($key->meta_name == 'gallery'){
     			$data[$key->meta_name][$y] = $key->meta_value;
     			$y = $y + 1;
-
-    		} else {
-
+    		} else if($key->meta_name == 'trade') {
+                $categoryId = $key->meta_value;
+                $cat = Cache::rememberForever("category_$categoryId", function() use ($categoryId) {
+                    return Category::find($categoryId);
+                });
+                $data[$key->meta_name][$t] = $cat->category;
+                $t ++;
+            } else {
     			$data[$key->meta_name] = $key->meta_value;
-
     		}
-
     	}
+    	
+    	if(strpos(str_replace(str_split(' /'), '', strtolower($data['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data['trading-name']))) == 2){
+			$data['trading-name'] = $data['business-name'];
+		}
+    	
+    	if(strpos(strtolower($data['trading-name']), 'n/a') != false) {
+			$data['trading-name'] =  $data['business-name'];
+		}
+
     	$data['rating'] = $this->getRating($id);
         $data['reviews'] = $this->getReviews($id);
         $data['total'] = count($data['reviews']);
@@ -86,7 +148,8 @@ class ProfileController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        //dd($data);
+        
+        
     	return $data;
     }
 
@@ -134,7 +197,6 @@ class ProfileController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
-        //dd($data);
         return $data;
     }
 
@@ -142,13 +204,17 @@ class ProfileController extends Controller
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
+		$rate = 0;
+		$zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+		
         if($numRatings > 0){
-            foreach ($ratings as $rating) {
-                $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+            foreach ($ratings as $rating) {	
+	            $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+	            $rate = $rate + $ratingAverage;
             }
+            $average =  (int)round($rate / $numRatings);
         }
-
+		
         return $average;
     }
 
@@ -158,8 +224,8 @@ class ProfileController extends Controller
     	$data = array(); $x = 0; $average = 0;
     	foreach ($reviews as $review) {
 
-        if ($review->name == null) {
-          $data[$x]['name'] = User::where('id', $review->reviewer_id)->first()->name;
+        if ($review->name == null && $user = User::where('id', $review->reviewer_id)->first()) {
+          $data[$x]['name'] = $user->name;
         } else {
             $data[$x]['name'] = $review->name;
         }
@@ -224,5 +290,32 @@ class ProfileController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    public function editProfile(Request $request)
+    {
+        if (is_admin()) {
+            $role = $request->route('role');
+            $data = array();
+            $data['id'] = $request->route('id');
+            $data['profile-url'] = "profile/$role/{$data['id']}";
+            switch ($role) {
+                case 'agency':
+                    return app(AgencyController::class)->edit($request);
+                    break;
+                case 'tradesman':
+                    return app(TradesmanController::class)->edit($request);
+                    break;
+                case 'agent':
+                    $editData = app(AgentService::class)->getEditableData($data['id']);
+                    return View::make('dashboard/agent/edit')->with('data', array_merge($data, $editData));
+                    break;
+                case 'customer':
+                    return app(CustomerController::class)->edit($request);
+                    break;
+                default:
+                    abort(404);
+            }
+        }
     }
 }

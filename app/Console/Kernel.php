@@ -6,6 +6,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\Referral;
 use App\Console\Commands\EndingSubscription;
+use App\Console\Commands\PositionAvailabilityCount;
+use App\Console\Commands\UserMetaMultipleCategoriesChange;
 
 class Kernel extends ConsoleKernel
 {
@@ -16,7 +18,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Referral::class,
-        EndingSubscription::class
+        EndingSubscription::class,
+        PositionAvailabilityCount::class,
+        UserMetaMultipleCategoriesChange::class
     ];
 
     /**
@@ -31,7 +35,10 @@ class Kernel extends ConsoleKernel
                   ->everyMinute();
 
         $schedule->command('housestars:check-subscriptions')
-                  ->daily();
+                  ->everyMinute();
+        
+        $schedule->command('command:position-availability-count')
+                  ->everyMinute();
     }
 
     /**

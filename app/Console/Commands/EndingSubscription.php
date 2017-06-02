@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Stripe\Customer;
 use Stripe\Stripe;
 use Stripe\Subscription;
+use DB;
 
 class EndingSubscription extends Command
 {
@@ -26,14 +27,6 @@ class EndingSubscription extends Command
    * @var string
    */
   protected $description = 'Check Ending Subscriptions';
-
-
-  /**
-   * Stripe Key
-   *
-   * @var string
-   */
-  private $stripeKey = 'sk_test_qaq6Jp8wUtydPSmIeyJpFKI1';
 
   /**
    * Create a new command instance.
@@ -54,8 +47,8 @@ class EndingSubscription extends Command
   public function handle()
   {
     echo "SENDING NOTICE TO SUBSCRIBERS... \n";
-
-    Stripe::setApiKey($this->stripeKey);
+    
+    Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
     $users = User::select('users.*')
                   ->join('role_users', 'role_users.user_id', '=', 'users.id')
@@ -71,6 +64,7 @@ class EndingSubscription extends Command
     $nextMonth = Carbon::now()->addMonth()->format('Y-m-d');
     $nextTwoWeeks = Carbon::now()->addWeeks(2)->format('Y-m-d');
     $nextWeek = Carbon::now()->addWeek()->format('Y-m-d');
+    $now = Carbon::now()->format('Y-m-d');
 
     foreach($users as $user) {
       $customer = Customer::retrieve($user->customer_id);
@@ -79,19 +73,21 @@ class EndingSubscription extends Command
         $endDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('Y-m-d');
         if ($nextMonth == $endDate || $nextTwoWeeks == $endDate || $nextWeek == $endDate) {
           $formattedEndDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->format('F j, Y');
-          $this->sendEmail($user->name, $user->email, $formattedEndDate);
+          $renewDate = Carbon::createFromTimestamp($subscriptions[0]->current_period_end)->addDay()->format('jS M Y');
+          $this->sendEmail($user->name, $user->email, $formattedEndDate, $renewDate);
           echo "*";
-        }
+        } 
       }
     }
   }
 
-  private function sendEmail($name, $email, $endDate)
+  private function sendEmail($name, $email, $endDate, $renewDate)
   {
     Mail::send(['html' => "emails.ending-subscription-notice"], [
       'email' => $email,
       'name'  => $name,
-      'date'  => $endDate
+      'date'  => $endDate,
+      'renewDate' => $renewDate
     ], function ($message) use ($email, $name) {
       $message->from('info@housestars.com.au', 'Housestars');
       $message->to($email, $name);

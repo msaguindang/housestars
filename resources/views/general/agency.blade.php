@@ -114,7 +114,10 @@
     		<div class="row">
     			<div class="row section-title">
 			        <h2 class="narrower"><span class="icon icon-left-bar"></span>SUBURB AVAILABILITY<span class="icon icon-right-bar"></span></h2>
-			      	<span class="separator"></span>
+              <span class="separator"></span>
+              <p>
+                Enter your desired suburb. Green squares indicate available positions within that suburb. Red squares indicate occupied positions.    
+              </p></br>
 			    </div>
 			    <div class="col-xs-6 col-xs-offset-3">
 			    	<select id="select-state" name="positions[]" multiple  class="demo-default">
@@ -273,7 +276,7 @@
              <h2 class="narrow-1x"><span class="icon icon-left-bar"></span>AGENT FAQ<span class="icon icon-right-bar"></span></h2>
              <span class="separator"></span>
              <p>Want to know more? Go to our FAQ for detailed answers to all of your questions.</p>
-             <button class="btn btn-primary"><i class="fa fa-question-circle" aria-hidden="true"></i> Visit FAQ Section</button>
+             <a class="btn btn-primary" href="{{env('APP_URL')}}/faq/agency"><i class="fa fa-question-circle" aria-hidden="true"></i> Visit FAQ Section</a>
           </div>
         </div>
       </div>
@@ -306,7 +309,7 @@
             load: function(query, callback) {
                 if (!query.length) return callback();
                 $.ajax({
-                    url: '{{ url('agency/search-suburb') }}',
+                    url: '{{ url('tradesman/search-suburb') }}',
                     type: 'GET',
                     data: {
                         query: query

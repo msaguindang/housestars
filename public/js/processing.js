@@ -66,6 +66,7 @@
 
     $(document).on('submit', '#transaction' ,function(e){
       var formData =  new FormData(this);
+      var id = $(this).data('id');
 
       e.preventDefault();
 
@@ -153,10 +154,10 @@
 
     var tradesmanID = $(this).data('trade');
     var tid = $(this).data('tid');
-
+	var userid = $(this).data('user');
     $.ajax({
       url: '/review-vendor',
-      data: {_token: $(this).data('token'), id: $(this).data('trade')},
+      data: {_token: $(this).data('token'), id: $(this).data('trade'), userId: $(this).data('user')},
       type: 'POST',
       success: function(data) {
         var url = window.location.origin + '/',
@@ -169,6 +170,7 @@
         $('.tradesman-name').append('<h4 id="tradesmanName">'+ data['name'] +'</h4>');
         $('#tradesmanID').val(tradesmanID);
         $('#transactionID').val(tid);
+        $('#userID').val(userid);
         $('#rateTradesman').modal('show');
       }
     });
@@ -194,9 +196,10 @@
     var id = $(this).data('id');
     var token = $(this).data('token');
     var code = $(this).data('code');
+    var userid = $(this).data('userid');
     $.ajax({
       url: '/get-agent-info',
-      data: {_token: token, id: id, code: code},
+      data: {_token: token, id: id, code: code, userid: userid},
       type: 'POST',
       success: function(data){
         $('#agency').remove();
@@ -210,6 +213,7 @@
       var token = $(this).data('token');
       var code = $(this).data('code');
       var meta = 'amount-sold';
+      var meta_id = $(this).data('id');
 
       if ($(this).is(':checked')){
         var isChecked = 'yes';
@@ -219,7 +223,7 @@
 
       $.ajax({
           url: '/confirm',
-          data: {_token: token, code: code, meta: meta, checked: isChecked},
+          data: {_token: token, code: code, meta: meta, checked: isChecked, userid: meta_id},
           type: 'POST',
           success: function(data){
             location.reload();
@@ -231,6 +235,7 @@
       var token = $(this).data('token');
       var code = $(this).data('code');
       var meta = 'commission-percentage';
+      var meta_id = $(this).data('id');
 
       if ($(this).is(':checked')){
         var isChecked = 'yes';
@@ -240,7 +245,7 @@
 
       $.ajax({
           url: '/confirm',
-          data: {_token: token, code: code, meta: meta, checked: isChecked},
+          data: {_token: token, code: code, meta: meta, checked: isChecked, userid: meta_id},
           type: 'POST',
           success: function(data){
             location.reload();
@@ -252,8 +257,9 @@
       var token = $(this).data('token');
       var code = $(this).data('code');
       var meta = 'commission-charged';
+      var meta_id = $(this).data('id');
 
-      if ($(this).is(':checked')){
+      if ($(this).is(':checked')) {
         var isChecked = 'yes';
       } else {
         var isChecked = 'no';
@@ -261,7 +267,7 @@
 
       $.ajax({
           url: '/confirm',
-          data: {_token: token, code: code, meta: meta, checked: isChecked},
+          data: {_token: token, code: code, meta: meta, checked: isChecked, userid: meta_id},
           type: 'POST',
           success: function(data){
             location.reload();
@@ -273,14 +279,15 @@
     $(document).on('submit', '#processForm' ,function(e){
         e.preventDefault();
         var data = $(this).serialize();
-        $('#processSuccess').modal('show');
-
+       	$("#loading").fadeIn("slow");
         $.ajax({
           url: '/process-form',
           data: data,
           type: 'POST',
           processData: false,
           success: function(data){
+	       $("#loading").fadeOut("slow");
+		   $('#processSuccess').modal('show');
 
           }
         });
@@ -288,4 +295,39 @@
 
     $(document).on('click', '#processSuccess' ,function(){
       location.reload();
+    });
+
+    var timeoutId;
+    $(document).on('input propertychange change', '.input-group > input' ,function() {
+      var $this = $(this),
+          token = $this.data('token'),
+          code = $this.data('code'),
+          meta = $this.data('meta'),
+          meta_amount_name = $this.data('meta-key'),
+          meta_amount_value = $this.val(),
+          meta_id = $this.data('id'),
+          isChecked = 'yes';
+
+      $loader = $('#'+meta_amount_name);
+
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(function() {
+        $.ajax({
+          url: '/confirm',
+          data: {_token: token, code: code, meta: meta, userid: meta_id, checked: isChecked, meta_amount_name: meta_amount_name, meta_amount_value: meta_amount_value},
+          type: 'POST',
+          beforeSend: function() {
+            $loader.show();
+            $loader.siblings('label').hide();
+          },success: function(data) {
+            $loader.hide();
+            $loader.siblings('label').show();
+            location.reload();
+          },
+          error: function(){
+            $loader.hide();
+            $loader.siblings('label').show();
+          }
+        });
+      }, 1000);
     });

@@ -16,7 +16,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
 
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -33,7 +33,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Process Page</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
@@ -56,7 +56,7 @@
           </div>
           <div class="profile">
             <div class="profile-info">
-              <h1>{{Sentinel::getUser()->name}}</h1>
+              <h1>{{$data['user']->name}}</h1>
               <p>Location: {{$data['meta']['address']}}</p>
             </div>
           </div>
@@ -87,9 +87,14 @@
               @endif
             </div>
           </div>
-          <div class="col-xs-3 nav-panel">
-            <a href="{{env('APP_URL')}}/dashboard/customer/edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
-          </div>
+          @if($data['isOwner'])
+            <div class="col-xs-3 nav-panel">
+              @if($data['isAdmin'])
+                @php($editUrl = "/profile/customer/{$data['id']}/edit")
+                <a href="{{ env('APP_URL') . $editUrl}}" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+              @endif
+            </div>
+          @endif
         </div>
       </div>
     </section>
@@ -98,14 +103,16 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9 processing-form">
-            <div class="row property-info">
-              <div class="col-xs-4">
-                <label>Add a Property To be Renovated</label>
+            @if ($data['isOwner'])
+              <div class="row property-info">
+                <div class="col-xs-4">
+                  <label>Add a Property To be Renovated</label>
+                </div>
+                <div class="col-xs-8">
+                  <a href="{{env('APP_URL')}}/dashboard/customer/add" class="btn hs-primary" style="float: right; margin: 0 !important;">ADD PROPERTY</a>
+                </div>
               </div>
-              <div class="col-xs-8">
-                <a href="{{env('APP_URL')}}/dashboard/customer/add" class="btn hs-primary" style="float: right; margin: 0 !important;">ADD PROPERTY</a>
-              </div>
-            </div>
+            @endif
 
             <div class="row property-info mobile-hidden">
               <div class="col-xs-12">
@@ -131,7 +138,7 @@
                               <td><p>${{$property['value-from']}} - ${{$property['value-to']}}</p></td>
                               <td><p>
                               @if(isset($property['discount']))
-                                ${{$property['discount']}}
+                                {{ is_numeric($property['discount']) ? '$' . $property['discount'] : $property['discount'] }}
                               @endif
                               </p></td>
                               @if(isset($property['contract']))
@@ -186,9 +193,6 @@
                               @else
                               <b>Contract: </b><button type="button" class="btn btn-primary btn-xs disabled" >Contract</button>
                               @endif
-
-
-
                                 @if(isset($property['process']))
                                   @if($property['process'] == 'Pending')
                                 <p><b>Status: </b>

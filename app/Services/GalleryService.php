@@ -38,12 +38,13 @@ class GalleryService
         return $data;
 	}
 
-	public function getGalleryItemsPartials()
+	public function getGalleryItemsPartials($id = null)
 	{
+		$id = is_null($id) ? Sentinel::getUser()->id : $id;
 		return $response = [
 		            'html' => view (
 		                'dashboard.agency.partials.gallery_items', [
-		                    'data' => $this->getGalleryByUserId(Sentinel::getUser()->id)
+		                    'data' => $this->getGalleryByUserId($id)
 		                ]
 		            )->render()
 		        ];

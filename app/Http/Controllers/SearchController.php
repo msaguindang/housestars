@@ -15,22 +15,34 @@ use App\Category;
 use App\Advertisement;
 use Response;
 use Mail;
+use App\Services\TradesmanService;
 
 class SearchController extends Controller
 {
     public function search(Request $request, $item)
     {
-    	switch ($item) {
-    		case 'category':
-    			$data['cat'] = Category::whereStatus(1)->get();
+      switch ($item) {
+        case 'category':
+          $data['cat'] = Category::whereStatus(1)
+                  ->orderBy("category", "asc")
+                  ->groupBy('category')
+                  ->get();
+                $data['suburb_id'] = $data['suburb_name'] ='';
                 $data['suburb'] = $request->get('suburb', '');
-                $data['item'] = $this->hasResults($data['suburb']);
-    			      return Response::json($data, 200);
-                //return view('general.tradesman-listings')->with('data', $data);
-    			break;
-    		case 'agency':
-                $data = $this->agencyListing($request->get('term', ''));
 
+                preg_match_all('!\d!', $data['suburb'], $matches);
+                if (isset($matches[0])) {
+                    $data['suburb_id']   = implode('', $matches[0]);
+                    $data['suburb_name'] = trim(str_replace($data['suburb_id'], '', $data['suburb']));
+                }
+                $data['item'] = $this->hasResults($data['suburb_id']);
+                return Response::json($data, 200);
+          break;
+        case 'agency':
+                $data = $this->agencyListing($request->get('term', ''));
+        
+        
+        
                 if(count($data) > 1 && $request->get('term', '') != ''){
                   $request->session()->put('data', $data);
                   return Response::json('redirect', 200);
@@ -49,9 +61,9 @@ class SearchController extends Controller
                 }
 
                 break;
-    		default:
-    			break;
-    	}
+        default:
+          break;
+      }
 
     }
 
@@ -65,41 +77,49 @@ class SearchController extends Controller
 
     public function hasResults($suburb)
     {
-    	$suburbExists = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
-    	$tradesmen = array();
+      $suburbExists = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+      $tradesmanService = app(TradesmanService::class);
+      $tradesmen = array();
 
-    	foreach ($suburbExists as $key) {
-            if($activeUser = User::where('id', '=', $key->user_id)->first()){
-    			if ($activeUser->role && ($activeUser->role->role_id == 3)) {
-    				$tradesman = $activeUser->usermetas->toArray(); //$activeUser->usermetas->where('meta_name', 'trade')->toArray();
-                    if (!in_array($tradesman, $tradesmen)) {
-    	    			array_push($tradesmen, $tradesman);
-                    }
-	    		}
+      foreach ($suburbExists as $key) {
+        if($activeUser = User::active()->where('id', '=', $key->user_id)->first()) {
+          if ($activeUser->role && ($activeUser->role->role_id == 3)) {
+            $tradesman = $activeUser->usermetas->toArray(); 
+            if (!in_array($tradesman, $tradesmen) && $tradesmanService->isSubscriber($activeUser)) {
+              array_push($tradesmen, $tradesman);
             }
-    	}
+          }
+        }
+      }
 
-    	$data = array();
+      $data = array();
 
-    	if (count($tradesmen) == 0) {
-    		$data['msg'] = 'No result found for '. $suburb;
-    		return $data;
-    	}
+      if (count($tradesmen) == 0) {
+        $data['msg'] = 'No result found for '. $suburb;
+        return $data;
+      }
 
-    	foreach ($tradesmen as $key => $tradesman) {
-            $mapped = collect($tradesman)->mapWithKeys(function ($item) {
-                return [$item['meta_name'] => $item['meta_value']];
-            });
-            $mapped = $mapped->put('id', $tradesman[0]['user_id']);
-            array_push($data, $mapped);
-    	}
-
-    	return $data;
+      $categoriesCollection = collect($tradesman)->where('meta_name', 'trade');
+      foreach ($tradesmen as $key => $tradesman) {
+        $mapped = collect($tradesman)->mapWithKeys(function ($item) {
+          return [$item['meta_name'] => $item['meta_value']];
+        });
+        $categories = collect($tradesman)->where('meta_name', 'trade')->pluck('meta_value')->toArray();
+        $mapped = $mapped->put('id', $tradesman[0]['user_id']);
+        $mapped['trade'] = array_flatten(Category::whereIn('id', $categories)->get(['category'])->toArray());
+        array_push($data, $mapped);
+      }
+      return $data;
     }
 
     public function tradesmenListing($category, $suburb)
     {
-        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$suburb.'%')->get();
+        $category = str_replace('_', '/', $category);
+        preg_match_all('!\d!', $suburb, $matches);
+        if (isset($matches[0])) {
+            $data['suburb_id']   = implode('', $matches[0]);
+        }
+        $trade = UserMeta::where('meta_value', 'LIKE', '%'.$data['suburb_id'].'%')->get();
         $tradesmen = array();
 
         foreach ($trade as $key) {
@@ -113,24 +133,29 @@ class SearchController extends Controller
           }
         }
 
-
-
         $data = array();
         $x = 0;
         foreach ($tradesmen as $id) {
            $activeUser = User::where('id', '=', $id)->get();
            if(count($activeUser) > 0){
-
-                 $tradesmenArray = UserMeta::where('user_id', $id)->get();
+                 $tradesmenArray = UserMeta::selectRaw('user_meta.id, user_meta.user_id, categories.category')
+                                  ->where('user_id', $id)
+                                  ->join('categories', 'categories.id', '=', 'user_meta.meta_value')
+                                  ->where('user_meta.meta_name', 'trade')
+                                  ->get();
                  foreach ($tradesmenArray as $tradie) {
 
-                   if ($tradie->meta_name == 'trade' && ($tradie->meta_value == $category || strtolower($category) == 'all')) {
+                   if ($tradie->category == $category || strtolower($category) == 'all') {
                      $tradesmanData = UserMeta::where('user_id', '=', $tradie->user_id)->get();
                      foreach ($tradesmanData as $value) {
                          $data[$x][$value->meta_name] = $value->meta_value;
                      }
                      $data[$x]['rating'] = $this->getRating($id);
                      $data[$x]['id'] = $value->user_id;
+                     
+                    if(strpos(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data[$x]['trading-name']))) == 2){
+        					    $data[$x]['trading-name'] = $data[$x]['business-name'];
+        				    }
                      $x++;
                    }
                  }
@@ -145,7 +170,6 @@ class SearchController extends Controller
         if ($ads = Advertisement::getByPage('tradies')->randomPriority($hasPriority)->inRandomOrder()->first()) {
           $data['ads'] = $ads;
         }
-                
         return view('general.tradesman-listings')->with('data', $data);
     }
 
@@ -190,29 +214,38 @@ class SearchController extends Controller
         return $data;
     }
 
-    public function getRating($id){
+    public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
+    $rate = 0;
+    $zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+    
         if($numRatings > 0){
-            foreach ($ratings as $rating) {
-                $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+            foreach ($ratings as $rating) { 
+              $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+              $rate = $rate + $ratingAverage;
             }
+            $average =  (int)round($rate / $numRatings);
         }
-
+    
         return $average;
     }
 
     public function send(Request $request, $type){
+        $suburb = $request->get('suburb', '');
+
+        if ($request->has('suburb-name') && !empty($suburb)) {
+            $suburb = $request->get('suburb-name', '');
+        }
 
         switch ($type) {
             case 'tradesman':
-                $this->sendEmail($request->input('name'), $request->input('contact'), $request->get('suburb', ''), 'emails.suggest-tradesman', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $suburb, 'emails.suggest-tradesman', null);
                 return Response::json('success', 200);
                 break;
             case 'agency':
-                $this->sendEmail($request->input('name'), $request->input('contact'), null, 'emails.suggest-agency', null);
+                $this->sendEmail($request->input('name'), $request->input('contact'), $suburb, 'emails.suggest-agency', null);
                 return Response::json('success', 200);
                 break;
             case 'category':
@@ -251,13 +284,15 @@ class SearchController extends Controller
 
 
 
-      $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
+        $qry = "SELECT name , id, (3956 * 2 * ASIN(SQRT( POWER(SIN(( $lat - latitude) *  pi()/180 / 2), 2) +COS( $lat * pi()/180) * COS(latitude * pi()/180) * POWER(SIN(( $long - longitude) * pi()/180 / 2), 2) ))) as distance
               from suburbs
-              having  distance <= 10
+              having  distance <= 1000
               order by distance
-              limit 5";
+              limit 1000";
 
         $nearby = DB::select($qry);
+       
+        
         $agencies = DB::table('users')
                         ->join('role_users', function ($join) {
                             $join->on('users.id', '=', 'role_users.user_id')

@@ -16,8 +16,6 @@
                 </div>
                 <div class="nav-items">
                   <ul>
-                    <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-
                      @if(Sentinel::check())
                      <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
@@ -72,6 +70,22 @@
 	</div>
 </section>
 
+    @if(Sentinel::getUser()->subs_status == 0)
+        <div class="container">
+			<div class="row">
+				<div class="error-bar">
+	        <div class="col-xs-1">
+	          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+	        </div>
+	        <div class="col-xs-11">
+	          <p><span class="blue">Subscription Status: Inactive</span></p>
+	          <p>We're unable to charge your account. Please update your payment method to continue your access to our system.</p>
+	        </div>
+	      </div>
+			</div>
+		</div>
+	@endif
+
 <section id="sign-up-form">
 	<div class="container">
 		<div class="row">
@@ -80,7 +94,7 @@
 					<form name="form" action="{{env('APP_URL')}}/add-payment" method="POST">
 
 					{{csrf_field() }}
-				<div class="col-xs-6 padding-40">
+				<div class="col-xs-6 padding-40 border-right">
 					<h2>Add Payment Method</h2>
 					@if(session('error'))
 					<div class="alert alert-danger">
@@ -92,7 +106,7 @@
 					<label>Card Number</label>
 					<input type="text" name="number" required>
 					<div class="col-xs-6 no-padding-left">
-						<label>Expiry Date</label>
+						<label>Expiry Date <span>Enter in this format: _ _ / _ _ _ _</span></label>
 						<div class="btn-group" style="width: 40%">
 			           <input type="text"  name="exp_month" maxlength="2" required>
 			        </div> / <div class="btn-group" style="width: 50%">
@@ -103,18 +117,27 @@
 						<label>CVV</label>
 						<input type="text" name="cvc" required>
 					</div>
+                    <label>Coupon Code (optional)
+                        <i class="fa fa-question-circle tooltip-info"
+                         aria-hidden="true" data-toggle="tooltip"
+                         data-placement="right" title=""
+                         data-original-title="If you have been given a coupon code, please enter it here."
+                         data-html="true"></i>
+                    </label>
+                    <input type="text" name="coupon">
 					<span class="spacing"></span>
 					<input type="radio" name="subscription" value="yearly"> Pay $550 for a 12 month subscription </br>
 					<input type="radio" name="subscription" value="monthly"> Pay an ongoing fee of $50 per month
-				</div>
-				<div class="col-xs-6 border-left padding-40">
+				    <br/>
+                    <a href="/register/tradesman/step-one" class="btn hs-primary" style="width:130px;padding:8px 15px 8px 30px;text-align:right;"> <span class="icon icon-arrow-left" style="margin-left:-20px;"></span> Back </a>
+                </div>
+				<div class="col-xs-6 padding-40">
 					<h2>Add Billing Address</h2>
 					<label>Address</label>
 					<input type="text" name="address" required>
 					<label>Suburb</label>
 					<div class="btn-group">
 						<select id="select-suburb" name="suburb"  class="demo-default plain" required></select>
-
 			        </div>
 					<label>State</label>
 					<div class="btn-group">
@@ -127,6 +150,7 @@
 							<option value="Western Australia">WESTERN AUSTRALIA</option>
 						</select>
 			        </div>
+					<br><br><br><br><br><br><br><br>
 			        <button class="btn hs-primary">SUBMIT <span class="icon icon-arrow-right"></span></button>
 			    </form>
 			</div>

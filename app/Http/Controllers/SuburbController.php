@@ -36,7 +36,8 @@ class SuburbController extends Controller
         $fromDate = $this->payload->get('from', '');
         $toDate = $this->payload->get('to', '');
         $sortQuery = $searchDateQuery = '';
-        
+        $query = ' WHERE 1 ';
+
         if (!$pageNo) {
             $pageNo = 1;
         }
@@ -51,16 +52,16 @@ class SuburbController extends Controller
 
         $suburbsLength = DB::table('suburbs')->selectRaw('count(*) as length')->first()->length;
 
-        if (!empty($field)) {
-            $sortQuery = " ORDER BY {$field} {$direction}";
-        }
-
-        $query = " WHERE (id LIKE '%$searchId%' AND name LIKE '%$searchName%' AND max_tradie LIKE '%$searchMax%' AND availability LIKE '%$searchAvail%') "; 
-
+        $sortQuery = empty($field) ? "" : " ORDER BY {$field} {$direction}";
+        
         if (!empty($searchQuery)) {
-            $query .= " OR (id LIKE '%$searchQuery%' OR name LIKE '%$searchQuery%' OR max_tradie LIKE '%$searchQuery%' OR availability LIKE '%$searchQuery%') ";
+            $query .= " AND (id LIKE '%$searchQuery%' OR name LIKE '%$searchQuery%' OR max_tradie LIKE '%$searchQuery%' OR availability LIKE '%$searchQuery%') ";
         }
-
+        
+        if(!empty($searchId) || !empty($searchName) || !empty($searchMax) || !empty($searchAvail)) {
+            $query .= " OR (id LIKE '%$searchId%' AND name LIKE '%$searchName%' AND max_tradie LIKE '%$searchMax%' AND availability LIKE '%$searchAvail%') ";        
+        }
+        
         if(!empty($fromDate) && !empty($toDate)) {
             $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
             $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();
@@ -72,7 +73,7 @@ class SuburbController extends Controller
 
         $response = [
             'suburbs' => $suburbs,
-            'length'     => (!empty($searchQuery) || !empty($searchDateQuery) ?  count($suburbs) : $suburbsLength)
+            'length'  => (!empty($searchQuery) || !empty($searchDateQuery) ?  count($suburbs) : $suburbsLength)
         ];
 
         return Response::json($response, 200);
@@ -85,7 +86,7 @@ class SuburbController extends Controller
 
         $userMetas = UserMeta::where('user_meta.meta_name', 'positions')
             ->join('users', 'users.id','=','user_meta.user_id')
-            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.'%')
+            ->where('user_meta.meta_value', 'LIKE', '%'.$suburbId.''.$suburbName.'%')
             ->select('user_meta.*', 'users.name')
             ->get()
             ->toArray();
@@ -155,10 +156,14 @@ class SuburbController extends Controller
     public function updateSuburbAvailability()
     {
         $payload = $this->payload->all();
-
-        $suburb = Suburbs::find($payload['id']);
-        $suburb->availability = $payload['availability'];
-        $suburb->save();
+		
+		//dd($payload);
+		$suburb = Suburbs::where('suburb_id', $payload['suburb_id'])->update(['availability' => $payload['availability']]);
+/*
+        $suburb = Suburbs::find();
+        $suburb->availability = ;
+*/
+      //  $suburb->save();
 
         return Response::json([
             'suburb' => $payload,

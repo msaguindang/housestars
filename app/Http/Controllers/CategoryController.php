@@ -32,7 +32,8 @@ class CategoryController extends Controller
         $direction = $request->get('direction', 'asc');
         $fromDate = $request->get('from', '');
         $toDate = $request->get('to', '');
-        $sortQuery = $searchDateQuery = '';
+        $searchDateQuery = '';
+        $query = ' WHERE 1 ';
 
         if (!$pageNo) {
             $pageNo = 1;
@@ -48,16 +49,16 @@ class CategoryController extends Controller
 
         $length = DB::table('categories')->selectRaw('count(*) as length')->first()->length;
 
-        if (!empty($field)) {
-            $sortQuery = " ORDER BY {$field} {$direction}";
+        $sortQuery = empty($field) ? '' : " ORDER BY {$field} {$direction}";
+
+        if (!empty($searchQuery)) {
+            $query .= " AND (id LIKE '%$searchQuery%' OR category LIKE '%$searchQuery%') ";
         }
 
-        $query = " WHERE (id LIKE '%$searchId%' AND category LIKE '%$searchCat%') "; 
-
-        if(!empty($searchQuery)) {
-            $query .= " OR (id LIKE '%$searchQuery%' OR category LIKE '%$searchQuery%') ";
+        if (!empty($searchId) || !empty($searchCat)) {
+            $query .= " AND (id LIKE '%$searchId%' AND category LIKE '%$searchCat%') "; 
         }
-        
+
         if(!empty($fromDate) && !empty($toDate)) {
             $fromDate = Carbon::createFromFormat('Y-m-d H:i:s', $fromDate .' 00:00:00')->toDateTimeString();
             $toDate = Carbon::createFromFormat('Y-m-d H:i:s', $toDate .' 00:00:00')->toDateTimeString();

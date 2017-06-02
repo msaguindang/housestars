@@ -76,48 +76,43 @@
 			<form action="{{env('APP_URL')}}/charge" method="POST">
 				{{csrf_field() }}
 			<div class="col-xs-12 form-box" style="padding: 40px">
-				<h2>Tradesman Package</h2>
+				<h2>Trade/Service Package</h2>
 				<p>Please Review your details below. If you are happy that all of your details are correct, please click "Subscribe Now"</p>
 				<div class="package-review row">
 					<div class="col-xs-6">
 						<div class="preview-label" style="width: 25%">
-
 						</div>
 						<div class="preview-value">
+							<p><b>Email Address:</b> {{ $email }}</p>
 							@foreach($userinfo as $info)
-
 								@if($info->meta_name == 'business-name')
 									<p><b>Business Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'trading-name')
 									<p><b>Trading Name:</b> {{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'charge-rate')
-									<p><b>Trade or Service:</b> {{$info->meta_value}}</p>
-								@elseif ($info->meta_name == 'trade')
 									<p><b>Charge Rate:</b> {{$info->meta_value}}</p>
 								@endif
-
 							@endforeach
-
-							<p><b>Email Address:</b>{{$email}}</p>
+							@if(count($trades))
+								<p><b> Trade or Service: </b> {{ implode(', ', $trades)}} </p>
+							@endif
 						</div>
 					</div>
-
 					<div class="col-xs-5 tradesman">
 						<div class="preview-total">
 							<span class="icon icon-total"></span>
 							@if($price == '550')
 							<p> Total charges = <b>${{$price}} for a 12 month subscription</b></p>
 							@else
-							<p> Total charges = <b>${{$price}} for a 1 month subscription</b></p>
+							<p> Total charges = <b>${{$price}} per month</b></p>
 							@endif
 						</div>
 						<input type="hidden" name="plan" value="tradesman-{{$price}}">
-						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
+						
 					</div>
 				</div>
 
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
-				<a class="btn hs-default close-btn" href="{{env('APP_URL')}}/register/tradesman/step-two"><span class="icon icon-close"></span> CANCEL</a>
 			</div>
 		</form>
 		</div>

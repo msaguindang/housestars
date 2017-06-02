@@ -1,3 +1,4 @@
+composer.lock
 /node_modules
 /public/storage
 /public/user
@@ -7,14 +8,12 @@
 Homestead.json
 Homestead.yaml
 .env
-
 public/uploads/advertisements/
 public/exports
 /.vscode
 .vscode
 /backups
 backups
-
 .env.save
 .env.save.1
-
+temp.txt

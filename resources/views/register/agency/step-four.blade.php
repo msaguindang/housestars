@@ -96,7 +96,6 @@
 						</div>
 						<div class="preview-value">
 							@foreach($userinfo as $info)
-
 								@if($info->meta_name == 'agency-name')
 									<p>{{$info->meta_value}}</p>
 								@elseif ($info->meta_name == 'trading-name')
@@ -106,36 +105,37 @@
 								@elseif ($info->meta_name == 'phone')
 									<p>{{$info->meta_value}}</p>
 								@endif
-
 							@endforeach
-
 							<p>{{$email}}</p>
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-4" style="padding: 0px;">
 						<div class="preview-label">
-							<p>Position 1 Taken:</p>
-							<p>Position 2 Taken:</p>
-							<p>Position 3 Taken:</p>
-							<p>Discount:</p>
+							@php($posLen = count(array_flatten($positions)))
+							@for($ctr = 1; $ctr <= $posLen; $ctr ++)
+								<p style="margin-left: 0px;">Position {{ $ctr }} Taken:</p>
+							@endfor
 						</div>
 						<div class="preview-value">
+							@php($x = 1)
 							@foreach($positions as $position)
-								<p>{{$position}} <span class="price"> = $2,000 per year</span></p>
+								@if($x == 1)
+								<p>{{$position}} <span class="price"> = FREE</span></p>
+								@else
+								<p>{{$position}} <span class="price"> = $1,000 per year</span></p>
+								@endif
+								@php ($x++)
 							@endforeach
-
-							@if(count($positions) > 2)
-								<p>For 3 Positions = $1000 per year</p>
-							@endif
-
-
 						</div>
 					</div>
 					<div class="col-xs-4">
 						<div class="preview-total">
-
-							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
-							<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							<input type="hidden" name="plan" value="agency-{{count(array_remove_null($positions))}}">
+							@if($price === 0)
+								<span class="icon icon-total"></span> <p> Total Charges = <b> FREE </b></p>
+							@else
+								<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@endif
 						</div>
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
@@ -166,33 +166,39 @@
 					</div>
 					<div class="col-xs-4">
 						<div class="preview-value">
-              @php ($x = 1)
+							@php ($x = 1)
 							@foreach($positions as $position)
-                <p><b>Position {{$x}} Taken:</b>
-								{{$position}} <span class="price"> = $2,000 per year</span></p>
-                @php ($x++)
+								@if($x == 1)
+									<p><b>Position {{$x}} Taken:</b>
+									{{$position}} <span class="price"> = FREE </span></p>
+									@php ($x++)
+	                			@else
+	                			<p><b>Position {{$x}} Taken:</b>
+									{{$position}} <span class="price"> = $1,000 per year</span></p>
+									@php ($x++)
+	                			@endif
 							@endforeach
-
+<!--
 							@if(count($positions) > 2)
 								<p>For 3 Positions = $1000 per year</p>
 							@endif
-
-
+-->
 						</div>
 					</div>
 					<div class="col-xs-4">
 						<div class="preview-total">
 
 							<input type="hidden" name="plan" value="agency-{{count($positions)}}">
-							<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@if($price === 0)
+								<span class="icon icon-total"></span> <p> Total Charges = <b> FREE </b></p>
+							@else
+								<span class="icon icon-total"></span> <p> Total Charges = <b>{{$price}} per year</b></p>
+							@endif
 						</div>
 						<p>Subscription will expired on <span class="blue">{{$expiry}}</span></p>
 					</div>
 				</div>
-
 				<button class="btn hs-primary" style="margin-right: 22px;"><span class="icon icon-summary"></span> SUBSCRIBE NOW</button>
-				<button class="btn hs-default close-btn"><span class="icon icon-close"></span> CANCEL</button>
-
 			</div>
 		</div>
 	</div>

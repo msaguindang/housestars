@@ -1,4 +1,5 @@
 @extends("layouts.main")
+
 @section("content")
 <header id="header" class="animated desktop">
         <div class="container">
@@ -16,7 +17,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
 
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -64,14 +65,12 @@
             <div class="profile-img" style="background: url({{$data['profile-photo']}}) 100%">
             </div>
             <div class="profile-info">
-
-                  @if(isset($data['business-name']))
-                  <h1>{{$data['business-name']}}</h1>
-                  @endif
-                  @if (isset($data['website']))
-                  <p>Website: {{$data['website']}}</p>
-                  @endif
-
+              @if(isset($data['trading-name']))
+                <h1>{{$data['trading-name']}}</h1>
+              @endif
+              @if (isset($data['website']))
+                <p>Website: {{$data['website']}}</p>
+              @endif
             </div>
           </div>
         </div>
@@ -84,8 +83,8 @@
           <div class="col-xs-9">
             <div class="statistics">
                 @if(isset($data['trade']))
-                  <h2 class="trade">{{$data['trade']}}</h2>
-                  @endif
+                  <h2 class="trade">{{ implode(', ', $data['trade']) }}</h2>
+                @endif
 
               <div class="status">
                 <span class="rating-p">Overall Ratings</span>
@@ -99,6 +98,13 @@
                   @endfor
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">{{$data['total']}} Reviews</span>
+                <a href="#"  class="view-summary" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
+              </div>
+              <div class="positions">
+	              <span class="label">Postcodes: </span>
+	              @foreach($data['position'] as $position)
+	              	<span class="position">{{$position}}</span>
+	              @endforeach
               </div>
             </div>
 
@@ -112,14 +118,11 @@
           </div>
           <div class="col-xs-3 profile-details">
            <!--  <h3>More Details</h3> -->
-           <div class="info-item">
-              @if(isset($data['website']))
-              <div class="col-xs-2 icon"><i class="fa fa-globe" aria-hidden="true"></i></div>
-              <div class="col-xs-10 detail">
-                <p> <b> Website </b></br><span class="detail">{{$data['website']}}</span></p>
-              </div>
-              @endif
-            </div>
+            @if(is_admin())
+              @php($editUrl = "/profile/tradesman/{$data['id']}/edit")
+              <a href="{{ env('APP_URL') . $editUrl}}" class="btn hs-primary">EDIT PROFILE <span class="fa fa-chevron-right"></span></a>
+            @endif
+
             <div class="info-item">
               @if(isset($data['email']))
               <div class="col-xs-2 icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
@@ -140,7 +143,15 @@
               @if(isset($data['charge-rate']))
               <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
-                <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+                <p><b> Charge Rate </b></br><span class="detail">{{$data['charge-rate']}}</span></p>
+              </div>
+              @endif
+            </div>
+            <div class="info-item">
+              @if(isset($data['phone-number']))
+              <div class="col-xs-2 icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
+              <div class="col-xs-10 detail">
+                <p><b> Phone Number </b></br><span class="detail">{{$data['phone-number']}}</span></p>
               </div>
               @endif
             </div>
@@ -162,7 +173,7 @@
                   <div class="spacing"></div>
                 @endif
 
-                <div class="gallery-carousel ">
+                <div class="gallery-carousel " id='lightgallery'>
                    @if(isset($data['gallery']))
                                 @php($x = 0)
                                 @php($y = 2)
@@ -187,7 +198,10 @@
                                   @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{url($item)}}"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
+                                      </div>
                                     </div>
                                   </div>
 
@@ -247,14 +261,14 @@
                                   @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
+                                      </div>
                                     </div>
                                   </div>
-
                                     </div>
                                   </div>
-
-
                                   @php($x++)
 
                                 @endforeach
@@ -312,11 +326,28 @@
       </div>
       @include("modals.tradesmanrating")
       @include("modals.thankyou")
+      @if($businessInfo = session('businessInfo'))
+        @include("rate_tradesman_modal")
+      @endif
     </section>
      <script>
       function openRatingModal() {
         $('#rating').modal('show');
       }
     </script>
+@endsection
 
+@section('scripts')
+  @parent
+  <script>
+    $toShowRatingModal = {!! session('show_rate')  ? 'true' : 'false' !!};
+    if($toShowRatingModal) {
+      $("#rateModal").modal('show');
+    }
+  </script>
+  <script type="text/javascript">
+    $("#lightgallery").lightGallery({
+      selector: '.gallery-image-wrapper'
+    });
+  </script>
 @endsection

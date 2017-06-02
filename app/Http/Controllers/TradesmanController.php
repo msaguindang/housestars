@@ -7,11 +7,13 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Services\GalleryService;
+use App\Services\ReviewService;
 use View;
 use Sentinel;
 use App\User;
 use App\UserMeta;
 use App\Suburbs;
+use App\Category;
 use Carbon\Carbon;
 use Hash;
 use App\Agents;
@@ -20,42 +22,52 @@ use Response;
 use Mail;
 use App\Reviews;
 use App\RoleUsers;
+use Image;
+use Cache;
 
 class TradesmanController extends Controller
 {
-    const MAX_PHOTO = 10;
+    const MAX_PHOTO  = 10,
+          MAX_WIDTH_LANDSCAPE  = 1200,
+          MAX_WIDTH_PORTRAIT  = 270,
+          MAX_HEIGHT = 270;
 
-    private $galleryService;
+    private $galleryService,
+            $reviewService;
 
-    public function __construct(GalleryService $galleryService)
+    public function __construct(GalleryService $galleryService, ReviewService $reviewService)
     {
         $this->galleryService = $galleryService;
+        $this->reviewService = $reviewService;
     }
 
     public function dashboard()
     {
-
     	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
     	$data = array();
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
-        $x = 0; $y = 0;
+        $x = 0; $y = 0; $t = 0;
 
     	foreach ($meta as $key) {
-    		if($key->meta_name == 'gallery'){
+    		if($key->meta_name == 'gallery') {
     			$data[$key->meta_name][$y] = $key->meta_value;
     			$y = $y + 1;
-
-    		} else {
-
+    		} else if($key->meta_name == 'trade') {
+                $categoryId = $key->meta_value;
+                $cat = Cache::rememberForever("category_$categoryId", function() use ($categoryId) {
+                    return Category::find($categoryId);
+                });
+                $data[$key->meta_name][$t] = $cat->category;
+                $t++;
+            } else {
     			$data[$key->meta_name] = $key->meta_value;
-
     		}
 
     	}
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
-        $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
+        $data['reviews'] = $this->reviewService->getReviews(Sentinel::getUser()->id);
         $data['total'] = count($data['reviews']);
 
         $ads = Advertisement::where('type', '=', '270x270')->get();
@@ -76,24 +88,31 @@ class TradesmanController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
+        
+		if(strpos(str_replace(str_split(' /'), '', strtolower($data['trading-name'])), 'na') !== false && strlen(str_replace(str_split(' /'), '', strtolower($data['trading-name']))) == 2){
+	        $data['trading-name'] = $data['business-name'];
+        }
 
-        //dd($data);
-
-    	   return View::make('dashboard/tradesman/profile')->with('data', $data);
+	   return View::make('dashboard/tradesman/profile')->with('data', $data);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
+        $data = [];
     	$suburbs = Suburbs::all();
-    	$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-    	$data = array();
+        $userId = $request->route('id') ? : Sentinel::getUser()->id;
+    	$meta = UserMeta::where('user_id', $userId)->get();
+        $data['categories'] = Category::whereStatus(1)->orderBy('category', 'ASC')->groupBy('category')->get();
+        $data['id'] = $userId;
         $data['summary'] = '';
         $data['profile-photo'] = 'assets/default.png';
         $data['cover-photo'] = 'assets/default_cover_photo.jpg';
-        $x = 0; $y = 0;
+        $x = 0; $y = 0; 
+        $trades = [];
+        // $t = 0;
 
     	foreach ($meta as $key) {
-    		if($key->meta_name == 'positions'){
+    		if ($key->meta_name == 'positions') {
     			$positions = explode(",", $key->meta_value);
 
     			foreach ($positions as $position) {
@@ -102,16 +121,15 @@ class TradesmanController extends Controller
     				$data['suburbs'][$x] = array('code' => $code[$x], 'name' => $suburb[$x]);
   					$x = $x + 1;
     			}
-
-
-    		} else if($key->meta_name == 'gallery'){
+    		} else if ($key->meta_name == 'trade') {
+                $categoryId = $key->meta_value;
+                array_push($trades, $categoryId);
+                $data[$key->meta_name] = $trades;
+            } else if($key->meta_name == 'gallery') {
     			$data[$key->meta_name][$y] = array('id'=>$key->id, 'url'=> $key->meta_value);
     			$y = $y + 1;
-
     		} else {
-
     			if(strlen($key->meta_value) > 30 && $key->meta_name == 'trade'){
-
     				$data[$key->meta_name] = substr($key->meta_value, 0, 30).'...';
     			} else {
     				$data[$key->meta_name] = $key->meta_value;
@@ -119,28 +137,62 @@ class TradesmanController extends Controller
     		}
 
     	}
-      //dd($data);
+
         $data['hasGallery'] = $y;
+        $data['profile-url'] = "/profile";
+        $data['name'] = Sentinel::getUser()->name;
+        $data['isAdmin'] = is_admin();
+        if ($data['isAdmin']) {
+            $data['profile-url'] .= "/tradesman/$userId";
+            $data['name'] = User::find($userId)->name;
+        }
     	return View::make('dashboard/tradesman/edit')->with('data', $data);
     }
 
     public function upload(Request $request) {
-        $user_id = Sentinel::getUser()->id;
-        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->get()->count() < self::MAX_PHOTO) {
+        $validator = app('validator')->make($request->all(),[
+                        'file' => 'max:2048'
+                    ]);
+        
+        if ($validator->fails()) {
+            return Response::json(['error' => "photo(s) should not be greater than 2MB."], 422);
+        }
+
+        $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
+        if ($request->hasFile('file') && UserMeta::where('meta_name','gallery')->where('user_id', $user_id)->count() < self::MAX_PHOTO) {
             $file = $request->file('file');
             $data = array();
 	        $localpath = 'user/user-'.$user_id.'/uploads';
 	        $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
 			$path = $file->move(public_path($localpath), $filename);
-			$url = $localpath.'/'.$filename;
+            $filePath = public_path($localpath . '/' . $filename);
+            list($width, $height) = getimagesize($filePath);
+            $image = Image::make($filePath)->orientate();
+            $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+            if ($width > $height && $width > self::MAX_WIDTH_LANDSCAPE) {
+                // Landscape
+                $image->resize(self::MAX_WIDTH_LANDSCAPE, $h, function($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })->save($filePath);
+            } else if ($width < $height && $width > self::MAX_WIDTH_PORTRAIT) {
+                // Portrait or Square
+                $image->resize(self::MAX_WIDTH_PORTRAIT, $h, function($c) {
+                    $c->aspectRatio();
+                    $c->upsize();
+                })->save($filePath);
+            }
 
+			$url = $localpath.'/'.$filename;
 			UserMeta::updateOrCreate(['user_id' => $user_id, 'meta_name' => 'gallery', 'meta_value' => $url]);
             array_push($data, $url);
-
-	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials()], 200);
-        }else {
+            $meta = ['w' => $width, 'h' => $height];
+	        return Response::json(['data' => $this->galleryService->getGalleryItemsPartials($user_id), 'meta' => $meta], 200);
+        } else if (UserMeta::where('meta_name', 'gallery')->where('user_id', $user_id)->count() >= self::MAX_PHOTO) {
             $max = self::MAX_PHOTO;
             return Response::json(['error' => "You can only upload up to $max photos!"], 422);
+        } else {
+            return Response::json(['error' => "You have uploaded beyond the filesize limit!"], 422);
         }
 
         return Response::json('error', 400);
@@ -148,48 +200,81 @@ class TradesmanController extends Controller
 
     public function updateProfile(Request $request)
     {
-    	//dd($request->all());
-    	if(Sentinel::check()){
-    		$user_id = Sentinel::getUser()->id;
+        $validator = app('validator')->make($request->all(), [
+            'profile-photo' => 'max:2048',
+            'cover-photo'   => 'max:2048'
+        ],[
+            'profile-photo.max' => 'Profile photo should not be greater than 2MB.',
+            'cover-photo.max'   => 'Cover photo should not be greater than 2MB.'
+        ]);
 
-    		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate');
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else if(Sentinel::check()) {
+            try {
+        		$user_id = $request->route('id') ? : Sentinel::getUser()->id;
+        		$meta_name = array('cover-photo', 'profile-photo', 'gallery', 'business-name', 'positions', 'summary', 'trade', 'website', 'abn', 'charge-rate', 'phone');
+        		foreach ($meta_name as $meta) {
+                    if ($request->hasFile($meta))  {
+                    	$file = $request->file($meta);
+                    	$localpath = 'user/user-'.$user_id.'/uploads';
+    	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
+    					$path = $file->move(public_path($localpath), $filename);
+    					$value = $localpath.'/'.$filename;
+                        list($width, $height) = getimagesize($value);
+                        $image = Image::make($value)->orientate();
+                        $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                        if ($width > $height && $width > self::MAX_WIDTH_LANDSCAPE) {
+                            // Landscape
+                            $image->resize(self::MAX_WIDTH_LANDSCAPE, $h, function($c) {
+                                $c->aspectRatio();
+                                $c->upsize();
+                            })->save($value);
+                        } else if ($width < $height && $width > self::MAX_WIDTH_PORTRAIT) {
+                            // Portrait or Square
+                            $image->resize(self::MAX_WIDTH_PORTRAIT, $h, function($c) {
+                                $c->aspectRatio();
+                                $c->upsize();
+                            })->save($value);
+                        }
+    				} else if(!empty($request->get($meta.'-drag', ''))) {
+                        $value = $request->input($meta.'-drag');
+                    } else if(($meta == 'trade') && ($trades = $request->get('trade', []))) {
+                        foreach ($trades as $tradeId) {
+                            UserMeta::updateOrCreate(
+                                ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $tradeId],
+                                ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $tradeId]
+                            );
+                        }
+                        UserMeta::where('user_id', $user_id)
+                                    ->where('meta_name', $meta)
+                                    ->whereNotIn('meta_value', $trades)
+                                    ->delete();
+                        continue;
+                    } else {
+    					$value = $request->input($meta);
+    				}
 
-    		foreach ($meta_name as $meta) {
+    				if($meta == 'positions' && $request->input($meta) != null && $meta != ''){
+                        $suburbs = $request->input($meta);
+                        $value = '';
 
-
-                if ($request->hasFile($meta) )  {
-
-                	$file = $request->file($meta);
-                	$localpath = 'user/user-'.$user_id.'/uploads';
-	                $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$file->getClientOriginalExtension();
-					$path = $file->move(public_path($localpath), $filename);
-					$value = $localpath.'/'.$filename;
-				} else if(!empty($request->get($meta.'-drag', ''))) {
-                    $value = $request->input($meta.'-drag');
-                } else {
-					$value = $request->input($meta);
-				}
-
-				if($meta == 'positions' && $request->input($meta) != null && $meta != ''){
-                    $suburbs = $request->input($meta);
-                    $value = '';
-
-                    foreach ($suburbs as $suburb) {
-                        $value .= $suburb . ',';
+                        foreach ($suburbs as $suburb) {
+                            $value .= $suburb . ',';
+                        }
                     }
-                }
 
-				if($value !== null){
-                	UserMeta::updateOrCreate(
-                    	['user_id' => $user_id, 'meta_name' => $meta],
-                    	['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
-                	);
-				}
-
-    		}
-
-		    return redirect(env('APP_URL').'/dashboard/tradesman/profile');
-
+    				if($value !== null) {
+                    	UserMeta::updateOrCreate(
+                        	['user_id' => $user_id, 'meta_name' => $meta],
+                        	['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
+                    	);
+    				}
+        		}
+                return redirect(env('APP_URL').'/dashboard/tradesman/profile');
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
     	} else {
     		return redirect(env('APP_URL'));
     	}
@@ -215,11 +300,9 @@ class TradesmanController extends Controller
             $data[$key->meta_name] = $key->meta_value;
         }
 
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
-
-        //dd($customer_info);
 
         $data['credit-card'] = $customer_info->sources->data[0]->last4;
         $data['expiry-month'] = $customer_info->sources->data[0]->exp_month;
@@ -242,54 +325,37 @@ class TradesmanController extends Controller
     }
 
     private function sendOrder($data){
+	    $phone = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'phone')->first();
+	    
         Mail::send(['html' => 'emails.order-bc'], [
-                'name' => $data->input('name'),
-                'address' => $data->input('address'),
-                'contact' => $data->input('contact'),
-                'email' => $data->input('email'),
-                'website' => $data->input('website')
+                'business' => $data->input('name'),
+                'name' => Sentinel::getUser()->name,
+                'email' => Sentinel::getUser()->email,
+                'phone' => $phone->meta_value
             ], function ($message) {
                 $message->from('info@housestars.com.au', 'Housestars');
                 $message->to('info@housestars.com.au', 'Housestars');
-                $message->subject('Order Business Card');
+                $message->subject('Order Review Card');
             });
     }
 
 
-    public function getRating($id){
+     public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
-        foreach ($ratings as $rating) {
-            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+		$rate = 0;
+		$zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+		
+        if($numRatings > 0){
+            foreach ($ratings as $rating) {	
+	            $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+	            $rate = $rate + $ratingAverage;
+            }
+            $average =  (int)round($rate / $numRatings);
         }
-
+		
         return $average;
-    }
-
-    public function getReviews($id){
-
-        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
-        $data = array(); $x = 0; $average = 0;
-        foreach ($reviews as $review) {
-            $user = User::where('id', $review->reviewer_id)->first();
-            $data[$x]['name'] = $user ? $user->name : '';
-            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
-            $data[$x]['communication'] = (int)$review->communication;
-            $data[$x]['work_quality'] = (int)$review->work_quality;
-            $data[$x]['price'] = (int)$review->price;
-            $data[$x]['punctuality'] = (int)$review->punctuality;
-            $data[$x]['attitude'] = (int)$review->attitude;
-            $data[$x]['title'] = $review->title;
-            $data[$x]['content'] = $review->content;
-            $data[$x]['created'] = $review->created_at->format('M d, Y');
-            $data[$x]['helpful'] = $review->helpful;
-            $data[$x]['id'] = $review->id;
-            $x++;
-        }
-
-        return $data;
     }
 
     public function helpful(Request $request){
@@ -307,8 +373,7 @@ class TradesmanController extends Controller
         $query = $request->input('query');
 
         $suburbs = Suburbs::where(DB::raw("CONCAT(suburbs.id,' ',suburbs.name)"), 'LIKE', "%{$query}%")
-            ->select(DB::raw("DISTINCT(suburbs.id)"), "suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
-            ->groupBy("suburbs.id")
+            ->select("suburbs.*", DB::raw("CONCAT(suburbs.id,'',suburbs.name) as value"))
             ->get()
             ->toArray();
 
@@ -378,17 +443,24 @@ class TradesmanController extends Controller
         //check if user already added referral
         $verifyReferral = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'referral')->get();
         $abn = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'abn')->get();
-        if($abn[0]['meta_value'] == $request->input('referral-code')){
-          $response = 'I see what you did there. Sorry, you can\'t your own ABN.';
-        }else if(count($verifyReferral) == 0){
+        if ($abn[0]['meta_value'] == $request->get('referral-code')) {
+          $response = 'I see what you did there. Sorry, you can\'t add your own ABN.';
+        } else if(count($verifyReferral) == 0) {
           UserMeta::updateOrCreate(
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral'],
               ['user_id' => Sentinel::getUser()->id, 'meta_name' => 'referral', 'meta_value' => $request->input('referral-code')]
           );
-          $response = 'Referral code successfully added.';
-        }else {
-          $response = 'You already added a referral code.';
-
+          $response = 'Referral successfully added.';
+          Mail::send(['html' => 'emails.tradesman-referral'], [
+                'name'     => Sentinel::getUser()->name,
+                'referral' => $request->get('referral-code')
+            ], function ($message) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au');
+                $message->subject('Referral');
+            });
+        } else {
+          $response = 'You already added a referral.';
         }
 
         return Response::json($response, 200);

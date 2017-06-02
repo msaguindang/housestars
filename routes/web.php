@@ -3,6 +3,7 @@
 use App\UserMeta;
 use App\Video;
 use Illuminate\Http\Request;
+use App\Services\ReviewService;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,9 @@ use Illuminate\Http\Request;
 |
 */
 
+
+Route::get('testing-page', 'MainController@test');
+
 Route::group(['prefix' => ''], function () {
 
     Route::get('/profile', 'MainController@dashboard');
@@ -23,6 +27,18 @@ Route::group(['prefix' => ''], function () {
         'as'    => 'homepage',
         'uses'  => 'MainController@home'
     ]);
+
+    Route::get('/terms-and-conditions', [
+        'as' => 'terms.and.conditions',
+        function () {
+            return view('general.terms-and-conditions');
+        }
+    ]);
+
+
+    Route::get('/privacy-policy', function () {
+        return view('general.privacy-policy');
+    });
 
     Route::post('/delete-gallery-photo', [
         'as' => 'delete.gallery.photo',
@@ -71,7 +87,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/trades-services', function () {
         $data = [];
         if($video = Video::active('trade-services')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
         return view('general.trades-services')->with('data', $data);
     });
@@ -79,7 +95,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/customer', function () {
         $data = [];
         if($video = Video::active('customer')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
         return view('general.customer')->with('data', $data);
     });
@@ -140,7 +156,7 @@ Route::group(['prefix' => ''], function () {
     Route::get('/dashboard/tradesman/settings', 'TradesmanController@settings')->middleware('tradesman');
 
     Route::get('/dashboard/customer/profile', 'CustomerController@dashboard')->middleware('customer');
-
+    
     Route::get('/dashboard/customer/edit', 'CustomerController@edit')->middleware('customer');
 
     Route::get('/dashboard/customer/add', 'CustomerController@property')->middleware('customer');
@@ -193,6 +209,8 @@ Route::group(['prefix' => ''], function () {
     Route::post('/logout', 'LoginController@logout');
 
     Route::post('/add-info', 'RegistrationController@postUserMeta');
+    
+    Route::post('/agency/add-position', 'RegistrationController@postPosition');
 
     Route::post('/add-agents', 'RegistrationController@postAddAgents');
 
@@ -200,9 +218,11 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/charge', 'RegistrationController@postCharge');
 
+    Route::post('/update-profile-agent', 'AgentController@updateProfile');
     Route::post('/update-profile', 'AgencyController@updateProfile');
 
-    Route::post('/update-profile-agent', 'AgentController@updateProfile');
+    Route::post('/update-profile-agent/{id}', 'AgentController@updateProfile');
+    Route::post('/update-profile/{id}', 'AgencyController@updateProfile');
 
     Route::post('/update-settings', 'AgencyController@updateSettings');
 
@@ -212,9 +232,10 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/update-agents', 'AgencyController@updateAgent');
 
-    Route::post('upload', 'TradesmanController@upload');
+    Route::post('upload/{id?}', 'TradesmanController@upload');
 
     Route::post('tradesman/update-profile', 'TradesmanController@updateProfile');
+    Route::post('tradesman/update-profile/{id}', 'TradesmanController@updateProfile');
 
     Route::post('tradesman/validate-suburb-availability', 'TradesmanController@validateSuburbAvailability');
 
@@ -236,7 +257,6 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/agency-list', 'RegistrationController@listAgency');
 
-    Route::get('/test', 'RegistrationController@test');
 
     Route::post('/add-property', 'RegistrationController@addProperty');
 
@@ -286,16 +306,23 @@ Route::group(['prefix' => ''], function () {
 
     Route::get('/listing/{category}/{suburb}', 'SearchController@tradesmenListing');
 
-    Route::post('/search/{item}',[
+    Route::post('/search/{item}', [
         'as'   => 'search.item',
         'uses' => 'SearchController@search'
     ]);
 
+    Route::get('/profile/customer/{id}', 'CustomerController@dashboard');
+    
     Route::get('/profile/{role}/{id}',[
         'as'   => 'profile.role.id',
         'uses' => 'ProfileController@profile'
     ]);
     
+    Route::get('/profile/{role}/{id}/edit',[
+        'as'   => 'profile.role.id.edit',
+        'uses' => 'ProfileController@editProfile'
+    ]);
+
     Route::get('/public-profile/{id}', 'ProfileController@getPublicProfile');
 
     Route::post('/helpful', 'ProfileController@helpful');
@@ -310,17 +337,32 @@ Route::group(['prefix' => ''], function () {
 
     Route::post('/contact-us', 'MainController@contact');
 
-    Route::post('/customer/update-settings', 'CustomerController@update');
+    Route::post('/customer/update-settings/{id}', 'CustomerController@update');
 
     Route::get('admin/login', 'AdminController@showLogin');
     Route::post('admin/login', 'AdminController@postLogin');
 
     Route::post('/referral', 'TradesmanController@referral');
+
     Route::get('/verify/{provider}', 'LoginController@verifyToProvider');
+
+    Route::get('/verify/{provider}/review/{role}/{businessId}', [
+        'as'   => 'verify.provider.review.business',
+        'uses' => 'LoginController@verifyToProviderToReviewBusiness'
+    ]);
+
     Route::get('/reviewer', 'LoginController@chooseBusiness');
 
-    Route::get('/choose-business', function () {
-        if (session()->exists('email')) {
+    Route::get('/choose-business', function (Request $request) {
+        if (session()->exists('business') && session()->exists('role')) {
+            $role = session()->get('role');
+            $ip = $request->ip();
+            $businessId = session()->get('business');
+            $redirect = "/profile/$role/$businessId";
+            $businessInfo = app(ReviewService::class)->validateBusinessReview($ip, $businessId, $redirect);
+            
+            return redirect($redirect)->with(['show_rate' => true, 'businessInfo' => $businessInfo]);
+        } else if (session()->exists('email')) {
             return view('choose_business');
         }
         return redirect('/');
@@ -338,7 +380,10 @@ Route::group(['prefix' => ''], function () {
     Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
         Route::get('test', 'AdminController@test');
-        Route::get('', 'AdminController@showDashboard');
+        Route::get('/',[
+            'as'   => 'admin.index',
+            'uses' => 'AdminController@showDashboard'
+        ]);
         Route::post('status/toggle', 'AdminController@toggleStatus');
 
         Route::get('logout', 'AdminController@logout');
@@ -453,9 +498,19 @@ Route::group(['prefix' => ''], function () {
 
     });
 
-    Route::group(['prefix' => 'dev-testing'], function () {
+    Route::group(['prefix' => 'faq'], function () {
 
-        Route::get('', 'TestingController@index');
+        Route::get('customer', 'FaqController@customer');
+        Route::get('agency', 'FaqController@agency');
+        Route::get('tradesman', 'FaqController@tradesman');
+
+    });
+
+
+Route::group(['prefix' => 'legal'], function () {
+
+        Route::get('terms-conditions', 'MainController@termsConditions');
+        Route::get('privacy-policy', 'MainController@privacyPolicy');
 
     });
 

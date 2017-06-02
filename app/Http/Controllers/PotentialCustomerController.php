@@ -37,12 +37,18 @@ class PotentialCustomerController extends Controller
             'email' => $request->email,
             'phone' => $request->phone
         ]);
-
+		
         $this->sendEmail($request, 'admin', null);
 
-        $price = explode(" - ", $request->input('estimated-price'));
-        $estimate = (int)preg_replace('/\D+/', '', $price[1]) * 0.025 * 0.2;
+        $price = explode("-", $request->input('estimated-price'));
+        $estimate = 0;
+        
+        if (count($price) > 1) {
+            $estimate = (int)preg_replace('/\D+/', '', $price[1]) * 0.025 * 0.2;
+        }
+
         $this->sendEmail($request, 'client', $estimate);
+
         return Response::json('success', 200);
 
 
@@ -52,14 +58,21 @@ class PotentialCustomerController extends Controller
     {
       $email = $request->input('email');
       $name = $request->input('name');
+      $suburb = $request->get('suburb', '');
 
+      preg_match_all('!\d!', $suburb, $matches);
+      if (isset($matches[0])) {
+        $suburb_id = implode('', $matches[0]);
+        $suburb = trim(str_replace($suburb_id, '', $suburb)) . ' (' . $suburb_id . ')';
+      }
+      
       switch ($to) {
         case 'admin':
           Mail::send(['html' => 'emails.savings-calculator'], [
                   'name' => $request->input('name'),
                   'phone' => $request->input('phone'),
                   'email' => $request->input('email'),
-                  'suburb' => $request->input('suburb'),
+                  'suburb' => $suburb,
                   'type' => $request->input('property-type'),
                   'price' => $request->input('estimated-price')
               ], function ($message) use ($name) {
@@ -74,7 +87,7 @@ class PotentialCustomerController extends Controller
                 'name' => $request->input('name'),
                 'email' => $request->input('phone'),
                 'phone' => $request->input('email'),
-                'suburb' => $request->input('suburb'),
+                'suburb' => $suburb,
                 'type' => $request->input('property-type'),
                 'price' => $request->input('estimated-price'),
                 'estimate' => $estimate

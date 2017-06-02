@@ -54,7 +54,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Tradesman</a> > <span class="blue">Tradesman Settings</span> </p>
+            <p class="links"><a href="">Home Page</a> > <a href="">Trades/Services</a> > <span class="blue"> Settings</span> </p>
           </div>
         </div>
       </div>

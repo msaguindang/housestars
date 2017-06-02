@@ -73,6 +73,22 @@
 	</div>
 </section>
 
+    @if(Sentinel::getUser()->subs_status == 0)
+        <div class="container">
+			<div class="row">
+				<div class="error-bar">
+	        <div class="col-xs-1">
+	          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+	        </div>
+	        <div class="col-xs-11">
+	          <p><span class="blue">Subscription Status: Inactive</span></p>
+	          <p>We're unable to charge your account. Please update your positions and payment method to continue your access to our system.</p>
+	        </div>
+	      </div>
+			</div>
+		</div>
+	@endif
+
 <section id="sign-up-form">
 	<div class="container">
 		<div class="row">
@@ -80,8 +96,11 @@
 				<form name ="form" action="{{env('APP_URL')}}/add-payment" method="POST">
 
 					{{csrf_field() }}
-				<div class="col-xs-6 padding-40">
+				<div class="col-xs-6 padding-40 border-right">
 					<h2>Add Payment Method</h2>
+                    <label>
+                        <i class="fa fa-info-circle" aria-hidden="true"></i> Credit details are for verification purposes only and will not be used unless you are selecting more than one position.
+                    </label>
 					@if(session('error'))
 					<div class="alert alert-danger">
 						{{session('error')}}
@@ -101,17 +120,30 @@
 					</div>
 					<div class="col-xs-6 no-padding-right">
 						<label>CVV</label>
-						<input type="number" name="cvc" required>
+						<input type="text" name="cvc" required>
 					</div>
+                    <label>Coupon Code (optional) 
+                        <i class="fa fa-question-circle tooltip-info"
+                         aria-hidden="true" data-toggle="tooltip"
+                         data-placement="right" title=""
+                         data-original-title="If you have been given a coupon code, please enter it here."
+                         data-html="true"></i>
+                    </label>
+                    <input type="text" name="coupon">
+                    @if(Sentinel::getUser()->subs_status == 1)
+                    <div class="col-xs-4"><a href="{{env('APP_URL')}}/register/agency/step-two" class="btn hs-primary" style="float: left; margin: 48px 0 10px;">BACK <span class="icon icon-arrow-left"></span></a></div>
+                    @else
+                    <div class="col-xs-4"><a href="{{env('APP_URL')}}/register/agency/step-one" class="btn hs-primary" style="float: left; margin: 48px 0 10px;">BACK <span class="icon icon-arrow-left"></span></a></div>
+                    @endif
+
 				</div>
-				<div class="col-xs-6 border-left padding-40">
+				<div class="col-xs-6 padding-40">
 					<h2>Add Billing Address</h2>
 					<label>Address</label>
 					<input type="text" name="address" required>
 					<label>Suburb</label>
 					<div class="btn-group">
 						<select id="select-suburb" name="suburb"  class="demo-default plain" required></select>
-
 			        </div>
 					<label>State</label>
 					<div class="btn-group">

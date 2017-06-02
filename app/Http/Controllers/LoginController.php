@@ -92,9 +92,30 @@ class LoginController extends Controller
 	{
 		return Socialite::driver($provider)->redirect();
 	}
+	
+	public function verifyToProviderToReviewBusiness ($provider, $role, $businessId)
+	{
+		session()->forget('email');
+        session()->forget('user_type');
+        session()->forget('business');
+        session()->forget('role');
+        
+        session()->put('role', $role);
+        session()->put('business', $businessId);
+
+		return Socialite::driver($provider)
+			->with(['state' => 'verify'])
+			->stateless()
+			->redirect();
+	}
 
 	public function verifyToProvider ($provider)
 	{
+		session()->forget('email');
+        session()->forget('user_type');
+        session()->forget('business');
+        session()->forget('role');
+
 		return Socialite::driver($provider)
 			->with(['state' => 'verify'])
 			->stateless()
@@ -111,6 +132,10 @@ class LoginController extends Controller
 
 	public function handleProviderCallback ($provider, Request $request)
 	{
+		if ($request->get('error', '') == 'access_denied' && $request->get('error_reason', '') == 'user_denied') {
+			return redirect('/');
+		}
+
 		$user = Socialite::driver($provider)->stateless()->user();
 		$state = $request->state;
 		$stateIsNumeric = is_numeric($state);
@@ -120,8 +145,6 @@ class LoginController extends Controller
 		if($state == 'verify' || $stateIsNumeric) {
 			$socialName = $user->getName();
 			$user = User::where('email', $email)->first();
-			session()->forget('email');
-	        session()->forget('user_type');
 	        session()->put('email', $email);
 
 			if(!is_null($user)) {
@@ -136,23 +159,8 @@ class LoginController extends Controller
 				], $potentialCustomer);
 	            session()->put('user_type', 'potential_customer');
 			}
-			// $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($potentialCustomer);
-
 			$secret = encrypt($socialId);
-			// $this->deleteEmptyReview();
 
-			// DB::table('reviews')->insert(array(
-			// 	'reviewee_id' => -1,
-			// 	'reviewer_id' => $socialId,
-			// 	'name' => $socialName,
-			// 	'created_at' => Carbon::now(),
-			// 	'updated_at' => Carbon::now()
-			// ));
-
-			// if($hasReachedLimit) {
-			// 	session()->flash('rate-error', 'You have reached the limit to rate a trade or service for a year!');
-			// 	return redirect('/');
-			// } 
 			if ($state == 'verify') {
 				return redirect()->action(
 					'LoginController@chooseBusiness', ['secret' => $secret]
@@ -162,7 +170,6 @@ class LoginController extends Controller
 			}
 		}
 		else {
-			// $social_user = Socialite::driver($provider)->user();
 			$social_user = $user;
 			$userExists = User::where('social_id', $socialId)->orWhere('email', $social_user->email)->get();
 
@@ -231,7 +238,7 @@ class LoginController extends Controller
 		$query = DB::table('user_meta')
 					->select('user_id', 'meta_name', 'meta_value')
 					->where('meta_name', '=', 'agency-name')
-					->orWhere('meta_name', '=', 'trade')
+					->orWhere('meta_name', '=', 'trading-name')
 					->get();
 		return json_decode($query, true);
 	}

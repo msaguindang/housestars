@@ -21,10 +21,15 @@ use App\Services\PotentialCustomerService;
 use App\Services\ReviewService;
 use App\User;
 use App\Video;
+use DB;
+use Carbon\Carbon;
+use Stripe\Customer;
+use Stripe\Stripe;
+use Stripe\Subscription;
 
 class MainController extends Controller
 {
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         if (Sentinel::check()) {
             switch (Sentinel::getUser()->roles()->first()->slug) {
@@ -51,7 +56,7 @@ class MainController extends Controller
     }
 
     public function home(Request $request)
-    {
+    {        
         $ads = Advertisement::getByPage('home')->get();
         // $numAds =  count($ads['728x90'] );
         // $index = rand(0, $numAds);
@@ -76,17 +81,19 @@ class MainController extends Controller
         }
 
         $data = array();
-
         if (isset($advert['141x117'])) {
             $numAds =  count($advert['141x117']) - 1;
             $index = rand(0, $numAds);
             $data['141x117'] = $advert['141x117'][$index ];
-
-        } else if (isset($advert['728x90'])) {
+		}
+        
+        if (isset($advert['728x90'])) {
             $numAds =  count($advert['728x90']) - 1;
             $index = rand(0, $numAds);
-            $data['728x90'] = $advert['728x90'][$index ];
+            $data['728x90'] = $advert['728x90'][$index ];   
         }
+        
+        
 
         return view('home')->with('advert', $data);
     }
@@ -127,7 +134,7 @@ class MainController extends Controller
         }
 
         if($video = Video::active('agency')->first()) {
-            $data['video'] = $video->url;
+            $data['video'] = $video->url . '?autoplay=1&rel=0';
         }
 
         return view('general.agency')->with('data', $data);
@@ -136,7 +143,7 @@ class MainController extends Controller
     public function unpaid()
     {
         $suburbs = Suburbs::all();
-        \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
         $payment_status = $customer_info->subscriptions->data[0]->status;
         return View::make('general/payment-status')->with('suburbs', $suburbs)->with('status', $payment_status);
@@ -150,28 +157,33 @@ class MainController extends Controller
 
     public function verifyPotentialUser(Request $request)
     {
-        
         $email = $request->get('email');
         session()->forget('email');
         session()->forget('user_type');
+        session()->forget('business');
+        session()->forget('role');
         $potentialCustomer = PotentialCustomer::where('email', $email)->first();
         $user = User::where('email', $email)->first();
-
-        
-        // $validator = $this->validate($request, [
-        //     'email' => 'required|email'
-        // ]);
-        
+        $hasBusiness = $request->exists('business');
 
         if (!is_null($potentialCustomer) && $potentialCustomer->status == 1) {
             session()->put('email', $email);
             session()->put('user_type', 'potential_customer');
+            if ($hasBusiness) {
+                session()->put('business', $request->get('business'));
+                session()->put('role', $request->get('role'));
+            }
             return response()->json(['url' => url('/choose-business')], 200);
-        } else if(!is_null($user) && $user->status == 1) {
+        } else if (!is_null($user) && $user->status == 1) {
             session()->put('email', $email);
             session()->put('user_type', 'user');
+            if ($hasBusiness) {
+                session()->put('business', $request->get('business'));
+                session()->put('role', $request->get('role'));
+            }
             return response()->json(['url' => url('/choose-business')], 200);
         }
+        
         Mail::send(['html' => 'emails.customer-rate-verification'], [
                     'subject'  => 'Email Verification',
                     'email'    => $email
@@ -204,4 +216,63 @@ class MainController extends Controller
                 $message->subject($topic.': ' . $subject);
             });
     }
+    
+    public function termsConditions()
+    {
+         return view('general.terms');
+    }
+    
+    public function privacyPolicy()
+    {
+         return view('general.policy');
+    }
+    
+    
+    public function test(){
+	   		DB::table('suburbs')->update(array('availability' => 0));
+
+	    	$suburbs = UserMeta::where('meta_name', 'positions')->get();
+	    	$positions = [];
+	    	
+	    	foreach($suburbs as $suburb){
+		    	if(!is_null(RoleUsers::hasRole($suburb->user_id, 2)->first())) {
+	              $subs = explode(",", $suburb->meta_value);
+	              foreach($subs as $sub){
+		              array_push($positions, $sub);
+	              }
+	            }
+	    	}
+	    	//dd($suburbCount);
+	    	$availabilityCount = array_count_values($positions);
+	    	
+	    	foreach($availabilityCount as $suburb => $count){
+		    	$postcode = preg_replace('/\D/', '', $suburb);
+		    	$suburb_name = preg_replace('/\d/', '', $suburb);
+		    	
+		    	if($count > 3){
+			    	$count = 3;
+		    	}
+		    	Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
+	    	}
+	    	
+
+/*
+		$qry = DB::select("SELECT meta_data.count, grab_chars(meta_data.name) suburb, grab_nums(meta_data.name) postcode, s.availability
+				FROM 
+				(select count(SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, ',', numbers.number), ',', -1)) count, SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, ',', numbers.number), ',', -1) name
+				from
+				  numbers inner join user_meta_positions
+				  on CHAR_LENGTH(meta_value)
+				     -CHAR_LENGTH(REPLACE(meta_value, ',', ''))>=numbers.number-1
+				WHERE SUBSTRING_INDEX(SUBSTRING_INDEX(meta_value, ',', numbers.number), ',', -1) <> ''
+				GROUP BY
+				  name
+				) meta_data,
+				suburbs s
+				WHERE grab_nums(meta_data.name) = s.id AND grab_chars(meta_data.name) = s.name");
+		
+		dd($qry);
+*/
+	}
+    
 }

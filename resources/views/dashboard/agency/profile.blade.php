@@ -1,4 +1,16 @@
 @extends("layouts.main")
+
+@section('styles')
+  <style>
+    .gallery-item {
+      min-height: 150px;
+    }
+    .gallery-carousel > .carousel-slide-wrapper {
+      height: 200px;
+    }
+  </style>
+@endsection
+
 @section("content")
 <header id="header" class="animated desktop">
         <div class="container">
@@ -54,7 +66,7 @@
       <div class="cover-img">
         <div class="breadcrumbs container">
           <div class="row">
-            <p class="links"><a href="">Home Page</a> > <a href="">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
+            <p class="links"><a href="/">Home Page</a> > <a href="/agency">Agency</a> > <span class="blue">Agency Dashboard</span> </p>
           </div>
           <div class="profile">
             @if(filter_var($dp, FILTER_VALIDATE_URL) === FALSE)
@@ -64,7 +76,7 @@
             </div>
             <div class="profile-info">
               @foreach ($meta as $info)
-                @if($info->meta_name == 'agency-name')
+                @if($info->meta_name == 'trading-name')
                   <h1>{{$info->meta_value}}</h1>
                 @elseif ($info->meta_name == 'business-address')
                   <p>Location: {{$info->meta_value}}</p>
@@ -83,6 +95,7 @@
             <div class="statistics">
               <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{$data['total-listings']}} {{ str_plural('Listing', $data['total-listings']) }} </span>
               <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold </span>
+              <span class="info"><i class="fa fa-list" aria-hidden="true"></i> Marketing Budget : {{isset($data['marketing-budget']) ? $data['marketing-budget'] : ''}}</span>
               <div class="status">
                 <span class="status-icon"></span>
                 <span class="status-p">Available</span>
@@ -148,7 +161,7 @@
             @if(isset($data['charge-rate']))
             <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
-              <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+              <p><b> Charge Rate </b></br><span class="detail">{{$data['charge-rate']}}</span></p>
             </div>
             @endif
           </div>
@@ -170,7 +183,7 @@
           </div>
             <div class="switch-holder">
               <div class="col-xs-8 no-padding-left">
-                <p style="line-height: 30px;">Switch to Customer View</p>
+                <p style="line-height: 30px;">Switch to Profile View</p>
               </div>
               <div class="col-xs-4 switch-guest">
                 <label class="switch" style="margin: 0"><input type="checkbox" name="switch" value="1"><div id="switch" class="slider round" style="float: left;"></div></label>
@@ -185,158 +198,119 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
-<!--             <div class="row gallery">
+            <div class="row gallery mobile-hidden">
+                @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
-                <a href="" class="view-all"><i class="fa fa-list" aria-hidden="true"></i> View All</a>
-                <div class="gallery-carousel">
+                @else
+                  <div class="spacing"></div>
+                @endif
+
+                <div class="gallery-carousel " id='lightgallery'>
+                   @if(isset($data['gallery']))
+                                @php($x = 0)
+                                @php($y = 2)
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
+                        <!-- Carousel Buttons Next/Prev -->
+                              <div class="controller">
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                   <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                              </div>
+                        <!-- Carousel Slides / Quotes -->
                           <div class="carousel-inner">
-                            <div class="item active">
-                                <div class="row">
+                          <!-- Gallery 1 -->
+
+
+                                @php($items = count($data['gallery']) - 1)
+
+                                @foreach($data['gallery'] as $item)
+                                  @if ($x == 0 )
+                                    <div class="item active">
+                                      <div class="row">
+                                  @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{url($item)}}"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
                                       </div>
                                     </div>
                                   </div>
 
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
+                                  @if ($x == $items)
                                     </div>
                                   </div>
 
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
+                                  @elseif($x == $y)
+                                     </div>
                                   </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                               <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <div class="item">
+                                      <div class="row">
+                                  @php($y = $y + 3)
+                                  @endif
 
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
+                                  @php($x++)
 
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="item">
-                               <div class="row">
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                   <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div class="col-xs-4">
-                                    <div class="gallery-item">
-                                      <div class="gallery-image">
-                                      <div class="gallery-label">
-                                          <span class="property-name">Property Name</span>
-                                          <span class="property-location">New South Wales, Australia</span>
-                                        </div>
-                                      </div>
-                                      <div class="gallery-desc">
-                                        <p>Classy apartment with panoramic view along the Danube from Margitsziget (Margaret Island) through the Parliament Building to Gellért hegy. Central location and lots of amenities. Excellent choice for families. </p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-
-
+                                @endforeach
                         </div>
                     </div>
                 </div>
+                    @endif
               </div>
-            </div> -->
-            <div class="spacing"></div>
+            </div>
+
+            <div class="row gallery mobile">
+                @if(isset($data['gallery']))
+                <h2 class="section-title">Gallery</h2>
+                @else
+                  <div class="spacing"></div>
+                @endif
+
+                <div class="gallery-carousel ">
+                   @if(isset($data['gallery']))
+                                @php($x = 0)
+                  <div class="col-md-12" data-wow-delay="0.2s">
+                      <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
+                        <!-- Carousel Buttons Next/Prev -->
+                              <div class="controller">
+                                  <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                              </div>
+                        <!-- Carousel Slides / Quotes -->
+                          <div class="carousel-inner">
+                          <!-- Gallery 1 -->
+
+
+                                @php($items = count($data['gallery']) - 1)
+
+                                @foreach($data['gallery'] as $item)
+                                  @if ($x == 0 )
+                                    <div class="item active">
+                                      <div class="row">
+                                  @else
+                                  <div class="item">
+                                    <div class="row">
+                                  @endif
+                                  <div class="col-xs-4">
+                                    <div class="gallery-item">
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                    </div>
+                                  </div>
+                                  @php($x++)
+
+                                @endforeach
+                        </div>
+                    </div>
+                </div>
+                    @endif
+              </div>
+            </div>
+                        <div class="spacing"></div>
             <div class="spacing"></div>
             <div class="row ratings">
               <h2 class="section-title">Client Reviews</h2>
@@ -371,15 +345,24 @@
           </div>
             <div class="col-xs-3 sidebar">
               <div class="advertisement">
-                @if(isset($data['advert']))
+                {{--@if(isset($data['advert']))
                   @foreach($data['advert'] as $ad)
                     <div class="ads" style="background: url({{env('APP_URL')}}/{{$ad['url']}})"></div>
                   @endforeach
-                @endif
+                @endif--}}
               </div>
             </div>
         </div>
       </div>
     </section>
 
+@endsection
+
+@section('scripts')
+  @parent
+  <script type="text/javascript">
+    $("#lightgallery").lightGallery({
+      selector: '.gallery-image-wrapper'
+    });
+  </script>
 @endsection

@@ -52,6 +52,8 @@ class ReviewController extends Controller
             if ($tradesman->meta_name == 'profile-photo') {
                 $data['photo'] = $tradesman->meta_value;
                 $data['isPhotoUrl'] = filter_var($data['photo'], FILTER_VALIDATE_URL);
+            } else {
+                $data[$tradesman->meta_name] = $tradesman->meta_value;
             }
         }
 
@@ -62,8 +64,12 @@ class ReviewController extends Controller
     {
 
         $request = $this->payload;
-
-        $user_id = Sentinel::getUser()->id;
+		if($request->input('user_id')){
+			 $user_id = $request->input('user_id');
+		}else{
+			 $user_id = Sentinel::getUser()->id;
+		}
+        //$user_id = Sentinel::getUser()->id;
         $userReviews = Reviews::where('reviewer_id', $user_id)->where('reviewee_id', $request->input('tradesman_id'))->whereYear('created_at', '=', date('Y'))->count();
 
         if($userReviews >= 5 ){
@@ -80,11 +86,11 @@ class ReviewController extends Controller
 
                   if($request->input('transaction_id') != null || $request->input('transaction_id') != ''){
                     DB::table('reviews')->insert(
-                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id')]
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'transaction' => $request->input('transaction_id'), 'postcode' => $request->input('postcode')]
                     );
                   } else{
                     DB::table('reviews')->insert(
-                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now()]
+                        ['reviewee_id' => $request->input('tradesman_id'), 'reviewer_id' => $user_id, 'communication' => $request->input('communication'), 'work_quality' => $request->input('work-quality'), 'price' => $request->input('price'), 'punctuality' => $request->input('punctuality'), 'attitude' => $request->input('attitude'), 'title' => $request->input('review-title'), 'content' => $request->input('review-text'), 'created_at' => Carbon::now(), 'postcode' => $request->input('postcode')]
                     );
                   }
         }
@@ -137,19 +143,24 @@ class ReviewController extends Controller
                     users.`name`
                   FROM
                     users
-                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name
+                  WHERE users.id = reviews.`reviewer_id`) AS reviewer_name,
+                  (SELECT
+                    user_meta.`meta_value`
+                  FROM
+                    user_meta
+                  WHERE user_meta.`user_id` = reviews.`reviewee_id` 
+                  AND user_meta.`meta_name` = 'agency-name') AS business
                 FROM
                   reviews
                 {$dateRangeQuery}
                 LIMIT {$limit}
                 OFFSET {$offset}";
 
-
         $reviews = json_decode(json_encode(DB::select($sql)), TRUE);
 
         $response = [
             'reviews' => $reviews,
-            'length' => $length
+            'length'  => $length
         ];
 
         return Response::json($response, 200);
@@ -261,8 +272,6 @@ class ReviewController extends Controller
         ];
 
         return Response::json($response, 200);
-
-
     }
 
     public function addAReview (Request $request)
@@ -270,37 +279,11 @@ class ReviewController extends Controller
         $params = $request->all();
         $businessId = $params['businessId'];
         $hasReachedLimit = false;
+        $ip = $request->ip();
+        $postcode = $request->get('postcode', '');
 
-        if(session()->has('email') && session()->has('user_type')) {
-            $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
-            $user = app($type)->where('email', session()->get('email'))->first();
-            $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-        } else if($user = Sentinel::getUser()) {
-            $hasReachedLimit = app(ReviewService::class)->validateCustomerReviews($user, $businessId);
-        }
+        $businessInfo = app(ReviewService::class)->validateBusinessReview($ip, $businessId);
 
-        if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
-            $ip = $request->ip();
-            Mail::send(['html' => 'emails.review-redflag'], [
-                    'ip' => $ip,
-                    'email' => session()->get('email')
-                ], function ($message) use ($ip) {
-                    $message->from('info@housestars.com.au', 'Housestars');
-                    $message->to('info@housestars.com.au', 'Housestars');
-                    $message->subject('Oops!');
-                });
-            session()->flash('rate-error', 'You have reached the limit to rate this trade/service!');
-            return redirect('/');
-        }
-
-        $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
-        $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
-        $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
-        $businessInfo = array(
-            'id' => $businessId,
-            'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
-            'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL
-        );
         return view('review_business')->with(compact('businessInfo'));
     }
 
@@ -534,7 +517,9 @@ class ReviewController extends Controller
         $reviewTitle = isset($params['review-title']) ? $params['review-title'] : NULL;
         $reviewText = isset($params['review-text']) ? $params['review-text'] : NULL;
         $helpful = isset($params['helpful']) ? $params['helpful'] : 0;
-
+        $ip = $request->ip();
+        $email = '';
+        
         $data = [
             'reviewee_id'   => $businessId,
             'communication' => $communication,
@@ -546,9 +531,10 @@ class ReviewController extends Controller
             'content'       => $reviewText,
             'helpful'       => $helpful,
             'status'        => 0,
-            'updated_at'    => Carbon::now()
+            'updated_at'    => Carbon::now(),
+            'postcode'      => $request->get('postcode')
         ];
-
+        
         if (session()->has('email') && session()->has('user_type')) {
             $email = session()->get('email');
             $userType = session()->get('user_type');
@@ -560,7 +546,6 @@ class ReviewController extends Controller
             $userReviews = Reviews::where('reviewer_id', $user->id)->where('reviewee_id', $businessId)->whereYear('created_at', '=', date('Y'))->count();
 
             if($userReviews >= 5 ){
-              $ip = $request->ip();
               Mail::send(['html' => 'emails.review-redflag'], [
                       'ip' => $ip,
                       'email' => $email
@@ -574,13 +559,15 @@ class ReviewController extends Controller
             }
             session()->forget('email');
             session()->forget('user_type');
+            session()->forget('business');
+            session()->forget('role');
         } else if ($user = Sentinel::getUser()) {
             $data['reviewer_id'] = $user->id;
             $data['user_type']   = 'user';
+            $email = $user->email;
             $userReviews = Reviews::where('reviewer_id', $user->id)->where('reviewee_id', $businessId)->whereYear('created_at', '=', date('Y'))->count();
 
             if($userReviews >= 5 ){
-              $ip = $request->ip();
               Mail::send(['html' => 'emails.review-redflag'], [
                       'ip' => $ip,
                       'email' => $user->email
@@ -602,7 +589,6 @@ class ReviewController extends Controller
             $userReviews = Reviews::where('reviewer_id', $reviewerId)->where('reviewee_id', $businessId)->whereYear('created_at', '=', date('Y'))->count();
 
             if($userReviews >= 5 ){
-              $ip = $request->ip();
               Mail::send(['html' => 'emails.review-redflag'], [
                       'ip' => $ip,
                       'email' => ''
@@ -616,6 +602,16 @@ class ReviewController extends Controller
             }
         }
 
+        Mail::send(['html' => 'emails.leaves-review'], [
+                      'ip'       => $ip,
+                      'email'    => $email,
+                      'business' => UserMeta::where('user_id', $businessId)->where('meta_name', 'trading-name')->first()
+                  ], function ($message) use ($ip) {
+                      $message->from('info@housestars.com.au', 'Housestars');
+                      $message->to('info@housestars.com.au', 'Housestars');
+                      $message->subject('User leaves a review');
+                  });
+
         return redirect('/');
     }
 
@@ -626,6 +622,7 @@ class ReviewController extends Controller
         $field  = $request->get('field', null);
         $fromDate = $request->get('from', '');
         $toDate = $request->get('to', '');
+        $searchBusiness = $request->get('business', '');
         $searchReviewee = $request->get('reviewee', '');
         $searchReviewer = $request->get('reviewer', '');
         $searchTitle = $request->get('title', '');
@@ -646,18 +643,19 @@ class ReviewController extends Controller
 
         $offset = $limit * ($pageNo - 1);
 
-        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt);
-        $queryStr = $reviews->toSql();
+        $reviews = Reviews::searchReview($query, $fromDate, $toDate, $searchReviewee, $searchReviewer, $searchTitle, $searchContent, $searchCreatedAt, $searchBusiness);
         $length = $reviews->count();
-        $reviews = $reviews->take($limit)->skip($offset)->get();
+        $reviews = $reviews->get();
         
         if(!is_null($field)) {
             $reviews = $reviews->sortBy($field, SORT_REGULAR, ($sort=='desc'));
-            $reviews = $reviews->values()->all();
+            // $reviews = $reviews->take($limit)->skip($offset);
         }
+        
+        $reviews = $reviews->forPage($pageNo, $limit);
+        $reviews = $reviews->values()->all();
 
         $response = [
-            'query'   => $queryStr,
             'reviews' => (is_array($reviews) ? $reviews : $reviews->toArray()),
             'length'  => $length
         ];

@@ -108,11 +108,11 @@
     }
 
     #advertisement-banner {
-        top: -100px;
+        top: -50px;
     }
 
     #advertisement-banner img {
-        width: 50%;
+        width: 83%;
     }
 
     .tooltip-items ul li {
@@ -237,11 +237,13 @@
 
     footer .nav-category {
         width: 50%;
-        padding: 31px 0px 0px 0px !important;
+        padding: 31px 13px 0px 0px !important;
+        min-height: 150px;
     }
 
     footer .links {
         margin: 10px !important;
+        width: 100%;
     }
 
     footer .social-media {
@@ -347,6 +349,7 @@
 
     #categorySearch .col-xs-2 {
         padding: 0 !important;
+        width: 16%;
     }
 
     #categorySearch .hs-primary {
@@ -536,4 +539,80 @@
     .processing-form .transactions .entry .value {
         width: auto !important;
     }
+    
+    #tradesmanList button {
+	    width: 100% !important;
+	}
+	
+	a.view-summary {
+	    display: block;
+	    float: right;
+	    padding-right: 36px;
+	    margin-bottom: 12px;
+	}
+	.selectize-dropdown{
+		opacity: 1 !important;
+		z-index: 19999;
+		-webkit-transform: translate3d(0,0,1px);
+		transform: translate3d(0,0,1px);	
+	}
+	
+	#about-content, #partners {
+	    top: 0;
+	}
+	
+	#main-content.tradesman {
+	    margin: 0;
+	    padding: 0 !important;
+	}
+	
+	.review-item .stars.left {
+	    float: none;
+	    width: 88px;
+	    overflow: auto;
+	    margin: 0 auto;
+	}
+
+    /*#signup .row.account-option input[type=radio],
+    #signup .row.account-option .radio-account-label {
+        display: inline;
+        vertical-align: top;
+    }*/
+
 }
+
+@media only screen
+  and (min-width: 320px)
+  and (max-width: 425px) {
+    #signup .heading.signup-social {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    
+    #signup .row.account-option .radio-account-div {
+        width: 100%;
+    }
+
+    #signup .row.account-option input[type=radio] {
+        margin: 0;
+        width: 50%;
+    }
+
+    #signup .row.account-option .radio-account-label {
+        display: inline;
+        margin-left: -10%;
+    }
+
+    #signup .hs-primary {
+        font-size: 11px
+    }
+
+    #signup .row.social-buttons .social-button {
+        width: 100%;
+    }
+
+    #signup .row.social-buttons .social-button .hs-primary {
+        margin-top: 15px;
+        margin-bottom: 0;
+    }
+  }

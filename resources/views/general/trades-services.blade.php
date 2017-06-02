@@ -112,7 +112,7 @@
             <div class="step-description stepThree animated">
               <div class="description-box-left">
                 <h3>Get Hired to do a Task</h3>
-                <p>Customers will see your profile and call you to do some work. You do the work and bill them as you normally would. Its a great way to gain new, high quality customers for your business, boost your revenue and increase your local reputation. Put simply, its the best advertising money you will spend all year. <a href="#" class="content-hyperlink">(see our trade/service FAQ for more details)</a></p>
+                <p>Customers will see your profile and call you to do some work. You do the work and bill them as you normally would. Its a great way to gain new, high quality customers for your business, boost your revenue and increase your local reputation. Put simply, its the best advertising money you will spend all year. <a href="{{env('APP_URL')}}/faq/tradesman" class="content-hyperlink">(see our trade/service FAQ for more details)</a></p>
               </div>
             </div>
 
@@ -137,14 +137,14 @@
           </div>
           <div class="col-xs-4 animated">
             <h3>Great advertising value </br>for money</h3>
-            <p>If you only have a small advertising budget, you should definitely put it here. House Stars tracks and measures how many people look at your profile and have used your service, to show you if it is working for you. Every time your receive a rating, your profile goes to the top of the list, so if all of your customers rate you, you stay on top!</p>
+            <p>If you only have a small advertising budget, you should definitely put it here. Housestars tracks and measures how many people look at your profile and have used your service, to show you if it is working for you. Every time your receive a rating, your profile goes to the top of the list, so if all of your customers rate you, you stay on top!</p>
             <div class="featured-img mobile-hidden">
               <img src="assets/img-house.png" alt="are you a trade or service?">
             </div>
           </div>
           <div class="col-xs-4 animated">
             <h3>Get in early and stay ahead </br>of the game</h3>
-            <p>The future of the trades and services industry is "If they cant see you, they cant trust you." Our database will be around for a long time and the more ratings you have, the more people will trust and use you. Start building your profile today and watch the new clients </br>come rolling in.</p>
+            <p>The future of the trades and services industry is "If they can't see you, they can't trust you." Our database will be around for a long time and the more ratings you have, the more people will trust and use you. Start building your profile today and watch the new clients </br>come rolling in.</p>
             <div class="featured-img mobile-hidden">
               <img src="assets/img-agentcalling.png" alt="Are you an agent?">
             </div>

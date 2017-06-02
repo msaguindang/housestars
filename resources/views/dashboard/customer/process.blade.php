@@ -1,5 +1,20 @@
 @extends("layouts.main")
+
+@section('styles')
+  @parent
+  <style>
+    .amount.form-inline {
+      width: 150px;
+    }
+  </style>
+@endsection
+
+<?php
+  $amountSold = $commissionPercentage = $commisionCharged = 0;
+?>
+
 @section("content")
+<div id="loading"><div class="loading-screen"><img id="loader" src="{{asset('assets/loader.png')}}" /></div></div>
 <header id="header" class="animated desktop">
         <div class="container">
           <div class="row">
@@ -16,7 +31,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
 
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -33,7 +48,7 @@
                         <a href="#" onclick="document.getElementById('logout-form').submit()">Logout</a>
                       </form>
                     </li>
-                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Profile</a></li>
+                    <li><span class="icon icon-tradesman-dark"></span><a href="{{env('APP_URL')}}/profile">Process Page</a></li>
                     <li><span class="icon icon-home-dark"></span><a href="{{env('APP_URL')}}/">Home</a></li>
                     @else
                     <li><span class="icon icon-customer-dark"></span><a href="{{env('APP_URL')}}/customer" >Customer</a></li>
@@ -56,7 +71,7 @@
           </div>
           <div class="profile">
             <div class="profile-info">
-              <h1>{{Sentinel::getUser()->name}}</h1>
+              <h1>{{$data['name']}}</h1>
               <p>Location: {{$data['meta']['address']}}</p>
             </div>
           </div>
@@ -72,7 +87,7 @@
               <p class="telephone">{{$data['meta']['phone']}}</p>
               <p class="email">{{$data['meta']['email']}}</p>
             </div>
-            <div class="col-xs-4 agency-info">
+            <div class="col-xs-4 agency-info col-xs-offset-1">
               <label>Listed Under Agency:</label>
               @if(isset($data['recent']))
                 @php ($a = $data['recent'])
@@ -103,14 +118,7 @@
                 <h2 class="estimates">N/A</h2>
               @endif
             </div>
-            <div class="col-xs-3">
-              <label>Estimated Commission Target</label>
-              @if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
-                  <h2 class="estimates">${{$data['commission']['total']}}</h2>
-              @else
-                  <h2 class="estimates">{{$data['commission']['total']}}</h2>
-              @endif
-            </div>
+ 
             <div class="col-xs-2 terms">
               @if(isset($data['meta']['commission']))
                 <p>This is an estimate only. Actual amount will vary with sale price Please see <a href="#" class="content-hyperlink">Terms & Conditions</a>.</p>
@@ -118,7 +126,11 @@
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <a class="btn hs-primary" style="margin-bottom: 0;" href="{{env('APP_URL')}}/dashboard/customer/edit"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            @php($editUrl = "/dashboard/customer/edit")
+            @if($data['isAdmin'])
+              @php($editUrl = "/profile/customer/{$data['id']}/edit")
+            @endif
+            <a class="btn hs-primary" style="margin-bottom: 0;" href="{{env('APP_URL') . $editUrl}}"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
           </div>
         </div>
       </div>
@@ -135,7 +147,7 @@
               <div class="col-xs-8">
                 @if(isset($data['recent']))
                   @php ($a = $data['recent'])
-                <h3 class="address">{{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
+                <h3 class="address">{{isset($data['property'][$a]['property-address']) ? $data['property'][$a]['property-address'] : '' }}, {{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
                 @endif
               </div>
             </div>
@@ -144,10 +156,10 @@
                 <h3 class="left">ESTIMATED COMMISSION DISCOUNT</h3>
               </div>
               <div class="col-xs-4">
-                @if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
-                  <h3 class="estimated-amount">${{$data['commission']['total']}}</h3>
+                @if(isset($data['commission']['estimate']) && $data['commission']['estimate'] != 'N/A')
+                  <h3 class="estimated-amount">${{$data['commission']['estimate']}}</h3>
               @else
-                  <h3 class="estimated-amount">{{$data['commission']['total']}}</h3>
+                  <h3 class="estimated-amount">{{$data['commission']['estimate']}}</h3>
               @endif
               </div>
               <div class="col-xs-12 section-title">
@@ -165,7 +177,7 @@
                             <div class="value">
                               <div class="action">
                                 @php ($unChecked = 'no')
-                                @foreach($data['reviews'] as $review)
+                                @foreach($data['transaction_reviews'] as $review)
                                   @if($review['id'] == $transaction['tid'] && $review['transaction_id'] == $transaction['id'])
                                     <input type="checkbox" id="r{{$transaction['id']}}" name="cc" disabled checked/>
                                     @php ($unChecked = 'yes')
@@ -178,7 +190,7 @@
                                 <label for="r{{$transaction['id']}}"><span></span></label>
                               </div>
                               @php ($x = 0)
-                              @foreach($data['reviews'] as $review)
+                              @foreach($data['transaction_reviews'] as $review)
                                   @if($review['id'] == $transaction['tid'] && $review['transaction_id'] ==$transaction['id'])
                                     <a href="#" data-toggle="modal" data-target="#transactionReview{{$review['transaction_id']}}"><div class="stars">
                                         @if($review['rate'] == 0)
@@ -289,7 +301,7 @@
                               @endforeach
 
                               @if($x == 0)
-                                <button class="add-review" data-tid="{{$transaction['id']}}" data-trade="{{$transaction['tid']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
+                                <button class="add-review" data-tid="{{$transaction['id']}}" data-trade="{{$transaction['tid']}}" data-user="{{$data['id']}}" data-token="{{ csrf_token()}}" id="reviewBtn{{$transaction['tid']}}"> Rate & Review </button>
                               @endif
 
                             </div>
@@ -313,6 +325,7 @@
                                   <input type="file" name="receipt" id="tradesReceipt">
                                   <input type="hidden" name="id" value="{{$transaction['id']}}">
                                   <input type="hidden" name="tid" value="{{$transaction['tid']}}">
+						             <input type="hidden" name="user_id" value="{{$data['id']}}">
                                   <div class="upload-receipt"><span class="ur-text">Add a Receipt</span></div>
                                 </form>
                                 @endif
@@ -333,12 +346,12 @@
                     @endif
                   @endforeach
               </div>
-                <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades"><span class="icon icon-add" style="margin-top: 6px;"></span>Transaction</span></a>
+                <a href="" class="btn hs-primary btn-add" data-toggle="modal" data-target="#processTrades" ><span class="icon icon-add" style="margin-top: 6px;"></span>Add a receipt</span></a>
                @endif
 
               <div class="total" id="transactionsTotal">
                 <div class="total-label">
-                  <span>Total Spending</span>
+                  <span>Total Spend</span>
                   <span class="total-amount" data-total="{{$data['spending']['total']}}">${{$data['spending']['total']}}</span>
                 </div>
               </div>
@@ -357,25 +370,30 @@
                     </div>
                     <div class="value">
                       <div class="action">
-                        @if(isset($data['property'][$a]['amount-sold']))
-                          @if($data['property'][$a]['amount-sold'] == 'yes')
-                            <input type="checkbox" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked/>
-                          @else
-                            <input type="checkbox" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
-                          @endif
+                        @php ($amountSold = null)
+                        <span id="value-to" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
+                        @if(isset($data['property'][$a]['amount-sold']) && $data['property'][$a]['amount-sold'] == 'yes' && $data['property'][$a]['value-to'] != '0.00')
+                          @php ($amountSold = isset($data['property'][$a]['value-to']) ? $data['property'][$a]['value-to'] : 0)
+                          <input type="checkbox" data-id="{{$data['id']}}" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
                         @else
-                          <input type="checkbox" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
+                          <input type="checkbox" data-id="{{$data['id']}}" id="c7" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" />
                         @endif
-
                         <label for="c7"><span></span></label>
                       </div>
-                      <div class="amount">
-                        @if(isset($data['property'][$a]['value-to']))
-                          <h4>${{$data['property'][$a]['value-to']}}</h4>
-                        @else
-                          <h4>N/A</h4>
-                        @endif
-
+                      <div class="amount form-inline">
+                        <div class="input-group">
+                          <span class="input-group-addon" id="basic-addon1">$</span>
+                          <input type="text" 
+                                class="form-control" 
+                                aria-describedby="basic-addon1" 
+                                value="{{ $amountSold }}"
+                                data-token="{{ csrf_token()}}" 
+                                data-code="{{$data['property'][$a]['property-code']}}"
+                                data-meta="amount-sold"
+                                data-meta-key="value-to"
+                                data-id="{{$data['id']}}"
+                          />
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -385,23 +403,30 @@
                     </div>
                     <div class="value">
                       <div class="action">
-                        @if(isset($data['property'][$a]['commission-percentage']))
-                          @if(isset($data['property'][$a]['commission-percentage']) && $data['property'][$a]['commission-percentage'] == 'yes')
-                            <input type="checkbox" id="c8" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked/>
-                          @else
-                            <input type="checkbox" id="c8" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
-                          @endif
+                        <span id="commission" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
+                        @php ($commissionPercentage = null)
+                        @if(isset($data['property'][$a]['commission-percentage']) && isset($data['property'][$a]['commission-percentage']) && $data['property'][$a]['commission-percentage'] == 'yes' && $data['property'][$a]['commission'] != '0.00')
+                          @php ($commissionPercentage = isset($data['property'][$a]['commission']) ? $data['property'][$a]['commission'] : 0)
+                          <input type="checkbox" data-id="{{$data['id']}}" id="c8" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
                         @else
-                          <input type="checkbox" id="c8" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
+                          <input type="checkbox" data-id="{{$data['id']}}" id="c8" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" />
                         @endif
                         <label for="c8"><span></span></label>
                       </div>
-                      <div class="amount" id="{{$data['property']['user_id']}}" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}">
-                        @if(isset($data['property'][$a]['commission']))
-                          <h4 contenteditable="true">{{$data['property'][$a]['commission']}}%</h4>
-                        @else
-                          <h4>N/A</h4>
-                        @endif
+                      <div class="amount form-inline" id="{{$data['property']['user_id']}}" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}">
+                        <div class="input-group">
+                          <input type="text" 
+                                class="form-control" 
+                                aria-label="Percentage" 
+                                value="{{$commissionPercentage}}"
+                                data-token="{{ csrf_token()}}" 
+                                data-code="{{$data['property'][$a]['property-code']}}"
+                                data-meta="commission-percentage"
+                                data-meta-key="commission"
+                                data-id="{{$data['id']}}"
+                          />
+                          <span class="input-group-addon">%</span>
+                        </div>
                       </div>
                     </div>
                   </li>
@@ -410,24 +435,37 @@
                       <label>Total Commission Charge</label>
                     </div>
                     <div class="value">
-                      <div class="action">
-                        @if(isset($data['property'][$a]['commission-charged']))
+                      @if(isset($data['agent']))
+                        <div class="action">
+                          <span id="commission-total" class="fa fa-spin fa-spinner fa-2x" style='display:none;line-height:30px;margin-left: 5px;'> </span>
+                          @php ($commisionCharged = null)
                           @if(isset($data['property'][$a]['commission-charged']) && $data['property'][$a]['commission-charged'] == 'yes')
-                            <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked/>
+                            @php ($commisionCharged = ((isset($data['commission']['total']) && $data['commission']['total'] != 'N/A') ? $data['commission']['total'] : 0))
+                            <input type="checkbox" data-id="{{$data['id']}}" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" checked disabled />
                           @else
-                            <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
+                            <input type="checkbox" data-id="{{$data['id']}}" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}" />
                           @endif
-                        @else
-                          <input type="checkbox" id="c9" name="cc" data-token="{{ csrf_token()}}" data-code="{{$data['property'][$a]['property-code']}}"/>
-                        @endif
-                        <label for="c9"><span></span></label>
-                      </div>
-                      <div class="amount">
-                         @if(isset($data['commission']['total']) && $data['commission']['total'] != 'N/A')
-                              <h4>${{$data['commission']['total']}}</h4>
-                          @else
-                              <h4>{{$data['commission']['total']}}</h4>
-                          @endif
+                          <label for="c9"><span></span></label>
+                        </div>
+                      @endif
+                      <div class="amount form-inline">
+                          <div class="input-group">
+                            @if(isset($data['agent']))
+                              <span class="input-group-addon" id="basic-addon1">$</span>
+                              <input type="text" 
+                                class="form-control"
+                                aria-label="Percentage" 
+                                value="{{$commisionCharged}}"
+                                data-token="{{ csrf_token()}}" 
+                                data-code="{{$data['property'][$a]['property-code']}}"
+                                data-meta="commission-charged"
+                                data-meta-key="commission-total"
+                                data-id="{{$data['id']}}"
+                              />
+                            @else
+                              <p> N/A </p>
+                            @endif
+                          </div>
                       </div>
                     </div>
                   </li>
@@ -435,7 +473,7 @@
               </div>
               <div class="total">
                 <div class="total-label">
-                  <span>Total Spending</span>
+                  <span>Total Spend</span>
                   <div id="commission">
                     <span class="total-amount" data-total="{{$data['spending']['total']}}">${{$data['spending']['total']}}</span>
                   </div>
@@ -499,13 +537,13 @@
                               @if(isset($data['property'][$a]['contract']))
                                 <img src="{{env('APP_URL')}}/{{$data['property'][$a]['contract']}}" alt="">
                               @else
-                              <form id="uploadReceipt" enctype="multipart/form-data" data-id="{{$data['property']['user_id']}}">
-                                {{csrf_field() }}
-                                <input type="file" name="contract" id="contract">
-                                <input type="hidden" name="user_id" value="{{$data['property']['user_id']}}">
-                                <input type="hidden" name="property_code" value="{{$data['property'][$a]['property-code']}}">
-                                <div class="upload-receipt"><span class="ur-text">Upload</span></div>
-                              </form>
+                                <form id="uploadReceipt" enctype="multipart/form-data" data-id="{{$data['property']['user_id']}}">
+                                  {{csrf_field() }}
+                                  <input type="file" name="contract" id="contract">
+                                  <input type="hidden" name="user_id" value="{{$data['property']['user_id']}}">
+                                  <input type="hidden" name="property_code" value="{{$data['property'][$a]['property-code']}}">
+                                  <div class="upload-receipt"><span class="ur-text">Upload</span></div>
+                                </form>
                               @endif
                       </div>
                     </div>
@@ -532,7 +570,7 @@
                   <li>
                     <div class="label">
                       <label style="margin-bottom: 7px !important;width: 100%;text-align: left;">Like us on Facebook</label>
-                      <div class="fb-like" id="fb" data-href="https://www.facebook.com/webforest.solutions/" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="false" style="float: left; margin-bottom: 15px;"></div>
+                      <div class="fb-like" data-href="https://www.facebook.com/housestars.com.au/" data-layout="standard" data-action="like" data-size="large" data-show-faces="true" data-share="false"></div>
                     </div>
                     <div class="value">
                       <div class="action">
@@ -574,23 +612,26 @@
 @endsection
 
  @section('scripts')
- <script>(function(d, s, id) {
-  $('#c13').prop('checked', true);
-  var js, fjs = d.getElementsByTagName(s)[$a];
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) return;
   js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1889078964644540";
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=1889078964644540";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+  
   <script src="{{asset('js/processing.js')}}"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       var a = $("input[type='checkbox']");
-      if(a.length == a.filter(":checked").length){
+      $('body').on('click', "input[type='checkbox']", function(evt) {
+        if(a.length == a.filter(":checked").length) {
           $('#process').removeClass('disabled');
           $('#process').prop('disabled', false);
           $('.submit span').remove();
-      }
+        }
+      });
     });
 
     $(function() {
@@ -598,4 +639,16 @@
     });
 
   </script>
+  <script>
+		$("#select-trades").selectize({
+			maxItems: 1,
+	        openOnFocus: false,
+	        placeholder: "Name of the trade /service",
+			render: {
+				option: function(item, escape) {
+					return "<option class='item' id="+item.value+" value="+item.value+"> "+item.text+"</option>";
+				}
+			}
+		});
+	</script>
 @stop

@@ -14,9 +14,8 @@
                 <div class="nav-items">
                   <ul>
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
-
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -59,7 +58,7 @@
             </div>
             <div class="profile-info">
               @foreach ($meta as $info)
-                @if($info->meta_name == 'agency-name')
+                @if($info->meta_name == 'trading-name')
                   <h1>{{$info->meta_value}}</h1>
                 @elseif ($info->meta_name == 'business-address')
                   <p>Location: {{$info->meta_value}}</p>
@@ -102,7 +101,11 @@
             </div>
           </div>
           <div class="col-xs-3 nav-panel">
-            <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            @if ($data['isOwner'])
+              <a href="edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            @elseif(is_admin())
+              <a href="{{$data['id']}}/edit" class="btn hs-primary" style="margin-bottom: 0;"><span class="icon icon-summary" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right"></span></a>
+            @endif
             <!-- <a href="settings" class="btn hs-primary"><span class="icon icon-summary" style="margin-top: 6px;"></span>ACCOUNT SETTINGS <span class="icon icon-arrow-right"></span></a> --><br/><br/>
             <div class="clearfix col-xs-8 no-padding-left">
               <p style="line-height: 30px;">Switch to Customer View</p>
@@ -137,7 +140,7 @@
             @if(isset($data['charge-rate']))
             <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
             <div class="col-xs-10 detail">
-              <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+              <p><b> Charge Rate </b></br><span class="detail">{{$data['charge-rate']}}</span></p>
             </div>
             @endif
             @if(isset($data['website']))

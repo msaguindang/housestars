@@ -15,7 +15,7 @@ class CreatePropertyMetaTable extends Migration
     {
         if (!Schema::hasTable('property_meta')) {
             Schema::create('property_meta', function (Blueprint $table) {
-                $table->increments('id');
+                $table->increments('id', 11);
                 $table->integer('user_id');
                 $table->string('meta_name', 50);
                 $table->string('meta_value', 1000);

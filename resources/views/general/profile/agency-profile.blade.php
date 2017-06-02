@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("content")
-<header id="header" class="animated desktop">
+<header id="header" class="animat= desktop">
         <div class="container">
           <div class="row">
             <div class="col-xs-3 branding">
@@ -16,7 +16,7 @@
                     <!-- <li><a href="#" data-toggle="modal" data-target="#signup">Signup Me Up!</a></li> -->
 
                      @if(Sentinel::check())
-                     <li><a>Hi, {{Sentinel::getUser()->name}}</a></li>
+                     <li><a>Hi, {{$data['name']}}</a></li>
                     @else
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
                     @endif
@@ -61,8 +61,8 @@
             <div class="profile-img" style="background: url({{$data['profile-photo']}}) no-repeat center center;">
             </div>
             <div class="profile-info">
-              @if(isset($data['agency-name']))
-              <h1>{{$data['agency-name']}}</h1>
+              @if(isset($data['trading-name']))
+              <h1>{{$data['trading-name']}}</h1>
               @endif
               @if (isset($data['business-address']))
               <p>Location: {{$data['business-address']}}</p>
@@ -84,6 +84,7 @@
               <!--  -->
               <div class="status">
                   <span class="info"><i class="fa fa-list" aria-hidden="true"></i> {{ $data['total-listings'] }} {{ str_plural('Listing', $data['total-listings']) }} </span>
+                  <span class="info"><i class="fa fa-list" aria-hidden="true"></i> Marketing Budget : {{isset($data['marketing-budget']) ? $data['marketing-budget'] : ''}}</span>
                   <!-- <span class="info"><i class="fa fa-list" aria-hidden="true"></i> 0 Properties Sold</span> -->
               </div>
               <div class="status">
@@ -98,8 +99,19 @@
                   @endfor
                 </div>
                 <span class="rating-p" style="margin-left: 10px;">{{ $data['total'] }} Reviews</span>
+                <a href="#"  class="view-summary" data-toggle="modal" data-target="#overallRatingSummary">(View Summary)</a>
+                <div class="positions ">
+                  @if(isset($data['position']))
+    	              <span class="label">Positions: </span>
+    	              @foreach($data['position'] as $position)
+    	              	<span class="position">{{$position}}</span>
+    	              @endforeach
+                  @endif
+              </div>
               </div>
             </div>
+
+
 
 
                 @if(isset($data['summary']) && $data['summary'] != '')
@@ -110,8 +122,10 @@
 
           </div>
           <div class="col-xs-3 profile-details">
-           <!--  <h3>More Details</h3> -->
-           <div class="info-item">
+            @if(is_admin())
+              <a href="{{$data['id']}}/edit" class="btn hs-primary"><span class="icon icon-summary hidden" style="margin-top: 6px;"></span>EDIT PROFILE <span class="icon icon-arrow-right hidden"></span></a><br/>
+            @endif
+            <div class="info-item">
               @if(isset($data['phone']))
               <div class="col-xs-2 icon"><i class="fa fa-mobile" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
@@ -140,7 +154,7 @@
               @if(isset($data['charge-rate']))
               <div class="col-xs-2 icon"><i class="fa fa-usd" aria-hidden="true"></i></div>
               <div class="col-xs-10 detail">
-                <p><b> Charge Rate </b></br><span class="detail">${{$data['charge-rate']}}</span></p>
+                <p><b> Charge Rate </b></br><span class="detail">{{$data['charge-rate']}}</span></p>
               </div>
               @endif
             </div>
@@ -161,24 +175,24 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-9">
-            <div class="row gallery">
+            <div class="row gallery mobile-hidden">
                 @if(isset($data['gallery']))
                 <h2 class="section-title">Gallery</h2>
                 @else
                   <div class="spacing"></div>
                 @endif
 
-                <div class="gallery-carousel ">
+                <div class="gallery-carousel " id='lightgallery'>
                    @if(isset($data['gallery']))
                                 @php($x = 0)
                                 @php($y = 2)
                   <div class="col-md-12" data-wow-delay="0.2s">
                       <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
                         <!-- Carousel Buttons Next/Prev -->
-                        <div class="controller">
+                              <div class="controller">
                                   <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
                                   <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                                </div>
+                              </div>
                         <!-- Carousel Slides / Quotes -->
                           <div class="carousel-inner">
                           <!-- Gallery 1 -->
@@ -193,7 +207,10 @@
                                   @endif
                                   <div class="col-xs-4">
                                     <div class="gallery-item">
-                                      <div class="gallery-image" style="background: url({{url($item)}})"></div>
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})" data-src="{{url($item)}}"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
+                                      </div>
                                     </div>
                                   </div>
 
@@ -209,6 +226,58 @@
                                   @php($y = $y + 3)
                                   @endif
 
+                                  @php($x++)
+
+                                @endforeach
+                        </div>
+                    </div>
+                </div>
+                    @endif
+              </div>
+            </div>
+
+            <div class="row gallery mobile">
+                @if(isset($data['gallery']))
+                <h2 class="section-title">Gallery</h2>
+                @else
+                  <div class="spacing"></div>
+                @endif
+
+                <div class="gallery-carousel ">
+                   @if(isset($data['gallery']))
+                                @php($x = 0)
+                  <div class="col-md-12" data-wow-delay="0.2s">
+                      <div class="carousel slide" data-ride="carousel" id="quote-carousel" style="margin: 0; top: -60px">
+                        <!-- Carousel Buttons Next/Prev -->
+                              <div class="controller">
+                                  <a data-slide="next" href="#quote-carousel" class="right carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+                                  <a data-slide="prev" href="#quote-carousel" class="left carousel-control" style="top: 0; float: right;"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
+                              </div>
+                        <!-- Carousel Slides / Quotes -->
+                          <div class="carousel-inner">
+                          <!-- Gallery 1 -->
+
+
+                                @php($items = count($data['gallery']) - 1)
+
+                                @foreach($data['gallery'] as $item)
+                                  @if ($x == 0 )
+                                    <div class="item active">
+                                      <div class="row">
+                                  @else
+                                  <div class="item">
+                                    <div class="row">
+                                  @endif
+                                  <div class="col-xs-4">
+                                    <div class="gallery-item">
+                                      <!-- <div class="gallery-image" style="background: url({{url($item)}})"></div> -->
+                                      <div class="gallery-image-wrapper" data-src="{{url($item)}}">
+                                        <img src="{{url($item)}}" data-src="{{ url($item) }}">
+                                      </div>
+                                    </div>
+                                  </div>
+                                    </div>
+                                  </div>
                                   @php($x++)
 
                                 @endforeach
@@ -265,6 +334,7 @@
             </div>
         </div>
       </div>
+      @include("modals.ratetradesman")
       @include("modals.rating")
       @include("modals.thankyou")
     </section>
@@ -274,4 +344,19 @@
         $('#rating').modal('show');
       }
     </script>
+@endsection
+
+@section('scripts')
+  @parent
+  <script>
+    $toShowRatingModal = {!! session('show_rate')  ? 'true' : 'false' !!};
+    if($toShowRatingModal) {
+      $("#rateModal").modal('show');
+    }
+  </script>
+  <script type="text/javascript">
+    $("#lightgallery").lightGallery({
+      selector: '.gallery-image-wrapper'
+    });
+  </script>
 @endsection

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>HouseStars -  Smarter Property Sales</title>
 
@@ -31,12 +31,16 @@
     <script src="{{config('app.url')}}/js/loading.js"></script>
     <script src="{{config('app.url')}}/js/standalone/selectize.js"></script>
 
+    <!-- lightgallery css -->
+    <link href="{{config('app.url')}}/css/lightgallery.css" rel="stylesheet">
+    
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    @yield('styles')
   </head>
   <body>
     <header id="header" class="tablet">
@@ -127,7 +131,7 @@
           <div class="col-xs-3 company-identity">
               <img src="{{asset('assets/logo-footer.png')}}" alt="HouseStars" class="logo">
               <p class="label">Office Address</p>
-              <p>21 Mian Street Alstonville, </br>New South Wales 2477</p>
+              <p>21 Main Street Alstonville, </br>New South Wales 2477</p>
               <p>Tel No: 0404045597 </p>
               <a href="#" data-toggle="modal" data-target="#team" class="hs-transparent-dark">BECOME PART OF THE TEAM</a>
           </div>
@@ -137,28 +141,28 @@
                 <p class="label">The Company</p>
                 <ul>
                   <li><a href="{{env('APP_URL')}}/about-us">About Us</a></li>
-                  <li><a href="#">Sitemap</a></li>
+                  <li><a href="#">In The Media</a></li>
                   <li><a href="#" data-toggle="modal" data-target="#contact">Contact Us</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
                 <p class="label">Agency</p>
                 <ul>
+	              <li><a href="{{env('APP_URL')}}/faq/agency">Agent FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-agent-philosophy">Our Agent Philosophy</a></li>
-                  <li><a href="#">Agent FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
-                <p class="label">Tradesman</p>
+                <p class="label">TRADE/SERVICE</p>
                 <ul>
+	              <li><a href="{{env('APP_URL')}}/faq/tradesman">Service FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/our-service-philosophy">Our Service Philosophy</a></li>
-                  <li><a href="#">Service FAQ</a></li>
                 </ul>
               </div>
               <div class="col-xs-3 nav-category">
                 <p class="label">Customer</p>
                 <ul>
-                  <li><a href="#">Customer FAQ</a></li>
+                  <li><a href="{{env('APP_URL')}}/faq/customer">Customer FAQ</a></li>
                   <li><a href="{{env('APP_URL')}}/guidelines">Review Guidelines</a></li>
                   <li><a href="{{env('APP_URL')}}/process-page">Process Page</a></li>
                 </ul>
@@ -167,17 +171,17 @@
             <div class="row social-media desktop">
               <div class="col-xs-4 social-item">
                 <span class="icon icon-fb"></span>
-                <a href="https://www.facebook.com/housestars.com.au/">Housestars</a>
+                <a href="https://www.facebook.com/housestars.com.au/" target="_blank">Housestars</a>
                 <p>www.facebook.com/housestars</p>
               </div>
               <div class="col-xs-4 social-item">
                 <span class="icon icon-ig"></span>
-                <a href="https://www.instagram.com/housestars.com.au/">@Housestars</a>
+                <a href="https://www.instagram.com/housestars.com.au/" target="_blank">@Housestars</a>
                 <p>www.instagram.com/housestars</p>
               </div>
               <div class="col-xs-4 social-item">
                 <span class="icon icon-tw"></span>
-                <a href="https://twitter.com/HousestarsAu">@Housestars</a>
+                <a href="https://twitter.com/HousestarsAu" target="_blank">@Housestars</a>
                 <p>www.twitter.com/housestars</p>
               </div>
             </div>
@@ -186,17 +190,17 @@
         <div class="row social-media tablet">
           <div class="col-xs-4 social-item">
             <span class="icon icon-fb"></span>
-            <a href="https://www.facebook.com/housestars.com.au/">Housestars</a>
+            <a href="https://www.facebook.com/housestars.com.au/" target="_blank">Housestars</a>
             <p>www.facebook.com/housestars</p>
           </div>
           <div class="col-xs-4 social-item">
             <span class="icon icon-ig"></span>
-            <a href="https://www.instagram.com/housestars.com.au/">@Housestars</a>
+            <a href="https://www.instagram.com/housestars.com.au/" target="_blank">@Housestars</a>
             <p>www.instagram.com/housestars</p>
           </div>
           <div class="col-xs-4 social-item">
             <span class="icon icon-tw"></span>
-            <a href="https://twitter.com/HousestarsAu">@Housestars</a>
+            <a href="https://twitter.com/HousestarsAu" target="_blank">@Housestars</a>
             <p>www.twitter.com/housestars</p>
           </div>
         </div>
@@ -205,8 +209,8 @@
         <div class="container">
           <p class="trademark">Copyright 2016 HouseStars</p>
           <ul class="legal-links">
-            <li><a href="#">Terms and Conditions</a></li>
-            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/terms-conditions" target="_blank">Terms and Conditions</a></li>
+            <li><a href="{{env('APP_URL')}}/legal/privacy-policy" target="_blank">Privacy Policy</a></li>
           </ul>
         </div>
       </div>
@@ -214,19 +218,20 @@
 
 
 @include("modals")
-
-    <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+    
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="{{config('app.url')}}/js/bootstrap.min.js"></script>
     <script src="{{config('app.url')}}/js/dropdowns-enhancement.js"></script>
     <script src="{{config('app.url')}}/js/custom.js"></script>
     <script src="{{config('app.url')}}/js/laravel.ajax.js"></script>
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript" src="{{asset('js/standalone/exif.js')}}"></script>
     <script src="{{config('app.url')}}/js/dropzone.js"></script>
     <script src="{{config('app.url')}}/js/pagination.js"></script>
     <script src="{{config('app.url')}}/js/ajax.js"></script>
     <script src="{{config('app.url')}}/js/jquery.validate.min.js"></script>
-
+    <script src="{{config('app.url')}}/js/standalone/lightgallery.min.js"></script>
     <script>
       $('#signup-form').click(function() {
           laravel.errors.errorBagContainer = $('#errors-signup');

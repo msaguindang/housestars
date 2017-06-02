@@ -111,7 +111,7 @@
         <div class="row highlight">
           <div class="col-xs-6 col-xs-offset-3 highlight-text">
             <h1 class="animated fadeInRight">Sell your property smarter</h1>
-            <p class="animated fadeInLeft">The value spent on trades and services is deducted from the commission charged by the agent. Its smart, simple and can save you thousands. Scroll down to find out more.</p>
+            <p class="animated fadeInLeft">The value spent on trades and services preparing your house for sale is deducted from the commission charged by the agent. It's smart, simple and could save you thousands. Scroll down to find out more.</p>
           </div>
         </div>
         <div class="row tooltip-nav">
@@ -127,9 +127,9 @@
         </div>
         <div class="banner-ad desktop">
           @if(isset($advert['141x117']))
-            <img src="assets/{{$advert['141x117']['url']}}" alt="Banner Ad">
+            <img src="{{env('APP_URL')}}/{{$advert['141x117']['url']}}" alt="Banner Ad">
           @else
-            <img src="assets/banner-ad.png" alt="Banner Ad">
+            <img src="{{env('APP_URL')}}/assets/banner-ad.png" alt="Banner Ad">
           @endif
         </div>
 
@@ -149,7 +149,7 @@
       @if(isset($advert['728x90']))
         <img src="{{env('APP_URL')}}/{{$advert['728x90']['url']}}" alt="Banner Ad">
       @else
-        <img src="assets/banner-test.png" alt="Banner Ad">
+        <img src="{{env('APP_URL')}}/assets/banner-test.jpg" alt="Banner Ad">
       @endif
     </section>
 
@@ -196,8 +196,8 @@
              <div class="step-description stepOne animated">
               <div class="description-box-left">
                 <h3>Sign Up</h3>
-                <p>Register with House stars and create your own process page. You can do this with absolutely no requirement or pressure to continue. This step will start you on your journey to selling your property. You can sell your property up to 7 years later, and still claim the work you have done against your sales costs.</p>
-                <p class="highlight-small">Please see our <a href="#" class="content-hyperlink">terms and conditions</a> for details.</p>
+                <p>Register with Housestars and create your own process page. You can do this with absolutely no requirement or pressure to continue. This step will start you on your journey to selling your property. You can sell your property up to 7 years later, and still claim the work you have done against your sales costs.</p>
+                <p class="highlight-small">Please see our <a href="{{env('APP_URL')}}/legal/terms-conditions" class="content-hyperlink" target="_blank">terms and conditions</a> for details.</p>
               </div>
             </div>
 

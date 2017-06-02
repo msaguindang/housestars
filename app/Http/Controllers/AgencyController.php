@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ReviewService;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -18,25 +19,43 @@ use App\Reviews;
 use App\Property;
 use App\Advertisement;
 use Response;
+use Image;
 
 class AgencyController extends Controller
-{
-    public function dashboard(){
+{   
+    const MAX_WIDTH_LANDSCAPE  = 1200,
+          MAX_WIDTH_PORTRAIT  = 270,
+          MAX_HEIGHT = 270;
+          
+    private $reviewService;
+
+    public function __construct(ReviewService $reviewService)
+    {
+        $this->reviewService = $reviewService;
+    }
+
+    public function dashboard()
+    {
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $dp = 'assets/default.png';
         $cp = 'assets/default_cover_photo.jpg';
+        $galleryCtr = 0;
+        
         foreach ($meta as $key) {
-            if($key->meta_name == 'profile-photo'){
+            if ($key->meta_name == 'profile-photo') {
                 $dp = $key->meta_value;
-            } else if($key->meta_name == 'cover-photo'){
+            } else if ($key->meta_name == 'cover-photo'){
                 $cp = $key->meta_value;
+            } else if ($key->meta_name == 'gallery') {
+                $data[$key->meta_name][$galleryCtr] = $key->meta_value;
+                $galleryCtr ++;
             } else {
                 $data[$key->meta_name] = $key->meta_value;
             }
         }
 
         $data['rating'] = $this->getRating(Sentinel::getUser()->id);
-        $data['reviews'] = $this->getReviews(Sentinel::getUser()->id);
+        $data['reviews'] = $this->reviewService->getReviews(Sentinel::getUser()->id);
         $data['total'] = count($data['reviews']);
 
         $data['properties'] = $this->property_listing(Sentinel::getUser()->id);
@@ -61,14 +80,15 @@ class AgencyController extends Controller
             $data['advert'][1] = $advert['270x270'][$index2];
 
         }
+        
 
         return View::make('dashboard/agency/profile')->with('meta', $meta)->with('dp', $dp)->with('cp', $cp)->with('data', $data);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
-
-        $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+        $userId = is_admin() ? $request->route('id') : Sentinel::getUser()->id;
+        $meta = UserMeta::where('user_id', $userId)->get();
         $data = array();
         $index = 0;
         $data['summary'] = '';
@@ -84,13 +104,25 @@ class AgencyController extends Controller
             }
         }
         $data['hasGallery'] = $index;
+        $data['isAdmin'] = is_admin();
+        $data['id'] = $userId;
         return View::make('dashboard/agency/edit')->with('data', $data);
     }
 
     public function updateProfile(Request $request)
     {
-        if(Sentinel::check()){
-            $user_id = Sentinel::getUser()->id;
+        $validator = app('validator')->make($request->all(), [
+            'profile-photo' => 'max:2048',
+            'cover-photo'   => 'max:2048'
+        ],[
+            'profile-photo.max' => 'Profile photo should not be greater than 2MB.',
+            'cover-photo.max'   => 'Cover photo should not be greater than 2MB.'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        } else if(Sentinel::check() || is_admin()) {
+            $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
 
             $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
 
@@ -99,7 +131,24 @@ class AgencyController extends Controller
                     $localpath = 'user/user-'.$user_id.'/uploads';
                     $filename = 'img'.rand().'-'.Carbon::now()->format('YmdHis').'.'.$request->file($meta)->getClientOriginalExtension();
                     $path = $request->file($meta)->move(public_path($localpath), $filename);
-                    $value = $localpath.'/'.$filename;
+                    $value = $localpath . '/' . $filename;               
+                    list($width, $height) = getimagesize($value);
+                    $image = Image::make($value)->orientate();
+                    $h = ($height > self::MAX_HEIGHT ? self::MAX_HEIGHT : $height);
+                    if ($width > $height && $width > self::MAX_WIDTH_LANDSCAPE) {
+                        // Landscape
+                        $image->resize(self::MAX_WIDTH_LANDSCAPE, $h, function($c) {
+                            $c->aspectRatio();
+                            $c->upsize();
+                        })->save($value);
+                    } else if ($width < $height && $width > self::MAX_WIDTH_PORTRAIT) {
+                        // Portrait or Square
+                        $image->resize(self::MAX_WIDTH_PORTRAIT, $h, function($c) {
+                            $c->aspectRatio();
+                            $c->upsize();
+                        })->save($value);
+                    }
+
                 } else if(!empty($request->get($meta.'-drag', ''))) {
                     $value = $request->input($meta.'-drag');
                 } else {
@@ -114,8 +163,11 @@ class AgencyController extends Controller
                 }
 
             }
-
-            return redirect(env('APP_URL').'/dashboard/agency/profile');
+			if(is_admin()){
+				return redirect(env('APP_URL').'/profile/agency/' . $request->route('id'));
+			} else{
+				return redirect(env('APP_URL').'/dashboard/agency/profile');
+			}
 
         } else {
             return redirect('');
@@ -124,7 +176,6 @@ class AgencyController extends Controller
 
     public function settings()
     {
-
         $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
         $agents = DB::table('users')
             ->join('agents', function ($join) {
@@ -134,13 +185,12 @@ class AgencyController extends Controller
             ->get();
         $data = array();
 
-
         foreach ($meta as $key) {
             $data[$key->meta_name] = $key->meta_value;
         }
 
         if(Sentinel::getUser()->customer_id){
-          \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+          \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
           $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
         }
@@ -152,7 +202,7 @@ class AgencyController extends Controller
         $data['name'] = Sentinel::getUser()->name;
         $data['email'] = Sentinel::getUser()->email;
         $data['password'] = Sentinel::getUser()->password;
-
+		//dd($agents);
 
         return View::make('dashboard/agency/settings')->with('data', $data)->with('agents', $agents);
     }
@@ -174,7 +224,7 @@ class AgencyController extends Controller
                     ['id' => $id, 'email' => $request->input('email'), 'name' => $request->input('name'), 'password' => $password]);
             }
 
-            return redirect()->back();
+            return redirect('/profile');
 
         } else {
             return redirect(env('APP_URL'));
@@ -187,7 +237,7 @@ class AgencyController extends Controller
         if(Sentinel::check())
         {
 
-            \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
             try{
 
@@ -210,7 +260,7 @@ class AgencyController extends Controller
                     User::where('id', $user_id)->update(['customer_id' => $customer->id]);
                 }
 
-                return redirect()->back();
+                return redirect('/profile');
 
             }catch (\Stripe\Error\Card $e){
 
@@ -272,11 +322,11 @@ class AgencyController extends Controller
                     } else {
                         $credentials =  [
                             'email'    => $agent['email'],
-                            'name'    => $agent['name'],
                             'password'    => $agent['password'],
                         ];
 
                         $user = Sentinel::registerAndActivate($credentials);
+                        User::where('email', $user->email)->update(['name' => $agent['name']]);
                         $role = Sentinel::findRoleBySlug('agent');
                         $role->users()->attach($user);
                         $email = [
@@ -302,41 +352,24 @@ class AgencyController extends Controller
         }
     }
 
-    public function getRating($id){
+     public function getRating($id) {
         $ratings = DB::table('reviews')->where('reviewee_id', '=', $id)->get();
         $average = 0;
         $numRatings = count($ratings);
-
-        foreach ($ratings as $rating) {
-            $average = ($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5)) / $numRatings;
+		$rate = 0;
+		$zero = 0; $one = 0; $two = 0; $three= 0; $four = 0; $five = 0;
+		
+        if($numRatings > 0){
+            foreach ($ratings as $rating) {	
+	            $ratingAverage = (int)round(($average + (int)round(($rating->communication + $rating->work_quality + $rating->price + $rating->punctuality + $rating->attitude) / 5))); 
+	            $rate = $rate + $ratingAverage;
+            }
+            $average =  (int)round($rate / $numRatings);
         }
-
+		
         return $average;
     }
 
-    public function getReviews($id){
-
-        $reviews = Reviews::where('reviewee_id', '=', $id)->get();
-        $data = array(); $x = 0; $average = 0;
-        foreach ($reviews as $review) {
-            $name = User::where('id', $review->reviewer_id)->get();
-            $data[$x]['name'] = $name[0]['name'];
-            $data[$x]['average'] = (int)round(($review->communication + $review->work_quality + $review->price + $review->punctuality + $review->attitude) / 5);
-            $data[$x]['communication'] = (int)$review->communication;
-            $data[$x]['work_quality'] = (int)$review->work_quality;
-            $data[$x]['price'] = (int)$review->price;
-            $data[$x]['punctuality'] = (int)$review->punctuality;
-            $data[$x]['attitude'] = (int)$review->attitude;
-            $data[$x]['title'] = $review->title;
-            $data[$x]['content'] = $review->content;
-            $data[$x]['created'] = $review->created_at->format('M d, Y');
-            $data[$x]['helpful'] = $review->helpful;
-            $data[$x]['id'] = $review->id;
-            $x++;
-        }
-
-        return $data;
-    }
     public function helpful(Request $request){
         $review = Reviews::where('id', '=', $request->input('id'))->get();
 
@@ -454,20 +487,41 @@ class AgencyController extends Controller
 
     public function validateAvailability(Request $request)
     {
-        $id = preg_replace('/\D/', '', $request->input('data'));
+	    
+        $data = $request->input('data');
+		if(strpos($data,",") !== FALSE){
+	        $data = explode(",", $data)[1];
+	        if(strpos($data,'-dup') !== false){
+	            $data = explode('-dup',$data)[0];
+	        }
+	    } else if(strpos($data,'-dup') !== false){
+            $data = explode('-dup',$data)[0];
+        }
+    
 
-        $suburb = Suburbs::find($id);
+        $suburb = Suburbs::where(DB::raw("CONCAT(suburbs.id,suburbs.name)"),'LIKE',"%{$data}%")->get()->first();
         $valid = true;
 
         // count number of traders per area
 
-        if ($suburb->availability == 3 ) {
-            $valid = false;
+        if(!$suburb){
+            $response = [
+                'request' => $request->all(),
+                'valid' => $valid,
+                'suburb' => $suburb
+            ];
+
+            return Response::json($response, 200);
         }
 
+        if ($suburb->availability == 3 ) {
+            $valid = false;
+        } 
+        
         $response = [
             'request' => $request->all(),
-            'valid' => $valid
+            'valid' => $valid,
+            'suburb' => $suburb
         ];
 
         return Response::json($response, 200);

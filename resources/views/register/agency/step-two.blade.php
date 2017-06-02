@@ -99,17 +99,17 @@
 						</thead>
 						<tbody data-repeater-list="add-agents">
 							<tr data-repeater-item>
-								<td style="width: 30%"><input type="text" name="name" value="" placeholder="" required/></td>
-								<td style="width: 30%"><input type="text" name="email" value="" placeholder="" required/></td>
-								<td style="width: 30%"><input type="password" name="password" value="" placeholder="" required/></td>
+								<td style="width: 30%"><input type="text" name="name" value="" placeholder="" /></td>
+								<td style="width: 30%"><input type="text" name="email" value="" placeholder="" /></td>
+								<td style="width: 30%"><input type="password" name="password" value="" placeholder="" /></td>
 								<td style="padding: 0 15px;"><label class="switch"><input type="checkbox" name="active"><div class="slider round"></div></label></td>
 								<td><i data-repeater-delete  class="fa fa-minus" aria-hidden="true"></i></i></td>
 							</tr>
 						</tbody>
 					</table>
-					<div class="col-xs-2 col-xs-offset-8"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
+					<div class="col-xs-2"><a href="{{env('APP_URL')}}/register/agency/step-one" class="btn hs-primary" style="float: left; margin: 48px 0 10px;">BACK <span class="icon icon-arrow-left"></span></a></div>
+					<div class="col-xs-2 col-xs-offset-6"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
 				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
-
 				</form>
 
         <form class="repeater agents mobile" action="{{env('APP_URL')}}/add-agents" method="POST">
@@ -135,9 +135,8 @@
 					</div>
 					<div class="add-agent-button"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD AGENT</span></i></div>
 				    <div class="col-xs-2"><button class="btn hs-primary">NEXT <span class="icon icon-arrow-right"></span></button></div>
-
 				</form>
-
+					
 			</div>
 		</div>
 	</div>

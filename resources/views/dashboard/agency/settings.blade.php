@@ -53,15 +53,22 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="row no-padding">
-              <div class="spacing"></div>
+              <div class="spacing">
+              </div>
+              <div>
+                <a class="btn btn-link" href="/profile">
+                  <span class="fa fa-chevron-left"></span>
+                  BACK
+                </a>
+              </div>
               <h2 class="section-title">Account Settings</h2>
               <div class="col-xs-6">
               <form action="{{env('APP_URL')}}/update-settings" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
                 <label>Full Name</label>
                 <input type="text" name="name" value="{{$data['name']}}">
-                <label>Email</label>
-                <input type="text" name="email" value="{{$data['email']}}">
+                <label>Email <span class="font-weight: 300; font-style: italic">(You can't edit this field)</span></label> 
+                <input type="text" name="email" value="{{$data['email']}}" disabled>
                 <label>Password</label>
                 <input type="password" name="password" placeholder="********">
                  <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE SETTINGS <span class="icon icon-arrow-right"></span></button>
@@ -87,7 +94,7 @@
                 </div>
                 </div>
                 <div class="col-xs-4" style="padding-right: 0;">
-                <label>CVC</label>
+                <label>CCV</label>
                 <input type="text" name="cvc" placeholder="***">
                 </div>
                 <button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE CARD DETAILS <span class="icon icon-arrow-right"></span></button>

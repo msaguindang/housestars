@@ -290,20 +290,20 @@
 
             <!-- START CENTERED WHITE CONTAINER -->
             <table class="main">
-
+              <?php 
+                $baseUrl = (strtolower(env('APP_ENV')) != 'production' ? str_replace('https', 'http', env('APP_URL')) : env('APP_URL'));
+              ?>
               <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td>
                   <table border="0" cellpadding="0" cellspacing="0">
-                    <tr style="background: url('{{env('APP_URL')}}/assets/img-banner-main.jpg');" >
+                    <tr style="background: url('{{$baseUrl}}/assets/img-banner-main.jpg');" >
                       <td style="padding: 10px 20px;border-top-left-radius: 10px;border-top-right-radius: 10px;">
-                        <img src="{{env('APP_URL')}}/assets/logo-header-home.png" alt="Housestars" width="250">
+                        <img src="{{$baseUrl}}/assets/logo-header-home.png" alt="Housestars" width="250">
                         <div class="socialmedia">
-                          <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/facebook.png" alt="facebook" width="30" style="display: block; padding-bottom: 20px;" /></a>
-                          <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/twitter.png" alt="twitter" width="30" style="display: block; padding-bottom: 20px;" /></a>
-                          <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/Googleplus.png" alt="facebook" width="30" style="display: block; padding-bottom: 20px;" /></a>
-                          <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/linkedin.png" alt="facebook" width="30" style="display: block; padding-bottom: 20px;" /></a>
-                          <a href="#"><img src="http://app.jobholler.com/frontend/img/jobholler/instagram.png" alt="facebook" width="30" style="display: block; padding-bottom: 20px;" /></a>
+                           <a href="https://www.facebook.com/housestars.com.au/"><img src="http://app.jobholler.com/frontend/img/jobholler/facebook.png"  width="30" style="display: block; padding-bottom: 20px;" /></a>
+                          <a href="https://twitter.com/HousestarsAu"><img src="http://app.jobholler.com/frontend/img/jobholler/twitter.png"  width="30" style="display: block; padding-bottom: 20px;" /></a>
+                          <a href="https://www.instagram.com/housestars.com.au/"><img src="http://app.jobholler.com/frontend/img/jobholler/instagram.png"  width="30" style="display: block; padding-bottom: 20px;" /></a>
                         </div>
                       </td>
                     </tr>
@@ -320,7 +320,7 @@
                                 <table border="0" cellpadding="0" cellspacing="0">
                                   <tbody>
                                     <tr>
-                                      <td> <a href="{{env('APP_URL')}}/activate/{{$user->email}}/{{$code}}/{{$account}}" target="_blank">Activate</a> </td>
+                                      <td> <a href="{{$baseUrl}}/activate/{{$user->email}}/{{$code}}/{{$account}}" target="_blank">Activate</a> </td>
                                     </tr>
                                   </tbody>
                                 </table>
@@ -344,7 +344,7 @@
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
-                    <span class="apple-link">Housestars Ltd., 3 Abbey Road, Sydney Australia 94102</span>
+                    <span class="apple-link">21 Main Street Alstonville, New South Wales 2477</span>
                   </td>
                 </tr>
               </table>

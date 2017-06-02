@@ -6,6 +6,7 @@ use Closure;
 use Sentinel;
 use URL;
 use App\UserMeta;
+use App\User;
 
 class TradesmanMiddleware
 {
@@ -29,18 +30,21 @@ class TradesmanMiddleware
                   }
 
                   if(Sentinel::getUser()->customer_id){
-                    \Stripe\Stripe::setApiKey("sk_test_qaq6Jp8wUtydPSmIeyJpFKI1");
+                    \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
                     $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
                     $payment_status = $customer_info->status;
 
-                    if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
-                      return redirect('/payment-status');
+                    if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
+		    			        User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
+                      return redirect('/register/tradesman/step-two');
+                    } else if (count($customer_info->subscriptions->data) == 0 && strtolower($request->route()->uri) != "register/tradesman/step-three") {
+                      return redirect('/register/tradesman/step-three');
                     }
                   } else {
                     return redirect('/register/tradesman/step-two');
                   }
-                    return $next($request);
-                    break;
+                  return $next($request);
+                  break;
                 default:
                     return redirect(URL::previous());
                     break;
