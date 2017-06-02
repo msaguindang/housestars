@@ -10,14 +10,14 @@
 						<div class="col-xs-8  col-xs-offset-2 tradesman-info">
 							@if ($businessInfo['photo'])
 								<div class="col-xs-4 tradesman-profile">
-									<img src="{{ $businessInfo['photo'] }}" alt="{{$businessInfo['name']}}" id="tradesmanPic">
+									<img src="{{ $businessInfo['photo'] }}" alt="{{$businessInfo['trading-name']}}" id="tradesmanPic">
 								</div>
 								<div class="col-xs-8 tradesman-name">
-									<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+									<h4 id="tradesmanName">{{$businessInfo['trading-name']}}</h4>
 								</div>
 							@else
 								<div class="col-xs-12 tradesman-name">
-									<h4 id="tradesmanName">{{$businessInfo['name']}}</h4>
+									<h4 id="tradesmanName">{{$businessInfo['trading-name']}}</h4>
 								</div>
 							@endif
 						</div>

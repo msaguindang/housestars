@@ -68,10 +68,12 @@ class ReviewService
         $businessPhoto = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'profile-photo')->first();
         $agencyName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'agency-name')->first();
         $businessName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'business-name')->first();
+        $tradingName = DB::table('user_meta')->select('meta_value')->where('user_id', $businessId)->where('meta_name', 'trading-name')->first();
         
         $businessInfo = array(
             'id' => $businessId,
             'name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $businessName->meta_value,
+            'trading-name' => isset($agencyName->meta_value) ? $agencyName->meta_value : $tradingName->meta_value,
             'photo' => isset($businessPhoto->meta_value) ? $businessPhoto->meta_value : NULL,
             'postcode' => $postcode
         );
