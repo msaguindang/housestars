@@ -71,16 +71,9 @@
         <div class="row">
           <form id="categorySearch">
             {{csrf_field() }}
-            <!-- <div class="col-xs-10">
-              <input type="text" name="suburb" placeholder="Suburb" required id="suburb">
-            </div> -->
-            <div class="col-xs-10">
+            <div class="col-xs-12">
               <input class="" type="text" name="suburb" placeholder="Suburb" required id="suburb">
-            </div>
-            <div class="col-xs-2">
-              <button class="btn hs-primary full-width search">
-                <span class="icon icon-search"></span>SEARCH
-              </button>
+              <span class="fa fa-spinner fa-spin fa-2x" id="search-spinner"></span>
             </div>
           </form>
         </div>
@@ -130,9 +123,8 @@
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
         });
-        $defSearch = "<span class='icon icon-search'></span>SEARCH";
-        $searchBtn = $('button.search');
 
+        $searchLoader = $('#search-spinner');
         $('#suburb').selectize({
             maxItems: 1,
             valueField: 'value',
@@ -144,6 +136,9 @@
                   return '<div class="option" data-value="'+item.name+'">'+item.name+' ('+item.id+')</div>';
                 }
             },
+            onChange: function() {
+              $('#categorySearch').submit();
+            },
             load: function(query, callback) {
                 if (!query.length) return callback();
                 $.ajax({
@@ -153,15 +148,15 @@
                         query: query
                     },
                     error: function() {
-                      $searchBtn.html($defSearch);
+                      $searchLoader.hide();
                       callback();
                     },
                     beforeSend: function() {
-                      $searchBtn.html("<span class='fa fa-spinner fa-spin fa-2x' /> SEARCH");
+                      $searchLoader.show();
                     },
                     success: function(res) {
-                      $searchBtn.html($defSearch);
                       callback(res.suburbs);
+                      $searchLoader.hide();
                     }
                 });
             }
