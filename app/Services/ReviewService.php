@@ -43,14 +43,16 @@ class ReviewService
     }
 
     public function validateBusinessReview($ip, $businessId, $redirect = '/', $postcode = '')
-    {
+    {	
+	    $hasReachedLimit = 0; 
+	    
         if(session()->has('email') && session()->has('user_type')) {
             $type = "App\\".ucfirst(camel_case(session()->get('user_type')));
             $user = app($type)->where('email', session()->get('email'))->first();
             $hasReachedLimit = $this->validateCustomerReviews($user, $businessId);
         } else if($user = Sentinel::getUser()) {
             $hasReachedLimit = $this->validateCustomerReviews($user, $businessId);
-        }
+        } 
 
         if(filter_var($hasReachedLimit, FILTER_VALIDATE_BOOLEAN)) {
             Mail::send(['html' => 'emails.review-redflag'], [

@@ -148,7 +148,6 @@
 									<option class='item' id="{{$business->user_id}}" value="{{$business->user_id}}"> {{$business->meta_value}} </option>
 								@endforeach
 							</select>
-							<input type="text" name="postcode" placeholder="Enter Postcode" class="no-top" required> </br></br>
 							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
 					</div>
