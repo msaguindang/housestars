@@ -713,6 +713,7 @@
 						 <input type="hidden" id='no-agency-suburb' name="suburb" />
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
 						 <input type="text" name="contact" placeholder="Contact Number" class="no-top"></br>
+						 <input type="text" name="suburb" placeholder="Suburb" /></br>
 						 <button class="btn hs-primary">SUBMIT</button>
 					 </form>
 

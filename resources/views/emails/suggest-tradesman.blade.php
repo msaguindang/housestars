@@ -309,12 +309,12 @@
                     </tr>
                     <tr>
                       <td style="padding: 20px; background: #fff;">
-                        <p>We received a suggestion of a tradesman to be a partner.</p>
+                        <p>Become a partner.</p>
                         <p>Here's the details:<p/>
-                        <p><b>Tradesman Name:</b> {{$name}}</p>
-                        <p><b>Tradesman Contact:</b> {{$contact}}</p>
+                        <p><b>Business Name:</b> {{$name}}</p>
+                        <p><b>Business Contact:</b> {{$contact}}</p>
                         @if(!is_null($suburb))
-                          <p><b>Suburb:</b> {{$suburb}} </p>
+                          <p><b>Suburb:</b> {{ ucwords($suburb) }} </p>
                         @endif
                        </td>
                     </tr>
