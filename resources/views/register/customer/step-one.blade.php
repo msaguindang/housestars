@@ -290,7 +290,7 @@
                   if(data['search'].length != 0){
                       $( "#agencyList").html('<span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Agencies in '+ data['term'] +': </span></br>');
                     for (var i in data['search']){
-               				$( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data['search'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['search'][i].name +' </span> ' );
+               				$( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data['search'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['search'][i].trade +' </span> ' );
                			}
                   } else {
                       $( "#agencyList").html('<span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">No agencies listed under selected suburb " '+ data['term'] +'"</span></br>');

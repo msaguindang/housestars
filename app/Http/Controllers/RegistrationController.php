@@ -376,6 +376,7 @@ class RegistrationController extends Controller
               foreach ($agencies as $agency) {
                  foreach ($suburbs as $suburb) {
                       if($suburb->user_id == $agency->id) {
+	                      $agency->trade = DB::table('user_meta')->where('user_id', $agency->id)->where('meta_name', 'trading-name')->first()->meta_value;
                           array_push($search, json_decode(json_encode($agency), true));
                       }
                  }
