@@ -385,12 +385,12 @@ class RegistrationController extends Controller
             foreach ($nearby as $key) {
               if ($key->name != $suburb) {
                 $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
-
+				
                 foreach ($agencies as $agency) {
                    foreach ($suburbs as $suburb) {
                         if($suburb->user_id == $agency->id) {
                             $agencyInfo['id'] = $agency->id;
-                            $agencyInfo['name'] = $agency->name;
+                            $agencyInfo['name'] = DB::table('user_meta')->where('user_id', $agency->id)->where('meta_name', 'trading-name')->first()->meta_value;
                             $agencyInfo['suburb'] = $key->name .', '.$key->id;
                             if (!in_array($agency->id, array_flatten($search))) {
                                 array_push($nearbySearch, $agencyInfo);
