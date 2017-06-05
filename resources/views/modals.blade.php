@@ -682,8 +682,7 @@
           </div>
           <div class="modal-body">
             <h4>
-            	<!-- There are currently no </br>listed tradesman in your area -->
-            	There are currently no Businesses in this category
+            	KNOW A GREAT TRADE OR SERVICE BUSINESS?
             </h4>
             </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
