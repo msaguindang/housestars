@@ -776,7 +776,7 @@
             </br><p class="sub-heading">Please enter the desired category and press “Submit”.</br> If the category is aligned with our Philosophy, </br>we will create a new category. Thank you.</p>
             <form id="submitCat">
               {{csrf_field() }}
-              <input type="text" name="trade" placeholder="Trades or Service Name"></br>
+              <input type="text" name="trade" placeholder="Category Name"></br>
               <input type="text" name="name" placeholder="Your Name" class="no-top"></br>
               <input type="text" name="email" placeholder="Your Email" class="no-top"></br>
               <button class="btn hs-primary">SUBMIT</button>
