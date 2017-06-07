@@ -39,11 +39,12 @@ class AgencyMiddleware
 	                  \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 	                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
 	                  $payment_status = $customer_info->status;
+	                  //dd($customer_info->subscriptions);
 		                if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
 			    		    User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
 			    			UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
 		                    return redirect('/register/agency/step-one');
-		                } else if (count($customer_info->subscriptions->data) == 0 && strtolower($request->route()->uri) != "register/agency/step-three") {
+		                } else if (Sentinel::getUser()->customer_id == NULL) {
 	                        return redirect('/register/agency/step-three');
 	                    }
 		            }

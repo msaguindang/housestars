@@ -535,6 +535,7 @@ class RegistrationController extends Controller
                     }
 
                     User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon, 'subs_status' => 1]);
+                    //dd('HERE');
                 } catch (\Stripe\Error\Card $e) {
 
                     $body = $e->getJsonBody();
@@ -547,13 +548,15 @@ class RegistrationController extends Controller
 			
 			if(Sentinel::getUser()->subs_status == 0){
 				User::where('id', $user_id)->update(['subs_status' => 1]);
+			} else {
+				if(strtolower($role) == 'tradesman') {
+                	return redirect(env('APP_URL').'/register/tradesman/step-three');
+	            } else {
+	                return redirect(env('APP_URL').'/register/agency/step-four');
+	            }
 			}
 			
-            if(strtolower($role) == 'tradesman') {
-                return redirect(env('APP_URL').'/register/tradesman/step-three');
-            } else {
-                return redirect(env('APP_URL').'/register/agency/step-four');
-            }
+            
         } else {
             return redirect(env('APP_URL'));
         }

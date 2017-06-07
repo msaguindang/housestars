@@ -37,8 +37,8 @@ class TradesmanMiddleware
                     if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
 		    			        User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
                       return redirect('/register/tradesman/step-two');
-                    } else if (count($customer_info->subscriptions->data) == 0 && strtolower($request->route()->uri) != "register/tradesman/step-three") {
-                      return redirect('/register/tradesman/step-three');
+                    } else if (Sentinel::getUser()->customer_id == NULL) {
+                      return redirect('/register/tradesman/step-two');
                     }
                   } else {
                     return redirect('/register/tradesman/step-two');
