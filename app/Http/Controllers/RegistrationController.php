@@ -533,7 +533,7 @@ class RegistrationController extends Controller
                         throw new \Exception("Invalid coupon code!");
                     }
 
-                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon]);
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon, 'subs_status' => 1]);
                 } catch (\Stripe\Error\Card $e) {
 
                     $body = $e->getJsonBody();
