@@ -161,7 +161,7 @@
 
                   </tbody>
                 </table>
-               <div class="col-xs-2 col-xs-offset-7"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
+               <div class="col-xs-2 col-xs-offset-7"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE STAFF</span></i></div>
                 <div class="col-xs-3"><button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE AGENT LIST<span class="icon icon-arrow-right"></span></button></div>
             </form>
 
@@ -219,7 +219,7 @@
 
 
                 </div>
-             <div class="col-xs-2 col-xs-offset-7"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE AGENTS</span></i></div>
+             <div class="col-xs-2 col-xs-offset-7"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE STAFF</span></i></div>
               <div class="col-xs-3"><button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE AGENT LIST<span class="icon icon-arrow-right"></span></button></div>
           </form>
             @foreach($agents as $agent)
