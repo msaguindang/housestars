@@ -127,7 +127,6 @@ class RegistrationController extends Controller
                             }
                             continue;
                         }
-/*
                         else if ($meta == 'abn') {
                             if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
                                 return redirect()->back()->withError("ABN already exist!");
@@ -138,7 +137,6 @@ class RegistrationController extends Controller
                                 return redirect()->back()->withError("Invalid ABN");
                             }
                         }
-*/
                         UserMeta::updateOrCreate(
                             ['user_id' => $user_id, 'meta_name' => $meta],
                             ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
@@ -172,11 +170,14 @@ class RegistrationController extends Controller
             if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0 && $request->input($meta) != 1){
               
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
-
+              
               foreach ($propertyInfo as $info) {
                 $data[$info->meta_name] = $info->meta_value;
               }
+              
               $data['code'] = $request->input('code');
+              $data['agent'] =  UserMeta::where('user_id', $request->input($meta))->where('meta_name', 'trading-name')->first()->meta_value;
+
               $this->notifyAgency($data, $agencyEmail);
             }
             
