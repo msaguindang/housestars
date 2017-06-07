@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
-use App\Services\AbnService;
 use Sentinel;
 use App\User;
 use App\UserMeta;
@@ -54,8 +53,6 @@ class RegistrationController extends Controller
 
     public function postUserMeta(Request $request)
     {
-        $abnService = new AbnService();
-
     	if (Sentinel::check()) {
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
@@ -80,15 +77,6 @@ class RegistrationController extends Controller
                                     $suburb = explode("-dup", $suburb)[0];
                                 }
                                 $value .= $suburb. ',';
-                            }
-                        } else if ($meta == 'abn') {
-                            if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
-                                return redirect()->back()->withError("ABN already exist!");
-                            }
-                            $abnResponse = $abnService->searchByAbn($request->get($meta));
-                            $abnResult = $abnResponse->ABRPayloadSearchResults->response;
-                            if (isset($abnResult->exception)) {
-                                return redirect()->back()->withError("Invalid ABN");
                             }
                         }
 
@@ -126,16 +114,6 @@ class RegistrationController extends Controller
                                 );
                             }
                             continue;
-                        }
-                        else if ($meta == 'abn') {
-                            if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
-                                return redirect()->back()->withError("ABN already exist!");
-                            }
-                            $abnResponse = $abnService->searchByAbn($request->get($meta));
-                            $abnResult = $abnResponse->ABRPayloadSearchResults->response;
-                            if (isset($abnResult->exception)) {
-                                return redirect()->back()->withError("Invalid ABN");
-                            }
                         }
                         UserMeta::updateOrCreate(
                             ['user_id' => $user_id, 'meta_name' => $meta],

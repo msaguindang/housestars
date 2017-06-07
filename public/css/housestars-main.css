@@ -3517,3 +3517,11 @@ button[disabled], html input[disabled] {
     left: 95%;
     display: none;
 }
+
+#abn-spinner {
+    position: absolute;
+    z-index: 10;
+    left: 90%;
+    top: 155px;
+    display: none;
+}

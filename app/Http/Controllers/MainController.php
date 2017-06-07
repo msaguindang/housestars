@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Stripe\Customer;
 use Stripe\Stripe;
 use Stripe\Subscription;
+use App\Services\AbnService;
 
 class MainController extends Controller
 {
@@ -274,5 +275,21 @@ class MainController extends Controller
 		dd($qry);
 */
 	}
-    
+
+    public function validateABN(Request $request)
+    {
+        $abnVal = trim($request->get('abn', ''));
+        $user_id = Sentinel::getUser()->id;
+        $abnService = new AbnService();
+
+        $abnResponse = $abnService->searchByAbn($abnVal);
+        $abnResult = $abnResponse->ABRPayloadSearchResults->response;
+        if (isset($abnResult->exception)) {
+            return response()->json(['error' => "Invalid ABN."], 422);
+        } else if(UserMeta::where('user_id', '!=', $user_id)->where('meta_name', 'abn')->where('meta_value', $abnVal)->exists()) {
+            return response()->json(['error' => "ABN already exist."], 422);
+        }
+
+        return response()->json(['error' => ''], 200);
+    }
 }

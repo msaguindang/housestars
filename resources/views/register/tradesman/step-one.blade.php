@@ -127,8 +127,9 @@
                             <div class="col-xs-6 no-padding-right">
                                 <label>Website <span class="required-symbol">*</span></label>
                                 <input type="text" name="website" class="required-input" value="{{ $website }}" required>
-                                <label>ABN <span class="required-symbol">*</span></label>
+                                <label>ABN <span class="required-symbol">*</span> <b class="text-danger" id="abn-error"> </b> </label>
                                 <input type="text" name="abn" class="required-input" value="{{$abn}}" required>
+                                <span class="fa fa-spin fa-spinner fa-2x" id="abn-spinner"></span>
                                 <label>Standard Hourly Rate <span class="required-symbol">*</span> <span class="placeholder">Enter N/A if this does not apply to you</span></label>
                                 <input type="text" name="charge-rate" class="required-input" value="{{ $chargeRate }}" required>
                             </div>
@@ -289,5 +290,35 @@
         if (selectedTradeIndex != -1) {
             $("#t"+selectedTradeIndex).trigger('click');
         } 
+    </script>
+
+    <script>
+        $("input[name='abn']").on('blur', function () {
+            if ($(this).val() != '') {
+                $errorWrapper = $("#abn-error");
+                $.ajax({
+                    url: '{{ url('validate-abn') }}',
+                    type: 'POST',
+                    data: {
+                        abn: $(this).val()
+                    },
+                    beforeSend: function() {
+                        $errorWrapper.html("");
+                        $('#abn-spinner:not(:visible)').show();
+                        $('#submit').prop("type", "button");
+                    },
+                    error: function(data) {
+                        var response =  jQuery.parseJSON(data.responseText);
+                        $errorWrapper.html(response.error);
+                        $('#abn-spinner:visible').hide();
+                        $('#submit').prop("type", "button");
+                    },
+                    success: function() {
+                        $('#abn-spinner:visible').hide();
+                        $('#submit').prop("type", "submit");
+                    }
+                });
+            }
+        });
     </script>
 @stop

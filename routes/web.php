@@ -167,6 +167,8 @@ Route::group(['prefix' => ''], function () {
         return view('general.search-category');
     });
 
+    Route::post('/validate-abn', 'MainController@validateABN');
+
     Route::get('/payment-status', 'MainController@unpaid');
 
     Route::get('/home-error', function () {
