@@ -30,6 +30,10 @@ class AgencyMiddleware
                 if(count($meta) < 2){
                   return redirect('/register/agency/step-one');
                 }
+                
+                if (Sentinel::getUser()->customer_id == NULL) {
+	                        return redirect('/register/agency/step-three');
+	                    }
 				
 				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
 	            $isPaidCustomer = count(explode(",", $positions));
@@ -44,9 +48,7 @@ class AgencyMiddleware
 			    		    User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
 			    			UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
 		                    return redirect('/register/agency/step-one');
-		                } else if (Sentinel::getUser()->customer_id == NULL) {
-	                        return redirect('/register/agency/step-three');
-	                    }
+		                }
 		            }
                 }
                 return $next($request);
