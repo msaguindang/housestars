@@ -80,22 +80,7 @@
             </div>
         </div>
     </section>
-    
-    @if($user['sub_status'] == 0)
-        <div class="container">
-			<div class="row">
-				<div class="error-bar">
-	        <div class="col-xs-1">
-	          <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-	        </div>
-	        <div class="col-xs-11">
-	          <p><span class="blue">Subscription Status: Inactive</span></p>
-	          <p>We're unable to charge your account. Please update your positions and payment method to continue your access to our system.</p>
-	        </div>
-	      </div>
-			</div>
-		</div>
-	@endif
+   
 
     <section id="sign-up-form">
         <div class="container">
@@ -111,21 +96,21 @@
                         @endif
                         <div class="col-xs-4">
                             <label>Agency Business Name</label>
-                            <input type="text" name="agency-name" required value="{{isset($user['agency-name']) ? $user['agency-name'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="agency-name" required value="{{isset($user['agency-name']) ? $user['agency-name'] : ''}}">
                             <label>Agency Trading Name</label>
-                            <input type="text" name="trading-name" required value="{{isset($user['trading-name']) ? $user['trading-name'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="trading-name" required value="{{isset($user['trading-name']) ? $user['trading-name'] : ''}}">
                             <label>Principal Name <span>(One Principal only as a point of contact)</span></label>
-                            <input type="text" name="principal-name" required value="{{isset($user['principal-name']) ? $user['principal-name'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="principal-name" required value="{{isset($user['principal-name']) ? $user['principal-name'] : ''}}">
                             <label>Business Address</label>
-                            <input type="text" name="business-address" required value="{{isset($user['business-address']) ? $user['business-address'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="business-address" required value="{{isset($user['business-address']) ? $user['business-address'] : ''}}">
                         </div>
                         <div class="col-xs-4">
                             <label>Website</label>
-                            <input type="text" name="website" value="{{isset($user['website']) ? $user['website'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="website" value="{{isset($user['website']) ? $user['website'] : ''}}">
                             <label>Phone</label>
-                            <input type="text" name="phone" required value="{{isset($user['phone']) ? $user['phone'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="phone" required value="{{isset($user['phone']) ? $user['phone'] : ''}}">
                             <label>ABN</label>
-                            <input type="text" name="abn" required value="{{isset($user['abn']) ? $user['abn'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="abn" required value="{{isset($user['abn']) ? $user['abn'] : ''}}">
                             <label>Positions <span>(Enter the postcode of the suburd required)</span></label>
                             <select id="select-state" name="positions[]" multiple class="demo-default"></select>
                             
@@ -137,16 +122,16 @@
                                                              data-original-title="NB. This figure is not shown to anyone. It is used for administration purposes only."
                                                              data-html="true"></i></label>
                             <div class="input-group">
-                                <input type="text" min="0" name="base-commission" id="base-commission" required value="{{isset($user['base-commission']) ? $user['base-commission'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                                <input type="text" min="0" name="base-commission" id="base-commission" required value="{{isset($user['base-commission']) ? $user['base-commission'] : ''}}">
                                 <span class="input-group-addon" id="basic-addon1">%</span>
                             </div>
                             <label>Marketing Budget</label>
-                            <input type="text" name="marketing-budget" value="{{isset($user['marketing-budget']) ? $user['marketing-budget'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="marketing-budget" value="{{isset($user['marketing-budget']) ? $user['marketing-budget'] : ''}}">
                             <label>Review URL <i class="fa fa-question-circle tooltip-info" aria-hidden="true"
                                                  data-toggle="tooltip" data-placement="right" title=""
                                                  data-original-title="If you have a profile or a rate and review list on another website that you would like to display, type the URL here, and it will be added to your profile page."
                                                  data-html="true"></i> </label>
-                            <input type="text" name="review-url" value="{{isset($user['review-url']) ? $user['review-url'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <input type="text" name="review-url" value="{{isset($user['review-url']) ? $user['review-url'] : ''}}">
 
                             <button class="btn hs-primary" id="submit" disabled>NEXT <span
                                         class="icon icon-arrow-right"></span></button>
