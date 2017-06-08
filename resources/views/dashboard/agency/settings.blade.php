@@ -47,6 +47,8 @@
             </div>
           </div>
     </header>
+    
+
 
     <section id="settings" class="header-margin">
       <div class="container">
@@ -61,6 +63,11 @@
                   BACK
                 </a>
               </div>
+               @if(session('error'))
+                  <div class="alert alert-danger error-box">
+                    	{{session('error')}}
+                  </div>
+                  @endif
               <h2 class="section-title">Account Settings</h2>
               <div class="col-xs-6">
               <form action="{{env('APP_URL')}}/update-settings" method="POST" enctype="multipart/form-data">
@@ -77,11 +84,7 @@
               <div class="col-xs-6">
                 <form action="{{env('APP_URL')}}/update-payment" method="POST" enctype="multipart/form-data">
                 {{csrf_field() }}
-                @if(session('error'))
-                  <div class="alert alert-danger">
-                    {{session('error')}}
-                  </div>
-                  @endif
+ 
                 <label>Credit Card</label>
                 <input type="text" name="credit-card" value="**** **** **** {{$data['credit-card']}}">
 
@@ -108,11 +111,7 @@
               <form class="repeater agents small-screen" action="{{env('APP_URL')}}/update-agents" method="POST">
                 {{csrf_field() }}
 
-                 @if(session('errors'))
-                  <div class="alert alert-danger">
-                    {{session('errors')}}
-                  </div>
-                  @endif
+                
                 <table>
                   <thead>
                     <tr>
@@ -164,15 +163,13 @@
                <div class="col-xs-2 col-xs-offset-7"><i data-repeater-create class="fa fa-plus add-agent" aria-hidden="true"><span class="btn-label">ADD MORE STAFF</span></i></div>
                 <div class="col-xs-3"><button class="btn hs-primary update-settings"><span class="icon icon-summary" style="margin-top: 6px;"></span>UPDATE AGENT LIST<span class="icon icon-arrow-right"></span></button></div>
             </form>
+            
+            
 
             <form class="repeater agents mobile" action="{{env('APP_URL')}}/update-agents" method="POST">
               {{csrf_field() }}
+			  
 
-               @if(session('errors'))
-                <div class="alert alert-danger">
-                  {{session('errors')}}
-                </div>
-                @endif
                 <div data-repeater-list="add-agents" class="rep-agents">
                     <div data-repeater-item>
                       <label>Full Name</label>

@@ -3525,3 +3525,8 @@ button[disabled], html input[disabled] {
     top: 155px;
     display: none;
 }
+
+.error-box {
+    padding: 20px;
+    background: #f2dede;
+}

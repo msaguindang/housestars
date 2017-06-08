@@ -111,7 +111,7 @@
 					<label>Card Number</label>
 					<input type="text" name="number" minlength="16" required>
 					<div class="col-xs-6 no-padding-left">
-						<label>Expiry Date</label>
+						<label>Expiry Date <span>Enter in this format: _ _ / _ _ _ _</span></label>
 						<div class="btn-group" style="width: 40%">
 			           <input type="text" name="exp_month" maxlength="2" required>
 			        </div> / <div class="btn-group" style="width: 50%">
