@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
-use App\Services\AbnService;
 use Sentinel;
 use App\User;
 use App\UserMeta;
@@ -54,8 +53,6 @@ class RegistrationController extends Controller
 
     public function postUserMeta(Request $request)
     {
-        $abnService = new AbnService();
-
     	if (Sentinel::check()) {
     		$user_id = Sentinel::getUser()->id;
     		$role = Sentinel::getUser()->roles()->first()->slug;
@@ -80,15 +77,6 @@ class RegistrationController extends Controller
                                     $suburb = explode("-dup", $suburb)[0];
                                 }
                                 $value .= $suburb. ',';
-                            }
-                        } else if ($meta == 'abn') {
-                            if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
-                                return redirect()->back()->withError("ABN already exist!");
-                            }
-                            $abnResponse = $abnService->searchByAbn($request->get($meta));
-                            $abnResult = $abnResponse->ABRPayloadSearchResults->response;
-                            if (isset($abnResult->exception)) {
-                                return redirect()->back()->withError("Invalid ABN");
                             }
                         }
 
@@ -127,18 +115,6 @@ class RegistrationController extends Controller
                             }
                             continue;
                         }
-/*
-                        else if ($meta == 'abn') {
-                            if (UserMeta::where('user_id', '!=', $user_id)->where('meta_name', $meta)->where('meta_value', $request->get($meta))->exists()) {
-                                return redirect()->back()->withError("ABN already exist!");
-                            }
-                            $abnResponse = $abnService->searchByAbn($request->get($meta));
-                            $abnResult = $abnResponse->ABRPayloadSearchResults->response;
-                            if (isset($abnResult->exception)) {
-                                return redirect()->back()->withError("Invalid ABN");
-                            }
-                        }
-*/
                         UserMeta::updateOrCreate(
                             ['user_id' => $user_id, 'meta_name' => $meta],
                             ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
@@ -172,11 +148,13 @@ class RegistrationController extends Controller
             if($meta == 'agent' && $request->input($meta) != null && $request->input($meta) != 0 && $request->input($meta) != 1){
               
               $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
-
+              
               foreach ($propertyInfo as $info) {
                 $data[$info->meta_name] = $info->meta_value;
               }
+              
               $data['code'] = $request->input('code');
+
               $this->notifyAgency($data, $agencyEmail);
             }
             
@@ -204,6 +182,7 @@ class RegistrationController extends Controller
 
         $property['customer_name'] = Sentinel::getUser()->name;
         $property['customer_email'] = Sentinel::getUser()->email;
+        $property['agency'] =  UserMeta::where('user_id', $request->input('agent'))->where('meta_name', 'trading-name')->first()->meta_value;
         
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);
@@ -376,6 +355,7 @@ class RegistrationController extends Controller
               foreach ($agencies as $agency) {
                  foreach ($suburbs as $suburb) {
                       if($suburb->user_id == $agency->id) {
+	                      $agency->trade = DB::table('user_meta')->where('user_id', $agency->id)->where('meta_name', 'trading-name')->first()->meta_value;
                           array_push($search, json_decode(json_encode($agency), true));
                       }
                  }
@@ -385,12 +365,12 @@ class RegistrationController extends Controller
             foreach ($nearby as $key) {
               if ($key->name != $suburb) {
                 $suburbs = DB::table('user_meta')->where('meta_value', 'LIKE', '%'.$key->name.'%')->get();
-
+				
                 foreach ($agencies as $agency) {
                    foreach ($suburbs as $suburb) {
                         if($suburb->user_id == $agency->id) {
                             $agencyInfo['id'] = $agency->id;
-                            $agencyInfo['name'] = $agency->name;
+                            $agencyInfo['name'] = DB::table('user_meta')->where('user_id', $agency->id)->where('meta_name', 'trading-name')->first()->meta_value;
                             $agencyInfo['suburb'] = $key->name .', '.$key->id;
                             if (!in_array($agency->id, array_flatten($search))) {
                                 array_push($nearbySearch, $agencyInfo);
@@ -532,7 +512,7 @@ class RegistrationController extends Controller
                         throw new \Exception("Invalid coupon code!");
                     }
 
-                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon]);
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon, 'subs_status' => 1]);
                 } catch (\Stripe\Error\Card $e) {
 
                     $body = $e->getJsonBody();

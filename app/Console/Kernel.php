@@ -8,6 +8,7 @@ use App\Console\Commands\Referral;
 use App\Console\Commands\EndingSubscription;
 use App\Console\Commands\PositionAvailabilityCount;
 use App\Console\Commands\UserMetaMultipleCategoriesChange;
+use App\Console\Commands\RemovePositionsForUnPaidUsers;
 
 class Kernel extends ConsoleKernel
 {
@@ -20,7 +21,8 @@ class Kernel extends ConsoleKernel
         Referral::class,
         EndingSubscription::class,
         PositionAvailabilityCount::class,
-        UserMetaMultipleCategoriesChange::class
+        UserMetaMultipleCategoriesChange::class,
+        RemovePositionsForUnPaidUsers::class
     ];
 
     /**
@@ -39,6 +41,8 @@ class Kernel extends ConsoleKernel
         
         $schedule->command('command:position-availability-count')
                   ->everyMinute();
+
+        $schedule->command('housestars:unpaid-users-remove-positions')->daily();
     }
 
     /**

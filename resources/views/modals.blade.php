@@ -148,7 +148,6 @@
 									<option class='item' id="{{$business->user_id}}" value="{{$business->user_id}}"> {{$business->meta_value}} </option>
 								@endforeach
 							</select>
-							<input type="text" name="postcode" placeholder="Enter Postcode" class="no-top" required> </br></br>
 							<button type="submit" class="btn hs-primary">Rate business now</button>
 						</form>
 					</div>
@@ -683,8 +682,7 @@
           </div>
           <div class="modal-body">
             <h4>
-            	<!-- There are currently no </br>listed tradesman in your area -->
-            	There are currently no Businesses in this category
+            	KNOW A GREAT TRADE OR SERVICE BUSINESS?
             </h4>
             </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
             <form id="suggestTradesman">
@@ -715,6 +713,7 @@
 						 <input type="hidden" id='no-agency-suburb' name="suburb" />
 						 <input type="text" name="name" placeholder="Agency/Agent Name"></br>
 						 <input type="text" name="contact" placeholder="Contact Number" class="no-top"></br>
+						 <input type="text" name="suburb" placeholder="Suburb" /></br>
 						 <button class="btn hs-primary">SUBMIT</button>
 					 </form>
 
@@ -777,7 +776,7 @@
             </br><p class="sub-heading">Please enter the desired category and press “Submit”.</br> If the category is aligned with our Philosophy, </br>we will create a new category. Thank you.</p>
             <form id="submitCat">
               {{csrf_field() }}
-              <input type="text" name="trade" placeholder="Trades or Service Name"></br>
+              <input type="text" name="trade" placeholder="Category Name"></br>
               <input type="text" name="name" placeholder="Your Name" class="no-top"></br>
               <input type="text" name="email" placeholder="Your Email" class="no-top"></br>
               <button class="btn hs-primary">SUBMIT</button>

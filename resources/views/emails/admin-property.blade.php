@@ -311,7 +311,7 @@
                       <td style="padding: 20px; background: #fff;">
 	                      <p>{{isset($property['customer_name']) ? $property['customer_name'] : ''}} just signed up as a customer. </br> Here's the details:</p>
                           <p><b>Name:</b> {{isset($property['customer_name']) ? $property['customer_name'] : ''}}</p>
-                          <p><b>Name:</b> {{isset($property['customer_email']) ? $property['customer_email'] : ''}}</p>
+                          <p><b>Email:</b> {{isset($property['customer_email']) ? $property['customer_email'] : ''}}</p>
                           <p><b>Property Location:</b> {{isset($property['property-address']) ? $property['property-address'] : ''}}, {{isset($property['suburb']) ? $property['suburb'] : ''}}, {{isset($property['state']) ? $property['state'] : ''}}</p>
 						  <p><b>Agency:</b> 
 							  @if($property['agent'] == 1)
@@ -319,7 +319,7 @@
 							  @elseif($property['agent'] == 0)
 							  	Customer not ready to choose an agent yet.
 							  @else
-							  	{{isset($property['agent']) ? $property['agent'] : ''}}
+							  	{{isset($property['agent']) ? $property['agency'] : ''}}
 							  @endif
 						  </p>
                           

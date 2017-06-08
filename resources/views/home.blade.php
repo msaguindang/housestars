@@ -185,7 +185,7 @@
             <div class="step-description stepFour animated desktop">
               <div class="description-box-right">
                 <h3>The Property Is Sold</h3>
-                <p>Once the property is sold, the agent helps you through the closing process, and charges you the normal commission price. After your process page is complete, you receive your discount via a cheque in the mail. You can then spend that money on your new home, or a trip to Bali, or whatever you want!</p>
+                <p>Once the property is sold, the agent helps you through the closing process, and charges you the normal commission price. After your proces page is complete, you receive your rebate, up to 20% of the commission price. You can then spend that money on your new home, or a trip to Bali, or whatever you want!</p>
               </div>
             </div>
 

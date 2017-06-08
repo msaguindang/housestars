@@ -725,8 +725,33 @@ class CustomerController extends Controller
                     );
 
         $data['rating'] =  $this->getRating($request->input('id'));
+        
+        $property['customer_name'] = Sentinel::getUser()->name;
+        $property['customer_email'] = Sentinel::getUser()->email;
+        $property['property-address'] = Property::where('property_code', $request->input('code'))->where('meta_name', 'property-address')->first()->meta_value;
+        $property['suburb'] = Property::where('property_code', $request->input('code'))->where('meta_name', 'suburb')->first()->meta_value;
+        if(Property::where('property_code', $request->input('code'))->where('meta_name', 'state')->first()){
+	         $property['state'] = Property::where('property_code', $request->input('code'))->where('meta_name', 'state')->first()->meta_value;
+
+        }
+        $property['agent'] = $request->input('id');
+        $property['agency'] =  UserMeta::where('user_id', $request->input('id'))->where('meta_name', 'trading-name')->first()->meta_value;
+        
+        $adminEmail = 'info@housestars.com.au';
+        $this->notifyAdmin($property, $adminEmail);
 
         return Response::json($data, 200);
+    }
+    
+    private function notifyAdmin($property, $email){
+        // $property_name = $property->suburb. ', '.$property->state;
+        Mail::send(['html' => 'emails.admin-property'], [
+                'property' => $property
+            ], function ($message) use ($property) {
+                $message->from('info@housestars.com.au', 'Housestars');
+                $message->to('info@housestars.com.au');
+                $message->subject('Customer ' . $property['customer_name'] . ' added new property');
+            });
     }
 
     private function sendEmail($user, $data){
@@ -757,7 +782,7 @@ class CustomerController extends Controller
         $isNew = (Property::where('user_id', $user_id)->count() <= 1);
 
         foreach ($property_meta as $meta) {
-            if ($request->exists($meta) && $request->has($meta)) {
+            if ($request->exists($meta) && $request->has($meta) && $request->input($meta) != '') {
                 $value = $request->input($meta);
 
                 Property::updateOrCreate(
@@ -768,12 +793,16 @@ class CustomerController extends Controller
 
             if($meta == 'agent' && $request->has($meta)) {
               $propertyInfo = Property::where('property_code', $property_code)->get();
-              $agencyEmail =  User::where('id', $request->input($meta))->first()->email;
+              
               foreach ($propertyInfo as $info) {
                 $data[$info->meta_name] = $info->meta_value;
               }
               $data['code'] = $request->input('code');
-              $this->notifyAgency($data, $agencyEmail);
+              if($request->input('agent')){
+	              $agencyEmail =  User::where('id', $request->input('agent'))->first()->email;
+				  $this->notifyAgency($data, $agencyEmail); 
+              }
+             
             }
         }
 

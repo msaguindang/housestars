@@ -23,10 +23,11 @@ class SearchController extends Controller
     {
       switch ($item) {
         case 'category':
-          $data['cat'] = Category::whereStatus(1)
+          		$data['cat'] = Category::whereStatus(1)
                   ->orderBy("category", "asc")
                   ->groupBy('category')
                   ->get();
+                  
                 $data['suburb_id'] = $data['suburb_name'] ='';
                 $data['suburb'] = $request->get('suburb', '');
 
@@ -136,7 +137,7 @@ class SearchController extends Controller
         $data = array();
         $x = 0;
         foreach ($tradesmen as $id) {
-           $activeUser = User::where('id', '=', $id)->get();
+           $activeUser = User::where('id', '=', $id)->where('subs_status', 1)->get();
            if(count($activeUser) > 0){
                  $tradesmenArray = UserMeta::selectRaw('user_meta.id, user_meta.user_id, categories.category')
                                   ->where('user_id', $id)

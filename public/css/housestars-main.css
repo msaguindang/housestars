@@ -3509,3 +3509,19 @@ button[disabled], html input[disabled] {
 #signup .row.account-option .radio-account-label {
     display: inline;
 }
+
+#search-spinner {
+    position: absolute;
+    z-index: 10;
+    top: 10px;
+    left: 95%;
+    display: none;
+}
+
+#abn-spinner {
+    position: absolute;
+    z-index: 10;
+    left: 90%;
+    top: 155px;
+    display: none;
+}

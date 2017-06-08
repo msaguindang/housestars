@@ -234,39 +234,33 @@
                  data:{
                      data:value
                  },
-                 success: function(data){
+                success: function(data) {
 
-                   $( ".option" ).addClass('hidden');
-
-                  console.log(data);
+    			  $( ".option" ).addClass('hidden');
 
                   if(data['search'].length != 0){
                       $( "#agencyList").html('<span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Agencies in '+ data['term'] +': </span></br>');
                     for (var i in data['search']){
-                       $( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data['search'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['search'][i].name +' </span> ' );
-                     }
+               				$( "#agencyList" ).append( '<span class="option"><input type="radio" value="' + data['search'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['search'][i].trade +' </span> ' );
+               			}
                   } else {
                       $( "#agencyList").html('<span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">No agencies listed under selected suburb " '+ data['term'] +'"</span></br>');
                   }
 
-
-                  if(data['nearby'].length != 0){
-                    $( "#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Nearby Agencies: </span></br>');
-                    for (var i in data['nearby']){
-                       $( "#nearbyAgencyList" ).append( '<span class="option"><input type="radio" value="' + data['nearby'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['nearby'][i].name +' ('+ data['nearby'][i].suburb +') </span> ' );
-                     }
+                  if (data['nearby'].length != 0) {
+                    $("#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">Nearby Agencies: </span></br>');
+                    for (var i in data['nearby']) {
+           				$( "#nearbyAgencyList" ).append( '<span class="option"><input type="radio" value="' + data['nearby'][i].id +'" name="agent"> <span class="checklist-label"> '+ data['nearby'][i].name +' ('+ data['nearby'][i].suburb +') </span> ' );
+           			}
                   } else {
                       $( "#nearbyAgencyList").html('</br><span style=" margin: 20px 0; font-size: 13px; font-style: italic; color: #0f70b7;">No nearby agencies listed.</span></br>');
                   }
-
-                  $( "#nearbyAgencyList" ).append('</br></br><span class="option"><input type="radio" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span>');
-
-
-                 },
-                 error: function(data){
-                   $( ".option" ).addClass('hidden');
-                   $( "#agencyList" ).append( '<span class="option checklist-label">No agency listed under ' + suburb + ' yet<span class="checklist-label">' );
-                 }
+                    $( "#nearbyAgencyList" ).append('</br></br><input type="checkbox" value="1" name="agent"> <span class="checklist-label"> I am ready for an agent, but there are none available. </span><span class="option"><input type="checkbox" value="0" name="agent"> <span class="checklist-label"> I am not ready to engage an agent yet. </span><span class="option">');
+         		},
+         		error: function(data) {
+         			$( ".option" ).addClass('hidden');
+         			$( "#agencyList" ).append( '<span class="option checklist-label">No agency listed under ' + suburb + ' yet<span class="checklist-label">' );
+                }
              });
 
          }
