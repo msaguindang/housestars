@@ -122,7 +122,7 @@
                                 <div class="agency-info">
                                   <div class="col-xs-2"><div class="profile-thumb" style="background: url('{{ $agency['profile-photo'] }}'); background-size: cover;"></div></div>
                                   <div class="col-xs-10">
-                                    <h3 class="name">{{ isset($agency['agency-name']) ? $agency['agency-name'] : '' }}</h3>
+                                    <h3 class="name">{{ isset($agency['trading-name']) ? $agency['trading-name'] : '' }}</h3>
                                     <p class="location">{{ isset($agency['business-address']) ? $agency['business-address'] : ''}}</p>
                                   </div>
                                 </div>
