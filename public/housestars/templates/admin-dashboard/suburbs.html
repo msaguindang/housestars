@@ -20,6 +20,13 @@
     thead th {
         text-align: center;
     }
+    .suburb-full,
+    .suburb-full:hover,
+    .suburb-full:active,
+    .suburb-full:focus {
+        color: #FF4A55;
+        border-color: #FF4A55;
+    }
 </style>
 <div class="row">
     <div class="col-md-12">
@@ -97,8 +104,9 @@
                         <td>{{ suburb.name }}</td>
                         <td>
                             <a class="btn"
-                               ng-class="{'btn-default':(suburb.availability==0), 'btn-success':(suburb.availability>0)}"
-                               href="" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}</a>
+                               ng-class="{'btn-default':(suburb.availability==0), 'btn-success':(suburb.availability == 1 || suburb.availability == 2), 'suburb-full':(suburb.availability==3)}"
+                               href="" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}
+                            </a>
                         </td>
                         <td>
                             <div class="form-inline form-horizontal">
