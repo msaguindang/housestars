@@ -320,28 +320,34 @@ class AgencyController extends Controller
                                 ['agent_id' => $agent['id'], 'active' => 0]);
                         }
                     } else {
-                        $credentials =  [
-                            'email'    => $agent['email'],
-                            'password'    => $agent['password'],
-                        ];
+	                    
+						try{
+							$credentials =  [
+	                            'email'    => $agent['email'],
+	                            'password'    => $agent['password'],
+	                        ];
+	
+	                        $user = Sentinel::registerAndActivate($credentials);
+	                        User::where('email', $user->email)->update(['name' => $agent['name']]);
+	                        $role = Sentinel::findRoleBySlug('agent');
+	                        $role->users()->attach($user);
+	                        $email = [
+	                            'email' => $agent['email']
+	                        ];
+	
+	                        $user_id = Sentinel::getUser()->id;
+	                        $agent_id = Sentinel::findByCredentials($email);
+	
+	                        if(isset($agent['active'])){
+	                            Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id, 'active' => 1]);
+	                        } else {
+	                            Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
+	                        }
 
-                        $user = Sentinel::registerAndActivate($credentials);
-                        User::where('email', $user->email)->update(['name' => $agent['name']]);
-                        $role = Sentinel::findRoleBySlug('agent');
-                        $role->users()->attach($user);
-                        $email = [
-                            'email' => $agent['email']
-                        ];
-
-                        $user_id = Sentinel::getUser()->id;
-                        $agent_id = Sentinel::findByCredentials($email);
-
-                        if(isset($agent['active'])){
-                            Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id, 'active' => 1]);
-                        } else {
-                            Agents::firstOrCreate(['agent_id' => $agent_id['id'], 'agency_id' => $user_id]);
-                        }
-                    }
+						}catch(\Exception $e){
+							return redirect()->back()->with('error', 'Email address already added to the system, please try again.');
+						}
+                     }
                 }
             }
 
