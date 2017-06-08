@@ -7,6 +7,7 @@ use Sentinel;
 use App\User;
 use URL;
 use App\UserMeta;
+use DateTime;
 
 class AgencyMiddleware
 {
@@ -23,15 +24,33 @@ class AgencyMiddleware
 
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
-                $meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-
                 //dd($meta);
+				$date1 = new DateTime;
+				
+				$date = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->first()->updated_at;
+				$date2 = new DateTime($date);
+				$interval = $date2->diff($date1);
 
-                if(count($meta) < 2){
-                  return redirect('/register/agency/step-one');
-                }
+				if((int)$interval->format("%H") >= 2 && Sentinel::getUser()->subs_status == NULL){
+					
+					UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
+					
+				}
+				
+				$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
+				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+	            $isPaidCustomer = count(explode(",", $positions));
+	            //dd($positions);
                 
-                if (Sentinel::getUser()->customer_id == NULL) {
+                if(count($meta) < 2){
+	                
+                  return redirect('/register/agency/step-one');
+                  
+                }else if($positions == ''){
+	                
+	                return redirect('/register/agency/step-one');
+
+                }else if (Sentinel::getUser()->customer_id == NULL) {
 
 	                return redirect('/register/agency/step-three');   
 	                     
@@ -39,14 +58,7 @@ class AgencyMiddleware
 		            
 		            return redirect('/register/agency/step-four');
 		            
-	            }
-	            
-	            
-				
-				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
-	            $isPaidCustomer = count(explode(",", $positions));
-	            
-	            if($isPaidCustomer > '2' || $isPaidCustomer == 1 ) {
+	            }else if($isPaidCustomer > '2' || $isPaidCustomer == 1 ) {
 					if(Sentinel::getUser()->customer_id) {
 	                  \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 	                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
@@ -59,6 +71,7 @@ class AgencyMiddleware
 		                }
 		            }
                 }
+                
                 return $next($request);
                     break;
 				default:
