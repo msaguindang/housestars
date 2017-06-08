@@ -183,11 +183,11 @@ $(document).on('click', '#switch' ,function(e){
     if(stat == '0'){
       $('.nav-panel').css('display', 'none');
       $('.profile-details').css('display', 'block');
-      $('div.gallery').show();
+      // $('div.gallery').show();
       $('input[name=switch]').val('1')
       $('input[name=switch]').attr('checked', true);
     } else {
-      $('div.gallery').hide();
+      // $('div.gallery').hide();
       $('.nav-panel').css('display', 'block');
       $('.profile-details').css('display', 'none');
       $('input[name=switch]').val('0')

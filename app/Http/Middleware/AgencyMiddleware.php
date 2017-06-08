@@ -24,23 +24,27 @@ class AgencyMiddleware
 
             switch (Sentinel::getUser()->roles()->first()->slug){
                 case 'agency':
-                //dd($meta);
 				$date1 = new DateTime;
 				
-				$date = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->first()->updated_at;
-				$date2 = new DateTime($date);
-				$interval = $date2->diff($date1);
+				if ($metaPos = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->first()) {
+					
+					$date = $metaPos->updated_at;
+					$date2 = new DateTime($date);
+					$interval = $date2->diff($date1);
 
-				if((int)$interval->format("%H") >= 2 && Sentinel::getUser()->subs_status == NULL){
-					
-					UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
-					
+					if((int)$interval->format("%H") >= 2 && Sentinel::getUser()->subs_status == NULL){
+						
+						UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
+						
+					}
 				}
 				
 				$meta = UserMeta::where('user_id', Sentinel::getUser()->id)->get();
-				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
+				$positions = '';
+				if ($pos = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()) {
+					$positions = $pos->meta_value;
+				}
 	            $isPaidCustomer = count(explode(",", $positions));
-	            //dd($positions);
                 
                 if(count($meta) < 2){
 	                
@@ -63,7 +67,6 @@ class AgencyMiddleware
 	                  \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 	                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
 	                  $payment_status = $customer_info->status;
-	                  //dd($customer_info->subscriptions);
 		                if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
 			    		    User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
 			    			UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
