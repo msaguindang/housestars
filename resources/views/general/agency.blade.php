@@ -303,7 +303,7 @@
             create: false,
             render: {
                 option: function(item, escape) {
-                       return '<div class="option" data-selectable="" data-value="'+item.availability+','+item.id+''+item.name+'">'+item.name+' ('+item.id+')<span class="icn icon-available-'+item.availability+'"></span></div>';
+                       return '<div class="option" data-selectable="" data-value="'+item.total_availability+','+item.id+''+item.name+'">'+item.name+' ('+item.id+')<span class="icn icon-available-'+item.total_availability+'"></span></div>';
                 }
             },
             load: function(query, callback) {

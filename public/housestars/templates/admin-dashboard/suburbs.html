@@ -104,8 +104,8 @@
                         <td>{{ suburb.name }}</td>
                         <td>
                             <a class="btn"
-                               ng-class="{'btn-default':(suburb.availability==0), 'btn-success':(suburb.availability == 1 || suburb.availability == 2), 'suburb-full':(suburb.availability==3)}"
-                               href="" ng-click="showAvailabilities(suburb)">{{ suburb.availability }}
+                               ng-class="{'btn-default':(suburb.total_availability==0), 'btn-success':(suburb.total_availability == 1 || suburb.total_availability == 2), 'suburb-full':(suburb.total_availability==3)}"
+                               href="" ng-click="showAvailabilities(suburb)">{{ suburb.total_availability }}
                             </a>
                         </td>
                         <td>

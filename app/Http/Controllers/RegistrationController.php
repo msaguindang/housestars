@@ -89,9 +89,11 @@ class RegistrationController extends Controller
     			
     			$this->updateAvailability();
     			
-    			if(Sentinel::getUser()->subs_status == 0){
+    			
+    			if(Sentinel::getUser()->subs_status == 0 && Sentinel::getUser()->subs_status != NULL){
 	    			return redirect(env('APP_URL').'/register/agency/step-three');
     			}
+    			
 
 		      	return redirect(env('APP_URL').'/register/agency/step-two');
 
@@ -646,6 +648,7 @@ class RegistrationController extends Controller
     {
 		DB::table('suburbs')->update(['availability' => 0]);
 
+
     	$suburbs = UserMeta::where('meta_name', 'positions')->get();
 	    $positions = [];
 	    	
@@ -668,6 +671,9 @@ class RegistrationController extends Controller
 		    }
 		    Suburbs::where('id', $postcode)->where('name', $suburb_name)->update(['availability' => $count]);
 	    }
+	   
+	   DB::update('UPDATE `suburbs` SET `total_availability` = `availability` + `manual_availability`');
+
 	}
 	    	
 

@@ -158,7 +158,11 @@ class SuburbController extends Controller
         $payload = $this->payload->all();
 		
 		//dd($payload);
-		$suburb = Suburbs::where('suburb_id', $payload['suburb_id'])->update(['availability' => $payload['availability']]);
+		$activeAvailability = Suburbs::where('suburb_id', $payload['suburb_id'])->first()->availability;
+		$manual_avail = (int)$activeAvailability  - (int)$payload['availability'];
+		$suburb = Suburbs::where('suburb_id', $payload['suburb_id'])->update(['manual_availability' => abs($manual_avail)]);
+		DB::update('UPDATE `suburbs` SET `total_availability` = `availability` + `manual_availability`');
+		
 /*
         $suburb = Suburbs::find();
         $suburb->availability = ;
