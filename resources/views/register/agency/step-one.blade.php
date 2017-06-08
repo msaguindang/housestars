@@ -110,8 +110,8 @@
                             <label>Phone</label>
                             <input type="text" name="phone" required value="{{isset($user['phone']) ? $user['phone'] : ''}}">
                             <label>ABN</label>
-                            <input type="text" name="abn" required value="{{isset($user['abn']) ? $user['abn'] : ''}}">
-                            <label>Positions <span>(Enter the postcode of the suburd required)</span></label>
+                            <input type="text" name="abn" required value="{{isset($user['abn']) ? $user['abn'] : ''}}" {{$user['sub_status'] == 0 ? 'disabled' : ''}}>
+                            <label>Positions <span>(Enter the postcode of the suburb required)</span></label>
                             <select id="select-state" name="positions[]" multiple class="demo-default"></select>
                             
                         </div>
