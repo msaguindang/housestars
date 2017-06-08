@@ -147,7 +147,7 @@
               <div class="col-xs-8">
                 @if(isset($data['recent']))
                   @php ($a = $data['recent'])
-                <h3 class="address">{{isset($data['property'][$a]['property-address']) ? $data['property'][$a]['property-address'] : '' }}, {{$data['property'][$a]['suburb']}}, {{$data['property'][$a]['state']}}</h3>
+                <h3 class="address">{{isset($data['property'][$a]['property-address']) ? $data['property'][$a]['property-address'] : '' }}, {{isset($data['property'][$a]['suburb']) ? $data['property'][$a]['suburb'] : ''}}, {{isset($data['property'][$a]['state']) ? $data['property'][$a]['state'] : ''}}</h3>
                 @endif
               </div>
             </div>

@@ -154,7 +154,6 @@ class RegistrationController extends Controller
               }
               
               $data['code'] = $request->input('code');
-              $data['agent'] =  UserMeta::where('user_id', $request->input($meta))->where('meta_name', 'trading-name')->first()->meta_value;
 
               $this->notifyAgency($data, $agencyEmail);
             }
@@ -183,6 +182,7 @@ class RegistrationController extends Controller
 
         $property['customer_name'] = Sentinel::getUser()->name;
         $property['customer_email'] = Sentinel::getUser()->email;
+        $property['agency'] =  UserMeta::where('user_id', $request->input('agent'))->where('meta_name', 'trading-name')->first()->meta_value;
         
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);

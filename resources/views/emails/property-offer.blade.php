@@ -310,11 +310,11 @@
                     <tr>
                       <td style="padding: 20px; background: #fff;">
                           <p><b>Property Code:</b> {{$property['code']}}</p>
-                          <p><b>Property Location:</b> {{$property['property-address']}}, {{$property['suburb']}}, {{$property['state']}}</p>
-                        <p><b>Type:</b> {{$property['property-type']}}</p>
-                          <p><b>No. of Rooms:</b> {{$property['number-rooms']}}</p>
-                          <p><b>Currently leased?:</b> {{$property['leased']}}</p>
-                          <p><b>Value:</b> ${{$property['value-from']}} - ${{$property['value-to']}}</p>
+                          <p><b>Property Location:</b> {{isset($property['property-address']) ? $property['property-address'] : ''}}, {{isset($property['suburb']) ? $property['suburb'] : ''}}, {{isset($property['state']) ? $property['state'] : ''}}</p>
+                        <p><b>Type:</b> {{isset($property['property-type']) ? $property['property-type'] : ''}}</p>
+                          <p><b>No. of Rooms:</b> {{isset($property['number-rooms']) ? $property['number-rooms'] : ''}}</p>
+                          <p><b>Currently leased?:</b>{{isset($property['leased']) ? $property['leased'] : ''}}</p>
+                          <p><b>Value:</b> ${{isset($property['value-from']) ? $property['value-from'] : ''}} - ${{isset($property['value-to']) ? $property['value-to'] : ''}}</p>
                        </td>
                     </tr>
                   </table>
