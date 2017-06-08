@@ -697,6 +697,31 @@
         </div>
       </div>
     </div>
+    
+    <!-- NO TRADESMAN LISTED-->
+    <div class="modal fade" id="noTradesmenCategory" tabindex="-1" role="dialog" aria-labelledby="signup-area">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <h4>
+            	THERE ARE CURRENTLY NO BUSINESSES IN THIS CATEGORY
+            </h4>
+            </br><p class="sub-heading">If you know a trade or service business that can benefit from this site, please enter their name below and press submit. We will contact them regarding signing up to be a partner. Thank you.</p>
+            <form id="suggestTradesman">
+              {{csrf_field() }}
+              <input type="hidden" id="search-suburb" name="suburb" />
+              <input type="text" name="name" placeholder="Tradesman or Business Name"></br>
+              <input type="text" name="contact" placeholder="Business Phone No. (not essential)" class="no-top"></br>
+              <input type="text" name="suburb-name" placeholder="Suburb"> </br>
+              <button class="btn hs-primary">SUBMIT</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 
 		<!-- NO TRADESMAN LISTED-->
 	 <div class="modal fade" id="noAgency" tabindex="-1" role="dialog" aria-labelledby="signup-area">
