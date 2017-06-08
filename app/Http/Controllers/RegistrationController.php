@@ -512,7 +512,7 @@ class RegistrationController extends Controller
                         throw new \Exception("Invalid coupon code!");
                     }
 
-                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon, 'subs_status' => 1]);
+                    User::where('id', $user_id)->update(['customer_id' => $customer->id, 'coupon' => $coupon]);
                 } catch (\Stripe\Error\Card $e) {
 
                     $body = $e->getJsonBody();
@@ -523,7 +523,7 @@ class RegistrationController extends Controller
                     return redirect()->back()->with('error', $e->getMessage());
                 }
 			
-			if(Sentinel::getUser()->subs_status == 0){
+			if(Sentinel::getUser()->subs_status == 0 && Sentinel::getUser()->subs_status  != NULL){
 				User::where('id', $user_id)->update(['subs_status' => 1]);
 			}
 			
@@ -562,12 +562,16 @@ class RegistrationController extends Controller
                 \Stripe\Subscription::create($data);
 
                 $request->session()->put('completed', 'yes');
-
+                
+				User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 1]);
+				
                 if(strtolower($role) == 'tradesman'){
                     return redirect(env('APP_URL').'/register/tradesman/complete');
                 } else {
                     return redirect(env('APP_URL').'/register/agency/complete');
                 }
+                
+                
             } catch (\Stripe\Error\Card $e){
                 $body = $e->getJsonBody();
                 $err  = ''.$body['error']['message'].'';

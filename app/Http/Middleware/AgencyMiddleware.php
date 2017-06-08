@@ -32,8 +32,16 @@ class AgencyMiddleware
                 }
                 
                 if (Sentinel::getUser()->customer_id == NULL) {
-	                        return redirect('/register/agency/step-three');
-	                    }
+
+	                return redirect('/register/agency/step-three');   
+	                     
+	            } else if(Sentinel::getUser()->customer_id != NULL && Sentinel::getUser()->subs_status == NULL && strtolower($request->route()->uri) != "register/agency/step-four"){
+		            
+		            return redirect('/register/agency/step-four');
+		            
+	            }
+	            
+	            
 				
 				$positions = UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name','positions')->first()->meta_value;
 	            $isPaidCustomer = count(explode(",", $positions));
@@ -44,7 +52,7 @@ class AgencyMiddleware
 	                  $customer_info = \Stripe\Customer::retrieve(Sentinel::getUser()->customer_id);
 	                  $payment_status = $customer_info->status;
 	                  //dd($customer_info->subscriptions);
-		                if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid' || Sentinel::getUser()->subs_status == 0){
+		                if($payment_status ==  'past_due' || $payment_status ==  'canceled' || $payment_status ==  'unpaid'){
 			    		    User::where('id', Sentinel::getUser()->id)->update(['subs_status' => 0]);
 			    			UserMeta::where('user_id', Sentinel::getUser()->id)->where('meta_name', 'positions')->update(['meta_value' => '']);
 		                    return redirect('/register/agency/step-one');
