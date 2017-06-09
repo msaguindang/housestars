@@ -109,7 +109,6 @@ class CustomerController extends Controller
         if(count($data['property']) > 1){
             $lastIndex = count($data['property']) - 2;
             $data['agents'] = $this->find_agent_by_suburb($data['property'][$lastIndex]['suburb']);
-
         } 
 	       
 
@@ -589,15 +588,17 @@ class CustomerController extends Controller
                           $name =  $info->meta_value;
                       } else if($info->meta_name == 'profile-photo'){
                           $photo = $info->meta_value;
+                      } else if($info->meta_name == 'trading-name') {
+                          $tradingName = $info->meta_value;
                       }
                   }
 
                   $rating = $this->getRating($user->user_id);
 
                   if(isset($photo)){
-                      $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $sub);
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $sub, 'trading-name' => $tradingName);
                   } else {
-                      $agent = array('id' => $user->user_id, 'name' => $name, 'rating' => $rating, 'suburb' => $sub);
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'rating' => $rating, 'suburb' => $sub, 'trading-name' => $tradingName);
                   }
 
 
@@ -620,15 +621,17 @@ class CustomerController extends Controller
                             $name =  $info->meta_value;
                         } else if($info->meta_name == 'profile-photo'){
                             $photo = $info->meta_value;
+                        } else if($info->meta_name == 'trading-name') {
+                            $tradingName = $info->meta_value;
                         }
                     }
 
                     $rating = $this->getRating($user->user_id);
 
                     if(isset($photo)){
-                      $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name);
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'photo' => $photo, 'rating' => $rating, 'suburb' => $key->name, 'trading-name' => $tradingName) ;
                     } else {
-                      $agent = array('id' => $user->user_id, 'name' => $name, 'rating' => $rating, 'suburb' => $key->name);
+                      $agent = array('id' => $user->user_id, 'name' => $name, 'rating' => $rating, 'suburb' => $key->name, 'trading-name' => $tradingName);
                     }
 
                     array_push($agents, $agent);
