@@ -1193,7 +1193,7 @@
 												@else
 												<img src="{{asset('assets/default.png')}}" alt="{{$agent['name']}}">
 												@endif
-												<p class="agent-name" style="margin-top: 10px;">{{$agent['name']}}</p>
+												<p class="agent-name" style="margin-top: 10px;">{{$agent['trading-name']}}</p>
 											</div>
 											</br>
 
