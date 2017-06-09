@@ -115,7 +115,7 @@
             <div class="description">
               @foreach ($meta as $info)
                 @if($info->meta_name == 'summary')
-                  <p>{{$info->meta_value}}</p>
+                  <p>{!!$info->meta_value!!}</p>
                 @endif
               @endforeach
             </div>
