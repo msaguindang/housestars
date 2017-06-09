@@ -77,12 +77,15 @@
 								</div>
 							</div>
 							</br></br></br>
-							<input type="text" name="review-title" placeholder="Enter Review Title">
-							<textarea placeholder="Write your review.." name="review-text" class="no-top"></textarea>
+							<input type="text" name="review-title" placeholder="Enter Review Title" required>
+							<textarea placeholder="Write your review.." name="review-text" class="no-top" required></textarea>
 							<div class="review-tips">
 								<p class="tooltip-info" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tips for writing a great review </br> </br> <b>DO</b> </br> - Describe your overall experience</br> - Tell us if you would recommended the business to others</br>-Talk about the strengths and weaknesses of the experience </br></br> <b>DON'T</b></br>-Lie. Be as honest as possible</br>-Use bad language or personal insults</br>-Be racist, sexist or vulgar" data-html="true">Tips for writing a good review</p>
 							 </br></br>
 							</div>
+							@if(count($errors) > 0)
+								{{dump($errors)}}
+							@endif
 							<button type="submit" class="btn hs-primary">Submit Review</button>
 						</form>
 					</div>

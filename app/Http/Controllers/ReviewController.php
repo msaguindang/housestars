@@ -97,7 +97,7 @@ class ReviewController extends Controller
 
 
 
-          $data['id'] = $request->input('tradesman_id');
+        $data['id'] = $request->input('tradesman_id');
 
         return Response::json($data, 200);
     }
@@ -507,6 +507,11 @@ class ReviewController extends Controller
 
     public function create (Request $request)
     {
+        $validator = $this->validate($request, [
+            'review-title' => 'required',
+            'review-text' => 'required'
+        ]);
+
         $params = $request->all();
         $businessId = $params['tradesman_id'];
         $communication = isset($params['communication']) ? $params['communication'] : NULL;

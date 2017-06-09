@@ -370,8 +370,7 @@ Route::group(['prefix' => ''], function () {
         return redirect('/');
     });
 
-    Route::post('/review', 'ReviewController@addAReview');
-    Route::post('/create/review', 'ReviewController@create');
+    
 
     Route::post('/create/potential-customer', 'PotentialCustomerController@store');
 
@@ -506,6 +505,11 @@ Route::group(['prefix' => ''], function () {
         Route::get('agency', 'FaqController@agency');
         Route::get('tradesman', 'FaqController@tradesman');
 
+    });
+
+    Route::group(['middleware' => 'web'], function() {
+        Route::post('/review', 'ReviewController@addAReview');
+        Route::post('/create/review', 'ReviewController@create');
     });
 
 
