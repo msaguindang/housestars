@@ -125,7 +125,7 @@ class AgencyController extends Controller
             $user_id = $request->route('id') ? $request->route('id') : Sentinel::getUser()->id;
 
             $meta_name = array('cover-photo', 'profile-photo', 'agency-name', 'trading-name', 'principal-name', 'business-address', 'website', 'phone', 'abn', 'base-commission', 'marketing-budget', 'sales-type', 'summary');
-
+    
             foreach ($meta_name as $meta) {
                 if ($request->hasFile($meta)) {
                     $localpath = 'user/user-'.$user_id.'/uploads';
@@ -156,6 +156,9 @@ class AgencyController extends Controller
                 }
 
                 if($value !== null) {
+                    if($meta == 'summary') {
+                        $value = nl2br($value);
+                    }
                     UserMeta::updateOrCreate(
                         ['user_id' => $user_id, 'meta_name' => $meta],
                         ['user_id' => $user_id, 'meta_name' => $meta, 'meta_value' => $value]
