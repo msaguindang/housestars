@@ -207,7 +207,7 @@
             create: false,
             render: {
                 option: function (item, escape) {
-                    return '<div class="option" data-selectable="" data-value="' + item.availability + ',' + item.id + '' + item.name + '">' + item.name + ' (' + item.id + ')<span class="icn icon-available-' + item.availability + '"></span></div>';
+                    return '<div class="option" data-selectable="" data-value="' + item.total_availability + ',' + item.id + '' + item.name + '">' + item.name + ' (' + item.id + ')<span class="icn icon-available-' + item.total_availability + '"></span></div>';
                 }
             },
             load: function (query, callback) {
@@ -240,22 +240,22 @@
 		var x = 1;
 		
         for (var i = 0, len = json.length; i < len; i++) {
-	        if(parseInt(json[i]['availability']) > 3){
-		        json[i]['availability'] = 3;
+	        if(parseInt(json[i]['total_availability']) > 3){
+		        json[i]['total_availability'] = 3;
 	        }
 	        
 	         if(name == json[i]['name']){
-		        json[i]['availability'] = parseInt(json[i]['availability']) - x;
-		        var value = json[i]['id'] + '' + json[i]['name'] + '-dup-' + json[i]['availability'];
+		        json[i]['total_availability'] = parseInt(json[i]['total_availability']) - x;
+		        var value = json[i]['id'] + '' + json[i]['name'] + '-dup-' + json[i]['total_availability'];
 		        x = x + 1;
 	        } else {
-		        var value = json[i]['id'] + '' + json[i]['name'] + '-dup-' + json[i]['availability'];
+		        var value = json[i]['id'] + '' + json[i]['name'] + '-dup-' + json[i]['total_availability'];
 	        }
 	        
 	        name = json[i]['name'];
 	      
 	        currentSuburb = {value: value,
-		        			availability: json[i]['availability'],
+		        			total_availability: json[i]['total_availability'],
 		        			name: json[i]['name'],
 		        			id: json[i]['id']};
 		       
@@ -294,19 +294,19 @@
             }
 
             currentSuburb = suburbResponse.suburb;
-            var currentAvailability = currentSuburb.availability;
+            var currentAvailability = currentSuburb.total_availability;
 
-            var availability = updateCurrentItems(value, currentAvailability);
+            var total_availability = updateCurrentItems(value, currentAvailability);
 
-            if(availability>3){
+            if(total_availability>3){
                 positionSelectorSelectize.removeItem(value);
                 $('#noPositions').modal();
 
                 return false;
             }
 
-            currentSuburb.value = currentSuburb.id+currentSuburb.name+"-dup-"+availability;
-            currentSuburb.availability = availability;
+            currentSuburb.value = currentSuburb.id+currentSuburb.name+"-dup-"+total_availability;
+            currentSuburb.total_availability = total_availability;
             positionSelectorSelectize.addOption(currentSuburb);
 
         });
@@ -314,7 +314,7 @@
         positionSelectorSelectize.on('item_remove', function(value, $item){
 
             var rawValue = value;
-            var availability = 1;
+            var total_availability = 1;
 
             if(value.indexOf('-dup') !== false){
 
@@ -324,22 +324,22 @@
 			console.log('item-remove: ' + rawValue);
 			
             if(currentItems.hasOwnProperty(rawValue)){
-                availability = currentItems[rawValue]-1;
+                total_availability = currentItems[rawValue]-1;
             } else {
-	            availability = currentItems[rawValue]-2;
+	            total_availability = currentItems[rawValue]-2;
             }
 
-            currentItems[rawValue] = availability;
+            currentItems[rawValue] = total_availability;
 			
 			var availabilities = [1, 2, 3];
-			index = availabilities.indexOf(availability);
+			index = availabilities.indexOf(total_availability);
 			availabilities.splice(index, 1);
 			
 			console.log('avail' + index);
 			positionSelectorSelectize.removeOption(value);
 
 		
-            return availability;
+            return total_availability;
 
         });
 
@@ -368,7 +368,7 @@
         function updateCurrentItems(value, currentAvailability) {
 
             var rawValue = value;
-            var availability = currentAvailability+1;
+            var total_availability = currentAvailability+1;
 
             if(value.indexOf('-dup') !== false){
 
@@ -377,12 +377,12 @@
             }
 
             if(currentItems.hasOwnProperty(rawValue)){
-                availability = currentItems[rawValue]+1;
+                total_availability = currentItems[rawValue]+1;
             }
 
-            currentItems[rawValue] = availability;
+            currentItems[rawValue] = total_availability;
 
-            return availability;
+            return total_availability;
         }
 
 

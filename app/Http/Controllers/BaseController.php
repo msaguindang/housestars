@@ -10,10 +10,12 @@ class BaseController extends Controller
 {
     public function __construct() {
         $businesses = DB::table('user_meta')
-					->select('user_id', 'meta_name', 'meta_value')
-					->where('meta_name', '=', 'agency-name')
-					->orWhere('meta_name', '=', 'trade')
-					->get(); 
+						->select('user_meta.user_id', 'user_meta.meta_name', 'user_meta.meta_value')
+						->join('users', 'users.id', '=', 'user_meta.user_id')
+						->where('user_meta.meta_name', '=', 'agency-name')
+						->orWhere('user_meta.meta_name', '=', 'trade')
+						->get();
+					
         View::share('home', $businesses);
     }
 }   

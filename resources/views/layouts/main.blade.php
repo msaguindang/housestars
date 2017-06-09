@@ -254,6 +254,20 @@
       laravel.errors.showErrorsInFormGroup = false;
     </script>
 
+    <!-- Drip -->
+    <script type="text/javascript">
+      var _dcq = _dcq || [];
+      var _dcs = _dcs || {};
+      _dcs.account = '1892739';
+
+      (function() {
+        var dc = document.createElement('script');
+        dc.type = 'text/javascript'; dc.async = true;
+        dc.src = '//tag.getdrip.com/1892739.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(dc, s);
+      })();
+    </script>
     @yield("scripts")
   </body>
 </html>

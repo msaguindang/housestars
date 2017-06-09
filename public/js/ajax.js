@@ -75,7 +75,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
               $category = (data['cat'][i]['category']).replace('/', '_');
               $('#trades').append('<div class="col-xs-4 item"><a href="/listing/'+ $category +'/'+ suburb + '"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             } else {
-              $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
+              $('#trades').append('<div class="col-xs-4 item"><a href="#" data-toggle="modal" data-target="#noTradesmenCategory"><span class="icon icon-hammer"></span>'+ data['cat'][i]['category'] +'<span class="icon icon-arrow-right-blue"></span></a></div>');
             }
           }
           $('#trades').append('<div class="col-xs-12"><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#submitCategory"><span class="icon icon-arrow-right"></span> <span>The category i am looking for is not here </span> </button></div><div class="col-xs-4 no-padding-left"><button class="btn hs-primary medium" data-toggle="modal" data-target="#noTradesmen"><span class="icon icon-arrow-right"></span>Recommend A Trade or Service</button></div></div>');
@@ -110,6 +110,7 @@ $(document).on('submit', '#forgotPass' ,function(e){
         type: 'POST',
         success: function(data){
           $('#noTradesmen').modal('hide');
+          $('#noTradesmenCategory').modal('hide');
           $('#thankYouTrades').modal('show');
         }
 
@@ -182,11 +183,11 @@ $(document).on('click', '#switch' ,function(e){
     if(stat == '0'){
       $('.nav-panel').css('display', 'none');
       $('.profile-details').css('display', 'block');
-      $('div.gallery').show();
+      // $('div.gallery').show();
       $('input[name=switch]').val('1')
       $('input[name=switch]').attr('checked', true);
     } else {
-      $('div.gallery').hide();
+      // $('div.gallery').hide();
       $('.nav-panel').css('display', 'block');
       $('.profile-details').css('display', 'none');
       $('input[name=switch]').val('0')

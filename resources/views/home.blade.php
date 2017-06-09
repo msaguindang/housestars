@@ -18,7 +18,9 @@
                     @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
+                      <li><a href="#" data-toggle="modal" data-target="#signup" id="signup-form">Sign Me Up</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#login" id="login-form">Login</a></li>
+                      <li><a href="/">Home</a></li>
                     @endif
                   </ul>
                 </div>
@@ -64,7 +66,9 @@
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
+                      <li><a href="#" data-toggle="modal" data-target="#signup" id="signup-form">Sign Me Up</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#login" id="login1-form">Login</a></li>
+                      <li><a href="/">Home</a></li>
                     @endif
                   </ul>
                 </div>

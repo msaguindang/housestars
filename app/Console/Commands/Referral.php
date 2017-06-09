@@ -8,6 +8,7 @@ use App\User;
 use Stripe\Subscription;
 use Mail;
 use Carbon\Carbon;
+use DB;
 
 class Referral extends Command
 {
@@ -42,6 +43,9 @@ class Referral extends Command
      */
     public function handle()
     {
+	    
+	  DB::update('UPDATE `suburbs` SET `total_availability` = `availability` + `manual_availability`');
+	  
       $meta = UserMeta::where('meta_name', 'promotion-code')->get();
       $referral = array();
       foreach ($meta as $key) {

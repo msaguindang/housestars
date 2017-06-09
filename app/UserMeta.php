@@ -23,10 +23,11 @@ class UserMeta extends Model
 
     public static function businesses() {
         return DB::table('user_meta')
-					->select('user_id', 'meta_name', 'meta_value')
-					->where('meta_name', '=', 'trading-name')
-					->orWhere('meta_name', '=', 'trading-name')
-					->orderBy('meta_value', 'ASC')
+                    ->join('users', 'users.id', '=', 'user_meta.user_id')
+					->select('user_meta.user_id', 'user_meta.meta_name', 'user_meta.meta_value')
+					->where('user_meta.meta_name', '=', 'trading-name')
+					->orWhere('user_meta.meta_name', '=', 'trading-name')
+					->orderBy('user_meta.meta_value', 'ASC')
 					->get();
     }
 }

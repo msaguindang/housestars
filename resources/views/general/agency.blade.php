@@ -18,8 +18,9 @@
                      @if(Sentinel::check())
                      <li><a href="{{env('APP_URL')}}/profile">Hi, {{Sentinel::getUser()->name}}</a></li>
                     @else
+                      <li><a href="#" data-toggle="modal" data-target="#signup">Sign Me Up</a></li>
                       <li><a href="#" data-toggle="modal" data-target="#login">Login</a></li>
-                      <li><a href="#" data-toggle="modal" data-target="#signup">Signup</a></li>
+                      <li><a href="/">Home</a></li>
                     @endif
                   </ul>
                 </div>
@@ -303,7 +304,7 @@
             create: false,
             render: {
                 option: function(item, escape) {
-                       return '<div class="option" data-selectable="" data-value="'+item.availability+','+item.id+''+item.name+'">'+item.name+' ('+item.id+')<span class="icn icon-available-'+item.availability+'"></span></div>';
+                       return '<div class="option" data-selectable="" data-value="'+item.total_availability+','+item.id+''+item.name+'">'+item.name+' ('+item.id+')<span class="icn icon-available-'+item.total_availability+'"></span></div>';
                 }
             },
             load: function(query, callback) {
