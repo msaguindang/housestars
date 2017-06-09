@@ -471,14 +471,6 @@
                   </li>
                 </ul>
               </div>
-              <div class="total">
-                <div class="total-label">
-                  <span>Total Spend</span>
-                  <div id="commission">
-                    <span class="total-amount" data-total="{{$data['spending']['total']}}">${{$data['spending']['total']}}</span>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div class="row">
