@@ -644,7 +644,7 @@ class CustomerController extends Controller
         $agent_info = DB::table('user_meta')->where('user_id', '=',$id)->get();
 
         foreach ($agent_info as $info) {
-            if($info->meta_name == 'agency-name'){
+            if($info->meta_name == 'trading-name'){
                 $name =  $info->meta_value;
             } else if($info->meta_name == 'profile-photo'){
                 $photo = $info->meta_value;
