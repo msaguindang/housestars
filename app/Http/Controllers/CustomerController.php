@@ -512,7 +512,7 @@ class CustomerController extends Controller
                         $total = $total + (int)$transaction->amount_spent;
                     } else {
                         $total = 0 + (int)$transaction->amount_spent;
-                    }
+                }
                 } else {
                     $total = $total + (int)$transaction->amount_spent;
                 }
@@ -735,7 +735,11 @@ class CustomerController extends Controller
 
         }
         $property['agent'] = $request->input('id');
-        $property['agency'] =  UserMeta::where('user_id', $request->input('id'))->where('meta_name', 'trading-name')->first()->meta_value;
+        if($request->input('id') == 0 || $request->input('id') == 1) {
+            $property['agency'] = '';
+        } else {
+            $property['agency'] = UserMeta::where('user_id', $request->input('id'))->where('meta_name', 'trading-name')->first()->meta_value;
+        }
         
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);

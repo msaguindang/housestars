@@ -184,8 +184,14 @@ class RegistrationController extends Controller
 
         $property['customer_name'] = Sentinel::getUser()->name;
         $property['customer_email'] = Sentinel::getUser()->email;
-        $property['agency'] =  UserMeta::where('user_id', $request->input('agent'))->where('meta_name', 'trading-name')->first()->meta_value;
         
+        if($request->input('agent') == 0 || $request->input('agent') == 1) {
+            $property['agent'] =  $request->input('agent');
+            $property['agency'] = '';
+        } else {
+            $property['agency'] = UserMeta::where('user_id', $request->input('agent'))->where('meta_name', 'trading-name')->first()->meta_value;
+        }
+
         $adminEmail = 'info@housestars.com.au';
         $this->notifyAdmin($property, $adminEmail);
 		$this->notifyCustomer($property, Sentinel::getUser()->email);
